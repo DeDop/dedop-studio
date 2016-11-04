@@ -1,22 +1,22 @@
 {
-  "name": "dedop-studio",
-  "version": "0.0.1",
-  "description": "DeDop Studio with Electron application",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "repository": "https://github.com/DeDop/dedop-studio",
-  "keywords": [
-    "Electron",
-    "DeDop",
-    "Doppler",
-    "altimetry",
-    "studio"
-  ],
-  "author": "Brockmann Consult GmbH",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^1.4.1"
-  }
+    "name": "dedop-studio",
+    "version": "0.0.1",
+    "description": "DeDop Studio with Electron application",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": "https://github.com/DeDop/dedop-studio",
+    "keywords": [
+        "Electron",
+        "DeDop",
+        "Doppler",
+        "altimetry",
+        "studio"
+    ],
+    "author": "Brockmann Consult GmbH",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^1.4.1"
+    }
 }
