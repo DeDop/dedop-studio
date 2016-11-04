@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DeDop Studio</title>
+
+    <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
+
+    <script src="helpers/context_menu.js"></script>
+    <script src="helpers/external_links.js"></script>
+
+    <script src="app.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="title"></h1>
+    <p class="subtitle">
+        Welcome to <a href="http://electron.atom.io" class="js-external-link">Electron</a> app running on this
+        magnificent <strong id="platform-info"></strong> machine.
+    </p>
+    <p class="subtitle">You are using Node.js
+        <script>document.write(process.versions.node)</script>
+        ,
+        Chromium
+        <script>document.write(process.versions.chrome)</script>
+        ,
+        and Electron
+        <script>document.write(process.versions.electron)</script>
+        .
+    </p>
+    <p class="subtitle">
+        You are in <strong id="env-name"></strong> environment.
+    </p>
+</div>
+
+</body>
+</html>
