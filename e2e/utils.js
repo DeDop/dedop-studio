@@ -1,7 +1,12 @@
 import electron from 'electron';
 import { Application } from 'spectron';
+import * as chai from 'chai';
+import * as chaiAsPromised from 'chai-as-promised';
 
 var beforeEach = function () {
+    chai.should();
+    chai.use(chaiAsPromised);
+
     this.timeout(10000);
     this.app = new Application({
         path: electron,
