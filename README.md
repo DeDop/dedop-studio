@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DeDop/dedop-studio.svg?branch=master)](https://travis-ci.org/DeDop/dedop-studio)
+
 # dedop-studio
 DeDop Desktop Application
 
