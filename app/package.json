@@ -1,14 +1,16 @@
 {
-  "name": "dedop-sutdio",
-  "productName": "DeDop Studio",
-  "description": "DeDop Studio with Electron application",
+  "name": "dedop-studio",
+  "productName": "DeDop",
   "version": "0.0.1",
+  "description": "DeDop Studio",
+  "main": "main.js",
   "author": "Brockmann Consult GmbH",
-  "copyright": "© 2016, Brockmann Consult GmbH",
-  "homepage": "https://github.com/DeDop/dedop-studio",
   "license": "MIT",
-  "main": "background.js",
+  "private": true,
   "dependencies": {
-    "fs-jetpack": "^0.9.0"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "redux": "^3.6.0"
   }
 }
