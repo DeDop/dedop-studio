@@ -28,7 +28,7 @@ describe('testing app launch', function () {
     beforeEach(function () {
         this.app = new Application({
             path: electronPath,
-            args: [appPath]
+            args: [appPath, '--config', 'dedop-config.template.js']
         });
         return this.app.start();
     });
@@ -60,7 +60,7 @@ describe('testing app launch', function () {
 
     it('has title', function () {
         return this.app.client.waitUntilWindowLoaded()
-            .browserWindow.getTitle().should.eventually.equal('DeDop');
+            .browserWindow.getTitle().should.eventually.equal('DeDop Studio');
     });
 });
 
