@@ -16,7 +16,7 @@ let _prefs;
 let _config;
 
 function getAppIconPath() {
-    var icon_file = "dedop-16.png";
+    let icon_file = "dedop-16.png";
     if (process.platform === "darwin") {
         icon_file = "darwin/dedop.icns";
     } else if (process.platform === "win32") {

@@ -20,7 +20,7 @@ describe('Config', function () {
     });
 
     it('can store and load data to/from JSON', function () {
-        var file = '__config__.json';
+        let file = '__config__.json';
 
         let config1 = new Config({
             lastDir: '/user/dedoper',
@@ -38,7 +38,7 @@ describe('Config', function () {
     });
 
     it('can load data from JS', function () {
-        var file = '__config__.js';
+        let file = '__config__.js';
 
         fs.writeFileSync(file, 'module.exports = {a: 1, b: 2 + 5}');
 
