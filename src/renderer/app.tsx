@@ -1,22 +1,67 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Header, Footer, Section} from './components';
-
-// TODO: we don't have a react-split-pane.d.ts yet, so we must use Node's CommonJS import
-// import * as SplitPane from 'react-split-pane';
-const SplitPane: any = require('react-split-pane');
-
+import {
+    HGLContainer, HGLHeader, HGLFooter,
+    HGLCenter
+} from './components';
+import {Classes, ITreeNode, Tooltip, Tree, Menu, MenuItem, MenuDivider} from "@blueprintjs/core";
+import TreeMenu from "./treeMenu";
+import TabList from './tabList';
 
 export function main() {
     ReactDOM.render(
-        <Section>
-            <Header>Header</Header>
-            <SplitPane defaultSize="40%" split="vertical">
-                <div>Left</div>
-                <div>Content</div>
-            </SplitPane>
-            <Footer>Footer</Footer>
-        </Section>,
+        <HGLContainer>
+            <HGLHeader>
+                <nav className="pt-navbar .modifier">
+                    <div className="pt-navbar-group pt-align-left">
+                        <img src="resources/dedop-32.png"/>
+                        <div className="pt-navbar-heading">DeDop Studio</div>
+                        <input className="pt-input" placeholder="Search files..." type="text"/>
+                        <button className="pt-button pt-minimal pt-icon-add"/>
+                        <div className="pt-button-group .modifier">
+                            <a className="pt-button pt-icon-database" role="button">Queries</a>
+                            <a className="pt-button pt-icon-function" role="button">Functions</a>
+                            <a className="pt-button" role="button">
+                                Options <span className="pt-icon-standard pt-icon-caret-down pt-align-right"/>
+                            </a>
+                        </div>
+                        <br /><br />
+                        <div className="pt-button-group .modifier">
+                            <a className="pt-button pt-icon-chart" role="button"/>
+                            <a className="pt-button pt-icon-control" role="button"/>
+                            <a className="pt-button pt-icon-graph" role="button"/>
+                            <a className="pt-button pt-icon-camera" role="button"/>
+                            <a className="pt-button pt-icon-map" role="button"/>
+                            <a className="pt-button pt-icon-code" role="button"/>
+                            <a className="pt-button pt-icon-th" role="button"/>
+                            <a className="pt-button pt-icon-time" role="button"/>
+                            <a className="pt-button pt-icon-compressed" role="button"/>
+                        </div>
+                        <br /><br />
+                        <div className="pt-button-group .modifier">
+                            <button type="button" className="pt-button pt-intent-success">Save</button>
+                            <button type="button" className="pt-button pt-intent-success pt-icon-caret-down"/>
+                        </div>
+                    </div>
+                    <div className="pt-navbar-group pt-align-right">
+                        <button className="pt-button pt-minimal pt-icon-home">Home</button>
+                        <button className="pt-button pt-minimal pt-icon-document">Files</button>
+                        <span className="pt-navbar-divider"/>
+                        <button className="pt-button pt-minimal pt-icon-user"/>
+                        <button className="pt-button pt-minimal pt-icon-notifications"/>
+                        <button className="pt-button pt-minimal pt-icon-cog"/>
+                    </div>
+                </nav>
+            </HGLHeader>
+            <HGLCenter>
+                <div>
+                    <TabList/>
+                </div>
+            </HGLCenter>
+            <HGLFooter>
+                <p>developed by Brockmann Consult GmbH</p>
+            </HGLFooter>
+        </HGLContainer>,
         document.getElementById('container')
     );
 }

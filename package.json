@@ -5,7 +5,7 @@
   "description": "DeDop Studio",
   "private": true,
   "scripts": {
-    "start": "electron app",
+    "start": "electron app --config dedop-config.template.js",
     "test:e2e": "mocha e2e/**/*-test.js",
     "pretest": "npm run compile",
     "test": "mocha app/main/**/*.spec.js app/renderer/**/*.spec.js",
@@ -35,6 +35,8 @@
   },
   "homepage": "http://dedop.org/",
   "devDependencies": {
+    "@blueprintjs/core": "1.0.1",
+    "@types/dom4": "^1.5.20",
     "@types/electron": "^1.4.26",
     "@types/mocha": "^2.2.32",
     "@types/react": "^0.14.46",
@@ -46,6 +48,7 @@
     "electron-builder": "latest",
     "electron-prebuilt": "1.4.5",
     "mocha": "^3.1.2",
+    "react-addons-css-transition-group": "^15.0.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",

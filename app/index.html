@@ -3,10 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>DeDop Studio</title>
+    <style>
+        * {
+            overflow: hidden;
+        }
+
+        html, body, #container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        body, #container {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+    </style>
+    <link href="node_modules/@blueprintjs/core/dist/blueprint.css" rel="stylesheet"/>
     <link href="styles.css" rel="stylesheet">
 </head>
-<body class="vertical">
-<div id="container"></div>
+<body style="background:#182026">
+<div id="container" class="pt-dark"></div>
 <script src="renderer.js"></script>
 </body>
 </html>

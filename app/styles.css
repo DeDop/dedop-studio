@@ -1,143 +1,103 @@
-*, *:before, *:after {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    position: relative;
+/*
+ * Disable highlighting/selecting across the application
+ * Solution taken from https://github.com/electron/electron/issues/2538
+ */
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
 }
 
-.root {
-    height: 100vh;
-    width: 100vw;
+input, button, textarea, :focus {
+    /* We must add some other style for :focus to help UX/a11y */
+    outline: none;
 }
 
-.Resizer {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    background: #000;
-    opacity: .2;
-    z-index: 1;
-    -moz-background-clip: padding;
-    -webkit-background-clip: padding;
-    background-clip: padding-box;
-}
-
-.Resizer:hover {
-    -webkit-transition: all 2s ease;
-    transition: all 2s ease;
-}
-
-.Resizer.horizontal {
-    height: 11px;
-    margin: -5px 0;
-    border-top: 5px solid rgba(255, 255, 255, 0);
-    border-bottom: 5px solid rgba(255, 255, 255, 0);
-    cursor: row-resize;
+.hgl-container {
+    height: 100%;
     width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
 }
 
-.Resizer.horizontal:hover {
-    border-top: 5px solid rgba(0, 0, 0, 0.5);
-    border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+.hgl-header, .hgl-footer {
+    flex: none; /* same as "flex: 0 0 auto;" */
 }
 
-.Resizer.vertical {
-    width: 11px;
-    margin: 0 -5px;
-    border-left: 5px solid rgba(255, 255, 255, 0);
-    border-right: 5px solid rgba(255, 255, 255, 0);
+.hgl-midsection {
+    flex: auto; /* same as "flex: 1 1 auto;" */
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.hgl-left, .hgl-right {
+    flex: none;
+    /*overflow-y: auto;*/
+}
+
+.hgl-center {
+    flex: auto;
+    /*overflow-y: auto;*/
+    /* Chrome suggested workaround */
+    zzheight: 100%;
+    zzdisplay: flex;
+    zzflex-flow: column;
+}
+
+.hgl-hor-splitter {
+    flex: none;
+    border: none;
+    outline: none;
+    width: 4px;
+    min-height: 100%;
+    max-height: 100%;
+    /*background-color: yellow;*/
     cursor: col-resize;
 }
 
-.Resizer.vertical:hover {
-    border-left: 5px solid rgba(0, 0, 0, 0.5);
-    border-right: 5px solid rgba(0, 0, 0, 0.5);
+/* For visible debugging ====================================================== */
+
+html, body {
+    background: black;
 }
 
-.vertical section {
-    width: 100vh;
-    height: 100vh;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
+body {
+    color: white;
 }
 
-.vertical header {
-    padding: 1rem;
-    background: #eee;
+.hgl-container {
+    background: #111;
 }
 
-.vertical footer {
-    padding: 1rem;
-    background: #eee;
+.hgl-header {
+    background: #222;
 }
 
-#vertically-nested-in-container-example {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+.hgl-footer {
+    background: #394b59;
+    text-align: center;
 }
 
-.horizontal section {
-    width: 100vh;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+.hgl-midsection {
+    background: #444;
 }
 
-.horizontal header {
-    padding: 1rem;
-    background: #eee;
+.hgl-left {
+    background: #555;
 }
 
-.horizontal footer {
-    padding: 1rem;
-    background: #eee;
+.hgl-right {
+    background: #666;
 }
 
-#horizontally-nested-in-container-example {
-    flex: 1;
-    display: flex;
+.hgl-center {
+    background: #777;
+    color: lightyellow;
+    padding: 10px 0 0 0;
 }
 
-.parent {
-    width: 100%;
-    height: 100%;
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-}
-.header {
-    background: #aaa;
-    height: 3rem;
-    line-height: 3rem;
-}
-.wrapper {
-    background: #ffa;
-    margin: 5rem;
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
+[add=yes] {
+    padding: 10px 10px;
 }
