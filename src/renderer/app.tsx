@@ -16,9 +16,7 @@ export function main() {
                 <TopMenu/>
             </HGLHeader>
             <HGLCenter>
-                <div>
-                    <TabList/>
-                </div>
+                <TabList/>
             </HGLCenter>
             <HGLFooter>
                 <p>developed by Brockmann Consult GmbH</p>

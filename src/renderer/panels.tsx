@@ -4,9 +4,13 @@ import {CollapseSample} from "./collapse";
 export class InputDatasetPanel extends React.Component<any, any> {
     public render() {
         return (
-            <div>
-                <h3>Input Dataset</h3>
-                <CollapseSample/>
+            <div className="panel-flexbox">
+                <div className="panel-flexbox-item" style={{backgroundColor: "#1F4B99"}}>
+                    Left
+                </div>
+                <div className="panel-flexbox-item" style={{backgroundColor: "#A82A2A"}}>
+                    Right
+                </div>
             </div>
         )
     }
