@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
+import {CollapseSample} from "./collapse";
 
 export default class TabsExample extends React.Component<any,any> {
     public render() {
@@ -16,12 +17,7 @@ export default class TabsExample extends React.Component<any,any> {
                     <Tab><span className="pt-icon-large pt-icon-timeline-bar-chart"/></Tab>
                 </TabList>
                 <TabPanel>
-                    <h3>Example panel: React</h3>
-                    <p className="pt-running-text">
-                        Lots of people use React as the V in MVC. Since React makes no assumptions about the
-                        rest of your technology stack, it's easy to try it out on a small feature in an existing
-                        project.
-                    </p>
+                    <CollapseSample/>
                 </TabPanel>
                 <TabPanel>
                     <h3>Example panel: Angular</h3>
