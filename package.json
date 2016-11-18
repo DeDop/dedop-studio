@@ -5,7 +5,7 @@
   "description": "DeDop Studio",
   "private": true,
   "scripts": {
-    "start": "electron app --config dedop-config.template.js",
+    "start": "electron app",
     "test:e2e": "mocha e2e/**/*-test.js",
     "pretest": "npm run compile",
     "test": "mocha app/main/**/*.spec.js app/renderer/**/*.spec.js",

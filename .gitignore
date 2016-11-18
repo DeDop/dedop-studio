@@ -6,4 +6,5 @@ node_modules
 
 app/main
 app/renderer
-app/node_modules/
+
+dedop-config.js
