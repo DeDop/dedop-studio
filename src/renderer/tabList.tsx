@@ -2,6 +2,7 @@ import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
 import {CollapseSample} from "./collapse";
+import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './panels'
 
 export default class TabsExample extends React.Component<any,any> {
     public render() {
@@ -17,29 +18,16 @@ export default class TabsExample extends React.Component<any,any> {
                     <Tab><span className="pt-icon-large pt-icon-timeline-bar-chart"/></Tab>
                 </TabList>
                 <TabPanel>
-                    <CollapseSample/>
+                    <InputDatasetPanel/>
                 </TabPanel>
                 <TabPanel>
-                    <h3>Example panel: Angular</h3>
-                    <p className="pt-running-text">
-                        HTML is great for declaring static documents, but it falters when we try to use it for
-                        declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary
-                        for your application. The resulting environment is extraordinarily expressive, readable,
-                        and quick to develop.
-                    </p>
+                    <ConfigurationPanel/>
                 </TabPanel>
                 <TabPanel>
-                    <h3>Example panel: Ember</h3>
-                    <p className="pt-running-text">
-                        Ember.js is an open-source JavaScript application framework, based on the
-                        model-view-controller (MVC) pattern. It allows developers to create scalable single-page
-                        web applications by incorporating common idioms and best practices into the framework.
-                        What is your favorite JS framework?
-                    </p>
-                    <input className="pt-input" type="text"/>
+                    <ProcessingPanel/>
                 </TabPanel>
                 <TabPanel>
-                    <h3>Backbone</h3>
+                    <ResultPanel/>
                 </TabPanel>
             </Tabs>
         );
