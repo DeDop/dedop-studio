@@ -6,10 +6,11 @@ export class InputDatasetPanel extends React.Component<any, any> {
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item" style={{backgroundColor: "#1F4B99"}}>
-                    Left
+                    <CollapseSample panelTitle="L1A Datasets"/>
+                    <CollapseSample panelTitle="Global Metadata"/>
                 </div>
                 <div className="panel-flexbox-item" style={{backgroundColor: "#A82A2A"}}>
-                    Right
+                    <CollapseSample panelTitle="Footprints"/>
                 </div>
             </div>
         )

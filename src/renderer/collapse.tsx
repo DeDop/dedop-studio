@@ -5,20 +5,33 @@ export interface ICollapseExampleState {
     isOpen?: boolean;
 }
 
-export class CollapseSample extends React.Component<{}, ICollapseExampleState> {
+interface IPanelProps {
+    panelTitle: string;
+}
+
+export class CollapseSample extends React.Component<IPanelProps, ICollapseExampleState> {
     public state = {
-        isOpen: false,
+        isOpen: true,
     };
 
     public render() {
         return (
             <div>
-                <Button onClick={this.handleClick}>
-                    {this.state.isOpen ? "Hide" : "Show"} build logs
-                </Button>
-                <Collapse isOpen={this.state.isOpen}>
+                <div>
+                    {this.props.panelTitle}
+                    {this.state.isOpen ?
+                        <span className="pt-icon-standard pt-icon-chevron-up" onClick={this.handleClick}
+                              style={{textAlign: "right"}}/> :
+                        <span className="pt-icon-standard pt-icon-chevron-down" onClick={this.handleClick}
+                              style={{textAlign: "right"}}/>}
+                </div>
+                < Collapse isOpen={this.state.isOpen}>
                     <pre>
-                        Dummy text.
+                        [11:53:30] Finished 'typescript-bundle-blueprint' after 769 ms<br/>
+                        [11:53:30] Starting 'typescript-typings-blueprint'...<br/>
+                        [11:53:30] Finished 'typescript-typings-blueprint' after 198 ms<br/>
+                        [11:53:30] write ./blueprint.css<br/>
+                        [11:53:30] Finished 'sass-compile-blueprint' after 2.84 s<br/>
                     </pre>
                 </Collapse>
             </div>

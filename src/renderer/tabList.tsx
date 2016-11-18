@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
-import {CollapseSample} from "./collapse";
 import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './panels'
 
 export default class TabsExample extends React.Component<any,any> {
