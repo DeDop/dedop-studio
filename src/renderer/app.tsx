@@ -6,7 +6,7 @@ import {
 } from './components';
 import {Classes, ITreeNode, Tooltip, Tree, Menu, MenuItem, MenuDivider} from "@blueprintjs/core";
 import TreeMenu from "./treeMenu";
-import TabList from './tabList';
+import {MainTabs} from './tabList';
 import TopMenu from './topMenu';
 
 export function main() {
@@ -16,7 +16,7 @@ export function main() {
                 <TopMenu/>
             </HGLHeader>
             <HGLCenter>
-                <TabList/>
+                <MainTabs/>
             </HGLCenter>
             <HGLFooter>
                 <p>developed by Brockmann Consult GmbH</p>

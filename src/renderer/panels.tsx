@@ -1,5 +1,8 @@
 import * as React from "react";
 import {CollapseSample} from "./collapse";
+import {ConfigurationTabs} from './tabList';
+import {PanelHeader} from './panelHeader';
+import TreeMenu from './treeMenu';
 
 export class InputDatasetPanel extends React.Component<any, any> {
     public render() {
@@ -20,8 +23,13 @@ export class InputDatasetPanel extends React.Component<any, any> {
 export class ConfigurationPanel extends React.Component<any, any> {
     public render() {
         return (
-            <div>
-                ConfigurationPanel
+            <div className="panel-flexbox">
+                <div className="panel-flexbox-item" style={{backgroundColor: "#1F4B99"}}>
+                    <TreeMenu/>
+                </div>
+                <div className="panel-flexbox-item" style={{backgroundColor: "#A82A2A"}}>
+                    <ConfigurationTabs/>
+                </div>
             </div>
         )
     }
