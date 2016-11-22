@@ -6,5 +6,6 @@ node_modules
 
 app/main
 app/renderer
+src/**/*.jsx
 
 dedop-config.js

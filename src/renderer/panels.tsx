@@ -6,6 +6,7 @@ import {ConfigurationTabs} from './tabList';
 import {PanelHeader} from './panelHeader';
 import TreeMenu from './treeMenu';
 import {Footprints} from "./footprints";
+import {CesiumView} from "./cesium/view";
 
 export class InputDatasetPanel extends React.Component<any, any> {
     public render() {

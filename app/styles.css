@@ -1,3 +1,5 @@
+@import url(node_modules/cesium/Build/Cesium/Widgets/widgets.css);
+
 /*
  * Disable highlighting/selecting across the application
  * Solution taken from https://github.com/electron/electron/issues/2538
@@ -193,3 +195,48 @@ h1, h2, h3, h4, h5 {
 .flexbox-item-pico-runs {
     width: 100%;
 }
+
+/* <<<< Cesium ============================================================ */
+
+/*
+ * Assign 100% parent size to Cesium's main permanentObject with id="cesiumDiv"
+ */
+.cesium-container {
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+/*
+ * Override cesium-widget from Cesium
+ */
+.cesium-widget {
+    position: relative;
+}
+
+/*
+ * Override cesium-widget from Cesium
+ */
+.cesium-widget, .cesium-widget canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* City List Example */
+
+.cesium-city-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200px;
+    padding-top: 20px;
+    margin: 0;
+
+    background-color: white;
+    opacity: 0.9;
+
+    list-style-type: none;
+}
+
+/* >>>> Cesium ============================================================ */

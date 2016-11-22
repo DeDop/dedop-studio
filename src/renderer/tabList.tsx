@@ -2,6 +2,7 @@ import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
 import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './panels'
+import {Footprints} from "./footprints";
 
 export class MainTabs extends React.Component<any,any> {
     public render() {
