@@ -168,6 +168,8 @@ h1, h2, h3, h4, h5 {
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: 500px;
+
+    margin: 5px;
 }
 
 .pt-tabs {
@@ -195,6 +197,43 @@ h1, h2, h3, h4, h5 {
 .flexbox-item-pico-runs {
     width: 100%;
 }
+
+/* Blueprint collapse styling ================================================*/
+
+.dedop-collapse {
+    margin: 0 0 5px 0;
+}
+
+.dedop-collapse-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: #394B59;
+    height: 30px;
+}
+
+.dedop-collapse-header-icon {
+    margin: 0 0 0 5px;
+}
+
+.dedop-collapse-header-text {
+    margin: 0 0 0 10px;
+    align-items: flex-start;
+    align-content: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.dedop-collapse-header-actions {
+    margin: 0 5px 0 0;
+}
+
+.dedop-panel-content {
+    margin: 10px 0 0 0;
+}
+
+/* Blueprint collapse styling ================================================*/
 
 /* <<<< Cesium ============================================================ */
 

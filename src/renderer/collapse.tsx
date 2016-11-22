@@ -7,6 +7,7 @@ export interface ICollapseExampleState {
 
 interface IPanelProps {
     panelTitle: string;
+    collapseIcon?: string;
 }
 
 export class CollapseSample extends React.Component<IPanelProps, ICollapseExampleState> {
@@ -16,14 +17,17 @@ export class CollapseSample extends React.Component<IPanelProps, ICollapseExampl
 
     public render() {
         return (
-            <div>
-                <div>
-                    {this.props.panelTitle}
+            <div className="dedop-collapse">
+                <div className="dedop-collapse-header">
+                    <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
+                    <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
+                    <span className="dedop-collapse-header-actions">
                     {this.state.isOpen ?
                         <span className="pt-icon-standard pt-icon-chevron-up" onClick={this.handleClick}
                               style={{textAlign: "right"}}/> :
                         <span className="pt-icon-standard pt-icon-chevron-down" onClick={this.handleClick}
                               style={{textAlign: "right"}}/>}
+                    </span>
                 </div>
                 < Collapse isOpen={this.state.isOpen}>
                     <pre>

@@ -4,9 +4,13 @@ import {CesiumView} from "./cesium/view";
 export class Footprints extends React.Component<any, any> {
     render() {
         return (
-            <div>
-                <h4>Footprints</h4>
-                <CesiumView id="cesium-viewer"/>
+            <div className="dedop-collapse">
+                <div className="dedop-collapse-header">
+                    <span className="dedop-collapse-header-text">Footprints</span>
+                </div>
+                <div className="dedop-panel-content">
+                    <CesiumView id="cesium-viewer"/>
+                </div>
             </div>
         )
     }
