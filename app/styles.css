@@ -182,6 +182,12 @@ h1, h2, h3, h4, h5 {
     height: 100%;
 }
 
+/*Adjust the vertical tab list shadow size*/
+.pt-tab-indicator-wrapper {
+    height: 60px !important;
+    width: 50px !important;
+}
+
 .flexbox-item-pico-config {
     flex-grow: 1;
     flex-shrink: 0;

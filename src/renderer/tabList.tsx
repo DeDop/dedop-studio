@@ -11,7 +11,7 @@ export class MainTabs extends React.Component<any,any> {
                 className="pt-vertical"
                 key="vertical"
             >
-                <TabList>
+                <TabList className="pt-large">
                     <Tab><span className="pt-icon-large pt-icon-database"/></Tab>
                     <Tab><span className="pt-icon-large pt-icon-properties"/></Tab>
                     <Tab><span className="pt-icon-large pt-icon-cog"/></Tab>
