@@ -5,15 +5,15 @@ import {shallow} from 'enzyme';
 import {HGLContainer, HGLHeader, HGLCenter, HGLFooter} from './components';
 
 describe("Main containers tests", () => {
-    it('renders <HGLContaicner /> components', () => {
+    it('renders <HGLContainer /> components', () => {
         const wrapper = shallow(
             <HGLContainer>
                 <HGLHeader/>
                 <HGLCenter/>
                 <HGLFooter/>
             </HGLContainer>);
-        expect(wrapper.find('.hgl-container'), '.hgl-container class is expected tobe called 1 time').to.have.length(1);
-        expect(wrapper.find('div'), 'expected to have 1 div element').to.have.length(1);
+        expect(wrapper.find('.hgl-container'), ' expect .hgl-container to be called 1 time').to.have.length(1);
+        expect(wrapper.find('div'), 'expect to have 1 div element').to.have.length(1);
         expect(wrapper.contains(
             <div className="hgl-container">
                 <HGLHeader/>
@@ -21,6 +21,8 @@ describe("Main containers tests", () => {
                 <HGLFooter/>
             </div>), 'the html elements are not as expected')
             .to.equal(true);
+        expect(wrapper.containsAllMatchingElements([<HGLHeader/>, <HGLCenter/>, <HGLFooter/>]),
+            'expect <HGLHeader/>, <HGLCenter/>, <HGLFooter/>').to.equal(true);
     });
 
     it('renders <HGLHeader /> components', () => {
