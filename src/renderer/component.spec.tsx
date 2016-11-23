@@ -14,7 +14,13 @@ describe("Main containers tests", () => {
             </HGLContainer>);
         expect(wrapper.find('.hgl-container'), '.hgl-container class is expected tobe called 1 time').to.have.length(1);
         expect(wrapper.find('div'), 'expected to have 1 div element').to.have.length(1);
-        expect(wrapper.contains(<div className="hgl-container"/>)).to.equal(true);
+        expect(wrapper.contains(
+            <div className="hgl-container">
+                <HGLHeader/>
+                <HGLCenter/>
+                <HGLFooter/>
+            </div>))
+            .to.equal(true);
     });
 
     it('renders <HGLHeader /> components', () => {
