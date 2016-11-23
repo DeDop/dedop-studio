@@ -68,7 +68,6 @@
   },
   "build": {
     "appId": "org.esa.dedop-studio",
-    "app-category-type": "app.category.altimetry",
     "win": {
       "target": [
         "nsis",
