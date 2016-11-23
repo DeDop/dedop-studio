@@ -63,6 +63,7 @@
     "redux-log": "^2.0.0",
     "rimraf": "^2.5.4",
     "spectron": "^3.4.0",
+    "ts-node": "^1.7.0",
     "typescript": "^2.0.8"
   },
   "build": {
