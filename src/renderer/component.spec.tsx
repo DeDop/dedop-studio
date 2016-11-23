@@ -5,7 +5,7 @@ import {shallow} from 'enzyme';
 import {HGLContainer, HGLHeader, HGLCenter, HGLFooter} from './components';
 
 describe("Main containers tests", () => {
-    it('renders <HGLContainer /> components', () => {
+    it('renders <HGLContaicner /> components', () => {
         const wrapper = shallow(
             <HGLContainer>
                 <HGLHeader/>
@@ -19,7 +19,7 @@ describe("Main containers tests", () => {
                 <HGLHeader/>
                 <HGLCenter/>
                 <HGLFooter/>
-            </div>))
+            </div>), 'the html elements are not as expected')
             .to.equal(true);
     });
 
