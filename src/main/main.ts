@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 import * as fs from 'fs';
 import {Config} from "./Config";
+import * as childProcess from 'child_process';
 
 // Module to control application life.
 const app = electron.app;
@@ -14,6 +15,7 @@ const BrowserWindow = electron.BrowserWindow;
 let _mainWindow;
 let _prefs;
 let _config;
+let installFinished = false;
 
 function getAppIconPath() {
     let icon_file = "dedop-16.png";
@@ -103,6 +105,46 @@ function loadConfig(): Config {
 export function init() {
     _prefs = loadPrefs();
     _config = loadConfig();
+
+    let installerPath;
+    let installerFile;
+    let commandArgs;
+    let initializeDedopCommand;
+
+    const dedopHome = path.join(app.getAppPath(), 'dedop-core', 'installed');
+
+    if (process.platform === "darwin") {
+        console.log("install dedop-core for MacOS");
+    } else if (process.platform === "linux") {
+        console.log("install dedop-core for Linux");
+    } else if (process.platform === "win32") {
+        installerPath = path.join(app.getAppPath(), 'dedop-core', 'win');
+
+        let files = fs.readdirSync(installerPath);
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].endsWith('.exe')) {
+                installerFile = files[i];
+            }
+        }
+        commandArgs = ' /AddToPath=0 /RegisterPython=0 /S /D=' + dedopHome + '';
+        initializeDedopCommand = 'Scripts\\activate.bat && conda env list && dedop -h';
+    }
+
+
+    const installerFullPath = path.join(installerPath, installerFile);
+
+
+    // refer to http://conda.pydata.org/docs/help/silent.html for silent mode installation
+    childProcess.exec(installerFullPath + commandArgs, function (code, stdout, stderr) {
+        if (!stderr) {
+            installFinished = true;
+            console.log("dedop-core installation finished...");
+            console.log(childProcess.execSync(initializeDedopCommand, {cwd: dedopHome}).toString());
+        } else {
+            console.log("dedop-core installation was not successful...", stderr, stdout);
+        }
+    });
+    console.log(installFinished);
 
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.

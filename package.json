@@ -84,6 +84,9 @@
     },
     "dmg": {
       "icon": "app/resources/darwin/dedop.icns"
-    }
+    },
+    "extraFiles": [
+      "app/dedop-core/*/**"
+    ]
   }
 }

@@ -6,6 +6,9 @@ node_modules
 
 app/main
 app/renderer
+app/dedop-core
 src/**/*.jsx
 
 dedop-config.js
+
+!.gitkeep
