@@ -31,7 +31,7 @@ export class ConfigurationPanel extends React.Component<any, any> {
                 <div className="panel-flexbox-item" style={{backgroundColor: "#1F4B99"}}>
                     <TreeMenu/>
                 </div>
-                <div className="panel-flexbox-item" style={{backgroundColor: "#A82A2A"}}>
+                <div className="panel-flexbox-item">
                     <ConfigurationTabs/>
                 </div>
             </div>

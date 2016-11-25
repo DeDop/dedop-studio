@@ -129,7 +129,7 @@ body {
 /*
  * Increase the padding between each menu item. Originally 0 10px
  */
-.pt-tabs.pt-vertical .pt-tab {
+.pt-tabs.pt-vertical > .pt-tab-list > .pt-tab {
     padding: 15px 10px;
 }
 
@@ -150,7 +150,11 @@ h1, h2, h3, h4, h5 {
 /*
  * Fix blueprint's way too large TabPanel margin-top: 20px
  */
-.pt-tabs.pt-vertical .pt-tab-panel {
+.pt-tabs.pt-vertical > .pt-tab-panel {
+    margin-top: 5px;
+}
+
+.pt-tab-panel {
     margin-top: 5px;
 }
 
@@ -183,7 +187,7 @@ h1, h2, h3, h4, h5 {
 }
 
 /*Adjust the vertical tab list shadow size*/
-.pt-tab-indicator-wrapper {
+.pt-tabs.pt-vertical > .pt-tab-list > .pt-tab-indicator-wrapper {
     height: 60px !important;
     width: 50px !important;
 }
