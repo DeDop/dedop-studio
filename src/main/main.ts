@@ -114,9 +114,9 @@ export function init() {
     const dedopHome = path.join(app.getAppPath(), 'dedop-core', 'installed');
 
     if (process.platform === "darwin") {
-        console.log("install dedop-core for MacOS");
+        console.log("configure dedop-core installation for MacOS");
     } else if (process.platform === "linux") {
-        console.log("install dedop-core for Linux");
+        console.log("configure dedop-core installation for Linux");
     } else if (process.platform === "win32") {
         installerPath = path.join(app.getAppPath(), 'dedop-core', 'win');
 
@@ -130,9 +130,7 @@ export function init() {
         initializeDedopCommand = 'Scripts\\activate.bat && conda env list && dedop -h';
     }
 
-
     const installerFullPath = path.join(installerPath, installerFile);
-
 
     // refer to http://conda.pydata.org/docs/help/silent.html for silent mode installation
     childProcess.exec(installerFullPath + commandArgs, function (code, stdout, stderr) {
