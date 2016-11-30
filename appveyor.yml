@@ -22,3 +22,7 @@ test_script:
   - node --version
   - .\node_modules\.bin\npm --version
   - .\node_modules\.bin\npm test
+
+artifacts:
+  - path: 'dist\*.exe'
+    name: dedop-studio-installer
