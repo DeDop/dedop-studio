@@ -27,4 +27,4 @@ artifacts:
   - path: 'dist\*.exe'
     name: dedop-studio-installer-exe
   - path: 'dist\*.zip'
-      name: dedop-studio-installer-zip
+    name: dedop-studio-installer-zip
