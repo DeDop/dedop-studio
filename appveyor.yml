@@ -16,6 +16,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - npm install npm
   - .\node_modules\.bin\npm install
+  - .\node_modules\.bin\npm run compile
   - .\node_modules\.bin\npm run dist
 
 test_script:
