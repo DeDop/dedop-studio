@@ -1,4 +1,5 @@
-build: on
+# build is disabled because it expects MS Visual Studio solution file
+build: off
 
 branches:
   only:
