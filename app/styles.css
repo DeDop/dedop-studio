@@ -24,8 +24,16 @@ input, button, textarea, :focus {
     flex-flow: column nowrap;
 }
 
-.hgl-header, .hgl-footer {
+.hgl-header {
     flex: none; /* same as "flex: 0 0 auto;" */
+}
+
+.hgl-footer {
+    display: flex;
+    flex-direction: row;
+    flex: none; /* same as "flex: 0 0 auto;" */
+    align-items: center;
+    justify-content: center;
 }
 
 .hgl-midsection {
@@ -192,6 +200,12 @@ h1, h2, h3, h4, h5 {
     width: 50px !important;
 }
 
+.flexbox-item-pico-header {
+    font-size: x-large;
+    width: 100%;
+    margin: 0 0 10px 0;
+}
+
 .flexbox-item-pico-config {
     flex-grow: 1;
     flex-shrink: 0;
@@ -206,6 +220,23 @@ h1, h2, h3, h4, h5 {
 
 .flexbox-item-pico-runs {
     width: 100%;
+}
+
+/* Footer style */
+
+.footer-developed-by {
+    width: 80%;
+
+}
+
+.footer-core-status {
+    width: 20%;
+    text-align: right;
+    margin-right: 15px;
+}
+
+.core-status-text {
+    margin-right: 15px;
 }
 
 /* Blueprint collapse styling ================================================*/

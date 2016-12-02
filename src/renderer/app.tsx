@@ -4,8 +4,6 @@ import {
     HGLContainer, HGLHeader, HGLFooter,
     HGLCenter
 } from './components';
-import {Classes, ITreeNode, Tooltip, Tree, Menu, MenuItem, MenuDivider} from "@blueprintjs/core";
-import TreeMenu from "./treeMenu";
 import {MainTabs} from './tabList';
 import TopMenu from './topMenu';
 
@@ -19,7 +17,11 @@ export function main() {
                 <MainTabs/>
             </HGLCenter>
             <HGLFooter>
-                <p>developed by Brockmann Consult GmbH</p>
+                <div className="footer-developed-by">developed by Brockmann Consult GmbH</div>
+                <div className="footer-core-status">
+                    <span className="core-status-text">dedop-core</span>
+                    <span className="pt-icon pt-icon-disable"/>
+                </div>
             </HGLFooter>
         </HGLContainer>,
         document.getElementById('container')

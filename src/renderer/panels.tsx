@@ -69,7 +69,7 @@ export class ProcessingPanel extends React.Component<any, any> {
         };
         return (
             <div className="panel-flexbox">
-                <h1>Processor Invocation, Control, Observation</h1>
+                <div className="flexbox-item-pico-header">Processor Invocation, Control, Observation</div>
                 <div className="flexbox-item-pico-config" style={{backgroundColor: "#1F4B99"}}>
                     Config
                 </div>
