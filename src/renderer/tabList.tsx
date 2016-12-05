@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs, InputGroup, Tag, Classes} from "@blueprintjs/core";
 import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './panels'
-import {DedopCollapse} from "./collapse";
+import {DedopCollapse, DedopConfigCollapse} from "./collapse";
 import {ConfigurationSingleEntry} from "./configurationSingleEntry";
 
 export class MainTabs extends React.Component<any,any> {
@@ -82,23 +82,8 @@ export class ConfigurationTabs extends React.Component<any,any> {
                 </TabPanel>
                 <TabPanel>
                     <div className="panel-flexbox-chd">
-                        <label className="pt-label pt-inline">
-                            freq_ku_chd
-                            <InputGroup className="config-textbox" placeholder="13575000000.0" rightElement={unitHz}/>
-                        </label>
-                        <label className="pt-label pt-inline">
-                            bw_ku_chd
-                            <InputGroup className="config-textbox" placeholder="320000000" rightElement={unitHz}/>
-                        </label>
-                        <label className="pt-label pt-inline">
-                            pri_sar_chd
-                            <InputGroup className="config-textbox" placeholder="5.610000296769016e-05"
-                                        rightElement={unitSecond}/>
-                        </label>
-                        <label className="pt-label pt-inline">
-                            mean_sat_alt_chd
-                            <InputGroup className="config-textbox" placeholder="1347000.0" rightElement={unitMeter}/>
-                        </label>
+                        <DedopConfigCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
+                        <DedopConfigCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
                     </div>
                 </TabPanel>
                 <TabPanel>
