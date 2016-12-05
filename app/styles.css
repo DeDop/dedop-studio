@@ -104,7 +104,7 @@ input, button, textarea, :focus {
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: rgba(191, 204, 214, 0.8);
+    background: rgba(52, 104, 122, 0.3);
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
@@ -127,11 +127,11 @@ body {
 }
 
 .hgl-header {
-    background: #222;
+    background: #34687a;
 }
 
 .hgl-footer {
-    background: #394b59;
+    background: #34687a;
     text-align: center;
 }
 
@@ -148,7 +148,7 @@ body {
 }
 
 .hgl-center {
-    background: #182026;
+    background: #ffffff;
     color: lightyellow;
     padding: 10px 0 0 0;
 }
@@ -175,10 +175,10 @@ h1, h2, h3, h4, h5 {
 }
 
 /*
- * Fix blueprint's way too large TabPanel margin-top: 20px
+ * Blueprint patches
  */
 .pt-tabs.pt-vertical > .pt-tab-panel {
-    margin-top: 0;
+    padding-left: 0;
 }
 
 .pt-tab-panel {
@@ -201,6 +201,8 @@ h1, h2, h3, h4, h5 {
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: 500px;
+
+    margin: 0 5px;
 }
 
 .pt-tabs {
@@ -211,6 +213,15 @@ h1, h2, h3, h4, h5 {
 .pt-tab-panel {
     width: 100%;
     height: 100%;
+    background-color: rgba(52, 104, 122, 0.2);
+}
+
+.pt-tab:not(:last-of-type) {
+    margin-right: 0;
+}
+
+.pt-tabs.pt-vertical > .pt-tab-list .pt-tab-indicator-wrapper .pt-tab-indicator {
+    background-color: rgba(52, 104, 122, 0.2);
 }
 
 /*Adjust the vertical tab list shadow size*/
@@ -245,7 +256,6 @@ h1, h2, h3, h4, h5 {
 
 .footer-developed-by {
     width: 80%;
-
 }
 
 .footer-core-status {
