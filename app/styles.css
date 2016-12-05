@@ -135,22 +135,9 @@ body {
     text-align: center;
 }
 
-.hgl-midsection {
-    background: #444;
-}
-
-.hgl-left {
-    background: #555;
-}
-
-.hgl-right {
-    background: #666;
-}
-
 .hgl-center {
     background: #ffffff;
     color: lightyellow;
-    padding: 10px 0 0 0;
 }
 
 /*
@@ -165,6 +152,7 @@ body {
  */
 span.pt-icon-large {
     font-size: 25px;
+    color: #34687a;
 }
 
 /**
@@ -178,11 +166,8 @@ h1, h2, h3, h4, h5 {
  * Blueprint patches
  */
 .pt-tabs.pt-vertical > .pt-tab-panel {
-    padding-left: 0;
-}
-
-.pt-tab-panel {
-    margin-top: 0;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 .panel-flexbox {
@@ -202,7 +187,7 @@ h1, h2, h3, h4, h5 {
     flex-shrink: 0;
     flex-basis: 500px;
 
-    margin: 0 5px;
+    margin: 0 10px 0 0;
 }
 
 .pt-tabs {
@@ -211,6 +196,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .pt-tab-panel {
+    margin-top: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(52, 104, 122, 0.2);
@@ -268,6 +254,18 @@ h1, h2, h3, h4, h5 {
     margin-right: 15px;
 }
 
+/* Top menu styling ==========================================================*/
+
+.dedop-menu-title{
+    color: #ffffff;
+}
+
+.pt-navbar {
+    background-color: #34687a;
+}
+
+/* Top menu styling ==========================================================*/
+
 /* Blueprint collapse styling ================================================*/
 
 .dedop-collapse {
@@ -279,12 +277,13 @@ h1, h2, h3, h4, h5 {
     flex-direction: row;
     align-items: center;
 
-    background-color: #394B59;
+    background-color: rgba(52,104,122,0.5);
     height: 30px;
 }
 
 .dedop-collapse-header-icon {
     margin: 0 0 0 5px;
+    color: #f8fadc;
 }
 
 .dedop-collapse-header-text {
@@ -297,6 +296,12 @@ h1, h2, h3, h4, h5 {
 
 .dedop-collapse-header-actions {
     margin: 0 5px 0 0;
+    color: #f8fadc;
+}
+
+.dedop-collapse-header-actions-icon {
+    text-align: right;
+    color: #f8fadc;
 }
 
 .dedop-panel-content {

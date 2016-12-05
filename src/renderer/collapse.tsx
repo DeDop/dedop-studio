@@ -23,10 +23,8 @@ export class CollapseSample extends React.Component<IPanelProps, ICollapseExampl
                     <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
                     <span className="dedop-collapse-header-actions">
                     {this.state.isOpen ?
-                        <span className="pt-icon-standard pt-icon-chevron-up" onClick={this.handleClick}
-                              style={{textAlign: "right"}}/> :
-                        <span className="pt-icon-standard pt-icon-chevron-down" onClick={this.handleClick}
-                              style={{textAlign: "right"}}/>}
+                        <span className="pt-icon-standard pt-icon-chevron-up dedop-collapse-header-actions-icon" onClick={this.handleClick}/> :
+                        <span className="pt-icon-standard pt-icon-chevron-down dedop-collapse-header-actions-icon" onClick={this.handleClick}/>}
                     </span>
                 </div>
                 < Collapse isOpen={this.state.isOpen}>

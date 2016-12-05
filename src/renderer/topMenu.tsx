@@ -6,7 +6,7 @@ export default class TopMenu extends React.Component<any, any> {
             <nav className="pt-navbar .modifier">
                 <div className="pt-navbar-group pt-align-left">
                     <img src="resources/dedop-32.png"/>
-                    <div className="pt-navbar-heading">DeDop Studio</div>
+                    <div className="pt-navbar-heading dedop-menu-title">DeDop Studio</div>
                     <input className="pt-input" placeholder="Search files..." type="text"/>
                     <button className="pt-button pt-minimal pt-icon-add"/>
                     <div className="pt-button-group .modifier">
