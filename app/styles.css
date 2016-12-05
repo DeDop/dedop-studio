@@ -283,7 +283,7 @@ h1, h2, h3, h4, h5 {
 
 .dedop-collapse-header-icon {
     margin: 0 0 0 5px;
-    color: #f8fadc;
+    color: #ffffff;
 }
 
 .dedop-collapse-header-text {
@@ -292,16 +292,17 @@ h1, h2, h3, h4, h5 {
     align-content: center;
     justify-content: flex-start;
     width: 100%;
+    color: #ffffff;
 }
 
 .dedop-collapse-header-actions {
     margin: 0 5px 0 0;
-    color: #f8fadc;
+    color: #ffffff;
 }
 
 .dedop-collapse-header-actions-icon {
     text-align: right;
-    color: #f8fadc;
+    color: #ffffff;
 }
 
 .dedop-panel-content {
