@@ -70,10 +70,13 @@ export class ConfigurationTabs extends React.Component<any,any> {
                 <TabPanel>
                     <div className="panel-flexbox-chd">
                         <table>
+                            <tbody>
                             <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0" unit="Hz"/>
                             <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
-                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05" unit="s"/>
+                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
+                                                      unit="s"/>
                             <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
+                            </tbody>
                         </table>
                     </div>
                 </TabPanel>
@@ -101,10 +104,14 @@ export class ConfigurationTabs extends React.Component<any,any> {
                 <TabPanel>
                     <div className="panel-flexbox-chd">
                         <table>
-                            <ConfigurationSingleEntry configName="semi_major_axis_cst" defaultValue="6378137.0" unit="m"/>
-                            <ConfigurationSingleEntry configName="semi_minor_axis_cst" defaultValue="6356752.3142" unit="m"/>
+                            <tbody>
+                            <ConfigurationSingleEntry configName="semi_major_axis_cst" defaultValue="6378137.0"
+                                                      unit="m"/>
+                            <ConfigurationSingleEntry configName="semi_minor_axis_cst" defaultValue="6356752.3142"
+                                                      unit="m"/>
                             <ConfigurationSingleEntry configName="flat_coeff_cst" defaultValue="0.00335281067183084"/>
                             <ConfigurationSingleEntry configName="earth_radius_cst" defaultValue="6378137.0" unit="m"/>
+                            </tbody>
                         </table>
                     </div>
                 </TabPanel>
