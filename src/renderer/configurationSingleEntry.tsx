@@ -22,7 +22,7 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
                 </td>
                 <td>
                     <InputGroup className="config-textbox" placeholder={this.props.defaultValue}
-                                rightElement={unitTag}/>
+                        {...this.props.unit ? {rightElement: unitTag} : {}}/>
                 </td>
             </tr>
         )

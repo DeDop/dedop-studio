@@ -386,6 +386,14 @@ label.pt-label.pt-inline {
     color: #34687a;
 }
 
+.pt-input-group .pt-input:not(:last-child) {
+    text-align: right;
+}
+
+.pt-input-group .pt-input {
+    text-align: right;
+}
+
 /* Configurations styling===================================================*/
 
 /* <<<< Cesium ============================================================ */
