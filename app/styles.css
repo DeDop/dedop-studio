@@ -368,6 +368,17 @@ h1, h2, h3, h4, h5 {
     margin: 0 10px 0 0;
 }
 
+.panel-flexbox-chd {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 10px;
+}
+
+.config-textbox {
+    width: 300px;
+}
+
 /* Configurations styling===================================================*/
 
 /* <<<< Cesium ============================================================ */

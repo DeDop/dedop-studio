@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
+import {Tab, TabList, TabPanel, Tabs, InputGroup, Tag, Classes} from "@blueprintjs/core";
 import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './panels'
-import {Footprints} from "./footprints";
 import {DedopCollapse} from "./collapse";
+import {ConfigurationSingleEntry} from "./configurationSingleEntry";
 
 export class MainTabs extends React.Component<any,any> {
     public render() {
@@ -37,6 +37,15 @@ export class MainTabs extends React.Component<any,any> {
 
 export class ConfigurationTabs extends React.Component<any,any> {
     public render() {
+        const unitHz = (
+            <Tag className={Classes.MINIMAL}>Hz</Tag>
+        );
+        const unitSecond = (
+            <Tag className={Classes.MINIMAL}>s</Tag>
+        );
+        const unitMeter = (
+            <Tag className={Classes.MINIMAL}>m</Tag>
+        );
         return (
             // Still not working yet because this tab's style is still influenced by the parents' style (pt-vertical)
             // TODO need to find a way to avoid an influence by the parents' styling.
@@ -59,13 +68,45 @@ export class ConfigurationTabs extends React.Component<any,any> {
                     </div>
                 </TabPanel>
                 <TabPanel>
-                    TEST2
+                    <div className="panel-flexbox-chd">
+                        <table>
+                            <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0" unit="Hz"/>
+                            <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
+                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05" unit="s"/>
+                            <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
+                        </table>
+                    </div>
                 </TabPanel>
                 <TabPanel>
-                    TEST3
+                    <div className="panel-flexbox-chd">
+                        <label className="pt-label pt-inline">
+                            freq_ku_chd
+                            <InputGroup className="config-textbox" placeholder="13575000000.0" rightElement={unitHz}/>
+                        </label>
+                        <label className="pt-label pt-inline">
+                            bw_ku_chd
+                            <InputGroup className="config-textbox" placeholder="320000000" rightElement={unitHz}/>
+                        </label>
+                        <label className="pt-label pt-inline">
+                            pri_sar_chd
+                            <InputGroup className="config-textbox" placeholder="5.610000296769016e-05"
+                                        rightElement={unitSecond}/>
+                        </label>
+                        <label className="pt-label pt-inline">
+                            mean_sat_alt_chd
+                            <InputGroup className="config-textbox" placeholder="1347000.0" rightElement={unitMeter}/>
+                        </label>
+                    </div>
                 </TabPanel>
                 <TabPanel>
-                    TEST4
+                    <div className="panel-flexbox-chd">
+                        <table>
+                            <ConfigurationSingleEntry configName="semi_major_axis_cst" defaultValue="6378137.0" unit="m"/>
+                            <ConfigurationSingleEntry configName="semi_minor_axis_cst" defaultValue="6356752.3142" unit="m"/>
+                            <ConfigurationSingleEntry configName="flat_coeff_cst" defaultValue="0.00335281067183084"/>
+                            <ConfigurationSingleEntry configName="earth_radius_cst" defaultValue="6378137.0" unit="m"/>
+                        </table>
+                    </div>
                 </TabPanel>
             </Tabs>
         );
