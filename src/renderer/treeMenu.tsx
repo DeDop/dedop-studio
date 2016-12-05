@@ -11,40 +11,53 @@ export default class TreeMenu extends React.Component<any,any> {
     public constructor() {
         super();
         const tooltipLabel = <Tooltip content="An eye!"><span className="pt-icon-standard pt-icon-eye-open"/></Tooltip>;
-        const longLabel = "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.";
         /* tslint:disable:object-literal-sort-keys so childNodes can come last */
         this.state = {
             nodes: [
                 {
                     hasCaret: true,
                     iconName: "folder-close",
-                    isExpanded: true,
-                    label: "L1A_20161116",
+                    isExpanded: false,
+                    label: "Ocean",
                 },
                 {
                     iconName: "folder-close",
                     isExpanded: true,
-                    label: <Tooltip content="L1A_20151116">L1A_20151116</Tooltip>,
+                    label: <Tooltip content="Land">Land</Tooltip>,
                     childNodes: [
-                        {iconName: "document", label: "dedop.config", secondaryLabel: tooltipLabel},
-                        {iconName: "pt-icon-tag", label: longLabel},
                         {
-                            hasCaret: true,
-                            iconName: "pt-icon-folder-close",
-                            label: <Tooltip content="foo">Output</Tooltip>,
-                            childNodes: [
-                                {label: "No-Icon Item"},
-                                {iconName: "pt-icon-tag", label: "Item 1"},
-                                {
-                                    hasCaret: true, iconName: "pt-icon-folder-close", label: "Folder 3",
-                                    childNodes: [
-                                        {iconName: "document", label: "Item 0"},
-                                        {iconName: "pt-icon-tag", label: "Item 1"},
-                                    ],
-                                },
-                            ],
+                            iconName: "document",
+                            label: <Tooltip content="Alternate Delay-Doppler Processing">Alternate Delay-Doppler Processing</Tooltip>
+                        },
+                        {
+                            iconName: "document",
+                            label: <Tooltip content="Modified Surface Locations">Modified Surface Locations</Tooltip>
                         },
                     ],
+                },
+                {
+                    hasCaret: true,
+                    iconName: "folder-close",
+                    isExpanded: false,
+                    label: "Lakes",
+                },
+                {
+                    hasCaret: true,
+                    iconName: "folder-close",
+                    isExpanded: false,
+                    label: "Amazon Basin",
+                },
+                {
+                    hasCaret: true,
+                    iconName: "folder-close",
+                    isExpanded: false,
+                    label: "Icebergs",
+                },
+                {
+                    hasCaret: true,
+                    iconName: "folder-close",
+                    isExpanded: false,
+                    label: "Ice",
                 },
             ],
         } as any as ITreeExampleState;

@@ -26,7 +26,7 @@ export class ConfigurationPanel extends React.Component<any, any> {
     public render() {
         return (
             <div className="panel-flexbox">
-                <div className="panel-flexbox-item">
+                <div className="panel-flexbox-item-configurations">
                     <TreeMenu/>
                 </div>
                 <div className="panel-flexbox-item">
