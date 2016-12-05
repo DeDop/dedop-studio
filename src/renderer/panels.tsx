@@ -28,7 +28,7 @@ export class ConfigurationPanel extends React.Component<any, any> {
     public render() {
         return (
             <div className="panel-flexbox">
-                <div className="panel-flexbox-item" style={{backgroundColor: "#1F4B99"}}>
+                <div className="panel-flexbox-item">
                     <TreeMenu/>
                 </div>
                 <div className="panel-flexbox-item">

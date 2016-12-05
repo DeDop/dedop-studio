@@ -4,15 +4,18 @@ interface IPanelHeaderProps {
     title: string;
 }
 
-export class PanelHeader extends React.Component<IPanelHeaderProps, any> {
+export class ConfigurationPanelHeader extends React.Component<IPanelHeaderProps, any> {
     render() {
         return (
-            <div>
-                {this.props.title}
-                <span className="pt-icon-standard pt-icon-add"/>
-                <span className="pt-icon-standard pt-icon-remove"/>
-                <span className="pt-icon-standard pt-icon-circle-arrow-up"/>
-                <span className="pt-icon-standard pt-icon-circle-arrow-down"/>
+            <div className="dedop-collapse-header">
+                <span className="dedop-collapse-header-icon pt-icon-standard pt-icon-globe"/>
+                <span className="dedop-collapse-header-text">{this.props.title}</span>
+                <div className="dedop-panel-header-configurations-buttons">
+                    <span className="pt-icon-standard pt-icon-add dedop-panel-header-configurations-button"/>
+                    <span className="pt-icon-standard pt-icon-remove dedop-panel-header-configurations-button"/>
+                    <span className="pt-icon-standard pt-icon-circle-arrow-up dedop-panel-header-configurations-button"/>
+                    <span className="pt-icon-standard pt-icon-circle-arrow-down dedop-panel-header-configurations-button"/>
+                </div>
             </div>
         )
     }

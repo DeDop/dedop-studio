@@ -137,7 +137,7 @@ body {
 
 .hgl-center {
     background: #ffffff;
-    color: lightyellow;
+    color: #394b59;
 }
 
 /*
@@ -256,7 +256,7 @@ h1, h2, h3, h4, h5 {
 
 /* Top menu styling ==========================================================*/
 
-.dedop-menu-title{
+.dedop-menu-title {
     color: #ffffff;
 }
 
@@ -277,17 +277,16 @@ h1, h2, h3, h4, h5 {
     flex-direction: row;
     align-items: center;
 
-    background-color: rgba(52,104,122,0.5);
+    background-color: rgba(52, 104, 122, 0.5);
     height: 30px;
 }
 
 .dedop-collapse-header-icon {
-    margin: 0 0 0 5px;
+    padding: 0 5px;
     color: #ffffff;
 }
 
 .dedop-collapse-header-text {
-    margin: 0 0 0 10px;
     align-items: flex-start;
     align-content: center;
     justify-content: flex-start;
@@ -303,6 +302,16 @@ h1, h2, h3, h4, h5 {
 .dedop-collapse-header-actions-icon {
     text-align: right;
     color: #ffffff;
+}
+
+.dedop-panel-header-configurations-buttons {
+    width: 10%;
+    flex-basis: 150px;
+    text-align: right;
+}
+
+.dedop-panel-header-configurations-button {
+    padding-right: 5px;
 }
 
 .dedop-panel-content {
