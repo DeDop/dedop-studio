@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Table, Column, Cell} from "@blueprintjs/table";
-import {CollapseSample} from "./collapse";
+import {DedopCollapse} from "./collapse";
 import {ConfigurationTabs} from './tabList';
 import TreeMenu from './treeMenu';
 import {Footprints} from "./footprints";
@@ -11,8 +11,8 @@ export class InputDatasetPanel extends React.Component<any, any> {
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item">
-                    <CollapseSample panelTitle="L1A Datasets" collapseIcon="pt-icon-document"/>
-                    <CollapseSample panelTitle="Global Metadata" collapseIcon="pt-icon-properties"/>
+                    <DedopCollapse panelTitle="L1A Datasets" collapseIcon="pt-icon-document"/>
+                    <DedopCollapse panelTitle="Global Metadata" collapseIcon="pt-icon-properties"/>
                 </div>
                 <div className="panel-flexbox-item">
                     <Footprints/>

@@ -10,7 +10,7 @@ interface IPanelProps {
     collapseIcon?: string;
 }
 
-export class CollapseSample extends React.Component<IPanelProps, ICollapseExampleState> {
+export class DedopCollapse extends React.Component<IPanelProps, ICollapseExampleState> {
     public state = {
         isOpen: true,
     };

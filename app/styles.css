@@ -311,7 +311,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .dedop-collapse-header-actions {
-    margin: 0 5px 0 0;
+    margin: 0 5px 0 auto;
     color: #ffffff;
 }
 
@@ -337,6 +337,38 @@ h1, h2, h3, h4, h5 {
 }
 
 /* Blueprint collapse styling ================================================*/
+
+/* Configurations styling====================================================*/
+
+.panel-flexbox-configuration {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: flex-start;
+    overflow: auto;
+    width: 100%;
+    padding: 10px 0 0 0;
+}
+
+.panel-flexbox-item-properties {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 400px;
+
+    margin: 0 10px 0 0;
+}
+
+.panel-flexbox-item-roi {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 400px;
+
+    margin: 0 10px 0 0;
+}
+
+/* Configurations styling===================================================*/
 
 /* <<<< Cesium ============================================================ */
 

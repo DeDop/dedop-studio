@@ -3,6 +3,7 @@ import * as React from "react";
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
 import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './panels'
 import {Footprints} from "./footprints";
+import {DedopCollapse} from "./collapse";
 
 export class MainTabs extends React.Component<any,any> {
     public render() {
@@ -47,7 +48,15 @@ export class ConfigurationTabs extends React.Component<any,any> {
                     <Tab>Constants</Tab>
                 </TabList>
                 <TabPanel>
-                    TEST1
+                    <div className="panel-flexbox-configuration">
+                        <div className="panel-flexbox-item-properties">
+                            <DedopCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
+                            <DedopCollapse panelTitle="General Parameters" collapseIcon="pt-icon-properties"/>
+                        </div>
+                        <div className="panel-flexbox-item-roi">
+                            <DedopCollapse panelTitle="Region of Interest" collapseIcon="pt-icon-properties"/>
+                        </div>
+                    </div>
                 </TabPanel>
                 <TabPanel>
                     TEST2
