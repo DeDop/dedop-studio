@@ -1,5 +1,24 @@
 @import url(node_modules/cesium/Build/Cesium/Widgets/widgets.css);
 
+* {
+    overflow: hidden;
+}
+
+html, body, #container {
+    width: 100vw;
+    height: 100vh;
+}
+
+body, #container {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+html, body {
+    position: absolute;
+}
+
 /*
  * Disable highlighting/selecting across the application
  * Solution taken from https://github.com/electron/electron/issues/2538
@@ -51,9 +70,9 @@ input, button, textarea, :focus {
     flex: auto;
     /*overflow-y: auto;*/
     /* Chrome suggested workaround */
-    zzheight: 100%;
-    zzdisplay: flex;
-    zzflex-flow: column;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
 }
 
 .hgl-hor-splitter {
@@ -159,11 +178,11 @@ h1, h2, h3, h4, h5 {
  * Fix blueprint's way too large TabPanel margin-top: 20px
  */
 .pt-tabs.pt-vertical > .pt-tab-panel {
-    margin-top: 5px;
+    margin-top: 0;
 }
 
 .pt-tab-panel {
-    margin-top: 5px;
+    margin-top: 0;
 }
 
 .panel-flexbox {
@@ -173,15 +192,15 @@ h1, h2, h3, h4, h5 {
     align-items: stretch;
     align-content: stretch;
     justify-content: flex-start;
-    overflow-x: auto;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
 }
 
 .panel-flexbox > .panel-flexbox-item {
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: 500px;
-
-    margin: 5px;
 }
 
 .pt-tabs {
