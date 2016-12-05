@@ -75,7 +75,7 @@ export default class TreeMenu extends React.Component<any,any> {
     public render() {
         return (
             <div>
-                <ConfigurationPanelHeader title="Configurations"/>
+                <ConfigurationPanelHeader/>
                 <Tree
                     contents={this.state.nodes}
                     onNodeClick={this.handleNodeClick}
