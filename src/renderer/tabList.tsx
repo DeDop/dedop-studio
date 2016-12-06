@@ -1,9 +1,12 @@
 import * as React from "react";
+import * as CodeMirror from "react-codemirror";
 
-import {Tab, TabList, TabPanel, Tabs, InputGroup, Tag, Classes} from "@blueprintjs/core";
+import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
 import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './panels'
 import {DedopCollapse, DedopConfigCollapse} from "./collapse";
 import {ConfigurationSingleEntry} from "./configurationSingleEntry";
+
+require('codemirror/mode/javascript/javascript');
 
 export class MainTabs extends React.Component<any,any> {
     public render() {
@@ -36,16 +39,36 @@ export class MainTabs extends React.Component<any,any> {
 }
 
 export class ConfigurationTabs extends React.Component<any,any> {
+
+    constructor() {
+        super();
+        this.state = {
+            codeEditor: false,
+            code: "// testCode",
+            mode: "markdown"
+        };
+        this.handleChangeMode = this.handleChangeMode.bind(this);
+        this.updateCode = this.updateCode.bind(this);
+    }
+
+    private handleChangeMode() {
+        this.setState({
+            codeEditor: !this.state.codeEditor
+        });
+    }
+
+    private updateCode(newCode: string) {
+        this.setState({
+            code: newCode,
+        });
+    };
+
     public render() {
-        const unitHz = (
-            <Tag className={Classes.MINIMAL}>Hz</Tag>
-        );
-        const unitSecond = (
-            <Tag className={Classes.MINIMAL}>s</Tag>
-        );
-        const unitMeter = (
-            <Tag className={Classes.MINIMAL}>m</Tag>
-        );
+        const options = {
+            lineNumbers: true,
+            mode: this.state.mode
+        };
+
         return (
             // Still not working yet because this tab's style is still influenced by the parents' style (pt-vertical)
             // TODO need to find a way to avoid an influence by the parents' styling.
@@ -70,15 +93,27 @@ export class ConfigurationTabs extends React.Component<any,any> {
                 </TabPanel>
                 <TabPanel>
                     <div className="panel-flexbox-chd">
-                        <table>
-                            <tbody>
-                            <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0" unit="Hz"/>
-                            <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
-                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
-                                                      unit="s"/>
-                            <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
-                            </tbody>
-                        </table>
+                        <label className="pt-control pt-switch">
+                            <input type="checkbox" onChange={this.handleChangeMode} checked={this.state.codeEditor}/>
+                            <span className="pt-control-indicator"/>
+                            Code editor
+                        </label>
+                        {this.state.codeEditor
+                            ?
+                            <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
+                            :
+                            <table>
+                                <tbody>
+                                <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0"
+                                                          unit="Hz"/>
+                                <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
+                                <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
+                                                          unit="s"/>
+                                <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0"
+                                                          unit="m"/>
+                                </tbody>
+                            </table>
+                        }
                         <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
                 </TabPanel>
