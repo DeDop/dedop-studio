@@ -65,6 +65,7 @@ export class ConfigurationTabs extends React.Component<any,any> {
                         <div className="panel-flexbox-item-roi">
                             <DedopCollapse panelTitle="Region of Interest" collapseIcon="pt-icon-properties"/>
                         </div>
+                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
                 </TabPanel>
                 <TabPanel>
@@ -78,12 +79,14 @@ export class ConfigurationTabs extends React.Component<any,any> {
                             <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
                             </tbody>
                         </table>
+                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
                 </TabPanel>
                 <TabPanel>
                     <div className="panel-flexbox-chd">
                         <DedopConfigCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
                         <DedopConfigCollapse panelTitle="Flags" collapseIcon="pt-icon-document"/>
+                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
                 </TabPanel>
                 <TabPanel>
@@ -98,6 +101,7 @@ export class ConfigurationTabs extends React.Component<any,any> {
                             <ConfigurationSingleEntry configName="earth_radius_cst" defaultValue="6378137.0" unit="m"/>
                             </tbody>
                         </table>
+                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
                 </TabPanel>
             </Tabs>
