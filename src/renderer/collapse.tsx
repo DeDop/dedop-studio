@@ -88,7 +88,11 @@ export class DedopConfigCollapse extends React.Component<IConfigProps, ICollapse
                         <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
                         <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
                         <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
+                        <ConfigurationSingleEntry configName="sigma_alt_surf_th_cnf" defaultValue="1347000.0" unit="m"/>
                         <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
+                        <ConfigurationSingleEntry configName="sigma_alt_surf_th_cnf" defaultValue="1347000.0" unit="m"/>
+                        <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0" unit="m"/>
+                        <ConfigurationSingleEntry configName="sigma_alt_surf_th_cnf" defaultValue="1347000.0" unit="m"/>
                         </tbody>
                     </table>
                 </Collapse>

@@ -83,7 +83,7 @@ export class ConfigurationTabs extends React.Component<any,any> {
                 <TabPanel>
                     <div className="panel-flexbox-chd">
                         <DedopConfigCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
-                        <DedopConfigCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
+                        <DedopConfigCollapse panelTitle="Flags" collapseIcon="pt-icon-document"/>
                     </div>
                 </TabPanel>
                 <TabPanel>
