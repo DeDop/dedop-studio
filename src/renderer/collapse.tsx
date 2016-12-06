@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, Collapse} from "@blueprintjs/core";
+import {Collapse, RadioGroup, Radio} from "@blueprintjs/core";
 import {ConfigurationSingleEntry} from "./configurationSingleEntry";
 
 export interface ICollapseState {
@@ -132,7 +132,7 @@ export class DedopRunSettingsCollapse extends React.Component<IPanelProps, IColl
                                 Name
                             </td>
                             <td style={{width: '100%'}}>
-                                <input className="pt-input pt-fill" type="text" placeholder="Process name" dir="auto" />
+                                <input className="pt-input pt-fill" type="text" placeholder="Process name" dir="auto"/>
                             </td>
                         </tr>
                         <tr>
@@ -142,16 +142,15 @@ export class DedopRunSettingsCollapse extends React.Component<IPanelProps, IColl
                             <td style={{width: '100%'}}>
                                 <div className="pt-select pt-fill">
                                     <select>
-                                    <option selected>Select a configuration...</option>
-                                    <option value="1">Alternate Delay-Doppler Processing</option>
-                                    <option value="2">Modified Surface Locations</option>
+                                        <option selected>Select a configuration...</option>
+                                        <option value="1">Alternate Delay-Doppler Processing</option>
+                                        <option value="2">Modified Surface Locations</option>
                                     </select>
                                 </div>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <button type="button" className="pt-button pt-fill">Run</button>
                 </Collapse>
             </div>
         );
@@ -159,5 +158,90 @@ export class DedopRunSettingsCollapse extends React.Component<IPanelProps, IColl
 
     private handleClick = () => {
         this.setState({isOpen: !this.state.isOpen});
+    }
+}
+
+interface IL1aInputCollapseState {
+    isOpen?: boolean;
+    sourceType: string;
+}
+
+export class DedopL1aInputCollapse extends React.Component<IPanelProps, IL1aInputCollapseState> {
+
+    constructor() {
+        super();
+        this.state = {
+            isOpen: true,
+            sourceType: "single"
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    private handleChange() {
+        this.setState({
+            isOpen: this.state.isOpen,
+            sourceType: this.state.sourceType === "single" ? "directory" : "single"
+        })
+    }
+
+    public render() {
+        return (
+            <div className="dedop-collapse">
+                <div className="dedop-collapse-header">
+                    <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
+                    <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
+                    <span className="dedop-collapse-header-actions">
+                    {this.state.isOpen ?
+                        <span className="pt-icon-standard pt-icon-chevron-up dedop-collapse-header-actions-icon"
+                              onClick={this.handleClick}/> :
+                        <span className="pt-icon-standard pt-icon-chevron-down dedop-collapse-header-actions-icon"
+                              onClick={this.handleClick}/>}
+                    </span>
+                </div>
+                < Collapse isOpen={this.state.isOpen} className="l1a-input-radio-group">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <Radio label="Single file" value="single" checked={this.state.sourceType == "single"}
+                                       onChange={this.handleChange}/>
+                            </td>
+                            <td style={{width: '100%'}}>
+                                <div className="pt-select pt-fill">
+                                    <select>
+                                        <option selected>Select a configuration...</option>
+                                        <option value="1">Alternate Delay-Doppler Processing</option>
+                                        <option value="2">Modified Surface Locations</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <Radio label="Directory" value="directory" checked={this.state.sourceType == "directory"}
+                                       onChange={this.handleChange}/>
+                            </td>
+                            <td style={{width: '100%'}}>
+                                <div className="pt-select pt-fill">
+                                    <select>
+                                        <option selected>Select a configuration...</option>
+                                        <option value="1">Alternate Delay-Doppler Processing</option>
+                                        <option value="2">Modified Surface Locations</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </Collapse>
+            </div>
+        );
+    }
+
+    private handleClick = () => {
+        this.setState({
+            isOpen: !this.state.isOpen,
+            sourceType: this.state.sourceType
+        });
     }
 }

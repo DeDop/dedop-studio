@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Table, Column, Cell} from "@blueprintjs/table";
-import {DedopCollapse, DedopRunSettingsCollapse} from "./collapse";
+import {DedopCollapse, DedopRunSettingsCollapse, DedopL1aInputCollapse} from "./collapse";
 import {ConfigurationTabs} from './tabList';
 import TreeMenu from './treeMenu';
 import {Footprints} from "./footprints";
@@ -70,7 +70,8 @@ export class ProcessingPanel extends React.Component<any, any> {
                 <div className="flexbox-item-pico-header">Processor Invocation, Control, Observation</div>
                 <div className="flexbox-item-pico-config">
                     <DedopRunSettingsCollapse panelTitle="Run Settings" collapseIcon="pt-icon-settings"/>
-                    <DedopCollapse panelTitle="L1A Input" collapseIcon="pt-icon-properties"/>
+                    <DedopL1aInputCollapse panelTitle="L1A Input" collapseIcon="pt-icon-properties"/>
+                    <button type="button" className="pt-button pt-fill">Run</button>
                 </div>
                 <div className="flexbox-item-pico-footprints">
                     <Footprints/>
