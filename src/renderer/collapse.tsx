@@ -104,3 +104,60 @@ export class DedopConfigCollapse extends React.Component<IConfigProps, ICollapse
         this.setState({isOpen: !this.state.isOpen});
     }
 }
+
+export class DedopRunSettingsCollapse extends React.Component<IPanelProps, ICollapseState> {
+    public state = {
+        isOpen: true,
+    };
+
+    public render() {
+        return (
+            <div className="dedop-collapse">
+                <div className="dedop-collapse-header">
+                    <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
+                    <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
+                    <span className="dedop-collapse-header-actions">
+                    {this.state.isOpen ?
+                        <span className="pt-icon-standard pt-icon-chevron-up dedop-collapse-header-actions-icon"
+                              onClick={this.handleClick}/> :
+                        <span className="pt-icon-standard pt-icon-chevron-down dedop-collapse-header-actions-icon"
+                              onClick={this.handleClick}/>}
+                    </span>
+                </div>
+                < Collapse isOpen={this.state.isOpen}>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                Name
+                            </td>
+                            <td style={{width: '100%'}}>
+                                <input className="pt-input pt-fill" type="text" placeholder="Process name" dir="auto" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Configuration
+                            </td>
+                            <td style={{width: '100%'}}>
+                                <div className="pt-select pt-fill">
+                                    <select>
+                                    <option selected>Select a configuration...</option>
+                                    <option value="1">Alternate Delay-Doppler Processing</option>
+                                    <option value="2">Modified Surface Locations</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" className="pt-button pt-fill">Run</button>
+                </Collapse>
+            </div>
+        );
+    }
+
+    private handleClick = () => {
+        this.setState({isOpen: !this.state.isOpen});
+    }
+}
