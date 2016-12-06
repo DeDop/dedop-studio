@@ -208,7 +208,7 @@ export class DedopL1aInputCollapse extends React.Component<IPanelProps, IL1aInpu
                             </td>
                             <td style={{width: '100%'}}>
                                 <div className="pt-select pt-fill">
-                                    <select>
+                                    <select disabled={this.state.sourceType == "directory"}>
                                         <option selected>Select a configuration...</option>
                                         <option value="1">Alternate Delay-Doppler Processing</option>
                                         <option value="2">Modified Surface Locations</option>
@@ -218,17 +218,16 @@ export class DedopL1aInputCollapse extends React.Component<IPanelProps, IL1aInpu
                         </tr>
                         <tr>
                             <td>
-                                <Radio label="Directory" value="directory" checked={this.state.sourceType == "directory"}
+                                <Radio label="Directory" value="directory"
+                                       checked={this.state.sourceType == "directory"}
                                        onChange={this.handleChange}/>
                             </td>
                             <td style={{width: '100%'}}>
-                                <div className="pt-select pt-fill">
-                                    <select>
-                                        <option selected>Select a configuration...</option>
-                                        <option value="1">Alternate Delay-Doppler Processing</option>
-                                        <option value="2">Modified Surface Locations</option>
-                                    </select>
-                                </div>
+                                <label className="pt-file-upload pt-fill l1a-input-file-upload">
+                                    <input type="file" disabled={this.state.sourceType == "single"}/>
+                                    <span
+                                        className="pt-file-upload-input l1a-input-file-upload">Choose directory...</span>
+                                </label>
                             </td>
                         </tr>
                         </tbody>
