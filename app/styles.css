@@ -440,6 +440,10 @@ ul.dedop-list-box li.dedop-selected {
     overflow: auto;
 }
 
+.bp-table-truncated-text {
+    cursor: pointer;
+}
+
 /* Blueprint table styling =================================================*/
 
 /* L1A Input styling===================================================*/

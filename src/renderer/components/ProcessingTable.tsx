@@ -26,12 +26,15 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
                 <Cell>{this.props.processingItems[rowIndex].status === "IN_PROGRESS" ? "-" : this.props.processingItems[rowIndex].processingDuration}</Cell>
             )
         };
+        const handleOpenResult = () => {
+            console.log("clicked")
+        };
         const actionCell = (rowIndex: number) => {
             switch (this.props.processingItems[rowIndex].status) {
                 case "DONE":
                     return (
                         <Cell style={{textAlign: "center"}}>
-                            <span className="pt-icon-standard pt-icon-folder-open"/>
+                            <span className="pt-icon-standard pt-icon-folder-open" onClick={handleOpenResult}/>
                         </Cell>);
                 case "FAILED":
                     return (
@@ -56,6 +59,10 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
             }
         };
 
+        const renderActionHeaderName = () => {
+            return (<div style={{textAlign: "center"}}>Action</div>)
+        };
+
         return (
             <Table numRows={this.props.processingItems.length} isRowHeaderShown={false}
                    columnWidths={[200, 400, 120, 100, 150, 100]}>
@@ -64,7 +71,7 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
                 <Column name="Started" renderCell={startedCell}/>
                 <Column name="Status" renderCell={statusCell}/>
                 <Column name="Processing Time" renderCell={processingTimeCell}/>
-                <Column name="Action" renderCell={actionCell}/>
+                <Column name="Action" renderCell={actionCell} renderName={renderActionHeaderName}/>
             </Table>
         )
     }
