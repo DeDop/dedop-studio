@@ -29,15 +29,30 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
         const actionCell = (rowIndex: number) => {
             switch (this.props.processingItems[rowIndex].status) {
                 case "DONE":
-                    return (<span className="pt-icon-standard pt-icon-folder-open"/>);
+                    return (
+                        <Cell style={{textAlign: "center"}}>
+                            <span className="pt-icon-standard pt-icon-folder-open"/>
+                        </Cell>);
                 case "FAILED":
-                    return (<span className="pt-icon-standard pt-icon-warning-sign"/>);
+                    return (
+                        <Cell style={{textAlign: "center"}}>
+                            <span className="pt-icon-standard pt-icon-warning-sign"/>
+                        </Cell>);
                 case "IN_PROGRESS":
-                    return (<span className="pt-icon-standard pt-icon-play"/>);
+                    return (
+                        <Cell style={{textAlign: "center"}}>
+                            <span className="pt-icon-standard pt-icon-play"/>
+                        </Cell>);
                 case "CANCELLED":
-                    return (<span className="pt-icon-standard pt-icon-disable"/>);
+                    return (
+                        <Cell style={{textAlign: "center"}}>
+                            <span className="pt-icon-standard pt-icon-disable"/>
+                        </Cell>);
                 default:
-                    return (<span>-</span>)
+                    return (
+                        <Cell style={{alignText: "center"}}>
+                            <span>-</span>
+                        </Cell>)
             }
         };
 

@@ -53,7 +53,7 @@ export class ProcessingPanel extends React.Component<any, any> {
                     <FootprintsPanel/>
                 </div>
                 <div className="flexbox-item-pico-runs">
-                    <OrdinaryPanelHeader panelTitle="Processor Runs"/>
+                    <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-th-list"/>
                     <ProcessingTable processingItems={processingItems}/>
                 </div>
             </div>
