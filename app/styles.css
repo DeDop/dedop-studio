@@ -398,7 +398,6 @@ label.pt-label.pt-inline {
 
 /* Configurations styling===================================================*/
 
-
 /* Listbox styling =========================================================*/
 
 .dedop-list-box {
@@ -429,8 +428,19 @@ ul.dedop-list-box li.dedop-selected {
     background-color: rgba(128, 128, 255, 0.6);
 }
 
-
 /* Listbox styling =========================================================*/
+
+/* Blueprint table styling =================================================*/
+
+.bp-table-container {
+    height: inherit;
+}
+
+.bp-table-body {
+    overflow: auto;
+}
+
+/* Blueprint table styling =================================================*/
 
 /* L1A Input styling===================================================*/
 

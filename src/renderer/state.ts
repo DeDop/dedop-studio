@@ -11,5 +11,5 @@ export interface ProcessingItems {
     configuration: string;
     startedTime: string;
     status: string;
-    elapsedTime: string;
+    processingDuration: string;
 }

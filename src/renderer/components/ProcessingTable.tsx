@@ -22,7 +22,9 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
             return <Cell>{this.props.processingItems[rowIndex].status.toString()}</Cell>
         };
         const processingTimeCell = (rowIndex: number) => {
-            return <Cell>{this.props.processingItems[rowIndex].elapsedTime}</Cell>
+            return (
+                <Cell>{this.props.processingItems[rowIndex].status === "IN_PROGRESS" ? "-" : this.props.processingItems[rowIndex].processingDuration}</Cell>
+            )
         };
         const actionCell = (rowIndex: number) => {
             switch (this.props.processingItems[rowIndex].status) {
@@ -40,7 +42,8 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
         };
 
         return (
-            <Table numRows={this.props.processingItems.length} isRowHeaderShown={false}>
+            <Table numRows={this.props.processingItems.length} isRowHeaderShown={false}
+                   columnWidths={[200, 400, 120, 100, 150, 100]}>
                 <Column name="Run" renderCell={runCell}/>
                 <Column name="Configuration" renderCell={configCell}/>
                 <Column name="Started" renderCell={startedCell}/>

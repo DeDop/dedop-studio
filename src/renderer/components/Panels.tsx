@@ -44,7 +44,6 @@ export class ProcessingPanel extends React.Component<any, any> {
     public render() {
         return (
             <div className="panel-flexbox">
-                <div className="flexbox-item-pico-header">Processor Invocation, Control, Observation</div>
                 <div className="flexbox-item-pico-config">
                     <DedopRunSettingsCollapse panelTitle="Run Settings" collapseIcon="pt-icon-settings"/>
                     <DedopL1aInputCollapse panelTitle="L1A Input" collapseIcon="pt-icon-properties"/>
