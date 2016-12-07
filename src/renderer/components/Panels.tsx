@@ -1,10 +1,12 @@
 import * as React from "react";
 
-import {Table, Column, Cell} from "@blueprintjs/table";
 import {DedopCollapse, DedopRunSettingsCollapse, DedopL1aInputCollapse} from "./Collapse";
 import {ConfigurationTabs} from './Tabs';
 import TreeMenu from './TreeMenu';
 import {FootprintsPanel} from "./FootprintsPanel";
+import {processingItems} from "../initialStates";
+import {ProcessingTable} from "./ProcessingTable";
+import {OrdinaryPanelHeader} from "./PanelHeader";
 
 export class InputDatasetPanel extends React.Component<any, any> {
     public render() {
@@ -37,34 +39,9 @@ export class ConfigurationPanel extends React.Component<any, any> {
     }
 }
 
+
 export class ProcessingPanel extends React.Component<any, any> {
     public render() {
-        const runCell = (rowIndex: number) => {
-            return <Cell>{`Task ${(rowIndex)}`}</Cell>
-        };
-        const configCell = (rowIndex: number) => {
-            return <Cell>{`Config ${(rowIndex)}`}</Cell>
-        };
-        const startedCell = () => {
-            return <Cell>11-11-2016</Cell>
-        };
-        const status = ["Done", "Done", "Failed", "Done", "In progress", "Queued"];
-        const statusCell = (rowIndex: number) => {
-            return <Cell>{status[rowIndex]}</Cell>
-        };
-        const processingTime = ["2:54", "1:11", "0:05", "1:30", "", ""];
-        const processingTimeCell = (rowIndex: number) => {
-            return <Cell>{processingTime[rowIndex]}</Cell>
-        };
-        const actionButtons = [<span className="pt-icon-standard pt-icon-folder-open"/>,
-            <span className="pt-icon-standard pt-icon-folder-open"/>,
-            <span className="pt-icon-standard pt-icon-warning-sign"/>,
-            <span className="pt-icon-standard pt-icon-folder-open"/>,
-            "",
-            ""];
-        const actionCell = (rowIndex: number) => {
-            return <Cell>{actionButtons[rowIndex]}</Cell>
-        };
         return (
             <div className="panel-flexbox">
                 <div className="flexbox-item-pico-header">Processor Invocation, Control, Observation</div>
@@ -76,15 +53,9 @@ export class ProcessingPanel extends React.Component<any, any> {
                 <div className="flexbox-item-pico-footprints">
                     <FootprintsPanel/>
                 </div>
-                <div className="flexbox-item-pico-runs" style={{backgroundColor: "#1D7324"}}>
-                    <Table numRows={6}>
-                        <Column name="Run" renderCell={runCell}/>
-                        <Column name="Configuration" renderCell={configCell}/>
-                        <Column name="Started" renderCell={startedCell}/>
-                        <Column name="Status" renderCell={statusCell}/>
-                        <Column name="Processing Time" renderCell={processingTimeCell}/>
-                        <Column name="Action" renderCell={actionCell}/>
-                    </Table>
+                <div className="flexbox-item-pico-runs">
+                    <OrdinaryPanelHeader panelTitle="Processor Runs"/>
+                    <ProcessingTable processingItems={processingItems}/>
                 </div>
             </div>
         )

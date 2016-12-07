@@ -1,5 +1,20 @@
 import * as React from "react";
 
+export interface IPanelHeaderProps {
+    panelTitle: string;
+}
+
+export class OrdinaryPanelHeader extends React.Component<IPanelHeaderProps, any> {
+    render() {
+        return (
+            <div className="dedop-collapse-header">
+                <span className="dedop-collapse-header-icon pt-icon-standard pt-icon-globe"/>
+                <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
+            </div>
+        )
+    }
+}
+
 export class ConfigurationPanelHeader extends React.Component<any, any> {
     render() {
         return (
