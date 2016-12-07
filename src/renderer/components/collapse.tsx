@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Collapse, RadioGroup, Radio} from "@blueprintjs/core";
+import {Collapse, Radio} from "@blueprintjs/core";
 import {ConfigurationSingleEntry} from "./configurationSingleEntry";
 
 export interface ICollapseState {

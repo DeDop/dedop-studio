@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {CesiumComponent} from './cesium';
-import {ICity, CesiumCityList} from './cities';
+import {ICity} from './cities';
 
 // TODO: only used to get electron.app.getAppPath
 const {app} = require('electron').remote;
