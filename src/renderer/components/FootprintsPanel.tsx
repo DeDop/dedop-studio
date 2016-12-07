@@ -1,8 +1,8 @@
 import * as React from "react";
-import {CesiumView} from "./cesium/view";
-import {FootprintPanelHeader} from "./panelHeader";
+import {CesiumView} from "./cesium/View";
+import {FootprintPanelHeader} from "./PanelHeader";
 
-export class Footprints extends React.Component<any, any> {
+export class FootprintsPanel extends React.Component<any, any> {
     render() {
         return (
             <div className="dedop-collapse">

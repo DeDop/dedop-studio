@@ -3,9 +3,9 @@ import * as ReactDOM from 'react-dom';
 import {
     HGLContainer, HGLHeader, HGLFooter,
     HGLCenter
-} from './components/components';
-import {MainTabs} from './components/tabList';
-import TopMenu from './components/topMenu';
+} from './components/Components';
+import {MainTabs} from './components/Tabs';
+import TopMenu from './components/TopMenu';
 
 export function main() {
     ReactDOM.render(

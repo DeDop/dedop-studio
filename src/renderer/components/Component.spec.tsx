@@ -2,7 +2,7 @@ import * as React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 
-import {HGLContainer, HGLHeader, HGLCenter, HGLFooter} from './components';
+import {HGLContainer, HGLHeader, HGLCenter, HGLFooter} from './Components';
 
 describe("Main containers tests", () => {
     it('renders <HGLContainer /> components', () => {

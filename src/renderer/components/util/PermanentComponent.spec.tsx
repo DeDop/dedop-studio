@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import * as React from 'react';
-import {IPermanentComponentProps, PermanentComponent} from './permcomp';
+import {IPermanentComponentProps, PermanentComponent} from './PermanentComponent';
 
 const should = require('chai').should();
 

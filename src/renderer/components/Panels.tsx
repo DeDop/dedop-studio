@@ -1,10 +1,10 @@
 import * as React from "react";
 
 import {Table, Column, Cell} from "@blueprintjs/table";
-import {DedopCollapse, DedopRunSettingsCollapse, DedopL1aInputCollapse} from "./collapse";
-import {ConfigurationTabs} from './tabList';
-import TreeMenu from './treeMenu';
-import {Footprints} from "./footprints";
+import {DedopCollapse, DedopRunSettingsCollapse, DedopL1aInputCollapse} from "./Collapse";
+import {ConfigurationTabs} from './Tabs';
+import TreeMenu from './TreeMenu';
+import {FootprintsPanel} from "./FootprintsPanel";
 
 export class InputDatasetPanel extends React.Component<any, any> {
     public render() {
@@ -15,7 +15,7 @@ export class InputDatasetPanel extends React.Component<any, any> {
                     <DedopCollapse panelTitle="Global Metadata" collapseIcon="pt-icon-properties"/>
                 </div>
                 <div className="panel-flexbox-item">
-                    <Footprints/>
+                    <FootprintsPanel/>
                 </div>
             </div>
         )
@@ -74,7 +74,7 @@ export class ProcessingPanel extends React.Component<any, any> {
                     <button type="button" className="pt-button pt-fill">Run</button>
                 </div>
                 <div className="flexbox-item-pico-footprints">
-                    <Footprints/>
+                    <FootprintsPanel/>
                 </div>
                 <div className="flexbox-item-pico-runs" style={{backgroundColor: "#1D7324"}}>
                     <Table numRows={6}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IPermanentComponentProps, PermanentComponent} from '../util/permcomp'
+import {IPermanentComponentProps, PermanentComponent} from '../util/PermanentComponent'
 
 const Cesium: any = require('cesium');
 // console.log(Cesium);

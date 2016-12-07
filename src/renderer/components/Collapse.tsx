@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Collapse, Radio} from "@blueprintjs/core";
-import {ConfigurationSingleEntry} from "./configurationSingleEntry";
+import {ConfigurationSingleEntry} from "./ConfigurationSingleEntry";
 
 export interface ICollapseState {
     isOpen?: boolean;
