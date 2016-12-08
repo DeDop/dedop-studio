@@ -51,6 +51,6 @@ export interface ProcessConfigurations {
 
 export interface ConfigurationItem {
     units: string,
-    value: string|number,
+    value: string|number|boolean,
     description: string
 }
