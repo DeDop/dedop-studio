@@ -77,8 +77,8 @@ export class ConfigurationTabs extends React.Component<any,any> {
             // TODO need to find a way to avoid an influence by the parents' styling.
             <Tabs key="horizontal">
                 <TabList>
-                    <Tab>Characterizations</Tab>
-                    <Tab>Configurations</Tab>
+                    <Tab>Characterization</Tab>
+                    <Tab>Configuration</Tab>
                     <Tab>Constants</Tab>
                 </TabList>
                 <TabPanel>
