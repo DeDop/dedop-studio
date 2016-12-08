@@ -19,7 +19,7 @@ export class DedopCollapse extends React.Component<IPanelProps, ICollapseState> 
 
     public render() {
         return (
-            <div className="dedop-collapse">
+            <div className="dedop-collapse vertical-half">
                 <div className="dedop-collapse-header">
                     <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
                     <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
@@ -71,7 +71,7 @@ export class DedopL1aInputListCollapse extends React.Component<IL1aInputListProp
         };
 
         return (
-            <div className="dedop-collapse">
+            <div className="dedop-collapse vertical-half">
                 <div className="dedop-collapse-header">
                     <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
                     <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
@@ -165,7 +165,7 @@ export class DedopRunSettingsCollapse extends React.Component<IPanelProps, IColl
 
     public render() {
         return (
-            <div className="dedop-collapse">
+            <div className="dedop-collapse vertical-half">
                 <div className="dedop-collapse-header">
                     <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
                     <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
@@ -242,7 +242,7 @@ export class DedopL1aInputCollapse extends React.Component<IPanelProps, IL1aInpu
 
     public render() {
         return (
-            <div className="dedop-collapse">
+            <div className="dedop-collapse vertical-half">
                 <div className="dedop-collapse-header">
                     <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
                     <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
