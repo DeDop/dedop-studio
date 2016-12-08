@@ -1,20 +1,16 @@
 import {connect} from "react-redux";
 import * as React from "react";
-import {DedopL1aInputListCollapse, DedopCollapse} from "./Collapse";
-import {dummyInputL1aFiles} from "../initialStates";
-import {FootprintsPanel} from "./FootprintsPanel";
-import {State} from "../state";
-import {updatePanelTitle} from '../actions';
+import {DedopL1aInputListCollapse, DedopCollapse} from "../Collapse";
+import {dummyInputL1aFiles} from "../../initialStates";
+import {FootprintsPanel} from "../FootprintsPanel";
+import {updatePanelTitle} from '../../actions';
 
 interface IInputDatasetPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
-    title: string;
 }
 
-function mapStateToProps(state: State): IInputDatasetPanelProps {
-    return {
-        title: state.control.mainPanelTitle,
-    };
+function mapStateToProps(): IInputDatasetPanelProps {
+    return {};
 }
 
 class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
