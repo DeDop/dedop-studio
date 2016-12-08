@@ -7,7 +7,7 @@ import ConfigurationPanel from './panels/ConfigurationPanel';
 import ProcessingPanel from './panels/ProcessingPanel';
 import ResultPanel from './panels/ResultPanel';
 import {DedopConfigCollapse} from "./Collapse";
-import {ConfigurationSingleEntry} from "./ConfigurationSingleEntry";
+import {ConfigurationSingleEntry} from "./ConfigurationEditor";
 
 require('codemirror/mode/javascript/javascript');
 
@@ -73,8 +73,6 @@ export class ConfigurationTabs extends React.Component<any,any> {
         };
 
         return (
-            // Still not working yet because this tab's style is still influenced by the parents' style (pt-vertical)
-            // TODO need to find a way to avoid an influence by the parents' styling.
             <Tabs key="horizontal">
                 <TabList>
                     <Tab>Characterization</Tab>
@@ -109,8 +107,30 @@ export class ConfigurationTabs extends React.Component<any,any> {
                 </TabPanel>
                 <TabPanel>
                     <div className="panel-flexbox-chd">
-                        <DedopConfigCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
-                        <DedopConfigCollapse panelTitle="Flags" collapseIcon="pt-icon-document"/>
+                        <h4>Properties</h4>
+                        <table>
+                            <tbody>
+                            <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0"
+                                                      unit="Hz"/>
+                            <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
+                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
+                                                      unit="s"/>
+                            <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0"
+                                                      unit="m"/>
+                            </tbody>
+                        </table>
+                        <h4>Flags</h4>
+                        <table>
+                            <tbody>
+                            <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0"
+                                                      unit="Hz"/>
+                            <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
+                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
+                                                      unit="s"/>
+                            <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0"
+                                                      unit="m"/>
+                            </tbody>
+                        </table>
                         <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
                 </TabPanel>

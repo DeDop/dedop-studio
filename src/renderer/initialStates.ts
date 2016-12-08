@@ -1,4 +1,4 @@
-import {ProcessingItem, ProcessingStatus, GlobalMetadata} from "./state";
+import {ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfiguration} from "./state";
 
 export const processingItems: ProcessingItem[] = [
     {
@@ -83,4 +83,46 @@ export const dummyGlobalMetadata: GlobalMetadata[] = [
         type: "string",
         value: "ESA ESRIN"
     }
+];
+
+export const defaultChdConfigurations: ProcessConfiguration[] = [
+    {
+        name: "mean_sat_alt_chd",
+        value: 1347000.0,
+        description: "Mean satellite altitude",
+        units: "m"
+    },
+
+    {
+        name: "N_samples_sar_chd",
+        value: 128,
+        description: "Number of samples per each SAR pulse",
+        units: null
+    },
+    {
+        name: "N_ku_pulses_burst_chd",
+        value: 64,
+        description: "Number of Ku-band pulses per burst",
+        units: null
+    },
+
+    {
+        name: "freq_ku_chd",
+        value: 13575000000.0,
+        description: "Emitted frequency in Ku-band",
+        units: "Hz"
+    },
+    {
+        name: "pulse_length_chd",
+        value: 0.000032,
+        description: "Pulse length",
+        units: "s"
+    },
+    {
+        name: "bw_ku_chd",
+        value: 320000000.0,
+        description: "Ku-band bandwidth",
+        units: "Hz"
+    },
+
 ];

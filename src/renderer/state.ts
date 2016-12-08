@@ -44,3 +44,10 @@ export interface GlobalMetadata {
     type: string;
     value: string;
 }
+
+export interface ProcessConfiguration {
+    name: string;
+    value: string|number;
+    description: string;
+    units: string;
+}

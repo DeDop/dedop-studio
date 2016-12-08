@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Collapse, Radio} from "@blueprintjs/core";
-import {ConfigurationSingleEntry} from "./ConfigurationSingleEntry";
+import {ConfigurationSingleEntry} from "./ConfigurationEditor";
 import {ListBox} from "./ListBox";
 import {GlobalMetadataTable} from "./GlobalMetadataTable";
 import {dummyGlobalMetadata} from '../initialStates'
