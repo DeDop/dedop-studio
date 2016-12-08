@@ -6,8 +6,8 @@ import InputDatasetPanel from './panels/InputDatasetPanel';
 import ConfigurationPanel from './panels/ConfigurationPanel';
 import ProcessingPanel from './panels/ProcessingPanel';
 import ResultPanel from './panels/ResultPanel';
-import {DedopConfigCollapse} from "./Collapse";
-import {ConfigurationSingleEntry} from "./ConfigurationEditor";
+import {ConfigurationSingleEntry, ConfigurationEditor} from "./ConfigurationEditor";
+import {defaultChdConfigurations} from '../initialStates';
 
 require('codemirror/mode/javascript/javascript');
 
@@ -90,17 +90,7 @@ export class ConfigurationTabs extends React.Component<any,any> {
                             ?
                             <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
                             :
-                            <table>
-                                <tbody>
-                                <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0"
-                                                          unit="Hz"/>
-                                <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
-                                <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
-                                                          unit="s"/>
-                                <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0"
-                                                          unit="m"/>
-                                </tbody>
-                            </table>
+                            <ConfigurationEditor configurations={defaultChdConfigurations}/>
                         }
                         <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
@@ -110,25 +100,11 @@ export class ConfigurationTabs extends React.Component<any,any> {
                         <h4>Properties</h4>
                         <table>
                             <tbody>
-                            <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0"
-                                                      unit="Hz"/>
-                            <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
-                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
-                                                      unit="s"/>
-                            <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0"
-                                                      unit="m"/>
                             </tbody>
                         </table>
                         <h4>Flags</h4>
                         <table>
                             <tbody>
-                            <ConfigurationSingleEntry configName="freq_ku_chd" defaultValue="13575000000.0"
-                                                      unit="Hz"/>
-                            <ConfigurationSingleEntry configName="bw_ku_chd" defaultValue="320000000" unit="Hz"/>
-                            <ConfigurationSingleEntry configName="pri_sar_chd" defaultValue="5.610000296769016e-05"
-                                                      unit="s"/>
-                            <ConfigurationSingleEntry configName="mean_sat_alt_chd" defaultValue="1347000.0"
-                                                      unit="m"/>
                             </tbody>
                         </table>
                         <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
@@ -138,12 +114,6 @@ export class ConfigurationTabs extends React.Component<any,any> {
                     <div className="panel-flexbox-chd">
                         <table>
                             <tbody>
-                            <ConfigurationSingleEntry configName="semi_major_axis_cst" defaultValue="6378137.0"
-                                                      unit="m"/>
-                            <ConfigurationSingleEntry configName="semi_minor_axis_cst" defaultValue="6356752.3142"
-                                                      unit="m"/>
-                            <ConfigurationSingleEntry configName="flat_coeff_cst" defaultValue="0.00335281067183084"/>
-                            <ConfigurationSingleEntry configName="earth_radius_cst" defaultValue="6378137.0" unit="m"/>
                             </tbody>
                         </table>
                         <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
