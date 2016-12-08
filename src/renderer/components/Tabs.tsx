@@ -2,7 +2,8 @@ import * as React from "react";
 import * as CodeMirror from "react-codemirror";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
-import {InputDatasetPanel, ConfigurationPanel, ProcessingPanel, ResultPanel} from './Panels'
+import {ConfigurationPanel, ProcessingPanel, ResultPanel} from './Panels';
+import InputDatasetPanel from './InputDatasetPanel';
 import {DedopCollapse, DedopConfigCollapse} from "./Collapse";
 import {ConfigurationSingleEntry} from "./ConfigurationSingleEntry";
 
