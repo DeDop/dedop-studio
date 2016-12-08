@@ -11,8 +11,11 @@ function mapStateToProps(): IResultPanelProps {
 }
 
 export class ResultPanel extends React.Component<IResultPanelProps, any> {
-    public render() {
+    componentWillMount(){
         this.props.dispatch(updatePanelTitle("Results & Analysis"));
+    }
+
+    public render() {
         return (
             <div>
                 ResultPanel

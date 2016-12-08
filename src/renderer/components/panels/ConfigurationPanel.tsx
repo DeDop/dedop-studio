@@ -13,9 +13,11 @@ function mapStateToProps(): IConfigurationPanelProps {
 }
 
 class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> {
-    public render() {
+    componentWillMount(){
         this.props.dispatch(updatePanelTitle("Configuration"));
+    }
 
+    public render() {
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">

@@ -14,9 +14,11 @@ function mapStateToProps(): IInputDatasetPanelProps {
 }
 
 class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
-    public render() {
+    componentWillMount(){
         this.props.dispatch(updatePanelTitle("Source Data"));
+    }
 
+    public render() {
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item">

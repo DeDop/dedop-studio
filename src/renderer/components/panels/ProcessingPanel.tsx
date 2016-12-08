@@ -18,9 +18,11 @@ function mapStateToProps(): IProcessingPanelProps {
 }
 
 class ProcessingPanel extends React.Component<IProcessingPanelProps, any> {
-    public render() {
+    componentWillMount(){
         this.props.dispatch(updatePanelTitle("Processing"));
+    }
 
+    public render() {
         return (
             <div className="panel-flexbox">
                 <div className="flexbox-item-pico-config">
