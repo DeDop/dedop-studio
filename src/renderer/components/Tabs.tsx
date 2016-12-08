@@ -77,23 +77,10 @@ export class ConfigurationTabs extends React.Component<any,any> {
             // TODO need to find a way to avoid an influence by the parents' styling.
             <Tabs key="horizontal">
                 <TabList>
-                    <Tab>General</Tab>
                     <Tab>Characterizations</Tab>
                     <Tab>Configurations</Tab>
                     <Tab>Constants</Tab>
                 </TabList>
-                <TabPanel>
-                    <div className="panel-flexbox-configuration">
-                        <div className="panel-flexbox-item-properties">
-                            <DedopCollapse panelTitle="Properties" collapseIcon="pt-icon-document"/>
-                            <DedopCollapse panelTitle="General Parameters" collapseIcon="pt-icon-properties"/>
-                        </div>
-                        <div className="panel-flexbox-item-roi">
-                            <DedopCollapse panelTitle="Region of Interest" collapseIcon="pt-icon-properties"/>
-                        </div>
-                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
-                    </div>
-                </TabPanel>
                 <TabPanel>
                     <div className="panel-flexbox-chd">
                         <label className="pt-control pt-switch">

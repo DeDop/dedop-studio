@@ -8,6 +8,7 @@ app/main
 app/renderer
 app/dedop-core
 src/**/*.jsx
+src/**/*.js
 
 dedop-config.js
 
