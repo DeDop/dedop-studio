@@ -2,6 +2,8 @@ import * as React from "react";
 import {Collapse, Radio} from "@blueprintjs/core";
 import {ConfigurationSingleEntry} from "./ConfigurationSingleEntry";
 import {ListBox} from "./ListBox";
+import {GlobalMetadataTable} from "./GlobalMetadataTable";
+import {dummyGlobalMetadata} from '../initialStates'
 
 export interface ICollapseState {
     isOpen?: boolean;
@@ -91,6 +93,37 @@ export class DedopL1aInputListCollapse extends React.Component<IL1aInputListProp
                         </label>
                         <ListBox numItems={this.props.l1aInputFileNames.length} renderItem={renderSingleItem}/>
                     </div>
+                </Collapse>
+            </div>
+        );
+    }
+
+    private handleClick = () => {
+        this.setState({isOpen: !this.state.isOpen});
+    }
+}
+
+export class DedopGlobalMetadataCollapse extends React.Component<IPanelProps, ICollapseState> {
+    public state = {
+        isOpen: true,
+    };
+
+    public render() {
+        return (
+            <div className="dedop-collapse vertical-half">
+                <div className="dedop-collapse-header">
+                    <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
+                    <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
+                    <span className="dedop-collapse-header-actions">
+                    {this.state.isOpen ?
+                        <span className="pt-icon-standard pt-icon-chevron-up dedop-collapse-header-actions-icon"
+                              onClick={this.handleClick}/> :
+                        <span className="pt-icon-standard pt-icon-chevron-down dedop-collapse-header-actions-icon"
+                              onClick={this.handleClick}/>}
+                    </span>
+                </div>
+                < Collapse isOpen={this.state.isOpen} className="dedop-panel-content">
+                    <GlobalMetadataTable globalMetadataArray={dummyGlobalMetadata}/>
                 </Collapse>
             </div>
         );

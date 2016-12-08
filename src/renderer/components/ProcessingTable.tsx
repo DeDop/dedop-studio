@@ -1,9 +1,9 @@
 import * as React from "react";
-import {ProcessingItems} from "../state";
+import {ProcessingItem} from "../state";
 import {Cell, Column, Table} from "@blueprintjs/table";
 
 interface IProcessingTableProps {
-    processingItems: Array<ProcessingItems>;
+    processingItems: Array<ProcessingItem>;
 }
 
 export class ProcessingTable extends React.Component<IProcessingTableProps, null> {

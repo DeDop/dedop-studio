@@ -6,7 +6,7 @@ import InputDatasetPanel from './panels/InputDatasetPanel';
 import ConfigurationPanel from './panels/ConfigurationPanel';
 import ProcessingPanel from './panels/ProcessingPanel';
 import ResultPanel from './panels/ResultPanel';
-import {DedopCollapse, DedopConfigCollapse} from "./Collapse";
+import {DedopConfigCollapse} from "./Collapse";
 import {ConfigurationSingleEntry} from "./ConfigurationSingleEntry";
 
 require('codemirror/mode/javascript/javascript');

@@ -13,7 +13,7 @@ export interface CommunicationState {
 }
 
 export interface ControlState {
-    mainPanelTitle ?:string;
+    mainPanelTitle ?: string;
 }
 
 export interface SessionState {
@@ -29,11 +29,18 @@ export enum ProcessingStatus {
     CANCELLED
 }
 
-export interface ProcessingItems {
+export interface ProcessingItem {
     id: string;
     name: string;
     configuration: string;
     startedTime: string;
     status: string;
     processingDuration: string;
+}
+
+export interface GlobalMetadata {
+    id: string;
+    name: string;
+    type: string;
+    value: string;
 }
