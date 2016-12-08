@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import {Classes, ITreeNode, Tooltip, Tree} from "@blueprintjs/core";
-import {ConfigurationPanelHeader} from "./PanelHeader";
 
 export interface ITreeExampleState {
     nodes: ITreeNode[];
@@ -75,7 +74,6 @@ export default class TreeMenu extends React.Component<any,any> {
     public render() {
         return (
             <div>
-                <ConfigurationPanelHeader/>
                 <Tree
                     contents={this.state.nodes}
                     onNodeClick={this.handleNodeClick}

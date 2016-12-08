@@ -3,6 +3,7 @@ import TreeMenu from "../TreeMenu";
 import {ConfigurationTabs} from "../Tabs";
 import {connect} from "react-redux";
 import {updatePanelTitle} from "../../actions";
+import {ConfigurationPanelHeader} from "../PanelHeader";
 
 interface IConfigurationPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
@@ -21,9 +22,11 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
+                    <ConfigurationPanelHeader title={"Configuration Names"}/>
                     <TreeMenu/>
                 </div>
                 <div className="panel-flexbox-item">
+                    <ConfigurationPanelHeader title={"Configuration Details"}/>
                     <ConfigurationTabs/>
                 </div>
             </div>
