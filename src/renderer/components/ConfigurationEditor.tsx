@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {InputGroup, Tag, Classes, Tooltip} from "@blueprintjs/core";
-import {ProcessConfiguration} from "../state";
+import {ProcessConfigurations, ConfigurationItem} from "../state";
 
 interface IConfigProps {
-    configuration: ProcessConfiguration;
+    configName: string;
+    configuration: ConfigurationItem;
 }
 
 export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> {
@@ -17,7 +18,7 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
                 <td>
                     <Tooltip content={this.props.configuration.description}>
                         <label className="pt-label pt-inline">
-                            {this.props.configuration.name}
+                            {this.props.configName}
                         </label>
                     </Tooltip>
                 </td>
@@ -31,15 +32,15 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
 }
 
 interface IConfigEditorProps {
-    configurations: Array<ProcessConfiguration>;
+    configurations: ProcessConfigurations;
 }
 
 export class ConfigurationEditor extends React.Component<IConfigEditorProps, any> {
     public render() {
         let configurationElements: Array<JSX.Element> = [];
         const configurations = this.props.configurations;
-        for (let i = 0; i < configurations.length; i++) {
-            configurationElements.push(<ConfigurationSingleEntry configuration={configurations[i]}/>)
+        for (let i in configurations) {
+            configurationElements.push(<ConfigurationSingleEntry configName={i} configuration={configurations[i]}/>)
         }
 
         return (

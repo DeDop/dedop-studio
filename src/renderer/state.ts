@@ -45,9 +45,12 @@ export interface GlobalMetadata {
     value: string;
 }
 
-export interface ProcessConfiguration {
-    name: string;
-    value: string|number;
-    description: string;
-    units: string;
+export interface ProcessConfigurations {
+    [key: string]: ConfigurationItem
+}
+
+export interface ConfigurationItem {
+    units: string,
+    value: string|number,
+    description: string
 }

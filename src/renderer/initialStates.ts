@@ -1,4 +1,6 @@
-import {ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfiguration} from "./state";
+import {
+    ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfigurations,
+} from "./state";
 
 export const processingItems: ProcessingItem[] = [
     {
@@ -85,44 +87,107 @@ export const dummyGlobalMetadata: GlobalMetadata[] = [
     }
 ];
 
-export const defaultChdConfigurations: ProcessConfiguration[] = [
-    {
-        name: "mean_sat_alt_chd",
-        value: 1347000.0,
-        description: "Mean satellite altitude",
-        units: "m"
+export const defaultChdConfigurations: ProcessConfigurations = {
+    "mean_sat_alt_chd": {
+        "value": 1347000.0,
+        "description": "Mean satellite altitude",
+        "units": "m"
     },
 
-    {
-        name: "N_samples_sar_chd",
-        value: 128,
-        description: "Number of samples per each SAR pulse",
-        units: null
+    "N_samples_sar_chd": {
+        "value": 128,
+        "description": "Number of samples per each SAR pulse",
+        "units": null
     },
-    {
-        name: "N_ku_pulses_burst_chd",
-        value: 64,
-        description: "Number of Ku-band pulses per burst",
-        units: null
+    "N_ku_pulses_burst_chd": {
+        "value": 64,
+        "description": "Number of Ku-band pulses per burst",
+        "units": null
     },
 
-    {
-        name: "freq_ku_chd",
-        value: 13575000000.0,
-        description: "Emitted frequency in Ku-band",
-        units: "Hz"
+    "freq_ku_chd": {
+        "value": 13575000000.0,
+        "description": "Emitted frequency in Ku-band",
+        "units": "Hz"
     },
-    {
-        name: "pulse_length_chd",
-        value: 0.000032,
-        description: "Pulse length",
-        units: "s"
+    "pulse_length_chd": {
+        "value": 0.000032,
+        "description": "Pulse length",
+        "units": "s"
     },
-    {
-        name: "bw_ku_chd",
-        value: 320000000.0,
-        description: "Ku-band bandwidth",
-        units: "Hz"
+    "bw_ku_chd": {
+        "value": 320000000.0,
+        "description": "Ku-band bandwidth",
+        "units": "Hz"
     },
 
-];
+    "power_tx_ant_ku_chd": {
+        "value": 7.5,
+        "description": "Antenna SSPA RF Peak Transmitted Power in Ku band",
+        "units": "dB"
+    },
+    "antenna_gain_ku_chd": {
+        "value": 42.1,
+        "description": "Antenna gain for Ku-band",
+        "units": "dB"
+    },
+
+    "uso_freq_nom_chd": {
+        "value": 10e6,
+        "description": "USO nominal frequency",
+        "units": "Hz"
+    },
+    "alt_freq_multiplier_chd": {
+        "value": 32,
+        "description": "Factor to convert from USO frequency to altimeter frequency",
+        "units": null
+    },
+    "prf_sar_chd": {
+        "value": 17825.311,
+        "description": "pulse repetition frequency",
+        "units": "s"
+    },
+    "brf_sar_chd": {
+        "value": 78.53069,
+        "description": "burst repetition frequency",
+        "units": "Hz"
+    }
+};
+
+export const defaultCstConfigurations: ProcessConfigurations = {
+    "semi_major_axis_cst": {
+        "units": "m",
+        "value": 6378137.0,
+        "description": "Semi-major axis of WGS84 ellipsoid"
+    },
+    "semi_minor_axis_cst": {
+        "units": "m",
+        "value": 6356752.3142,
+        "description": "Semi-minor axis of WGS84 ellipsoid"
+    },
+    "flat_coeff_cst": {
+        "units": null,
+        "value": 0.00335281067183084,
+        "description": "Flattening coefficient of WGS84 ellipsoid"
+    },
+    "earth_radius_cst": {
+        "units": "m",
+        "value": 6378137.0,
+        "description": "Earth Radius"
+    },
+    "pi_cst": {
+        "units": null,
+        "value": 3.1415926535897932,
+        "description": "Pi number"
+    },
+    "c_cst": {
+        "units": "m/s",
+        "value": 299792458.0,
+        "description": "Speed of light"
+    },
+    "sec_in_day_cst": {
+        "units": "s",
+        "value": 86400,
+        "description": "Number of seconds in a day"
+    }
+};

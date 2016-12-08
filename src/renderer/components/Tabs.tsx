@@ -6,8 +6,8 @@ import InputDatasetPanel from './panels/InputDatasetPanel';
 import ConfigurationPanel from './panels/ConfigurationPanel';
 import ProcessingPanel from './panels/ProcessingPanel';
 import ResultPanel from './panels/ResultPanel';
-import {ConfigurationSingleEntry, ConfigurationEditor} from "./ConfigurationEditor";
-import {defaultChdConfigurations} from '../initialStates';
+import {ConfigurationEditor} from "./ConfigurationEditor";
+import {defaultChdConfigurations, defaultCstConfigurations} from '../initialStates';
 
 require('codemirror/mode/javascript/javascript');
 
@@ -112,10 +112,7 @@ export class ConfigurationTabs extends React.Component<any,any> {
                 </TabPanel>
                 <TabPanel>
                     <div className="panel-flexbox-chd">
-                        <table>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <ConfigurationEditor configurations={defaultCstConfigurations}/>
                         <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
                     </div>
                 </TabPanel>
