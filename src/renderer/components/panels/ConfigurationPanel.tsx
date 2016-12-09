@@ -5,7 +5,7 @@ import {
     updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName,
     addConfigName
 } from "../../actions";
-import {ConfigurationPanelHeader} from "../PanelHeader";
+import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "../PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, ConfigurationFile} from "../../state";
 import {EditableText} from "@blueprintjs/core";
@@ -64,8 +64,9 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
-                    <ConfigurationPanelHeader title={"Configuration Names"}/>
-                    <EditableText placeholder="add new configuration" onConfirm={handleAddConfig} className="dedop-config-add-editable"/>
+                    <ConfigurationPanelHeader title="Configuration Names"/>
+                    <EditableText placeholder="add new configuration" onConfirm={handleAddConfig}
+                                  className="dedop-config-add-editable"/>
                     <ListBox numItems={this.props.configurations.length}
                              getItemKey={index => this.props.configurations[index].name}
                              renderItem={renderFileList}
@@ -75,7 +76,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                     />
                 </div>
                 <div className="panel-flexbox-item">
-                    <ConfigurationPanelHeader title={"Configuration Details"}/>
+                    <OrdinaryPanelHeader title="Configuration Details"/>
                     <ConfigurationTabs/>
                 </div>
             </div>
