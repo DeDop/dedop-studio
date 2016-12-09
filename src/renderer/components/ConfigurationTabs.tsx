@@ -56,41 +56,56 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         };
 
         return (
-            <Tabs key="horizontal">
-                <TabList>
-                    <Tab>Characterization</Tab>
-                    <Tab>Configuration</Tab>
-                    <Tab>Constants</Tab>
-                </TabList>
-                <TabPanel>
-                    <div className="panel-flexbox-chd">
-                        <label className="pt-control pt-switch">
-                            <input type="checkbox" onChange={this.handleChangeMode} checked={this.state.codeEditor}/>
-                            <span className="pt-control-indicator"/>
-                            Code editor
-                        </label>
-                        {this.state.codeEditor
-                            ?
-                            <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
-                            :
-                            <ConfigurationEditor configurations={this.props.chd}/>
-                        }
-                        <button className="pt-button pt-intent-primary pt-fill" onClick={handleChangeTab}>Save Configuration</button>
-                    </div>
-                </TabPanel>
-                <TabPanel>
-                    <div className="panel-flexbox-chd">
-                        <CnfConfigurationEditor configurations={this.props.cnf}/>
-                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
-                    </div>
-                </TabPanel>
-                <TabPanel>
-                    <div className="panel-flexbox-chd">
-                        <ConfigurationEditor configurations={this.props.cst}/>
-                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
-                    </div>
-                </TabPanel>
-            </Tabs>
+            <div>
+                <div style={{display:'flex', margin: '10px 0', flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <label className="pt-control pt-switch" style={{margin: '0 0 0 10px'}}>
+                        <input type="checkbox" onChange={this.handleChangeMode}
+                               checked={this.state.codeEditor}/>
+                        <span className="pt-control-indicator"/>
+                        Code editor
+                    </label>
+                    <button className="pt-button pt-intent-primary" onClick={handleChangeTab}>
+                        Save Configuration
+                    </button>
+                </div>
+                <Tabs key="horizontal">
+                    <TabList>
+                        <Tab>Characterization</Tab>
+                        <Tab>Configuration</Tab>
+                        <Tab>Constants</Tab>
+                    </TabList>
+                    <TabPanel>
+                        <div className="panel-flexbox-chd">
+                            {this.state.codeEditor
+                                ?
+                                <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
+                                :
+                                <ConfigurationEditor configurations={this.props.chd}/>
+                            }
+                        </div>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className="panel-flexbox-chd">
+                            {this.state.codeEditor
+                                ?
+                                <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
+                                :
+                                <CnfConfigurationEditor configurations={this.props.cnf}/>
+                            }
+                        </div>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className="panel-flexbox-chd">
+                            {this.state.codeEditor
+                                ?
+                                <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
+                                :
+                                <ConfigurationEditor configurations={this.props.cst}/>
+                            }
+                        </div>
+                    </TabPanel>
+                </Tabs>
+            </div>
         );
     }
 }
