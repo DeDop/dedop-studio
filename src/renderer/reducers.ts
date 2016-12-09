@@ -4,6 +4,16 @@ import {combineReducers} from 'redux';
 import {initialControlState, initialDataState} from "./initialStates";
 
 const dataReducer = (state: DataState = initialDataState, action) => {
+    switch (action.type) {
+        case actions.DELETE_CONFIG_NAME:
+            const configIndexToBeDeleted = action.payload;
+            return Object.assign({}, state, {
+                configurations: [
+                    ...state.configurations.slice(0, configIndexToBeDeleted),
+                    ...state.configurations.slice(configIndexToBeDeleted + 1)
+                ]
+            });
+    }
     return state;
 };
 

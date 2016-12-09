@@ -450,7 +450,7 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-file-name {
     display: table-cell;
     vertical-align: middle;
-    width: 70%;
+    width: 65%;
 }
 
 .dedop-file-current-tag {
@@ -464,6 +464,12 @@ ul.dedop-list-box li.dedop-selected {
     font-size: x-small;
     font-style: italic;
     width: 20%;
+}
+
+.dedop-file-delete {
+    color: rgba(255, 0, 0, 0.6);
+    text-align: right;
+    width: 5%;
 }
 
 /* Listbox styling =========================================================*/

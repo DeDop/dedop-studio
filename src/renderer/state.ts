@@ -10,6 +10,7 @@ export interface DataState {
     chd: ProcessConfigurations;
     cnf: ProcessConfigurations;
     cst: ProcessConfigurations;
+    configurations: ConfigurationFile[];
 }
 
 export interface CommunicationState {

@@ -54,7 +54,7 @@ export const dummyInputL1aFiles: string[] = [
     "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T03.nc"
 ];
 
-export const dummyConfigFileList: ConfigurationFile[] = [
+const dummyConfigFileList: ConfigurationFile[] = [
     {
         id: "1",
         name: "Alternate Delay-Doppler Processing",
@@ -110,7 +110,7 @@ export const dummyGlobalMetadata: GlobalMetadata[] = [
     }
 ];
 
-export const defaultChdConfigurations: ProcessConfigurations = {
+const defaultChdConfigurations: ProcessConfigurations = {
     "mean_sat_alt_chd": {
         "value": 1347000.0,
         "description": "Mean satellite altitude",
@@ -177,7 +177,7 @@ export const defaultChdConfigurations: ProcessConfigurations = {
     }
 };
 
-export const defaultCnfConfigurations: ProcessConfigurations = {
+const defaultCnfConfigurations: ProcessConfigurations = {
     "flag_cal2_correction_cnf": {
         "value": false,
         "units": "flag",
@@ -300,7 +300,7 @@ export const defaultCnfConfigurations: ProcessConfigurations = {
     }
 };
 
-export const defaultCstConfigurations: ProcessConfigurations = {
+const defaultCstConfigurations: ProcessConfigurations = {
     "semi_major_axis_cst": {
         "units": "m",
         "value": 6378137.0,
@@ -348,5 +348,6 @@ export const initialControlState: ControlState = {
 export const initialDataState: DataState = {
     chd: defaultChdConfigurations,
     cnf: defaultCnfConfigurations,
-    cst: defaultCstConfigurations
+    cst: defaultCstConfigurations,
+    configurations: dummyConfigFileList
 };
