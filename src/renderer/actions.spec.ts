@@ -17,6 +17,11 @@ describe("Test actions", function () {
         assert.equal(selectCurrentConfigAction.type, "SELECT_CURRENT_CONFIG");
         assert.equal(selectCurrentConfigAction.payload, "newCurrentConfig");
     });
+    it('can delete a configuration', function () {
+        let deleteConfigAction = actions.deleteConfigName(1);
+        assert.equal(deleteConfigAction.type, "DELETE_CONFIG_NAME");
+        assert.equal(deleteConfigAction.payload, 1);
+    });
     it('can update main tab selection', function () {
         let updateMainTabAction = actions.updateMainTab(3);
         assert.equal(updateMainTabAction.type, "UPDATE_MAIN_TAB");
