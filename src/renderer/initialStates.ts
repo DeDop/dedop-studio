@@ -1,6 +1,11 @@
 import {
-    ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfigurations,
+    ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfigurations, ConfigurationFile, ControlState,
 } from "./state";
+
+export const initialControlState: ControlState = {
+    mainPanelTitle: null,
+    selectedConfiguration: null
+};
 
 export const processingItems: ProcessingItem[] = [
     {
@@ -52,6 +57,29 @@ export const dummyInputL1aFiles: string[] = [
     "S6_P4_SIM_RMC_L1A__20190119T064000_20190119T064019_T01.nc",
     "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T02.nc",
     "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T03.nc"
+];
+
+export const dummyConfigFileList: ConfigurationFile[] = [
+    {
+        id: "1",
+        name: "Alternate Delay-Doppler Processing",
+        lastUpdated: "09/12/2016 08:01:22"
+    },
+    {
+        id: "2",
+        name: "Modified Surface Locations",
+        lastUpdated: "02/12/2016 18:22:13"
+    },
+    {
+        id: "3",
+        name: "Experimental",
+        lastUpdated: "03/12/2016 13:44:23"
+    },
+    {
+        id: "4",
+        name: "Test",
+        lastUpdated: "04/12/2016 11:18:40"
+    }
 ];
 
 export const dummyGlobalMetadata: GlobalMetadata[] = [

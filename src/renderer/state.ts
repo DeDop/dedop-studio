@@ -14,6 +14,7 @@ export interface CommunicationState {
 
 export interface ControlState {
     mainPanelTitle ?: string;
+    selectedConfiguration ?: string;
 }
 
 export interface SessionState {
@@ -53,4 +54,10 @@ export interface ConfigurationItem {
     units: string,
     value: string|number|boolean,
     description: string
+}
+
+export interface ConfigurationFile {
+    id: string;
+    name: string;
+    lastUpdated: string;
 }

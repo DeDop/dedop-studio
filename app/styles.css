@@ -433,16 +433,31 @@ label.pt-label.pt-inline {
     background-color: rgba(248, 250, 220, 0.4);
 }
 
-.dedop-list-box > li:nth-child(even):hover {
-    background-color: rgba(248, 250, 220, 0.4);
-}
-
 .dedop-list-box > li:nth-child(even) {
     background-color: rgba(52, 104, 122, 0.2);
 }
 
 ul.dedop-list-box li.dedop-selected {
     background-color: rgba(128, 128, 255, 0.6);
+}
+
+.dedop-list-box-item {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0 0 0;
+}
+
+.dedop-file-name {
+    display: table-cell;
+    vertical-align: middle;
+    width: 80%;
+}
+
+.dedop-file-updated-date {
+    width: 20%;
+    text-align: right;
+    font-size: x-small;
+    font-style: italic;
 }
 
 /* Listbox styling =========================================================*/

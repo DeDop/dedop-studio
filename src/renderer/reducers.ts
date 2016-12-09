@@ -1,23 +1,22 @@
 import {ControlState, State} from './state';
 import * as actions from './actions';
 import {combineReducers} from 'redux';
+import {initialControlState} from "./initialStates";
 
 const dataReducer = (state: Object = {}, action) => {
     return state;
 };
 
-const initialControlState: ControlState = {
-    mainPanelTitle: "test"
-};
-
 const controlReducer = (state: ControlState = initialControlState, action) => {
     switch (action.type) {
-        case actions.UPDATE_PANEL_TITLE: {
-            const title = action.payload;
+        case actions.UPDATE_PANEL_TITLE:
             return Object.assign({}, state, {
-                mainPanelTitle: title
+                mainPanelTitle: action.payload
             });
-        }
+        case actions.UPDATE_CONFIG_SELECTION:
+            return Object.assign({}, state, {
+                selectedConfiguration: action.payload
+            });
     }
     return state;
 };
