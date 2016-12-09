@@ -472,6 +472,10 @@ ul.dedop-list-box li.dedop-selected {
     width: 5%;
 }
 
+.dedop-config-add-editable {
+    margin: 10px 0;
+}
+
 /* Listbox styling =========================================================*/
 
 /* Blueprint table styling =================================================*/

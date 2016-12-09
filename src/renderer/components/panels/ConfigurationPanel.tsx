@@ -35,7 +35,6 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             const configFile = this.props.configurations[itemIndex];
             const isCurrent = configFile.name == this.props.currentConfiguration;
             const handleDeleteConfig = (itemIndex: number) => {
-                console.log("delete config", itemIndex);
                 this.props.dispatch(deleteConfigName(itemIndex));
             };
             return (
@@ -66,7 +65,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
                     <ConfigurationPanelHeader title={"Configuration Names"}/>
-                    <EditableText placeholder="add new configuration" onConfirm={handleAddConfig}/>
+                    <EditableText placeholder="add new configuration" onConfirm={handleAddConfig} className="dedop-config-add-editable"/>
                     <ListBox numItems={this.props.configurations.length}
                              getItemKey={index => this.props.configurations[index].name}
                              renderItem={renderFileList}
