@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ConfigurationTabs} from "../Tabs";
+import ConfigurationTabs from "../ConfigurationTabs";
 import {connect} from "react-redux";
 import {updatePanelTitle, updateConfigSelection, selectCurrentConfig} from "../../actions";
 import {ConfigurationPanelHeader} from "../PanelHeader";

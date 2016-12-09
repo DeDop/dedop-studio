@@ -1,15 +1,10 @@
 import * as React from "react";
-import * as CodeMirror from "react-codemirror";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
 import InputDatasetPanel from './panels/InputDatasetPanel';
 import ConfigurationPanel from './panels/ConfigurationPanel';
 import ProcessingPanel from './panels/ProcessingPanel';
 import ResultPanel from './panels/ResultPanel';
-import {ConfigurationEditor, CnfConfigurationEditor} from "./ConfigurationEditor";
-import {defaultChdConfigurations, defaultCnfConfigurations, defaultCstConfigurations} from '../initialStates';
-
-require('codemirror/mode/javascript/javascript');
 
 export class MainTabs extends React.Component<any,any> {
     public render() {
@@ -35,77 +30,6 @@ export class MainTabs extends React.Component<any,any> {
                 </TabPanel>
                 <TabPanel>
                     <ResultPanel/>
-                </TabPanel>
-            </Tabs>
-        );
-    }
-}
-
-export class ConfigurationTabs extends React.Component<any,any> {
-
-    constructor() {
-        super();
-        this.state = {
-            codeEditor: false,
-            code: "// testCode",
-            mode: "markdown"
-        };
-        this.handleChangeMode = this.handleChangeMode.bind(this);
-        this.updateCode = this.updateCode.bind(this);
-    }
-
-    private handleChangeMode() {
-        this.setState({
-            codeEditor: !this.state.codeEditor
-        });
-    }
-
-    private updateCode(newCode: string) {
-        this.setState({
-            code: newCode,
-        });
-    };
-
-    public render() {
-        const options = {
-            lineNumbers: true,
-            mode: this.state.mode
-        };
-
-        return (
-            <Tabs key="horizontal">
-                <TabList>
-                    <Tab>Characterization</Tab>
-                    <Tab>Configuration</Tab>
-                    <Tab>Constants</Tab>
-                </TabList>
-                <TabPanel>
-                    <div className="panel-flexbox-chd">
-                        <label className="pt-control pt-switch">
-                            <input type="checkbox" onChange={this.handleChangeMode} checked={this.state.codeEditor}/>
-                            <span className="pt-control-indicator"/>
-                            Code editor
-                        </label>
-                        {this.state.codeEditor
-                            ?
-                            <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
-                            :
-                            <ConfigurationEditor configurations={defaultChdConfigurations}/>
-                        }
-                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
-                    </div>
-                </TabPanel>
-                <TabPanel>
-                    <div className="panel-flexbox-chd">
-                        <CnfConfigurationEditor configurations={defaultCnfConfigurations}/>
-                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
-                    </div>
-                </TabPanel>
-                <TabPanel>
-                    <div className="panel-flexbox-chd">
-                        <ConfigurationEditor configurations={defaultCstConfigurations}/>
-                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
-                    </div>
                 </TabPanel>
             </Tabs>
         );

@@ -7,6 +7,9 @@ export interface State {
 }
 
 export interface DataState {
+    chd: ProcessConfigurations;
+    cnf: ProcessConfigurations;
+    cst: ProcessConfigurations;
 }
 
 export interface CommunicationState {

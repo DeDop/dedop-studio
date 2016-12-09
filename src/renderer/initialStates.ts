@@ -1,12 +1,6 @@
 import {
-    ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfigurations, ConfigurationFile, ControlState,
+    ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfigurations, ConfigurationFile, ControlState, DataState,
 } from "./state";
-
-export const initialControlState: ControlState = {
-    mainPanelTitle: null,
-    selectedConfiguration: null,
-    currentConfiguration: "Alternate Delay-Doppler Processing"
-};
 
 export const processingItems: ProcessingItem[] = [
     {
@@ -342,4 +336,16 @@ export const defaultCstConfigurations: ProcessConfigurations = {
         "value": 86400,
         "description": "Number of seconds in a day"
     }
+};
+
+export const initialControlState: ControlState = {
+    mainPanelTitle: null,
+    selectedConfiguration: null,
+    currentConfiguration: "Alternate Delay-Doppler Processing"
+};
+
+export const initialDataState: DataState = {
+    chd: defaultChdConfigurations,
+    cnf: defaultCnfConfigurations,
+    cst: defaultCstConfigurations
 };

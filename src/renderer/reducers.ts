@@ -1,9 +1,9 @@
-import {ControlState, State} from './state';
+import {ControlState, State, DataState} from './state';
 import * as actions from './actions';
 import {combineReducers} from 'redux';
-import {initialControlState} from "./initialStates";
+import {initialControlState, initialDataState} from "./initialStates";
 
-const dataReducer = (state: Object = {}, action) => {
+const dataReducer = (state: DataState = initialDataState, action) => {
     return state;
 };
 
