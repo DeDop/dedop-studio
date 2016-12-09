@@ -1,12 +1,15 @@
 import * as React from "react";
-import {ProcessingItem} from "../state";
+import {ProcessingItem, State} from "../state";
 import {Cell, Column, Table} from "@blueprintjs/table";
+import {connect} from "react-redux";
+import {updateMainTab} from "../actions";
 
 interface IProcessingTableProps {
+    dispatch?: (action: {type: string, payload: any}) => void;
     processingItems: Array<ProcessingItem>;
 }
 
-export class ProcessingTable extends React.Component<IProcessingTableProps, null> {
+class ProcessingTable extends React.Component<IProcessingTableProps, null> {
 
     public render() {
         const runCell = (rowIndex: number) => {
@@ -27,7 +30,8 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
             )
         };
         const handleOpenResult = () => {
-            console.log("clicked")
+            console.log("clicked");
+            this.props.dispatch(updateMainTab(3));
         };
         const actionCell = (rowIndex: number) => {
             switch (this.props.processingItems[rowIndex].status) {
@@ -75,5 +79,6 @@ export class ProcessingTable extends React.Component<IProcessingTableProps, null
             </Table>
         )
     }
-
 }
+
+export default connect()(ProcessingTable);

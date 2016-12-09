@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {DedopRunSettingsCollapse, DedopL1aInputCollapse} from "../Collapse";
 import {FootprintsPanel} from "../FootprintsPanel";
 import {OrdinaryPanelHeader} from "../PanelHeader";
-import {ProcessingTable} from "../ProcessingTable";
+import ProcessingTable from "../ProcessingTable";
 import {processingItems} from "../../initialStates";
 import {updatePanelTitle} from "../../actions";
 
@@ -18,7 +18,7 @@ function mapStateToProps(): IProcessingPanelProps {
 }
 
 class ProcessingPanel extends React.Component<IProcessingPanelProps, any> {
-    componentWillMount(){
+    componentWillMount() {
         this.props.dispatch(updatePanelTitle("Processing"));
     }
 
