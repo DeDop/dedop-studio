@@ -392,6 +392,11 @@ h1, h2, h3, h4, h5 {
     width: 300px;
 }
 
+.config-flag-panel {
+    display: inline-flex;
+    flex-direction: column;
+}
+
 label.pt-label.pt-inline {
     margin: auto 0;
     color: #34687a;

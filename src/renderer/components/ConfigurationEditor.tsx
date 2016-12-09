@@ -93,7 +93,9 @@ export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, 
                     </tbody>
                 </table>
                 <h4>Flags</h4>
-                {flagElements}
+                <div className="config-flag-panel">
+                    {flagElements}
+                </div>
             </div>
         )
     }
