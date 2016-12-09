@@ -1,10 +1,14 @@
 import * as React from 'react';
 import ConfigurationTabs from "../ConfigurationTabs";
 import {connect} from "react-redux";
-import {updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName} from "../../actions";
+import {
+    updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName,
+    addConfigName
+} from "../../actions";
 import {ConfigurationPanelHeader} from "../PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, ConfigurationFile} from "../../state";
+import {EditableText} from "@blueprintjs/core";
 
 interface IConfigurationPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -54,10 +58,15 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             this.props.dispatch(selectCurrentConfig(key as string));
         };
 
+        const handleAddConfig = (value: string) => {
+            this.props.dispatch(addConfigName(value));
+        };
+
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
                     <ConfigurationPanelHeader title={"Configuration Names"}/>
+                    <EditableText placeholder="add new configuration" onConfirm={handleAddConfig}/>
                     <ListBox numItems={this.props.configurations.length}
                              getItemKey={index => this.props.configurations[index].name}
                              renderItem={renderFileList}

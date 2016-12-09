@@ -5,6 +5,17 @@ import {initialControlState, initialDataState} from "./initialStates";
 
 const dataReducer = (state: DataState = initialDataState, action) => {
     switch (action.type) {
+        case actions.ADD_CONFIG_NAME:
+            return Object.assign({}, state, {
+                configurations: [
+                    ...state.configurations,
+                    {
+                        id: "99",
+                        name: action.payload,
+                        lastUpdated: "01/01/1900 00:00:00"
+                    }
+                ]
+            });
         case actions.DELETE_CONFIG_NAME:
             const configIndexToBeDeleted = action.payload;
             return Object.assign({}, state, {
