@@ -5,13 +5,33 @@ import InputDatasetPanel from './panels/InputDatasetPanel';
 import ConfigurationPanel from './panels/ConfigurationPanel';
 import ProcessingPanel from './panels/ProcessingPanel';
 import ResultPanel from './panels/ResultPanel';
+import {connect} from "react-redux";
+import {State} from "../state";
+import {updateMainTab} from "../actions";
 
-export class MainTabs extends React.Component<any,any> {
+interface IMainTabsProps {
+    dispatch?: (action: {type: string, payload: any}) => void;
+    currentMainTabPanel: number;
+}
+
+function mapStateToProps(state: State) {
+    return {
+        currentMainTabPanel: state.control.currentMainTabPanel
+    }
+}
+
+class MainTabs extends React.Component<IMainTabsProps,any> {
     public render() {
+        const handleChangeTab = (selectedTabIndex: number) => {
+            this.props.dispatch(updateMainTab(selectedTabIndex));
+        };
+
         return (
             <Tabs
                 className="pt-vertical"
                 key="vertical"
+                onChange={handleChangeTab}
+                selectedTabIndex={this.props.currentMainTabPanel ? this.props.currentMainTabPanel : 0}
             >
                 <TabList className="pt-large">
                     <Tab><span className="pt-icon-large pt-icon-database"/></Tab>
@@ -35,3 +55,5 @@ export class MainTabs extends React.Component<any,any> {
         );
     }
 }
+
+export default connect(mapStateToProps)(MainTabs);

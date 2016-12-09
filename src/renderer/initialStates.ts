@@ -341,7 +341,8 @@ export const defaultCstConfigurations: ProcessConfigurations = {
 export const initialControlState: ControlState = {
     mainPanelTitle: null,
     selectedConfiguration: null,
-    currentConfiguration: "Alternate Delay-Doppler Processing"
+    currentConfiguration: "Alternate Delay-Doppler Processing",
+    currentMainTabPanel: 0
 };
 
 export const initialDataState: DataState = {

@@ -5,6 +5,7 @@ import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
 import {ConfigurationEditor, CnfConfigurationEditor} from "./ConfigurationEditor";
 import 'codemirror/mode/javascript/javascript';
 import {connect} from "react-redux";
+import MouseEventHandler = React.MouseEventHandler;
 
 interface IConfigurationTabsProps {
     chd: ProcessConfigurations;
@@ -50,6 +51,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
             mode: this.state.mode
         };
 
+        const handleChangeTab = () => {
+
+        };
+
         return (
             <Tabs key="horizontal">
                 <TabList>
@@ -70,7 +75,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                             :
                             <ConfigurationEditor configurations={this.props.chd}/>
                         }
-                        <button className="pt-button pt-intent-primary pt-fill">Save Configuration</button>
+                        <button className="pt-button pt-intent-primary pt-fill" onClick={handleChangeTab}>Save Configuration</button>
                     </div>
                 </TabPanel>
                 <TabPanel>

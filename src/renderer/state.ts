@@ -19,6 +19,7 @@ export interface ControlState {
     mainPanelTitle ?: string;
     selectedConfiguration ?: string;
     currentConfiguration ?: string;
+    currentMainTabPanel ?: number;
 }
 
 export interface SessionState {

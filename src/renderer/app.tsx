@@ -7,7 +7,7 @@ import {
     HGLContainer, HGLHeader, HGLFooter,
     HGLCenter
 } from './components/Components';
-import {MainTabs} from './components/Tabs';
+import MainTabs from './components/Tabs';
 import TopMenu from './components/TopMenu';
 import {reducers} from './reducers';
 

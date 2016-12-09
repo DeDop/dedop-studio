@@ -21,6 +21,10 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             return Object.assign({}, state, {
                 currentConfiguration: action.payload
             });
+        case actions.UPDATE_MAIN_TAB:
+            return Object.assign({}, state, {
+                currentMainTabPanel: action.payload
+            });
     }
     return state;
 };
