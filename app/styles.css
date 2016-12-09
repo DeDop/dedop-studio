@@ -450,14 +450,20 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-file-name {
     display: table-cell;
     vertical-align: middle;
-    width: 80%;
+    width: 70%;
+}
+
+.dedop-file-current-tag {
+    text-align: center;
+    margin-right: 10px;
+    width: 10%;
 }
 
 .dedop-file-updated-date {
-    width: 20%;
     text-align: right;
     font-size: x-small;
     font-style: italic;
+    width: 20%;
 }
 
 /* Listbox styling =========================================================*/

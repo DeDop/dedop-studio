@@ -32,6 +32,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             return (
                 <div className="dedop-list-box-item" style={isCurrent? {fontWeight: "bold"} : {}}>
                     <span className="dedop-file-name">{configFile.name}</span>
+                    <span className="pt-tag pt-intent-success dedop-file-current-tag"
+                          style={isCurrent ? {visibility: "visible"} : {visibility: "hidden"}}>current</span>
                     <span className="dedop-file-updated-date">{configFile.lastUpdated}</span>
                 </div>
             )
