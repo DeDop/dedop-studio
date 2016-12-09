@@ -12,4 +12,14 @@ describe("Test actions", function () {
         assert.equal(updateConfigSelectionAction.type, "UPDATE_CONFIG_SELECTION");
         assert.equal(updateConfigSelectionAction.payload, "Config2");
     });
+    it('can select current configuration', function () {
+        let selectCurrentConfigAction = actions.selectCurrentConfig("newCurrentConfig");
+        assert.equal(selectCurrentConfigAction.type, "SELECT_CURRENT_CONFIG");
+        assert.equal(selectCurrentConfigAction.payload, "newCurrentConfig");
+    });
+    it('can update main tab selection', function () {
+        let updateMainTabAction = actions.updateMainTab(3);
+        assert.equal(updateMainTabAction.type, "UPDATE_MAIN_TAB");
+        assert.equal(updateMainTabAction.payload, 3);
+    });
 });
