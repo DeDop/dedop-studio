@@ -438,7 +438,7 @@ label.pt-label.pt-inline {
 }
 
 ul.dedop-list-box li.dedop-selected {
-    background-color: rgba(128, 128, 255, 0.6);
+    background-color: rgba(128, 128, 255, 0.2);
 }
 
 .dedop-list-box-item {
