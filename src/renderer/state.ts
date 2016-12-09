@@ -15,6 +15,7 @@ export interface CommunicationState {
 export interface ControlState {
     mainPanelTitle ?: string;
     selectedConfiguration ?: string;
+    currentConfiguration ?: string;
 }
 
 export interface SessionState {

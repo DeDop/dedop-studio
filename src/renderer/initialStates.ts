@@ -4,7 +4,8 @@ import {
 
 export const initialControlState: ControlState = {
     mainPanelTitle: null,
-    selectedConfiguration: null
+    selectedConfiguration: null,
+    currentConfiguration: "Alternate Delay-Doppler Processing"
 };
 
 export const processingItems: ProcessingItem[] = [
