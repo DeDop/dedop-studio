@@ -59,6 +59,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                 <div className="panel-flexbox-item-configurations">
                     <ConfigurationPanelHeader title={"Configuration Names"}/>
                     <ListBox numItems={this.props.configurations.length}
+                             getItemKey={index => this.props.configurations[index].name}
                              renderItem={renderFileList}
                              selection={this.props.selectedConfiguration ? this.props.selectedConfiguration : []}
                              onSelection={handleSelectConfig}
