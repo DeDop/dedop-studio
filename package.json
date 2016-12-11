@@ -48,6 +48,7 @@
     "@types/react-dom": "^0.14.18",
     "@types/react-redux": "^4.4.32",
     "@types/redux": "^3.6.31",
+    "@types/tether": "^1.1.27",
     "cesium": "^1.27.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
