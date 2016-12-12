@@ -419,6 +419,10 @@ label.pt-label.pt-inline {
     text-align: right;
 }
 
+textarea.pt-input {
+    height: 500px;
+}
+
 /* Configurations styling===================================================*/
 
 /* Listbox styling =========================================================*/
