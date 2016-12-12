@@ -6,10 +6,10 @@ import {ConfigurationEditor, CnfConfigurationEditor} from "./ConfigurationEditor
 import 'codemirror/mode/javascript/javascript';
 import {connect} from "react-redux";
 import MouseEventHandler = React.MouseEventHandler;
-import {updateConfigEditorMode} from "../actions";
+import {updateConfigEditorMode, saveConfiguration} from "../actions";
 
 interface IConfigurationTabsProps {
-    dispatch?: (action: {type: string, payload: boolean}) => void;
+    dispatch?: (action: {type: string, payload: any}) => void;
     chd: ProcessConfigurations;
     cnf: ProcessConfigurations;
     cst: ProcessConfigurations;
@@ -71,8 +71,6 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     };
 
     public render() {
-
-
         const options = {
             lineNumbers: true,
             mode: this.state.mode
@@ -80,6 +78,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
 
         const handleSaveConfig = () => {
             console.log("saving configuration - not yet implemented", JSON.parse(this.state.chdCode));
+
+            const chd = JSON.parse(this.state.chdCode);
+            const cnf = JSON.parse(this.state.cnfCode);
+            const cst = JSON.parse(this.state.cstCode);
+            this.props.dispatch(saveConfiguration(chd, cnf, cst));
         };
 
         return (
@@ -102,7 +105,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <Tab>Constants</Tab>
                     </TabList>
                     <TabPanel>
-                        <div className="panel-flexbox-chd">
+                        <div className="panel-flexbox-configs">
                             {this.props.codeEditorActive
                                 ?
                                 <textarea className="pt-input pt-fill"
@@ -117,7 +120,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         </div>
                     </TabPanel>
                     <TabPanel>
-                        <div className="panel-flexbox-chd">
+                        <div className="panel-flexbox-configs">
                             {this.props.codeEditorActive
                                 ?
                                 <textarea className="pt-input pt-fill"
@@ -132,7 +135,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         </div>
                     </TabPanel>
                     <TabPanel>
-                        <div className="panel-flexbox-chd">
+                        <div className="panel-flexbox-configs">
                             {this.props.codeEditorActive
                                 ?
                                 <textarea className="pt-input pt-fill"

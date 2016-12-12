@@ -1,3 +1,5 @@
+import {ProcessConfigurations} from './state';
+
 export const UPDATE_PANEL_TITLE = 'UPDATE_PANEL_TITLE';
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
@@ -5,6 +7,7 @@ export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
+export const SAVE_CONFIGURATION = 'SAVE_CONFIGURATION';
 
 export function updatePanelTitle(panelTitle: string) {
     return {type: UPDATE_PANEL_TITLE, payload: panelTitle};
@@ -32,4 +35,10 @@ export function updateMainTab(newTabId: number) {
 
 export function updateConfigEditorMode(codeEditorActive: boolean) {
     return {type: UPDATE_CONFIG_EDITOR_MODE, payload: codeEditorActive};
+}
+
+export function saveConfiguration(chd: ProcessConfigurations,
+                                  cnf: ProcessConfigurations,
+                                  cst: ProcessConfigurations) {
+    return {type: SAVE_CONFIGURATION, payload: {chd: chd, cnf: cnf, cst: cst}};
 }

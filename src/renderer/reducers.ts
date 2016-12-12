@@ -24,6 +24,12 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                     ...state.configurations.slice(configIndexToBeDeleted + 1)
                 ]
             });
+        case actions.SAVE_CONFIGURATION:
+            return Object.assign({}, state, {
+                chd: action.payload.chd,
+                cnf: action.payload.cnf,
+                cst: action.payload.cst
+            });
     }
     return state;
 };
