@@ -25,8 +25,8 @@ export function addConfigName(name: string) {
     return {type: ADD_CONFIG_NAME, payload: name};
 }
 
-export function deleteConfigName(configIndex: number) {
-    return {type: DELETE_CONFIG_NAME, payload: configIndex};
+export function deleteConfigName(configName: string) {
+    return {type: DELETE_CONFIG_NAME, payload: configName};
 }
 
 export function updateMainTab(newTabId: number) {

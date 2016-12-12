@@ -33,17 +33,12 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         const renderFileList = (itemIndex: number) => {
             const configFile = this.props.configurations[itemIndex];
             const isCurrent = configFile.name == this.props.currentConfiguration;
-            const handleDeleteConfig = (itemIndex: number) => {
-                this.props.dispatch(deleteConfigName(itemIndex));
-            };
             return (
                 <div className="dedop-list-box-item" style={isCurrent? {fontWeight: "bold"} : {}}>
                     <span className="dedop-file-name">{configFile.name}</span>
                     <span className="pt-tag pt-intent-success dedop-file-current-tag"
                           style={isCurrent ? {visibility: "visible"} : {visibility: "hidden"}}>current</span>
                     <span className="dedop-file-updated-date">{configFile.lastUpdated}</span>
-                    <span className="pt-icon-standard pt-icon-delete dedop-file-delete"
-                          onClick={handleDeleteConfig.bind(this, itemIndex)}/>
                 </div>
             )
         };
@@ -60,18 +55,24 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             this.props.dispatch(addConfigName("new"));
         };
 
+        const handleDeleteConfig = () => {
+            this.props.dispatch(deleteConfigName(this.props.selectedConfiguration[0]));
+        };
+
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
                     <ConfigurationPanelHeader title="Configuration Names" icon="pt-icon-properties"/>
                     <div className="configuration-file-buttons">
-                        <button className="pt-button pt-intent-primary configuration-file-button" onClick={handleAddConfig}>
+                        <button className="pt-button pt-intent-primary configuration-file-button"
+                                onClick={handleAddConfig}>
                             Add
                         </button>
                         <button className="pt-button configuration-file-button">
                             Rename
                         </button>
-                        <button className="pt-button configuration-file-button">
+                        <button className="pt-button configuration-file-button"
+                                onClick={handleDeleteConfig}>
                             Remove
                         </button>
                     </div>

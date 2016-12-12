@@ -17,11 +17,12 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         case actions.DELETE_CONFIG_NAME:
-            const configIndexToBeDeleted = action.payload;
+            const configName = action.payload;
+            const index = state.configurations.findIndex((x) => x.name === configName);
             return Object.assign({}, state, {
                 configurations: [
-                    ...state.configurations.slice(0, configIndexToBeDeleted),
-                    ...state.configurations.slice(configIndexToBeDeleted + 1)
+                    ...state.configurations.slice(0, index),
+                    ...state.configurations.slice(index + 1)
                 ]
             });
         case actions.SAVE_CONFIGURATION:
