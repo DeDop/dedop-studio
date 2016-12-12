@@ -6,7 +6,7 @@ export interface ITreeExampleState {
     nodes: ITreeNode[];
 }
 
-export default class TreeMenu extends React.Component<any,any> {
+export class OutputFilesTreeMenu extends React.Component<any,any> {
     public constructor() {
         super();
         const tooltipLabel = <Tooltip content="An eye!"><span className="pt-icon-standard pt-icon-eye-open"/></Tooltip>;
@@ -17,20 +17,20 @@ export default class TreeMenu extends React.Component<any,any> {
                     hasCaret: true,
                     iconName: "folder-close",
                     isExpanded: false,
-                    label: "Ocean",
+                    label: "Alternate Delay-Doppler Processing",
                 },
                 {
                     iconName: "folder-close",
                     isExpanded: true,
-                    label: <Tooltip content="Land">Land</Tooltip>,
+                    label: "Modified Surface Locations",
                     childNodes: [
                         {
                             iconName: "document",
-                            label: <Tooltip content="Alternate Delay-Doppler Processing">Alternate Delay-Doppler Processing</Tooltip>
+                            label: "L1B_Output1"
                         },
                         {
                             iconName: "document",
-                            label: <Tooltip content="Modified Surface Locations">Modified Surface Locations</Tooltip>
+                            label: "L1B_Output2"
                         },
                     ],
                 },
@@ -38,25 +38,25 @@ export default class TreeMenu extends React.Component<any,any> {
                     hasCaret: true,
                     iconName: "folder-close",
                     isExpanded: false,
-                    label: "Lakes",
+                    label: "Config1",
                 },
                 {
                     hasCaret: true,
                     iconName: "folder-close",
                     isExpanded: false,
-                    label: "Amazon Basin",
+                    label: "Config2",
                 },
                 {
                     hasCaret: true,
                     iconName: "folder-close",
                     isExpanded: false,
-                    label: "Icebergs",
+                    label: "Config3",
                 },
                 {
                     hasCaret: true,
                     iconName: "folder-close",
                     isExpanded: false,
-                    label: "Ice",
+                    label: "Config4",
                 },
             ],
         } as any as ITreeExampleState;

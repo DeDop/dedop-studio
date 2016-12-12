@@ -2,8 +2,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 
 import {DedopRunSettingsCollapse, DedopL1aInputCollapse, DedopRunOutputCollapse} from "../Collapse";
-import {FootprintsPanel} from "../FootprintsPanel";
-import {OrdinaryPanelHeader} from "../PanelHeader";
+import {FootprintsPanel} from "./FootprintsPanel";
+import {OrdinaryPanelHeader} from "./PanelHeader";
 import ProcessingTable from "../ProcessingTable";
 import {processingItems} from "../../initialStates";
 import {updatePanelTitle} from "../../actions";

@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import * as React from "react";
 import {DedopL1aInputListCollapse, DedopGlobalMetadataCollapse} from "../Collapse";
 import {dummyInputL1aFiles} from "../../initialStates";
-import {FootprintsPanel} from "../FootprintsPanel";
+import {FootprintsPanel} from "./FootprintsPanel";
 import {updatePanelTitle} from '../../actions';
 
 interface IInputDatasetPanelProps {

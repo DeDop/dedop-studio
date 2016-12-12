@@ -5,7 +5,7 @@ import {
     updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName,
     addConfigName
 } from "../../actions";
-import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "../PanelHeader";
+import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, ConfigurationFile} from "../../state";
 import {EditableText} from "@blueprintjs/core";

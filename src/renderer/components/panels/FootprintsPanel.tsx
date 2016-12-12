@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CesiumView} from "./cesium/View";
+import {CesiumView} from "../cesium/View";
 import {FootprintPanelHeader} from "./PanelHeader";
 
 export class FootprintsPanel extends React.Component<any, any> {
