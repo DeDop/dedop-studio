@@ -25,11 +25,11 @@ export function main() {
                     <MainTabs/>
                 </HGLCenter>
                 <HGLFooter>
-                    <div className="footer-developed-by">developed by Brockmann Consult GmbH</div>
-                    <div className="footer-core-status">
+                    <div className="footer-developed-by">Ready.</div>
+                    {/*<div className="footer-core-status">
                         <span className="core-status-text">dedop-core</span>
                         <span className="pt-icon pt-icon-disable"/>
-                    </div>
+                    </div>*/}
                 </HGLFooter>
             </HGLContainer>
         </Provider>,
