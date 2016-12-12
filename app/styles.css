@@ -449,12 +449,12 @@ textarea.pt-input {
     border-bottom: none
 }
 
-.dedop-list-box li:hover {
-    background-color: rgba(248, 250, 220, 0.4);
-}
-
 .dedop-list-box > li:nth-child(even) {
     background-color: rgba(52, 104, 122, 0.2);
+}
+
+.dedop-list-box li:hover {
+    background-color: rgba(248, 250, 220, 0.4);
 }
 
 ul.dedop-list-box li.dedop-selected {
