@@ -8,7 +8,6 @@ import {
 import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, ConfigurationFile} from "../../state";
-import {EditableText} from "@blueprintjs/core";
 
 interface IConfigurationPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -57,16 +56,25 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             this.props.dispatch(selectCurrentConfig(key as string));
         };
 
-        const handleAddConfig = (value: string) => {
-            this.props.dispatch(addConfigName(value));
+        const handleAddConfig = () => {
+            this.props.dispatch(addConfigName("new"));
         };
 
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
-                    <ConfigurationPanelHeader title="Configuration Names"/>
-                    <EditableText placeholder="add new configuration" onConfirm={handleAddConfig}
-                                  className="dedop-config-add-editable"/>
+                    <ConfigurationPanelHeader title="Configuration Names" icon="pt-icon-properties"/>
+                    <div className="configuration-file-buttons">
+                        <button className="pt-button pt-intent-primary configuration-file-button" onClick={handleAddConfig}>
+                            Add
+                        </button>
+                        <button className="pt-button configuration-file-button">
+                            Rename
+                        </button>
+                        <button className="pt-button configuration-file-button">
+                            Remove
+                        </button>
+                    </div>
                     <ListBox numItems={this.props.configurations.length}
                              getItemKey={index => this.props.configurations[index].name}
                              renderItem={renderFileList}
@@ -76,7 +84,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                     />
                 </div>
                 <div className="panel-flexbox-item">
-                    <OrdinaryPanelHeader title="Configuration Details"/>
+                    <OrdinaryPanelHeader title="Configuration Details" icon="pt-icon-properties"/>
                     <ConfigurationTabs/>
                 </div>
             </div>
