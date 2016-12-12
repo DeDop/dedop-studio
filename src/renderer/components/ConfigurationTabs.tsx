@@ -35,9 +35,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.updateCstCode = this.updateCstCode.bind(this);
 
         this.state = {
-            chdCode: (JSON.stringify(this.props.chd)),
-            cnfCode: (JSON.stringify(this.props.cnf)),
-            cstCode: (JSON.stringify(this.props.cst)),
+            chdCode: (JSON.stringify(this.props.chd, null, 4)),
+            cnfCode: (JSON.stringify(this.props.cnf, null, 4)),
+            cstCode: (JSON.stringify(this.props.cst, null, 4)),
             mode: "javascript"
         };
     }
