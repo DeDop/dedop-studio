@@ -30,11 +30,14 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
         this.updateCode = this.updateCode.bind(this);
+        this.updateChdCode = this.updateChdCode.bind(this);
+        this.updateCnfCode = this.updateCnfCode.bind(this);
+        this.updateCstCode = this.updateCstCode.bind(this);
 
         this.state = {
             chdCode: (JSON.stringify(this.props.chd)),
-            cnfCode: "// CNF testCode",
-            cstCode: "// CST testCode",
+            cnfCode: (JSON.stringify(this.props.cnf)),
+            cstCode: (JSON.stringify(this.props.cst)),
             mode: "javascript"
         };
     }
@@ -52,6 +55,18 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     private updateChdCode(event: any) {
         this.setState({
             chdCode: event.target.value,
+        });
+    };
+
+    private updateCnfCode(event: any) {
+        this.setState({
+            cnfCode: event.target.value,
+        });
+    };
+
+    private updateCstCode(event: any) {
+        this.setState({
+            cstCode: event.target.value,
         });
     };
 
@@ -94,7 +109,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                           dir="auto"
                                           ref="chdEditor"
                                           value={this.state.chdCode}
-                                          onChange={this.updateChdCode.bind(this)}
+                                          onChange={this.updateChdCode}
                                 />
                                 :
                                 <ConfigurationEditor configurations={this.props.chd}/>
@@ -105,7 +120,12 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <div className="panel-flexbox-chd">
                             {this.props.codeEditorActive
                                 ?
-                                <CodeMirror value={this.state.cnfCode} onChange={this.updateCode} options={options}/>
+                                <textarea className="pt-input pt-fill"
+                                          dir="auto"
+                                          ref="cnfEditor"
+                                          value={this.state.cnfCode}
+                                          onChange={this.updateCnfCode}
+                                />
                                 :
                                 <CnfConfigurationEditor configurations={this.props.cnf}/>
                             }
@@ -115,7 +135,12 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <div className="panel-flexbox-chd">
                             {this.props.codeEditorActive
                                 ?
-                                <CodeMirror value={this.state.cstCode} onChange={this.updateCode} options={options}/>
+                                <textarea className="pt-input pt-fill"
+                                          dir="auto"
+                                          ref="cnfEditor"
+                                          value={this.state.cstCode}
+                                          onChange={this.updateCstCode}
+                                />
                                 :
                                 <ConfigurationEditor configurations={this.props.cst}/>
                             }
