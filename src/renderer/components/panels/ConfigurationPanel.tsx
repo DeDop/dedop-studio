@@ -56,7 +56,9 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         };
 
         const handleDeleteConfig = () => {
-            this.props.dispatch(deleteConfigName(this.props.selectedConfiguration[0]));
+            if (this.props.selectedConfiguration[0]) {
+                this.props.dispatch(deleteConfigName(this.props.selectedConfiguration[0]));
+            }
         };
 
         return (
