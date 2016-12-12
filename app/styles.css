@@ -52,7 +52,6 @@ input, button, textarea, :focus {
     flex-direction: row;
     flex: none; /* same as "flex: 0 0 auto;" */
     align-items: center;
-    justify-content: center;
 }
 
 .hgl-midsection {
@@ -132,7 +131,6 @@ body {
 
 .hgl-footer {
     background: #34687a;
-    text-align: center;
 }
 
 .hgl-center {

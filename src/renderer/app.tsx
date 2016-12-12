@@ -25,11 +25,11 @@ export function main() {
                     <MainTabs/>
                 </HGLCenter>
                 <HGLFooter>
-                    <div className="footer-developed-by">Ready.</div>
+                    <div style={{margin: '0 0 0 10px'}}>Ready.</div>
                     {/*<div className="footer-core-status">
-                        <span className="core-status-text">dedop-core</span>
-                        <span className="pt-icon pt-icon-disable"/>
-                    </div>*/}
+                     <span className="core-status-text">dedop-core</span>
+                     <span className="pt-icon pt-icon-disable"/>
+                     </div>*/}
                 </HGLFooter>
             </HGLContainer>
         </Provider>,
