@@ -6,37 +6,41 @@ import {ConfigurationEditor, CnfConfigurationEditor} from "./ConfigurationEditor
 import 'codemirror/mode/javascript/javascript';
 import {connect} from "react-redux";
 import MouseEventHandler = React.MouseEventHandler;
+import {updateConfigEditorMode} from "../actions";
 
 interface IConfigurationTabsProps {
+    dispatch?: (action: {type: string, payload: boolean}) => void;
     chd: ProcessConfigurations;
     cnf: ProcessConfigurations;
     cst: ProcessConfigurations;
+    codeEditorActive: boolean;
 }
 
 function mapStateToProps(state: State): IConfigurationTabsProps {
     return {
         chd: state.data.chd,
         cnf: state.data.cnf,
-        cst: state.data.cst
+        cst: state.data.cst,
+        codeEditorActive: state.control.codeEditorActive
     }
 }
 
 class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
-    constructor() {
-        super();
-        this.state = {
-            codeEditor: false,
-            code: "// testCode",
-            mode: "markdown"
-        };
+    constructor(props) {
+        super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
         this.updateCode = this.updateCode.bind(this);
+
+        this.state = {
+            chdCode: (JSON.stringify(this.props.chd)),
+            cnfCode: "// CNF testCode",
+            cstCode: "// CST testCode",
+            mode: "javascript"
+        };
     }
 
     private handleChangeMode() {
-        this.setState({
-            codeEditor: !this.state.codeEditor
-        });
+        this.props.dispatch(updateConfigEditorMode(this.props.codeEditorActive));
     }
 
     private updateCode(newCode: string) {
@@ -45,14 +49,22 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         });
     };
 
+    private updateChdCode(event: any) {
+        this.setState({
+            chdCode: event.target.value,
+        });
+    };
+
     public render() {
+
+
         const options = {
             lineNumbers: true,
             mode: this.state.mode
         };
 
-        const handleChangeTab = () => {
-
+        const handleSaveConfig = () => {
+            console.log("saving configuration - not yet implemented", JSON.parse(this.state.chdCode));
         };
 
         return (
@@ -64,7 +76,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <span className="pt-control-indicator"/>
                         Code editor
                     </label>
-                    <button className="pt-button pt-intent-primary" onClick={handleChangeTab}>
+                    <button className="pt-button pt-intent-primary" onClick={handleSaveConfig}>
                         Save Configuration
                     </button>
                 </div>
@@ -76,9 +88,14 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                     </TabList>
                     <TabPanel>
                         <div className="panel-flexbox-chd">
-                            {this.state.codeEditor
+                            {this.props.codeEditorActive
                                 ?
-                                <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
+                                <textarea className="pt-input pt-fill"
+                                          dir="auto"
+                                          ref="chdEditor"
+                                          value={this.state.chdCode}
+                                          onChange={this.updateChdCode.bind(this)}
+                                />
                                 :
                                 <ConfigurationEditor configurations={this.props.chd}/>
                             }
@@ -86,9 +103,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                     </TabPanel>
                     <TabPanel>
                         <div className="panel-flexbox-chd">
-                            {this.state.codeEditor
+                            {this.props.codeEditorActive
                                 ?
-                                <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
+                                <CodeMirror value={this.state.cnfCode} onChange={this.updateCode} options={options}/>
                                 :
                                 <CnfConfigurationEditor configurations={this.props.cnf}/>
                             }
@@ -96,9 +113,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                     </TabPanel>
                     <TabPanel>
                         <div className="panel-flexbox-chd">
-                            {this.state.codeEditor
+                            {this.props.codeEditorActive
                                 ?
-                                <CodeMirror value={this.state.code} onChange={this.updateCode} options={options}/>
+                                <CodeMirror value={this.state.cstCode} onChange={this.updateCode} options={options}/>
                                 :
                                 <ConfigurationEditor configurations={this.props.cst}/>
                             }

@@ -4,6 +4,7 @@ export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
+export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 
 export function updatePanelTitle(panelTitle: string) {
     return {type: UPDATE_PANEL_TITLE, payload: panelTitle};
@@ -29,3 +30,6 @@ export function updateMainTab(newTabId: number) {
     return {type: UPDATE_MAIN_TAB, payload: newTabId};
 }
 
+export function updateConfigEditorMode(codeEditorActive: boolean) {
+    return {type: UPDATE_CONFIG_EDITOR_MODE, payload: codeEditorActive};
+}

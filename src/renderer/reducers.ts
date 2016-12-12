@@ -46,6 +46,10 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             return Object.assign({}, state, {
                 currentMainTabPanel: action.payload
             });
+        case actions.UPDATE_CONFIG_EDITOR_MODE:
+            return Object.assign({}, state, {
+                codeEditorActive: !action.payload
+            });
     }
     return state;
 };

@@ -342,7 +342,8 @@ export const initialControlState: ControlState = {
     mainPanelTitle: null,
     selectedConfiguration: null,
     currentConfiguration: "Alternate Delay-Doppler Processing",
-    currentMainTabPanel: 0
+    currentMainTabPanel: 0,
+    codeEditorActive: false
 };
 
 export const initialDataState: DataState = {

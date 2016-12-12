@@ -21,6 +21,7 @@ export interface ControlState {
     selectedConfiguration ?: string;
     currentConfiguration ?: string;
     currentMainTabPanel ?: number;
+    codeEditorActive ?: boolean;
 }
 
 export interface SessionState {
