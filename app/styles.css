@@ -200,7 +200,7 @@ h1, h2, h3, h4, h5 {
 .panel-flexbox-item-configurations {
     flex-grow: 1;
     flex-shrink: 0;
-    flex-basis: 250px;
+    flex-basis: 400px;
 
     margin: 0 10px 0 0;
 }
@@ -476,7 +476,7 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-file-current-tag {
     text-align: center;
     margin-right: 10px;
-    width: 10%;
+    width: 15%;
 }
 
 .dedop-file-updated-date {
@@ -484,12 +484,6 @@ ul.dedop-list-box li.dedop-selected {
     font-size: x-small;
     font-style: italic;
     width: 20%;
-}
-
-.dedop-file-delete {
-    color: rgba(255, 0, 0, 0.6);
-    text-align: right;
-    width: 5%;
 }
 
 .dedop-config-add-editable {
