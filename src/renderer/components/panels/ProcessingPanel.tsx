@@ -25,20 +25,22 @@ class ProcessingPanel extends React.Component<IProcessingPanelProps, any> {
     public render() {
         return (
             <div className="panel-flexbox-vertical">
-                <div className="panel-flexbox vertical-half">
+                <div className="panel-flexbox">
                     <div className="flexbox-item-pico-config">
                         <DedopL1aInputCollapse panelTitle="L1A Input" collapseIcon="pt-icon-database"/>
                         <DedopRunSettingsCollapse panelTitle="Run Settings" collapseIcon="pt-icon-properties"/>
                         <DedopRunOutputCollapse panelTitle="L1B & L1BS Output" collapseIcon="pt-icon-document"/>
-                        <button type="button" className="pt-button pt-fill">Run</button>
+
                     </div>
-                    <div className="flexbox-item-pico-footprints">
-                        <FootprintsPanel/>
+                    <div className="panel-flexbox-item">
+                        <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
+                        <div style={{textAlign: 'right'}}>
+                            <button type="button" className="pt-button pt-intent-primary" style={{margin: '10px 0'}}>
+                                Run
+                            </button>
+                        </div>
+                        <ProcessingTable processingItems={processingItems}/>
                     </div>
-                </div>
-                <div className="flexbox-item-pico-runs">
-                    <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
-                    <ProcessingTable processingItems={processingItems}/>
                 </div>
             </div>
         )
