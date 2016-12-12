@@ -21,14 +21,14 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
-                    <OrdinaryPanelHeader title="Output Files"/>
+                    <OrdinaryPanelHeader title="Output Files" icon="pt-icon-document"/>
                     <OutputFilesTreeMenu/>
                     <button className="pt-button pt-intent-primary">
                         Open Folder
                     </button>
                 </div>
                 <div className="panel-flexbox-item">
-                    <OrdinaryPanelHeader title="Configuration Details"/>
+                    <OrdinaryPanelHeader title="Analysis Configuration" icon="pt-icon-timeline-area-chart"/>
                 </div>
             </div>
         )

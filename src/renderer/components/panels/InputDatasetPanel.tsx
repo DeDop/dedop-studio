@@ -24,7 +24,7 @@ class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
                 <div className="panel-flexbox-item">
                     <DedopL1aInputListCollapse panelTitle="L1A Datasets" collapseIcon="pt-icon-document"
                                                l1aInputFileNames={dummyInputL1aFiles}/>
-                    <DedopGlobalMetadataCollapse panelTitle="Global Metadata" collapseIcon="pt-icon-properties"/>
+                    <DedopGlobalMetadataCollapse panelTitle="Global Metadata" collapseIcon="pt-icon-th-list"/>
                 </div>
                 <div className="panel-flexbox-item">
                     <FootprintsPanel/>
