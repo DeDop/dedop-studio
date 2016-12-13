@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {updatePanelTitle} from "../../actions";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {OutputFilesTreeMenu} from "../TreeMenu";
+import {AnalysisTabs} from "../AnalysisTabs";
 
 interface IResultPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
@@ -22,7 +23,7 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
                     <OrdinaryPanelHeader title="Output Files" icon="pt-icon-document"/>
-                    <OutputFilesTreeMenu/>
+                    <AnalysisTabs/>
                     <button className="pt-button pt-intent-primary">
                         Open Folder
                     </button>
