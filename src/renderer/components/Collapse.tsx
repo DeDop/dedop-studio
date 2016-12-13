@@ -218,25 +218,15 @@ export class DedopRunOutputCollapse extends React.Component<IPanelProps, ICollap
                             <tbody>
                             <tr>
                                 <td>
-                                    Name
+                                    Output directory
                                 </td>
                                 <td style={{width: '100%'}}>
-                                    <input className="pt-input pt-fill" type="text" placeholder="Process name"
-                                           dir="auto"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Configuration
-                                </td>
-                                <td style={{width: '100%'}}>
-                                    <div className="pt-select pt-fill">
-                                        <select>
-                                            <option selected>Select a configuration...</option>
-                                            <option value="1">Alternate Delay-Doppler Processing</option>
-                                            <option value="2">Modified Surface Locations</option>
-                                        </select>
-                                    </div>
+                                    <label className="pt-file-upload pt-fill l1a-input-file-upload">
+                                        <input type="file"/>
+                                        <span className="pt-file-upload-input l1a-input-file-upload">
+                                            Choose directory...
+                                        </span>
+                                    </label>
                                 </td>
                             </tr>
                             </tbody>
