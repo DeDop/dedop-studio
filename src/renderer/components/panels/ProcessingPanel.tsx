@@ -35,7 +35,8 @@ class ProcessingPanel extends React.Component<IProcessingPanelProps, any> {
                     <div className="panel-flexbox-item">
                         <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
                         <div style={{textAlign: 'right'}}>
-                            <button type="button" className="pt-button pt-intent-primary" style={{margin: '10px 0'}}>
+                            <button type="button" className="pt-button pt-icon-standard pt-icon-play pt-intent-primary"
+                                    style={{margin: '10px 0'}}>
                                 Run
                             </button>
                         </div>
