@@ -30,6 +30,27 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
                 </div>
                 <div className="panel-flexbox-item">
                     <OrdinaryPanelHeader title="Analysis Configuration" icon="pt-icon-timeline-area-chart"/>
+                    <div className="dedop-panel-content">
+                        <div className="pt-select pt-fill">
+                            <select>
+                                <option selected>Select a notebook file...</option>
+                                <option value="1">compare-1.ipynb</option>
+                                <option value="2">inspect-1.ipynb</option>
+                            </select>
+                        </div>
+                        <textarea className="pt-input pt-fill"
+                                  dir="auto"
+                                  placeholder="create your own Python script"
+                                  style={{overflow: "auto", margin: '10px 0'}}
+                        />
+                        <div className="pt-select pt-fill">
+                            <select>
+                                <option placeholder="">or select a Python script...</option>
+                                <option value="1">compare-1.py</option>
+                                <option value="2">inspect-1.py</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
