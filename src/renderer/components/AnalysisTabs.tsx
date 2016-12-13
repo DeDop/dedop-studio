@@ -14,41 +14,43 @@ export class AnalysisTabs extends React.Component<IAnalysisTabsProps,any> {
 
     public render() {
         return (
-            <Tabs key="horizontal">
-                <TabList>
-                    <Tab>Single</Tab>
-                    <Tab>Multi</Tab>
-                </TabList>
-                <TabPanel>
-                    <div className="panel-flexbox-configs">
-                        <div className="pt-select pt-fill">
-                            <select>
-                                <option selected>Select a configuration...</option>
-                                <option value="1">Alternate Delay-Doppler Processing</option>
-                                <option value="2">Modified Surface Locations</option>
-                            </select>
+            <div className="dedop-panel-content">
+                <Tabs key="horizontal">
+                    <TabList>
+                        <Tab>Single</Tab>
+                        <Tab>Multi</Tab>
+                    </TabList>
+                    <TabPanel>
+                        <div className="panel-flexbox-configs">
+                            <div className="pt-select pt-fill">
+                                <select>
+                                    <option selected>Select a configuration...</option>
+                                    <option value="1">Alternate Delay-Doppler Processing</option>
+                                    <option value="2">Modified Surface Locations</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                </TabPanel>
-                <TabPanel>
-                    <div className="panel-flexbox-configs">
-                        <div className="pt-select pt-fill" style={{margin: '0 0 10px 0'}}>
-                            <select>
-                                <option selected>Select a configuration 1...</option>
-                                <option value="1">Alternate Delay-Doppler Processing</option>
-                                <option value="2">Modified Surface Locations</option>
-                            </select>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className="panel-flexbox-configs">
+                            <div className="pt-select pt-fill" style={{margin: '0 0 10px 0'}}>
+                                <select>
+                                    <option selected>Select a configuration 1...</option>
+                                    <option value="1">Alternate Delay-Doppler Processing</option>
+                                    <option value="2">Modified Surface Locations</option>
+                                </select>
+                            </div>
+                            <div className="pt-select pt-fill">
+                                <select>
+                                    <option selected>Select a configuration 2...</option>
+                                    <option value="1">Alternate Delay-Doppler Processing</option>
+                                    <option value="2">Modified Surface Locations</option>
+                                </select>
+                            </div>
                         </div>
-                        <div className="pt-select pt-fill">
-                            <select>
-                                <option selected>Select a configuration 2...</option>
-                                <option value="1">Alternate Delay-Doppler Processing</option>
-                                <option value="2">Modified Surface Locations</option>
-                            </select>
-                        </div>
-                    </div>
-                </TabPanel>
-            </Tabs>
+                    </TabPanel>
+                </Tabs>
+            </div>
         );
     }
 }

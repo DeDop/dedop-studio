@@ -24,9 +24,11 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
                 <div className="panel-flexbox-item-configurations">
                     <OrdinaryPanelHeader title="Output Files" icon="pt-icon-document"/>
                     <AnalysisTabs/>
-                    <button className="pt-button pt-intent-primary">
-                        Open Folder
-                    </button>
+                    <div style={{textAlign: 'right'}}>
+                        <button className="pt-button pt-intent-primary" style={{margin: '10px 0'}}>
+                            Open Folder
+                        </button>
+                    </div>
                 </div>
                 <div className="panel-flexbox-item">
                     <OrdinaryPanelHeader title="Analysis Configuration" icon="pt-icon-timeline-area-chart"/>
@@ -49,6 +51,11 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
                                 <option value="1">compare-1.py</option>
                                 <option value="2">inspect-1.py</option>
                             </select>
+                        </div>
+                        <div style={{textAlign: 'right'}}>
+                            <button className="pt-button pt-intent-primary" style={{margin: '10px 0'}}>
+                                Run
+                            </button>
                         </div>
                     </div>
                 </div>
