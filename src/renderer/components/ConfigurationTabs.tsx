@@ -113,6 +113,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                           ref="chdEditor"
                                           value={this.state.chdCode}
                                           onChange={this.updateChdCode}
+                                          style={{overflow: "auto"}}
                                 />
                                 :
                                 <ConfigurationEditor configurations={this.props.chd}/>
@@ -128,6 +129,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                           ref="cnfEditor"
                                           value={this.state.cnfCode}
                                           onChange={this.updateCnfCode}
+                                          style={{overflow: "auto"}}
                                 />
                                 :
                                 <CnfConfigurationEditor configurations={this.props.cnf}/>
@@ -143,6 +145,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                           ref="cnfEditor"
                                           value={this.state.cstCode}
                                           onChange={this.updateCstCode}
+                                          style={{overflow: "auto"}}
                                 />
                                 :
                                 <ConfigurationEditor configurations={this.props.cst}/>

@@ -32,7 +32,7 @@ export class AnalysisTabs extends React.Component<IAnalysisTabsProps,any> {
                 </TabPanel>
                 <TabPanel>
                     <div className="panel-flexbox-configs">
-                        <div className="pt-select pt-fill">
+                        <div className="pt-select pt-fill" style={{margin: '0 0 10px 0'}}>
                             <select>
                                 <option selected>Select a configuration 1...</option>
                                 <option value="1">Alternate Delay-Doppler Processing</option>
