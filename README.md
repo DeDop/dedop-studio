@@ -4,9 +4,14 @@
 # dedop-studio
 DeDop Desktop Application
 
+## Pre-requisites
+* nodejs v6.9.1
+* npm v3.10.8
+* git
+
 ## How-to-start
-Make sure you have **git** and **npm** installed.
 * `git clone https://github.com/DeDop/dedop-studio.git`
 * `cd dedop-studio`
 * `npm install`
+* `npm run compile`
 * `npm start`
