@@ -89,7 +89,7 @@ export class DedopL1aInputListCollapse extends React.Component<IL1aInputListProp
                     <div className="dedop-panel-content">
                         <label className="pt-file-upload pt-fill l1a-input-file-upload">
                             <input type="file"/>
-                            <span className="pt-file-upload-input l1a-input-file-upload">Choose directory...</span>
+                            <span className="pt-file-upload-input">Choose directory...</span>
                         </label>
                         <ListBox numItems={this.props.l1aInputFileNames.length} renderItem={renderSingleItem}/>
                     </div>
@@ -223,7 +223,7 @@ export class DedopRunOutputCollapse extends React.Component<IPanelProps, ICollap
                                 <td style={{width: '100%'}}>
                                     <label className="pt-file-upload pt-fill l1a-input-file-upload">
                                         <input type="file"/>
-                                        <span className="pt-file-upload-input l1a-input-file-upload">
+                                        <span className="pt-file-upload-input">
                                             Choose directory...
                                         </span>
                                     </label>
@@ -307,7 +307,7 @@ export class DedopL1aInputCollapse extends React.Component<IPanelProps, IL1aInpu
                                 <label className="pt-file-upload pt-fill l1a-input-file-upload">
                                     <input type="file" disabled={this.state.sourceType == "single"}/>
                                     <span
-                                        className="pt-file-upload-input l1a-input-file-upload">Choose directory...</span>
+                                        className="pt-file-upload-input">Choose directory...</span>
                                 </label>
                             </td>
                         </tr>
