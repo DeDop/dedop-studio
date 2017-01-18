@@ -1,9 +1,5 @@
 @import url(node_modules/cesium/Build/Cesium/Widgets/widgets.css);
 
-* {
-    overflow: hidden;
-}
-
 html, body, #container {
     width: 100vw;
     height: 100vh;
@@ -227,7 +223,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .pt-tabs.pt-vertical > .pt-tab-list {
-    padding: 0;
+    padding: 0 5px 0 0;
 }
 
 /*Adjust the vertical tab list shadow size*/
