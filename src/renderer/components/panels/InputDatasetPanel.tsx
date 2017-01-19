@@ -4,6 +4,7 @@ import {DedopL1aInputListCollapse, DedopGlobalMetadataCollapse} from "../Collaps
 import {dummyInputL1aFiles} from "../../initialStates";
 import {FootprintsPanel} from "./FootprintsPanel";
 import {updatePanelTitle} from '../../actions';
+import {SourceDataPanel} from "./SourceDataPanel";
 
 interface IInputDatasetPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
@@ -14,7 +15,7 @@ function mapStateToProps(): IInputDatasetPanelProps {
 }
 
 class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
-    componentWillMount(){
+    componentWillMount() {
         this.props.dispatch(updatePanelTitle("Source Data"));
     }
 
@@ -22,8 +23,7 @@ class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item">
-                    <DedopL1aInputListCollapse panelTitle="L1A Datasets" collapseIcon="pt-icon-document"
-                                               l1aInputFileNames={dummyInputL1aFiles}/>
+                    <SourceDataPanel l1aInputFileNames={dummyInputL1aFiles}/>
                     <DedopGlobalMetadataCollapse panelTitle="Global Metadata" collapseIcon="pt-icon-th-list"/>
                 </div>
                 <div className="panel-flexbox-item">

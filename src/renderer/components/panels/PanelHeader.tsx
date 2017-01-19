@@ -39,3 +39,14 @@ export class FootprintPanelHeader extends React.Component<any, any> {
         )
     }
 }
+
+export class L1ADatasetsPanelHeader extends React.Component<any, any> {
+    render() {
+        return (
+            <div className="dedop-collapse-header">
+                <span className="dedop-collapse-header-icon pt-icon-standard pt-icon-document"/>
+                <span className="dedop-collapse-header-text">L1A Datasets</span>
+            </div>
+        )
+    }
+}
