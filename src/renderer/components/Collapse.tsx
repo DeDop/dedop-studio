@@ -73,7 +73,7 @@ export class DedopL1aInputListCollapse extends React.Component<IL1aInputListProp
         };
 
         return (
-            <div className="dedop-collapse vertical-half">
+            <div className="dedop-collapse">
                 <div className="dedop-collapse-header">
                     <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
                     <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
@@ -110,7 +110,7 @@ export class DedopGlobalMetadataCollapse extends React.Component<IPanelProps, IC
 
     public render() {
         return (
-            <div className="dedop-collapse vertical-half">
+            <div className="dedop-collapse">
                 <div className="dedop-collapse-header">
                     <span className={"dedop-collapse-header-icon pt-icon-standard " + this.props.collapseIcon}/>
                     <span className="dedop-collapse-header-text">{this.props.panelTitle}</span>
