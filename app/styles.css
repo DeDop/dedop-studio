@@ -220,6 +220,7 @@ h1, h2, h3, h4, h5 {
 
 .pt-tabs.pt-vertical > .pt-tab-list .pt-tab-indicator-wrapper .pt-tab-indicator {
     background-color: rgba(52, 104, 122, 0.2);
+    border-radius: 0;
 }
 
 .pt-tabs.pt-vertical > .pt-tab-list {
