@@ -8,6 +8,8 @@ import {
 import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, ConfigurationFile} from "../../state";
+import {Alert} from "@blueprintjs/core";
+import {isOpen} from "@blueprintjs/core/dist/components/context-menu/contextMenu";
 
 interface IConfigurationPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -25,6 +27,11 @@ function mapStateToProps(state: State): IConfigurationPanelProps {
 }
 
 class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> {
+    public state = {
+        isNotImplementedAlertOpen: false,
+        isFileNotSelectedAlertOpen: false
+    };
+
     componentWillMount() {
         this.props.dispatch(updatePanelTitle("Configuration"));
     }
@@ -55,10 +62,27 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             this.props.dispatch(addConfigName("new"));
         };
 
+        const handleRenameConfig = () => {
+            this.setState({
+                isNotImplementedAlertOpen: true
+            })
+        };
+
         const handleDeleteConfig = () => {
             if (this.props.selectedConfiguration[0]) {
                 this.props.dispatch(deleteConfigName(this.props.selectedConfiguration[0]));
+            } else {
+                this.setState({
+                    isFileNotSelectedAlertOpen: true
+                })
             }
+        };
+
+        const handleCloseAlert = () => {
+            this.setState({
+                isNotImplementedAlertOpen: false,
+                isFileNotSelectedAlertOpen: false
+            })
         };
 
         return (
@@ -70,7 +94,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                                 onClick={handleAddConfig}>
                             Add
                         </button>
-                        <button className="pt-button configuration-file-button">
+                        <button className="pt-button configuration-file-button"
+                                onClick={handleRenameConfig}>
                             Rename
                         </button>
                         <button className="pt-button configuration-file-button"
@@ -90,6 +115,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                     <OrdinaryPanelHeader title="Configuration Details" icon="pt-icon-properties"/>
                     <ConfigurationTabs/>
                 </div>
+                <Alert isOpen={this.state.isNotImplementedAlertOpen} onConfirm={handleCloseAlert}>Not yet implemented</Alert>
+                <Alert isOpen={this.state.isFileNotSelectedAlertOpen} onConfirm={handleCloseAlert}>A configuration file must be selected</Alert>
             </div>
         )
     }
