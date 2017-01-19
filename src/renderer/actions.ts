@@ -3,6 +3,7 @@ import {ProcessConfigurations} from './state';
 export const UPDATE_PANEL_TITLE = 'UPDATE_PANEL_TITLE';
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
+export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
@@ -19,6 +20,10 @@ export function updateConfigSelection(selectedConfigName: string) {
 
 export function selectCurrentConfig(currentConfigName: string) {
     return {type: SELECT_CURRENT_CONFIG, payload: currentConfigName};
+}
+
+export function selectSourceFile(fileName: string) {
+    return {type: SELECT_SOURCE_FILE, payload: fileName};
 }
 
 export function addConfigName(name: string) {

@@ -1,5 +1,6 @@
 import {
     ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfigurations, ConfigurationFile, ControlState, DataState,
+    SourceFile,
 } from "./state";
 
 export const processingItems: ProcessingItem[] = [
@@ -45,13 +46,37 @@ export const processingItems: ProcessingItem[] = [
     }
 ];
 
-export const dummyInputL1aFiles: string[] = [
-    "S6_P4_SIM_RAW_L1A__20190119T064000_20190119T064019_T01.nc",
-    "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T02.nc",
-    "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T03.nc",
-    "S6_P4_SIM_RMC_L1A__20190119T064000_20190119T064019_T01.nc",
-    "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T02.nc",
-    "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T03.nc"
+export const dummyInputL1aFiles: SourceFile[] = [
+    {
+        name: "S6_P4_SIM_RAW_L1A__20190119T064000_20190119T064019_T01.nc",
+        size: 100,
+        lastUpdated: "09/12/2016 08:01:22"
+    },
+    {
+        name: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T02.nc",
+        size: 200,
+        lastUpdated: "10/12/2016 08:01:22"
+    },
+    {
+        name: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T03.nc",
+        size: 300,
+        lastUpdated: "11/12/2016 08:01:22"
+    },
+    {
+        name: "S6_P4_SIM_RMC_L1A__20190119T064000_20190119T064019_T01.nc",
+        size: 400,
+        lastUpdated: "12/12/2016 08:01:22"
+    },
+    {
+        name: "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T02.nc",
+        size: 500,
+        lastUpdated: "13/12/2016 08:01:22"
+    },
+    {
+        name: "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T03.nc",
+        size: 600,
+        lastUpdated: "13/12/2016 08:01:22"
+    }
 ];
 
 const dummyConfigFileList: ConfigurationFile[] = [
@@ -350,5 +375,6 @@ export const initialDataState: DataState = {
     chd: defaultChdConfigurations,
     cnf: defaultCnfConfigurations,
     cst: defaultCstConfigurations,
-    configurations: dummyConfigFileList
+    configurations: dummyConfigFileList,
+    sourceFiles: dummyInputL1aFiles
 };

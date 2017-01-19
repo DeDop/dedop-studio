@@ -490,6 +490,25 @@ ul.dedop-list-box li.dedop-selected {
     margin: 10px 0;
 }
 
+.dedop-list-box-item-file-name {
+    display: flex;
+    align-items: center;
+    width: 75%;
+}
+
+.dedop-list-box-item-file-size {
+    text-align: center;
+    margin-right: 10px;
+}
+
+.dedop-list-box-item-last-updated {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: x-small;
+    margin-left: auto;
+}
+
 /* Listbox styling =========================================================*/
 
 /* Blueprint table styling =================================================*/

@@ -11,6 +11,7 @@ export interface DataState {
     cnf: ProcessConfigurations;
     cst: ProcessConfigurations;
     configurations: ConfigurationFile[];
+    sourceFiles: SourceFile[];
 }
 
 export interface CommunicationState {
@@ -19,6 +20,7 @@ export interface CommunicationState {
 export interface ControlState {
     mainPanelTitle ?: string;
     selectedConfiguration ?: string;
+    selectedSourceFile ?: string;
     currentConfiguration ?: string;
     currentMainTabPanel ?: number;
     codeEditorActive ?: boolean;
@@ -66,5 +68,11 @@ export interface ConfigurationItem {
 export interface ConfigurationFile {
     id: string;
     name: string;
+    lastUpdated: string;
+}
+
+export interface SourceFile {
+    name: string;
+    size: number;
     lastUpdated: string;
 }
