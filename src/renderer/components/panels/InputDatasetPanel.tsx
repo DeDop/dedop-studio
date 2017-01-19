@@ -1,9 +1,9 @@
 import {connect} from "react-redux";
 import * as React from "react";
-import {DedopGlobalMetadataCollapse} from "../Collapse";
 import {FootprintsPanel} from "./FootprintsPanel";
 import {updatePanelTitle} from '../../actions';
 import SourceDataPanel from "./SourceDataPanel";
+import GlobalMetadataCollapse from "../collapse/GlobalMetadataCollapse"
 
 interface IInputDatasetPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
@@ -23,7 +23,7 @@ class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item">
                     <SourceDataPanel/>
-                    <DedopGlobalMetadataCollapse panelTitle="Global Metadata" collapseIcon="pt-icon-th-list"/>
+                    <GlobalMetadataCollapse/>
                 </div>
                 <div className="panel-flexbox-item">
                     <FootprintsPanel/>

@@ -75,4 +75,5 @@ export interface SourceFile {
     name: string;
     size: number;
     lastUpdated: string;
+    globalMetadata: GlobalMetadata[];
 }

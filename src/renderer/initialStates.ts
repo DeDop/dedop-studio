@@ -46,39 +46,6 @@ export const processingItems: ProcessingItem[] = [
     }
 ];
 
-export const dummyInputL1aFiles: SourceFile[] = [
-    {
-        name: "S6_P4_SIM_RAW_L1A__20190119T064000_20190119T064019_T01.nc",
-        size: 100,
-        lastUpdated: "09/12/2016 08:01:22"
-    },
-    {
-        name: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T02.nc",
-        size: 200,
-        lastUpdated: "10/12/2016 08:01:22"
-    },
-    {
-        name: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T03.nc",
-        size: 300,
-        lastUpdated: "11/12/2016 08:01:22"
-    },
-    {
-        name: "S6_P4_SIM_RMC_L1A__20190119T064000_20190119T064019_T01.nc",
-        size: 400,
-        lastUpdated: "12/12/2016 08:01:22"
-    },
-    {
-        name: "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T02.nc",
-        size: 500,
-        lastUpdated: "13/12/2016 08:01:22"
-    },
-    {
-        name: "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T03.nc",
-        size: 600,
-        lastUpdated: "13/12/2016 08:01:22"
-    }
-];
-
 const dummyConfigFileList: ConfigurationFile[] = [
     {
         id: "1",
@@ -102,7 +69,7 @@ const dummyConfigFileList: ConfigurationFile[] = [
     }
 ];
 
-export const dummyGlobalMetadata: GlobalMetadata[] = [
+export const dummyGlobalMetadata1: GlobalMetadata[] = [
     {
         id: "1",
         name: "name",
@@ -132,6 +99,78 @@ export const dummyGlobalMetadata: GlobalMetadata[] = [
         name: "processing_centre",
         type: "string",
         value: "ESA ESRIN"
+    }
+];
+
+export const dummyGlobalMetadata2: GlobalMetadata[] = [
+    {
+        id: "1",
+        name: "name",
+        type: "string",
+        value: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T02"
+    },
+    {
+        id: "2",
+        name: "sensing_start",
+        type: "string",
+        value: "2016-01-19T06:40:00"
+    },
+    {
+        id: "3",
+        name: "sensing_stop",
+        type: "string",
+        value: "2019-01-19T06:40:36"
+    },
+    {
+        id: "4",
+        name: "orbit_num",
+        type: "int",
+        value: "64"
+    },
+    {
+        id: "5",
+        name: "processing_centre",
+        type: "string",
+        value: "Brockmann Consult GmbH"
+    }
+];
+
+export const dummyInputL1aFiles: SourceFile[] = [
+    {
+        name: "S6_P4_SIM_RAW_L1A__20190119T064000_20190119T064019_T01.nc",
+        size: 100,
+        lastUpdated: "09/12/2016 08:01:22",
+        globalMetadata: dummyGlobalMetadata1
+    },
+    {
+        name: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T02.nc",
+        size: 200,
+        lastUpdated: "10/12/2016 08:01:22",
+        globalMetadata: dummyGlobalMetadata2
+    },
+    {
+        name: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T03.nc",
+        size: 300,
+        lastUpdated: "11/12/2016 08:01:22",
+        globalMetadata: dummyGlobalMetadata1
+    },
+    {
+        name: "S6_P4_SIM_RMC_L1A__20190119T064000_20190119T064019_T01.nc",
+        size: 400,
+        lastUpdated: "12/12/2016 08:01:22",
+        globalMetadata: dummyGlobalMetadata2
+    },
+    {
+        name: "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T02.nc",
+        size: 500,
+        lastUpdated: "13/12/2016 08:01:22",
+        globalMetadata: dummyGlobalMetadata1
+    },
+    {
+        name: "S6_P4_SIM_RMC_L1A__20210929T064000_20210929T064019_T03.nc",
+        size: 600,
+        lastUpdated: "13/12/2016 08:01:22",
+        globalMetadata: dummyGlobalMetadata2
     }
 ];
 
