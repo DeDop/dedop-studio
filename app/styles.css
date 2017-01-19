@@ -435,7 +435,7 @@ textarea.pt-input {
 .dedop-list-box {
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 20px 0 0 0;
     background-color: rgba(214, 225, 228, 0);
 }
 
@@ -462,12 +462,11 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-list-box-item {
     display: flex;
     flex-direction: row;
-    margin: 10px 0 0 0;
 }
 
 .dedop-file-name {
-    display: table-cell;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
     width: 65%;
 }
 
@@ -475,10 +474,13 @@ ul.dedop-list-box li.dedop-selected {
     text-align: center;
     margin-right: 10px;
     width: 15%;
+    padding: 5px 0;
 }
 
 .dedop-file-updated-date {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     font-size: x-small;
     font-style: italic;
     width: 20%;
