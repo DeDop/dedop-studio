@@ -4,17 +4,18 @@ import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";
 import {selectSourceFile} from "../../actions";
+import {Tooltip, Position} from "@blueprintjs/core";
 
 interface ISourceDataPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
     l1aInputFileNames: SourceFile[];
-    selectedSourceFile: string;
+    selectedSourceFile: string[];
 }
 
 function mapStateToProps(state: State): ISourceDataPanelProps {
     return {
         l1aInputFileNames: state.data.sourceFiles,
-        selectedSourceFile: state.control.selectedSourceFile
+        selectedSourceFile: [state.control.selectedSourceFile]
     };
 }
 
@@ -22,12 +23,18 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
     render() {
         const renderFileList = (itemIndex: number) => {
             const sourceFile = this.props.l1aInputFileNames[itemIndex];
-            const isCurrent = sourceFile.name == this.props.selectedSourceFile;
             return (
-                <div className="dedop-list-box-item" style={isCurrent? {fontWeight: "bold"} : {}}>
+                <div className="dedop-list-box-item">
                     <span className="dedop-list-box-item-file-name">{sourceFile.name}</span>
-                    <span className="pt-tag pt-intent-success dedop-list-box-item-file-size">{sourceFile.size} MB</span>
-                    <span className="pt-tag pt-intent-primary dedop-list-box-item-last-updated">{sourceFile.lastUpdated}</span>
+                    <Tooltip content="file size" position={Position.LEFT}>
+                        <span className="pt-tag pt-intent-success dedop-list-box-item-file-size">{sourceFile.size}
+                            MB</span>
+                    </Tooltip>
+                    <Tooltip content="last modified date" position={Position.RIGHT}>
+                        <span className="pt-tag pt-intent-primary dedop-list-box-item-last-updated">
+                            {sourceFile.lastUpdated}
+                            </span>
+                    </Tooltip>
                 </div>
             )
         };
@@ -46,7 +53,8 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                     </label>
                     <ListBox numItems={this.props.l1aInputFileNames.length}
                              renderItem={renderFileList}
-                             onSelection={handleSelectSourceFile}/>
+                             onSelection={handleSelectSourceFile}
+                             selection={this.props.selectedSourceFile ? this.props.selectedSourceFile : []}/>
                 </div>
             </div>
         )
