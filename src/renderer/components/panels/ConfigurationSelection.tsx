@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {ConfigurationFile, State} from "../../state";
+import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
 
 export interface IConfigurationSelectionProps {
-    configurations: ConfigurationFile[];
+    configurations: Configuration[];
 }
 
 function mapStateToProps(state: State): IConfigurationSelectionProps {

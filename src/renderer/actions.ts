@@ -42,8 +42,13 @@ export function updateConfigEditorMode(codeEditorActive: boolean) {
     return {type: UPDATE_CONFIG_EDITOR_MODE, payload: codeEditorActive};
 }
 
-export function saveConfiguration(chd: ProcessConfigurations,
+export function saveConfiguration(activeConfiguration: string,
+                                  chd: ProcessConfigurations,
                                   cnf: ProcessConfigurations,
                                   cst: ProcessConfigurations) {
-    return {type: SAVE_CONFIGURATION, payload: {chd: chd, cnf: cnf, cst: cst}};
+    console.log("inside action", activeConfiguration);
+    return {
+        type: SAVE_CONFIGURATION,
+        payload: {activeConfiguration: activeConfiguration, chd: chd, cnf: cnf, cst: cst}
+    };
 }

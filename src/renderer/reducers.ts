@@ -4,8 +4,9 @@ import {combineReducers} from 'redux';
 import {initialControlState, initialDataState} from "./initialStates";
 
 const dataReducer = (state: DataState = initialDataState, action) => {
+
     switch (action.type) {
-        case actions.ADD_CONFIG_NAME:
+        case actions.ADD_CONFIG_NAME: {
             return Object.assign({}, state, {
                 configurations: [
                     ...state.configurations,
@@ -16,7 +17,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                     }
                 ]
             });
-        case actions.DELETE_CONFIG_NAME:
+        }
+        case actions.DELETE_CONFIG_NAME: {
             const configName = action.payload;
             const index = state.configurations.findIndex((x) => x.name === configName);
             return Object.assign({}, state, {
@@ -25,12 +27,26 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                     ...state.configurations.slice(index + 1)
                 ]
             });
-        case actions.SAVE_CONFIGURATION:
-            return Object.assign({}, state, {
+        }
+        case actions.SAVE_CONFIGURATION: {
+            const configName = action.payload.activeConfiguration;
+            const index = state.configurations.findIndex((x) => x.name === configName);
+            const oldConfiguration = state.configurations[index];
+            const newConfiguration = Object.assign({}, oldConfiguration, {
                 chd: action.payload.chd,
                 cnf: action.payload.cnf,
-                cst: action.payload.cst
+                cst: action.payload.cst,
+                name: configName,
+                lastUpdated: "now"
             });
+            return Object.assign({}, state, {
+                configurations: [
+                    ...state.configurations.slice(0, index),
+                    ...state.configurations.slice(index + 1),
+                    newConfiguration
+                ]
+            });
+        }
     }
     return state;
 };

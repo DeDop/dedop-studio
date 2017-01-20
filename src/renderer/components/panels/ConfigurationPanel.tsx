@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName} from "../../actions";
 import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
-import {State, ConfigurationFile} from "../../state";
+import {State, Configuration} from "../../state";
 import {Alert, Dialog, Intent, Button} from "@blueprintjs/core";
 import ConfigurationSelection from "./ConfigurationSelection";
 
@@ -12,7 +12,7 @@ interface IConfigurationPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
     selectedConfiguration: string[];
     currentConfiguration: string;
-    configurations: ConfigurationFile[];
+    configurations: Configuration[];
 }
 
 function mapStateToProps(state: State): IConfigurationPanelProps {

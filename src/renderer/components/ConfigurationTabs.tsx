@@ -7,6 +7,7 @@ import 'codemirror/mode/javascript/javascript';
 import {connect} from "react-redux";
 import MouseEventHandler = React.MouseEventHandler;
 import {updateConfigEditorMode, saveConfiguration} from "../actions";
+import * as selector from "../selectors"
 
 interface IConfigurationTabsProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -14,14 +15,16 @@ interface IConfigurationTabsProps {
     cnf: ProcessConfigurations;
     cst: ProcessConfigurations;
     codeEditorActive: boolean;
+    activeConfiguration: string;
 }
 
 function mapStateToProps(state: State): IConfigurationTabsProps {
     return {
-        chd: state.data.chd,
-        cnf: state.data.cnf,
-        cst: state.data.cst,
-        codeEditorActive: state.control.codeEditorActive
+        chd: selector.getSelectedChd(state),
+        cnf: selector.getSelectedCnf(state),
+        cst: selector.getSelectedCst(state),
+        codeEditorActive: state.control.codeEditorActive,
+        activeConfiguration: state.control.selectedConfiguration
     }
 }
 
@@ -53,9 +56,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     };
 
     private updateChdCode(event: any) {
+        console.log("before updateChdCode", this.state.chd);
         this.setState({
             chdCode: event.target.value,
         });
+        console.log("after updateChdCode", this.state.chd);
     };
 
     private updateCnfCode(event: any) {
@@ -82,7 +87,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
             const chd = JSON.parse(this.state.chdCode);
             const cnf = JSON.parse(this.state.cnfCode);
             const cst = JSON.parse(this.state.cstCode);
-            this.props.dispatch(saveConfiguration(chd, cnf, cst));
+            console.log("before dispatch", this.props.activeConfiguration);
+            console.log("before dispatch", chd);
+            console.log("before dispatch", cnf);
+            console.log("before dispatch", cst);
+            this.props.dispatch(saveConfiguration(this.props.activeConfiguration, chd, cnf, cst));
         };
 
         return (

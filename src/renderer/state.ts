@@ -7,10 +7,7 @@ export interface State {
 }
 
 export interface DataState {
-    chd: ProcessConfigurations;
-    cnf: ProcessConfigurations;
-    cst: ProcessConfigurations;
-    configurations: ConfigurationFile[];
+    configurations: Configuration[];
     sourceFiles: SourceFile[];
 }
 
@@ -65,10 +62,13 @@ export interface ConfigurationItem {
     description: string
 }
 
-export interface ConfigurationFile {
+export interface Configuration {
     id: string;
     name: string;
     lastUpdated: string;
+    chd: ProcessConfigurations;
+    cnf: ProcessConfigurations;
+    cst: ProcessConfigurations;
 }
 
 export interface SourceFile {

@@ -1,13 +1,42 @@
 import {createSelector} from 'reselect'
-import {State, GlobalMetadata} from "./state";
+import {State, GlobalMetadata, ProcessConfigurations} from "./state";
 
 const getSourceFiles = (state: State) => state.data.sourceFiles;
 const getSelectedSourceFile = (state: State) => state.control.selectedSourceFile;
+const getConfigurations = (state: State) => state.data.configurations;
+const getSelectedConfiguration = (state: State) => state.control.selectedConfiguration;
 
 export const getSelectedGlobalMetadata = createSelector(
     getSourceFiles,
     getSelectedSourceFile,
     (getSourceFiles, getSelectedSourceFile): GlobalMetadata[] => {
         return getSelectedSourceFile != null ? getSourceFiles[getSelectedSourceFile].globalMetadata : [];
+    }
+);
+
+export const getSelectedChd = createSelector(
+    getConfigurations,
+    getSelectedConfiguration,
+    (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
+        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
+        return getSelectedConfiguration != null ? getConfigurations[configIndex].chd : null;
+    }
+);
+
+export const getSelectedCnf = createSelector(
+    getConfigurations,
+    getSelectedConfiguration,
+    (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
+        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
+        return getSelectedConfiguration != null ? getConfigurations[configIndex].cnf : null;
+    }
+);
+
+export const getSelectedCst = createSelector(
+    getConfigurations,
+    getSelectedConfiguration,
+    (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
+        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
+        return getSelectedConfiguration != null ? getConfigurations[configIndex].cst : null;
     }
 );
