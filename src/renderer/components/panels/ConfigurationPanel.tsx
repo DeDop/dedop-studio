@@ -123,7 +123,14 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                 >
                     Not yet implemented
                 </Alert>
-                <Alert isOpen={this.state.isFileNotSelectedAlertOpen} onConfirm={handleCloseAlert}>A configuration file must be selected</Alert>
+                <Alert
+                    isOpen={this.state.isFileNotSelectedAlertOpen}
+                    onConfirm={handleCloseAlert}
+                    className="dedop-alert-warning"
+                    iconName="pt-icon-warning-sign"
+                >
+                    A configuration file must be selected
+                </Alert>
             </div>
         )
     }

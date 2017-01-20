@@ -514,12 +514,19 @@ ul.dedop-list-box li.dedop-selected {
 /* Alert styling =========================================================*/
 
 .dedop-alert-not-implemented {
-    background-color: #34687a;
+    background-color: #86a5b0;
     color: white;
+    font-size: medium
 }
 
 .pt-alert-body .pt-icon {
     color: white;
+}
+
+.dedop-alert-warning {
+    background-color: #86a5b0;
+    color: white;
+    font-size: medium;
 }
 
 /* Alert styling =========================================================*/
