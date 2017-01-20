@@ -511,6 +511,19 @@ ul.dedop-list-box li.dedop-selected {
 
 /* Listbox styling =========================================================*/
 
+/* Alert styling =========================================================*/
+
+.dedop-alert-not-implemented {
+    background-color: #34687a;
+    color: white;
+}
+
+.pt-alert-body .pt-icon {
+    color: white;
+}
+
+/* Alert styling =========================================================*/
+
 /* Blueprint table styling =================================================*/
 
 .bp-table-container {

@@ -115,7 +115,14 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                     <OrdinaryPanelHeader title="Configuration Details" icon="pt-icon-properties"/>
                     <ConfigurationTabs/>
                 </div>
-                <Alert isOpen={this.state.isNotImplementedAlertOpen} onConfirm={handleCloseAlert}>Not yet implemented</Alert>
+                <Alert
+                    isOpen={this.state.isNotImplementedAlertOpen}
+                    onConfirm={handleCloseAlert}
+                    className='dedop-alert-not-implemented'
+                    iconName='pt-icon-build'
+                >
+                    Not yet implemented
+                </Alert>
                 <Alert isOpen={this.state.isFileNotSelectedAlertOpen} onConfirm={handleCloseAlert}>A configuration file must be selected</Alert>
             </div>
         )
