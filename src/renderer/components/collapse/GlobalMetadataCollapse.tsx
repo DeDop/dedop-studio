@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {State, GlobalMetadata} from "../../state";
 import {Collapse} from "@blueprintjs/core";
 import {GlobalMetadataTable} from "../GlobalMetadataTable";
+import * as selectors from "../../selectors"
 
 interface IGlobalMetadataCollapseProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -12,8 +13,8 @@ interface IGlobalMetadataCollapseProps {
 
 function mapStateToProps(state: State): IGlobalMetadataCollapseProps {
     return {
-        globalMetadata: state.control.selectedSourceFile ? state.data.sourceFiles[state.control.selectedSourceFile].globalMetadata : [],
-        openCollapse: !!state.control.selectedSourceFile
+        globalMetadata: selectors.getSelectedGlobalMetadata(state),
+        openCollapse: selectors.getSelectedGlobalMetadata(state).length > 0
     }
 }
 
