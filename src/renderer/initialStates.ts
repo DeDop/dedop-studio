@@ -49,21 +49,26 @@ export const processingItems: ProcessingItem[] = [
 const dummyConfigFileList: ConfigurationFile[] = [
     {
         id: "1",
+        name: "default",
+        lastUpdated: "04/12/2016 11:18:40"
+    },
+    {
+        id: "2",
         name: "Alternate Delay-Doppler Processing",
         lastUpdated: "09/12/2016 08:01:22"
     },
     {
-        id: "2",
+        id: "3",
         name: "Modified Surface Locations",
         lastUpdated: "02/12/2016 18:22:13"
     },
     {
-        id: "3",
+        id: "4",
         name: "Experimental",
         lastUpdated: "03/12/2016 13:44:23"
     },
     {
-        id: "4",
+        id: "5",
         name: "Test",
         lastUpdated: "04/12/2016 11:18:40"
     }

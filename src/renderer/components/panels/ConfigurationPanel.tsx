@@ -1,15 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 import ConfigurationTabs from "../ConfigurationTabs";
 import {connect} from "react-redux";
-import {
-    updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName,
-    addConfigName
-} from "../../actions";
+import {updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName} from "../../actions";
 import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, ConfigurationFile} from "../../state";
-import {Alert} from "@blueprintjs/core";
-import {isOpen} from "@blueprintjs/core/dist/components/context-menu/contextMenu";
+import {Alert, Dialog, Intent, Button} from "@blueprintjs/core";
+import ConfigurationSelection from "./ConfigurationSelection";
 
 interface IConfigurationPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -29,7 +26,8 @@ function mapStateToProps(state: State): IConfigurationPanelProps {
 class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> {
     public state = {
         isNotImplementedAlertOpen: false,
-        isFileNotSelectedAlertOpen: false
+        isFileNotSelectedAlertOpen: false,
+        isDialogOpen: false
     };
 
     componentWillMount() {
@@ -58,8 +56,17 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             this.props.dispatch(selectCurrentConfig(key as string));
         };
 
+        const handleCloseDialog = () => {
+            this.setState({
+                isDialogOpen: false
+            })
+        };
+
         const handleAddConfig = () => {
-            this.props.dispatch(addConfigName("new"));
+            // this.props.dispatch(addConfigName("new"));
+            this.setState({
+                isDialogOpen: true
+            })
         };
 
         const handleRenameConfig = () => {
@@ -90,8 +97,10 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                 <div className="panel-flexbox-item-configurations">
                     <ConfigurationPanelHeader title="Configuration Names" icon="pt-icon-properties"/>
                     <div className="configuration-file-buttons">
-                        <button className="pt-button pt-intent-primary configuration-file-button"
-                                onClick={handleAddConfig}>
+                        <button
+                            className="pt-button pt-intent-primary pt-icon-standard pt-icon-add configuration-file-button"
+                            onClick={handleAddConfig}
+                        >
                             Add
                         </button>
                         <button className="pt-button configuration-file-button"
@@ -131,6 +140,34 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                 >
                     A configuration file must be selected
                 </Alert>
+                <Dialog isOpen={this.state.isDialogOpen}
+                        onClose={handleCloseDialog}
+                        title="Add a new configuration file"
+                        className="dedop-dialog-body-add-config"
+                >
+                    <div className="pt-dialog-body">
+                        <div className="dedop-dialog-parameter-item">
+                            <label className="pt-label pt-inline">
+                                <span className="dedop-dialog-parameter-label">Name</span>
+                                <input className="pt-input pt-inline dedop-dialog-parameter-input"
+                                       type="text"
+                                       placeholder="configuration name"
+                                       dir="auto"/>
+                            </label>
+                        </div>
+                        <ConfigurationSelection/>
+
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button intent={Intent.PRIMARY}
+                                    text="Save"/>
+                            <Button onClick={handleCloseDialog}
+                                    text="Cancel"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
             </div>
         )
     }

@@ -531,6 +531,40 @@ ul.dedop-list-box li.dedop-selected {
 
 /* Alert styling =========================================================*/
 
+/* Dialog styling =========================================================*/
+
+.dedop-dialog-body-add-config {
+    background-color: #d6e1e4;
+    color: #34687a;
+    width: 500px;
+}
+
+.pt-dialog-header {
+    background-color: #34687a;
+    color: white;
+}
+
+.pt-dialog-header > * {
+    color: white;
+}
+
+.dedop-dialog-parameter-item {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.dedop-dialog-parameter-label {
+    float: left;
+    align-items: center;
+}
+
+.dedop-dialog-parameter-input {
+    float: right;
+    width: 300px;
+}
+
+/* Dialog styling =========================================================*/
+
 /* Blueprint table styling =================================================*/
 
 .bp-table-container {
