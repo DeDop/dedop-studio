@@ -75,7 +75,7 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.UPDATE_CONFIG_EDITOR_MODE:
             return Object.assign({}, state, {
-                codeEditorActive: !action.payload
+                codeEditorActive: action.payload
             });
         case actions.DELETE_CONFIG_NAME:
             return Object.assign({}, state, {

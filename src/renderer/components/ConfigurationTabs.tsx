@@ -33,24 +33,27 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
         this.updateCode = this.updateCode.bind(this);
-        this.updateChdCode = this.updateChdCode.bind(this);
         this.updateCnfCode = this.updateCnfCode.bind(this);
         this.updateCstCode = this.updateCstCode.bind(this);
+
+        this.state = {};
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.state = {
+            chdCode: (JSON.stringify(nextProps.chd, null, 4)),
+            cnfCode: (JSON.stringify(nextProps.cnf, null, 4)),
+            cstCode: (JSON.stringify(nextProps.cst, null, 4)),
+        };
     }
 
     private handleChangeMode() {
-        this.props.dispatch(updateConfigEditorMode(this.props.codeEditorActive));
+        this.props.dispatch(updateConfigEditorMode(!this.props.codeEditorActive));
     }
 
     private updateCode(newCode: string) {
         this.setState({
             code: newCode,
-        });
-    };
-
-    private updateChdCode(event: any) {
-        this.setState({
-            chdCode: event.target.value,
         });
     };
 
@@ -67,10 +70,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     };
 
     public render() {
-        this.state = {
-            chdCode: (JSON.stringify(this.props.chd, null, 4)),
-            cnfCode: (JSON.stringify(this.props.cnf, null, 4)),
-            cstCode: (JSON.stringify(this.props.cst, null, 4)),
+        const updateChdCode = (newCode: string) => {
+            this.setState({
+                chdCode: newCode,
+            });
         };
 
         const options = {
@@ -94,7 +97,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                 <div style={{display:'flex', margin: '10px 0', flexDirection: 'row', justifyContent: 'space-between'}}>
                     <label className="pt-control pt-switch" style={{margin: '0 0 0 10px'}}>
                         <input type="checkbox" onChange={this.handleChangeMode}
-                               checked={this.state.codeEditor}/>
+                               checked={this.props.codeEditorActive}/>
                         <span className="pt-control-indicator"/>
                         Code editor
                     </label>
@@ -114,6 +117,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                 ?
                                 <CodeMirror
                                     value={this.state.chdCode != 'null' ? this.state.chdCode : "please select a configuration"}
+                                    onChange={updateChdCode}
                                     options={options}/>
                                 :
                                 <ConfigurationEditor configurations={this.props.chd}/>
