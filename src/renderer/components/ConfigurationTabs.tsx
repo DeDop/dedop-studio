@@ -36,13 +36,6 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.updateChdCode = this.updateChdCode.bind(this);
         this.updateCnfCode = this.updateCnfCode.bind(this);
         this.updateCstCode = this.updateCstCode.bind(this);
-
-        this.state = {
-            chdCode: (JSON.stringify(this.props.chd, null, 4)),
-            cnfCode: (JSON.stringify(this.props.cnf, null, 4)),
-            cstCode: (JSON.stringify(this.props.cst, null, 4)),
-            mode: "javascript"
-        };
     }
 
     private handleChangeMode() {
@@ -56,11 +49,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     };
 
     private updateChdCode(event: any) {
-        console.log("before updateChdCode", this.state.chd);
         this.setState({
             chdCode: event.target.value,
         });
-        console.log("after updateChdCode", this.state.chd);
     };
 
     private updateCnfCode(event: any) {
@@ -76,21 +67,25 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     };
 
     public render() {
+        this.state = {
+            chdCode: (JSON.stringify(this.props.chd, null, 4)),
+            cnfCode: (JSON.stringify(this.props.cnf, null, 4)),
+            cstCode: (JSON.stringify(this.props.cst, null, 4)),
+        };
+
         const options = {
             lineNumbers: true,
-            mode: this.state.mode
+            mode: {
+                name: "javascript",
+                json: true
+            },
+            lineWrapping: true
         };
 
         const handleSaveConfig = () => {
-            console.log("saving configuration - not yet implemented", JSON.parse(this.state.chdCode));
-
             const chd = JSON.parse(this.state.chdCode);
             const cnf = JSON.parse(this.state.cnfCode);
             const cst = JSON.parse(this.state.cstCode);
-            console.log("before dispatch", this.props.activeConfiguration);
-            console.log("before dispatch", chd);
-            console.log("before dispatch", cnf);
-            console.log("before dispatch", cst);
             this.props.dispatch(saveConfiguration(this.props.activeConfiguration, chd, cnf, cst));
         };
 
@@ -117,13 +112,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <div className="panel-flexbox-configs">
                             {this.props.codeEditorActive
                                 ?
-                                <textarea className="pt-input pt-fill"
-                                          dir="auto"
-                                          ref="chdEditor"
-                                          value={this.state.chdCode}
-                                          onChange={this.updateChdCode}
-                                          style={{overflow: "auto"}}
-                                />
+                                <CodeMirror
+                                    value={this.state.chdCode != 'null' ? this.state.chdCode : "please select a configuration"}
+                                    options={options}/>
                                 :
                                 <ConfigurationEditor configurations={this.props.chd}/>
                             }
@@ -133,13 +124,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <div className="panel-flexbox-configs">
                             {this.props.codeEditorActive
                                 ?
-                                <textarea className="pt-input pt-fill"
-                                          dir="auto"
-                                          ref="cnfEditor"
-                                          value={this.state.cnfCode}
-                                          onChange={this.updateCnfCode}
-                                          style={{overflow: "auto"}}
-                                />
+                                <CodeMirror
+                                    value={this.state.cnfCode != 'null' ? this.state.cnfCode : "please select a configuration"}
+                                    options={options}/>
                                 :
                                 <CnfConfigurationEditor configurations={this.props.cnf}/>
                             }
@@ -149,13 +136,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <div className="panel-flexbox-configs">
                             {this.props.codeEditorActive
                                 ?
-                                <textarea className="pt-input pt-fill"
-                                          dir="auto"
-                                          ref="cnfEditor"
-                                          value={this.state.cstCode}
-                                          onChange={this.updateCstCode}
-                                          style={{overflow: "auto"}}
-                                />
+                                <CodeMirror
+                                    value={this.state.cstCode != 'null' ? this.state.cstCode : "please select a configuration"}
+                                    options={options}/>
                                 :
                                 <ConfigurationEditor configurations={this.props.cst}/>
                             }
