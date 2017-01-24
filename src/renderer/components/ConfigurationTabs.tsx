@@ -39,11 +39,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.state = {
+        this.setState({
             chdTemp: nextProps.chd,
             cnfTemp: nextProps.cnf,
             cstTemp: nextProps.cst,
-        };
+        });
     }
 
     private handleChangeMode() {
@@ -93,14 +93,24 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
             })
         };
 
-        const handleCnfInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
-            console.log("cnf-name", event.currentTarget.name)
-            console.log("cnf-value", event.currentTarget.value)
+        const handleCnfInputChange = (event: any) => {
+            const cnfConfigurations = this.props.cnf;
+            if (event.currentTarget.type == 'checkbox') {
+                cnfConfigurations[event.currentTarget.name].value = event.currentTarget.checked;
+            } else {
+                cnfConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+            }
+            this.setState({
+                cnfTemp: cnfConfigurations
+            })
         };
 
         const handleCstInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
-            console.log("cst-name", event.currentTarget.name)
-            console.log("cst-value", event.currentTarget.value)
+            const cstConfigurations = this.props.cst;
+            cstConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+            this.setState({
+                cstTemp: cstConfigurations
+            })
         };
 
         const handleChangeTab = (selectedTabIndex: number) => {

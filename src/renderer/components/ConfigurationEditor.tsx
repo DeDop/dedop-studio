@@ -1,22 +1,22 @@
-import * as React from 'react';
-import {InputGroup, Tag, Classes, Tooltip} from "@blueprintjs/core";
+import * as React from "react";
+import {InputGroup, Tag, Classes, Tooltip, Position} from "@blueprintjs/core";
 import {ProcessConfigurations, ConfigurationItem} from "../state";
 
 interface IConfigProps {
     configName: string;
     configuration: ConfigurationItem;
-    onChange: (event: any) => void;
+    onBlur: (event: any) => void;
 }
 
 export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> {
-    constructor(props) {
+    constructor(props: IConfigProps) {
         super(props);
         this.state = {
             localValue: this.props.configuration.value ? this.props.configuration.value.toString() : ""
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: IConfigProps) {
         const value = nextProps.configuration.value ? nextProps.configuration.value.toString() : "";
         this.setState({
             localValue: value
@@ -38,7 +38,7 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
         return (
             <tr>
                 <td>
-                    <Tooltip content={this.props.configuration.description}>
+                    <Tooltip content={this.props.configuration.description} position={Position.LEFT}>
                         <label className="pt-label pt-inline">
                             {this.props.configName}
                         </label>
@@ -50,6 +50,7 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
                                 value={this.state.localValue}
                         {...this.props.configuration.units ? {rightElement: unitTag} : {}}
                                 onChange={handleOnChange}
+                                onBlur={this.props.onBlur}
                     />
                 </td>
             </tr>
@@ -58,11 +59,36 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
 }
 
 export class ConfigurationFlagSingleEntry extends React.Component<IConfigProps, any> {
+
+    constructor(props: IConfigProps) {
+        super(props);
+        this.state = {
+            checked: !!this.props.configuration.value
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            checked: !!nextProps.configuration.value
+        })
+    }
+
     public render() {
+        const handleFlagChange = () => {
+            this.setState({
+                checked: !this.state.checked
+            })
+        };
+
         return (
-            <Tooltip content={this.props.configuration.description}>
+            <Tooltip content={this.props.configuration.description} position={Position.LEFT}>
                 <label className="pt-control pt-checkbox">
-                    <input type="checkbox" checked={!!this.props.configuration.value}/>
+                    <input type="checkbox"
+                           name={this.props.configName}
+                           checked={this.state.checked}
+                           onChange={handleFlagChange}
+                           onBlur={this.props.onBlur}
+                    />
                     <span className="pt-control-indicator"/>
                     {this.props.configName}
                 </label>
@@ -78,13 +104,13 @@ interface IConfigEditorProps {
 
 export class ConfigurationEditor extends React.Component<IConfigEditorProps, any> {
     public render() {
-        let configurationElements: Array<JSX.Element> = [];
+        let configurationElements = [];
         const configurations = this.props.configurations;
         for (let i in configurations) {
             configurationElements.push(<ConfigurationSingleEntry key={i}
                                                                  configName={i}
                                                                  configuration={configurations[i]}
-                                                                 onChange={this.props.handleInputChange}
+                                                                 onBlur={this.props.handleInputChange}
             />)
         }
 
@@ -100,21 +126,21 @@ export class ConfigurationEditor extends React.Component<IConfigEditorProps, any
 
 export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, any> {
     public render() {
-        let propertiesElements: Array<JSX.Element> = [];
-        let flagElements: Array<JSX.Element> = [];
+        let propertiesElements = [];
+        let flagElements = [];
         const configurations = this.props.configurations;
         for (let i in configurations) {
             if (configurations[i].units !== 'flag') {
                 propertiesElements.push(<ConfigurationSingleEntry key={i}
                                                                   configName={i}
                                                                   configuration={configurations[i]}
-                                                                  onChange={this.props.handleInputChange}
+                                                                  onBlur={this.props.handleInputChange}
                 />);
             } else {
                 flagElements.push(<ConfigurationFlagSingleEntry key={i}
                                                                 configName={i}
                                                                 configuration={configurations[i]}
-                                                                onChange={this.props.handleInputChange}
+                                                                onBlur={this.props.handleInputChange}
                 />);
             }
         }
