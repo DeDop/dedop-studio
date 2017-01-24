@@ -7,6 +7,7 @@ export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
+export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const SAVE_CONFIGURATION = 'SAVE_CONFIGURATION';
 
@@ -36,6 +37,10 @@ export function deleteConfigName(configName: string) {
 
 export function updateMainTab(newTabId: number) {
     return {type: UPDATE_MAIN_TAB, payload: newTabId};
+}
+
+export function updateConfigurationTab(newTabId: number) {
+    return {type: UPDATE_CONFIGURATION_TAB, payload: newTabId};
 }
 
 export function updateConfigEditorMode(codeEditorActive: boolean) {

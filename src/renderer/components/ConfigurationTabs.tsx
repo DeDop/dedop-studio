@@ -1,13 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 import * as CodeMirror from "react-codemirror";
 import {ProcessConfigurations, State} from "../state";
 import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
 import {ConfigurationEditor, CnfConfigurationEditor} from "./ConfigurationEditor";
-import 'codemirror/mode/javascript/javascript';
+import "codemirror/mode/javascript/javascript";
 import {connect} from "react-redux";
+import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab} from "../actions";
+import * as selector from "../selectors";
 import MouseEventHandler = React.MouseEventHandler;
-import {updateConfigEditorMode, saveConfiguration} from "../actions";
-import * as selector from "../selectors"
+import FormEvent = React.FormEvent;
 
 interface IConfigurationTabsProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -16,6 +17,7 @@ interface IConfigurationTabsProps {
     cst: ProcessConfigurations;
     codeEditorActive: boolean;
     activeConfiguration: string;
+    currentTab: number;
 }
 
 function mapStateToProps(state: State): IConfigurationTabsProps {
@@ -24,7 +26,8 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
         cnf: selector.getSelectedCnf(state),
         cst: selector.getSelectedCst(state),
         codeEditorActive: state.control.codeEditorActive,
-        activeConfiguration: state.control.selectedConfiguration
+        activeConfiguration: state.control.selectedConfiguration,
+        currentTab: state.control.currentConfigurationTabPanel
     }
 }
 
@@ -32,18 +35,14 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     constructor(props) {
         super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
-        this.updateCode = this.updateCode.bind(this);
-        this.updateCnfCode = this.updateCnfCode.bind(this);
-        this.updateCstCode = this.updateCstCode.bind(this);
-
         this.state = {};
     }
 
     componentWillReceiveProps(nextProps) {
         this.state = {
-            chdCode: (JSON.stringify(nextProps.chd, null, 4)),
-            cnfCode: (JSON.stringify(nextProps.cnf, null, 4)),
-            cstCode: (JSON.stringify(nextProps.cst, null, 4)),
+            chdTemp: nextProps.chd,
+            cnfTemp: nextProps.cnf,
+            cstTemp: nextProps.cst,
         };
     }
 
@@ -51,28 +50,22 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.props.dispatch(updateConfigEditorMode(!this.props.codeEditorActive));
     }
 
-    private updateCode(newCode: string) {
-        this.setState({
-            code: newCode,
-        });
-    };
-
-    private updateCnfCode(event: any) {
-        this.setState({
-            cnfCode: event.target.value,
-        });
-    };
-
-    private updateCstCode(event: any) {
-        this.setState({
-            cstCode: event.target.value,
-        });
-    };
-
     public render() {
         const updateChdCode = (newCode: string) => {
             this.setState({
-                chdCode: newCode,
+                chdTemp: JSON.parse(newCode),
+            });
+        };
+
+        const updateCnfCode = (newCode: string) => {
+            this.setState({
+                cnfTemp: JSON.parse(newCode),
+            });
+        };
+
+        const updateCstCode = (newCode: string) => {
+            this.setState({
+                cstTemp: JSON.parse(newCode),
             });
         };
 
@@ -86,11 +79,34 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         };
 
         const handleSaveConfig = () => {
-            const chd = JSON.parse(this.state.chdCode);
-            const cnf = JSON.parse(this.state.cnfCode);
-            const cst = JSON.parse(this.state.cstCode);
+            const chd = this.state.chd;
+            const cnf = this.state.cnf;
+            const cst = this.state.cst;
             this.props.dispatch(saveConfiguration(this.props.activeConfiguration, chd, cnf, cst));
         };
+
+        const handleChdInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
+            const chdConfigurations = this.props.chd;
+            chdConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+            this.setState({
+                chdTemp: chdConfigurations
+            })
+        };
+
+        const handleCnfInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
+            console.log("cnf-name", event.currentTarget.name)
+            console.log("cnf-value", event.currentTarget.value)
+        };
+
+        const handleCstInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
+            console.log("cst-name", event.currentTarget.name)
+            console.log("cst-value", event.currentTarget.value)
+        };
+
+        const handleChangeTab = (selectedTabIndex: number) => {
+            this.props.dispatch(updateConfigurationTab(selectedTabIndex));
+        };
+
 
         return (
             <div>
@@ -105,7 +121,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         Save Configuration
                     </button>
                 </div>
-                <Tabs key="horizontal">
+                <Tabs key="horizontal"
+                      onChange={handleChangeTab}
+                      selectedTabIndex={this.props.currentTab ? this.props.currentTab : 0}
+                >
                     <TabList>
                         <Tab>Characterization</Tab>
                         <Tab>Configuration</Tab>
@@ -116,11 +135,12 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                             {this.props.codeEditorActive
                                 ?
                                 <CodeMirror
-                                    value={this.state.chdCode != 'null' ? this.state.chdCode : "please select a configuration"}
+                                    value={this.state.chdTemp ? JSON.stringify(this.state.chdTemp, null, 4) : "please select a configuration"}
                                     onChange={updateChdCode}
                                     options={options}/>
                                 :
-                                <ConfigurationEditor configurations={this.props.chd}/>
+                                <ConfigurationEditor configurations={this.props.chd}
+                                                     handleInputChange={handleChdInputChange}/>
                             }
                         </div>
                     </TabPanel>
@@ -129,10 +149,12 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                             {this.props.codeEditorActive
                                 ?
                                 <CodeMirror
-                                    value={this.state.cnfCode != 'null' ? this.state.cnfCode : "please select a configuration"}
+                                    value={this.state.cnfTemp ? JSON.stringify(this.state.cnfTemp, null, 4) : "please select a configuration"}
+                                    onChange={updateCnfCode}
                                     options={options}/>
                                 :
-                                <CnfConfigurationEditor configurations={this.props.cnf}/>
+                                <CnfConfigurationEditor configurations={this.state.cnfTemp}
+                                                        handleInputChange={handleCnfInputChange}/>
                             }
                         </div>
                     </TabPanel>
@@ -141,10 +163,12 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                             {this.props.codeEditorActive
                                 ?
                                 <CodeMirror
-                                    value={this.state.cstCode != 'null' ? this.state.cstCode : "please select a configuration"}
+                                    value={this.state.cstTemp ? JSON.stringify(this.state.cstTemp, null, 4) : "please select a configuration"}
+                                    onChange={updateCstCode}
                                     options={options}/>
                                 :
-                                <ConfigurationEditor configurations={this.props.cst}/>
+                                <ConfigurationEditor configurations={this.state.cstTemp}
+                                                     handleInputChange={handleCstInputChange}/>
                             }
                         </div>
                     </TabPanel>

@@ -17,6 +17,7 @@ export interface CommunicationState {
 export interface ControlState {
     mainPanelTitle ?: string;
     selectedConfiguration ?: string;
+    currentConfigurationTabPanel ?: number;
     selectedSourceFile ?: string;
     currentConfiguration ?: string;
     currentMainTabPanel ?: number;
