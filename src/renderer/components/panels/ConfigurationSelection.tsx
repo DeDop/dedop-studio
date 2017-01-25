@@ -4,11 +4,13 @@ import {connect} from "react-redux";
 
 export interface IConfigurationSelectionProps {
     configurations: Configuration[];
+    onChangeSelection: (event: any) => void;
 }
 
-function mapStateToProps(state: State): IConfigurationSelectionProps {
+function mapStateToProps(state: State, ownProps): IConfigurationSelectionProps {
     return {
-        configurations: state.data.configurations
+        configurations: state.data.configurations,
+        onChangeSelection: ownProps.onChangeSelection
     };
 }
 
@@ -18,7 +20,11 @@ class ConfigurationSelection extends React.Component<IConfigurationSelectionProp
         let configurationSelectionItem = [];
         const configurations = this.props.configurations;
         for (let i in configurations) {
-            configurationSelectionItem.push(<option key={i} value={configurations[i].name}>{configurations[i].name}</option>)
+            configurationSelectionItem.push(<option key={i}
+                                                    value={configurations[i].name}
+                                                    >
+                {configurations[i].name}
+            </option>)
         }
 
         return (
@@ -26,7 +32,7 @@ class ConfigurationSelection extends React.Component<IConfigurationSelectionProp
                     <span className="dedop-dialog-parameter-label">
                                 Base configuration
                             </span>
-                <select className="dedop-dialog-parameter-input">
+                <select className="dedop-dialog-parameter-input" onChange={this.props.onChangeSelection}>
                     {configurationSelectionItem}
                 </select>
             </div>

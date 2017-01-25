@@ -34,7 +34,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         isNotImplementedAlertOpen: false,
         isFileNotSelectedAlertOpen: false,
         isDialogOpen: false,
-        newConfigName: ""
+        newConfigName: "",
+        baseConfigName: "default"
     };
 
     componentWillMount() {
@@ -99,8 +100,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         };
 
         const handleAddConfig = () => {
-            console.log("add new config", this.state.newConfigName);
-            this.props.dispatch(addConfigName(this.state.newConfigName, "default"));
+            console.log("add new config", this.state.newConfigName, this.state.baseConfigName);
+            this.props.dispatch(addConfigName(this.state.newConfigName, this.state.baseConfigName));
             handleCloseDialog();
             this.setState({
                 newConfigName: ""
@@ -111,6 +112,13 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             const value = event.currentTarget.value;
             this.setState({
                 newConfigName: value
+            })
+        };
+
+        const handleOnChangeSelection = (event: React.FormEvent<HTMLSelectElement>) => {
+            const value = event.currentTarget.value;
+            this.setState({
+                baseConfigName: value
             })
         };
 
@@ -180,7 +188,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                                 />
                             </label>
                         </div>
-                        <ConfigurationSelection/>
+                        <ConfigurationSelection onChangeSelection={handleOnChangeSelection}/>
 
                     </div>
                     <div className="pt-dialog-footer">
