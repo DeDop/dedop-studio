@@ -2,7 +2,10 @@ import * as React from "react";
 import ConfigurationTabs from "../ConfigurationTabs";
 import {connect} from "react-redux";
 import {
-    updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName,
+    updatePanelTitle,
+    updateConfigSelection,
+    selectCurrentConfig,
+    deleteConfigName,
     addConfigName
 } from "../../actions";
 import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
@@ -35,7 +38,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         isFileNotSelectedAlertOpen: false,
         isDialogOpen: false,
         newConfigName: "",
-        baseConfigName: "default"
+        baseConfigName: "default",
+        configNameValid: true
     };
 
     componentWillMount() {
@@ -100,12 +104,17 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         };
 
         const handleAddConfig = () => {
-            console.log("add new config", this.state.newConfigName, this.state.baseConfigName);
-            this.props.dispatch(addConfigName(this.state.newConfigName, this.state.baseConfigName));
-            handleCloseDialog();
-            this.setState({
-                newConfigName: ""
-            })
+            if (this.state.newConfigName) {
+                this.props.dispatch(addConfigName(this.state.newConfigName, this.state.baseConfigName));
+                handleCloseDialog();
+                this.setState({
+                    newConfigName: ""
+                })
+            } else {
+                this.setState({
+                    configNameValid: false
+                })
+            }
         };
 
         const handleConfigNameEdit = (event: any) => {
@@ -119,6 +128,12 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             const value = event.currentTarget.value;
             this.setState({
                 baseConfigName: value
+            })
+        };
+
+        const resetConfigInvalidStatus = () => {
+            this.setState({
+                configNameValid: true
             })
         };
 
@@ -179,12 +194,14 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                         <div className="dedop-dialog-parameter-item">
                             <label className="pt-label pt-inline">
                                 <span className="dedop-dialog-parameter-label">Name</span>
-                                <input className="pt-input pt-inline dedop-dialog-parameter-input"
-                                       type="text"
-                                       placeholder="configuration name"
-                                       dir="auto"
-                                       value={this.state.newConfigName}
-                                       onChange={handleConfigNameEdit}
+                                <input
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid? "" : "pt-intent-danger")}
+                                    type="text"
+                                    placeholder="configuration name"
+                                    dir="auto"
+                                    value={this.state.newConfigName}
+                                    onChange={handleConfigNameEdit}
+                                    onFocus={resetConfigInvalidStatus}
                                 />
                             </label>
                         </div>

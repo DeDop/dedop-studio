@@ -25,6 +25,9 @@ class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
                     <SourceDataPanel/>
                     <GlobalMetadataCollapse/>
                 </div>
+                <div className="panel-flexbox-item">
+                    <FootprintsPanel/>
+                </div>
             </div>
         )
     }
