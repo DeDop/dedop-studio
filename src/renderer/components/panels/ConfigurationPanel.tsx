@@ -1,12 +1,18 @@
 import * as React from "react";
 import ConfigurationTabs from "../ConfigurationTabs";
 import {connect} from "react-redux";
-import {updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName} from "../../actions";
+import {
+    updatePanelTitle, updateConfigSelection, selectCurrentConfig, deleteConfigName,
+    addConfigName
+} from "../../actions";
 import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, Configuration} from "../../state";
 import {Alert, Dialog, Intent, Button} from "@blueprintjs/core";
 import ConfigurationSelection from "./ConfigurationSelection";
+import FormEventHandler = React.FormEventHandler;
+import EventHandler = React.EventHandler;
+import FormEvent = React.FormEvent;
 
 interface IConfigurationPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -27,7 +33,8 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
     public state = {
         isNotImplementedAlertOpen: false,
         isFileNotSelectedAlertOpen: false,
-        isDialogOpen: false
+        isDialogOpen: false,
+        newConfigName: ""
     };
 
     componentWillMount() {
@@ -62,8 +69,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             })
         };
 
-        const handleAddConfig = () => {
-            // this.props.dispatch(addConfigName("new"));
+        const handleOpenAddConfigDialog = () => {
             this.setState({
                 isDialogOpen: true
             })
@@ -92,6 +98,22 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
             })
         };
 
+        const handleAddConfig = () => {
+            console.log("add new config", this.state.newConfigName);
+            this.props.dispatch(addConfigName(this.state.newConfigName, "default"));
+            handleCloseDialog();
+            this.setState({
+                newConfigName: ""
+            })
+        };
+
+        const handleConfigNameEdit = (event: any) => {
+            const value = event.currentTarget.value;
+            this.setState({
+                newConfigName: value
+            })
+        };
+
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
@@ -99,7 +121,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                     <div className="configuration-file-buttons">
                         <button
                             className="pt-button pt-intent-primary pt-icon-standard pt-icon-add configuration-file-button"
-                            onClick={handleAddConfig}
+                            onClick={handleOpenAddConfigDialog}
                         >
                             Add
                         </button>
@@ -152,7 +174,10 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                                 <input className="pt-input pt-inline dedop-dialog-parameter-input"
                                        type="text"
                                        placeholder="configuration name"
-                                       dir="auto"/>
+                                       dir="auto"
+                                       value={this.state.newConfigName}
+                                       onChange={handleConfigNameEdit}
+                                />
                             </label>
                         </div>
                         <ConfigurationSelection/>
@@ -161,6 +186,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">
                             <Button intent={Intent.PRIMARY}
+                                    onClick={handleAddConfig}
                                     text="Save"/>
                             <Button onClick={handleCloseDialog}
                                     text="Cancel"

@@ -15,10 +15,10 @@ function mapStateToProps(state: State): IConfigurationSelectionProps {
 class ConfigurationSelection extends React.Component<IConfigurationSelectionProps,any> {
     public render() {
 
-        let configurationSelectionItem: Array<JSX.Element> = [];
+        let configurationSelectionItem = [];
         const configurations = this.props.configurations;
         for (let i in configurations) {
-            configurationSelectionItem.push(<option value={i}>{configurations[i].name}</option>)
+            configurationSelectionItem.push(<option key={i} value={configurations[i].name}>{configurations[i].name}</option>)
         }
 
         return (

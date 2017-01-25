@@ -27,8 +27,13 @@ export function selectSourceFile(fileName: string) {
     return {type: SELECT_SOURCE_FILE, payload: fileName};
 }
 
-export function addConfigName(name: string) {
-    return {type: ADD_CONFIG_NAME, payload: name};
+export function addConfigName(newConfigurationName: string, baseConfigurationName: string) {
+    return {
+        type: ADD_CONFIG_NAME, payload: {
+            newConfigurationName: newConfigurationName,
+            baseConfigurationName: baseConfigurationName
+        }
+    };
 }
 
 export function deleteConfigName(configName: string) {

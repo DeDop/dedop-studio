@@ -1,19 +1,59 @@
-import {ControlState, State, DataState} from './state';
-import * as actions from './actions';
-import {combineReducers} from 'redux';
-import {initialControlState, initialDataState} from "./initialStates";
+import {ControlState, State, DataState, Configuration, ProcessConfigurations} from "./state";
+import * as actions from "./actions";
+import {combineReducers} from "redux";
+import {
+    initialControlState,
+    initialDataState,
+    defaultChdConfigurations,
+    defaultCnfConfigurations,
+    defaultCstConfigurations
+} from "./initialStates";
+
+function getLastId(configurations: Configuration[]): string {
+    let maxId = 0;
+    for (let i in configurations) {
+        if (Number(configurations[i].id) > maxId) {
+            maxId = Number(configurations[i].id);
+        }
+    }
+    maxId++;
+    return maxId.toString(10);
+}
+
+function getSelectedConfigurations(baseConfigurationName: string, configurations: Configuration[]): {chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations} {
+    for (let i in configurations) {
+        if (configurations[i].name == baseConfigurationName) {
+            return {
+                chd: configurations[i].chd,
+                cnf: configurations[i].cnf,
+                cst: configurations[i].cst
+            }
+        }
+    }
+    return {
+        chd: defaultChdConfigurations,
+        cnf: defaultCnfConfigurations,
+        cst: defaultCstConfigurations
+    }
+
+}
 
 const dataReducer = (state: DataState = initialDataState, action) => {
 
     switch (action.type) {
         case actions.ADD_CONFIG_NAME: {
+            const configs = getSelectedConfigurations(action.payload.baseConfigurationName, state.configurations);
+            const lastId = getLastId(state.configurations);
             return Object.assign({}, state, {
                 configurations: [
                     ...state.configurations,
                     {
-                        id: "99",
-                        name: action.payload,
-                        lastUpdated: "01/01/1900 00:00:00"
+                        id: lastId,
+                        name: action.payload.newConfigurationName,
+                        lastUpdated: "01/01/1900 00:00:00",
+                        chd: configs.chd,
+                        cnf: configs.cnf,
+                        cst: configs.cst
                     }
                 ]
             });

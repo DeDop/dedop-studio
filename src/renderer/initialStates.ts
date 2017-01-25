@@ -46,7 +46,7 @@ export const processingItems: ProcessingItem[] = [
     }
 ];
 
-const defaultChdConfigurations: ProcessConfigurations = {
+export const defaultChdConfigurations: ProcessConfigurations = {
     "mean_sat_alt_chd": {
         "value": 1347000.0,
         "description": "Mean satellite altitude",
@@ -180,7 +180,7 @@ const dummyChdConfigurations1: ProcessConfigurations = {
     }
 };
 
-const defaultCnfConfigurations: ProcessConfigurations = {
+export const defaultCnfConfigurations: ProcessConfigurations = {
     "flag_cal2_correction_cnf": {
         "value": false,
         "units": "flag",
@@ -426,7 +426,7 @@ const dummyCnfConfigurations1: ProcessConfigurations = {
     }
 };
 
-const defaultCstConfigurations: ProcessConfigurations = {
+export const defaultCstConfigurations: ProcessConfigurations = {
     "semi_major_axis_cst": {
         "units": "m",
         "value": 6378137.0,
