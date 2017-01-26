@@ -652,9 +652,9 @@ export const dummyInputL1aFiles: SourceFile[] = [
 
 export const initialControlState: ControlState = {
     mainPanelTitle: null,
-    selectedConfiguration: null,
+    selectedConfiguration: "default",
     currentConfigurationTabPanel: 0,
-    currentConfiguration: "Alternate Delay-Doppler Processing",
+    currentConfiguration: "default",
     currentMainTabPanel: 0,
     codeEditorActive: false
 };
