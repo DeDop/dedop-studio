@@ -6,7 +6,7 @@ import {
     updateConfigSelection,
     selectCurrentConfig,
     deleteConfigName,
-    addConfigName
+    addConfigName, updateConfigName
 } from "../../actions";
 import {ConfigurationPanelHeader, OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
@@ -100,7 +100,17 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
         };
 
         const handleRenameConfig = () => {
-            console.log("rename config")
+            if (this.state.newConfigName) {
+                this.props.dispatch(updateConfigName(this.props.selectedConfiguration[0], this.state.newConfigName));
+                handleCloseRenameConfigDialog();
+                this.setState({
+                    newConfigName: ""
+                })
+            } else {
+                this.setState({
+                    configNameValid: false
+                })
+            }
         };
 
         const handleDeleteConfig = () => {

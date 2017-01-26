@@ -19,7 +19,7 @@ export const getSelectedChd = createSelector(
     getSelectedConfiguration,
     (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
         const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
-        return getSelectedConfiguration != null ? getConfigurations[configIndex].chd : null;
+        return configIndex >= 0 ? getConfigurations[configIndex].chd : null;
     }
 );
 
@@ -28,7 +28,7 @@ export const getSelectedCnf = createSelector(
     getSelectedConfiguration,
     (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
         const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
-        return getSelectedConfiguration != null ? getConfigurations[configIndex].cnf : null;
+        return configIndex >= 0 ? getConfigurations[configIndex].cnf : null;
     }
 );
 
@@ -37,6 +37,6 @@ export const getSelectedCst = createSelector(
     getSelectedConfiguration,
     (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
         const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
-        return getSelectedConfiguration != null ? getConfigurations[configIndex].cst : null;
+        return configIndex >= 0 ? getConfigurations[configIndex].cst : null;
     }
 );

@@ -58,6 +58,21 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.UPDATE_CONFIG_NAME: {
+            const index = state.configurations.findIndex((x) => x.name === action.payload.oldConfigurationName);
+            const newName = action.payload.newConfigurationName;
+            const updatedConfigurations = Object.assign({}, state.configurations[index], {
+                name: newName
+            });
+            return Object.assign({}, state, {
+                ...state,
+                configurations: [
+                    ...state.configurations.slice(0, index),
+                    updatedConfigurations,
+                    ...state.configurations.slice(index + 1),
+                ],
+            });
+        }
         case actions.DELETE_CONFIG_NAME: {
             const configName = action.payload;
             const index = state.configurations.findIndex((x) => x.name === configName);
@@ -120,6 +135,10 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         case actions.UPDATE_CONFIG_EDITOR_MODE:
             return Object.assign({}, state, {
                 codeEditorActive: action.payload
+            });
+        case actions.UPDATE_CONFIG_NAME:
+            return Object.assign({}, state, {
+                selectedConfiguration: action.payload.newConfigurationName
             });
         case actions.DELETE_CONFIG_NAME:
             return Object.assign({}, state, {

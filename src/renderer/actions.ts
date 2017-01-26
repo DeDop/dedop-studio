@@ -5,6 +5,7 @@ export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
+export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
 export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
@@ -34,6 +35,15 @@ export function addConfigName(newConfigurationName: string, baseConfigurationNam
             baseConfigurationName: baseConfigurationName
         }
     };
+}
+
+export function updateConfigName(oldConfigurationName: string, newConfigurationName: string) {
+    return {
+        type: UPDATE_CONFIG_NAME, payload: {
+            oldConfigurationName: oldConfigurationName,
+            newConfigurationName: newConfigurationName
+        }
+    }
 }
 
 export function deleteConfigName(configName: string) {
