@@ -79,9 +79,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         };
 
         const handleSaveConfig = () => {
-            const chd = this.state.chd;
-            const cnf = this.state.cnf;
-            const cst = this.state.cst;
+            const chd = this.state.chdTemp;
+            const cnf = this.state.cnfTemp;
+            const cst = this.state.cstTemp;
             this.props.dispatch(saveConfiguration(this.props.activeConfiguration, chd, cnf, cst));
         };
 

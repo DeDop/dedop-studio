@@ -97,8 +97,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             return Object.assign({}, state, {
                 configurations: [
                     ...state.configurations.slice(0, index),
-                    ...state.configurations.slice(index + 1),
-                    newConfiguration
+                    newConfiguration,
+                    ...state.configurations.slice(index + 1)
                 ]
             });
         }
