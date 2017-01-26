@@ -1,4 +1,5 @@
 import {ProcessConfigurations} from './state';
+import * as moment from 'moment'
 
 export const UPDATE_PANEL_TITLE = 'UPDATE_PANEL_TITLE';
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
@@ -29,19 +30,25 @@ export function selectSourceFile(fileName: string) {
 }
 
 export function addConfigName(newConfigurationName: string, baseConfigurationName: string) {
+    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
     return {
         type: ADD_CONFIG_NAME, payload: {
             newConfigurationName: newConfigurationName,
-            baseConfigurationName: baseConfigurationName
+            baseConfigurationName: baseConfigurationName,
+            currentTime: currentTime
         }
     };
 }
 
-export function updateConfigName(oldConfigurationName: string, newConfigurationName: string) {
+export function updateConfigName(oldConfigurationName: string, newConfigurationName: string, oldCurrentConfiguration: string) {
+    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    const currentConfiguration = oldCurrentConfiguration == oldConfigurationName ? newConfigurationName : oldCurrentConfiguration;
     return {
         type: UPDATE_CONFIG_NAME, payload: {
             oldConfigurationName: oldConfigurationName,
-            newConfigurationName: newConfigurationName
+            newConfigurationName: newConfigurationName,
+            currentTime: currentTime,
+            currentConfiguration: currentConfiguration
         }
     }
 }
@@ -66,9 +73,15 @@ export function saveConfiguration(activeConfiguration: string,
                                   chd: ProcessConfigurations,
                                   cnf: ProcessConfigurations,
                                   cst: ProcessConfigurations) {
-    console.log("inside action", activeConfiguration);
+    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
     return {
         type: SAVE_CONFIGURATION,
-        payload: {activeConfiguration: activeConfiguration, chd: chd, cnf: cnf, cst: cst}
+        payload: {
+            activeConfiguration: activeConfiguration,
+            chd: chd,
+            cnf: cnf,
+            cst: cst,
+            currentTime: currentTime
+        }
     };
 }

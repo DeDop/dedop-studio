@@ -101,7 +101,7 @@ class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> 
 
         const handleRenameConfig = () => {
             if (this.state.newConfigName) {
-                this.props.dispatch(updateConfigName(this.props.selectedConfiguration[0], this.state.newConfigName));
+                this.props.dispatch(updateConfigName(this.props.selectedConfiguration[0], this.state.newConfigName, this.props.currentConfiguration));
                 handleCloseRenameConfigDialog();
                 this.setState({
                     newConfigName: ""

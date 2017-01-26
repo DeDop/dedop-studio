@@ -50,7 +50,7 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                     {
                         id: lastId,
                         name: action.payload.newConfigurationName,
-                        lastUpdated: "01/01/1900 00:00:00",
+                        lastUpdated: action.payload.currentTime,
                         chd: configs.chd,
                         cnf: configs.cnf,
                         cst: configs.cst
@@ -60,9 +60,9 @@ const dataReducer = (state: DataState = initialDataState, action) => {
         }
         case actions.UPDATE_CONFIG_NAME: {
             const index = state.configurations.findIndex((x) => x.name === action.payload.oldConfigurationName);
-            const newName = action.payload.newConfigurationName;
             const updatedConfigurations = Object.assign({}, state.configurations[index], {
-                name: newName
+                name: action.payload.newConfigurationName,
+                lastUpdated: action.payload.currentTime
             });
             return Object.assign({}, state, {
                 ...state,
@@ -122,7 +122,8 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.SELECT_CURRENT_CONFIG:
             return Object.assign({}, state, {
-                currentConfiguration: action.payload
+                currentConfiguration: action.payload,
+                selectedConfiguration: action.payload
             });
         case actions.UPDATE_MAIN_TAB:
             return Object.assign({}, state, {
@@ -138,7 +139,8 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.UPDATE_CONFIG_NAME:
             return Object.assign({}, state, {
-                selectedConfiguration: action.payload.newConfigurationName
+                selectedConfiguration: action.payload.newConfigurationName,
+                currentConfiguration: action.payload.currentConfiguration
             });
         case actions.DELETE_CONFIG_NAME:
             return Object.assign({}, state, {
