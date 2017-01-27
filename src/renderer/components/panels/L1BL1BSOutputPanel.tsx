@@ -7,13 +7,13 @@ export class L1BL1BSOutputPanel extends React.Component<any,any> {
             <div className="dedop-collapse vertical-third">
                 <OrdinaryPanelHeader title="L1B & L1BS Output" icon="pt-icon-document"/>
                 <div className="dedop-panel-content">
-                    <table>
+                    <table width='100%'>
                         <tbody>
                         <tr>
-                            <td>
+                            <td width='20%'>
                                 Output directory
                             </td>
-                            <td style={{width: '100%'}}>
+                            <td width='80%'>
                                 <label className="pt-file-upload pt-fill l1a-input-file-upload">
                                     <input type="file"/>
                                     <span className="pt-file-upload-input">

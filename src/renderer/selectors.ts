@@ -40,3 +40,15 @@ export const getSelectedCst = createSelector(
         return configIndex >= 0 ? getConfigurations[configIndex].cst : null;
     }
 );
+
+export const getConfigurationNames = createSelector(
+    getConfigurations,
+    (getConfigurations): string[] => {
+        console.log("inside selector", getConfigurations);
+        let configNames = [];
+        for (let i of getConfigurations) {
+            configNames.push(i.name);
+        }
+        return configNames;
+    }
+);

@@ -1,45 +1,53 @@
 import * as React from "react";
 import {Radio} from "@blueprintjs/core";
 import {OrdinaryPanelHeader} from "./PanelHeader";
+import {SourceFile} from "../../state";
+import {dummyInputL1aFiles} from "../../initialStates";
+import {connect} from "react-redux";
 
-export class L1AInputPanel extends React.Component<any,any> {
+interface IL1AInputPanelProps {
+    sourceFiles: SourceFile[];
+}
+
+function mapStateToProps(): IL1AInputPanelProps {
+    return {
+        sourceFiles: dummyInputL1aFiles
+    }
+}
+
+class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
     public state = {
-        isOpen: true,
         sourceType: "single"
     };
 
     render() {
         const handleChange = () => {
             this.setState({
-                isOpen: this.state.isOpen,
                 sourceType: this.state.sourceType === "single" ? "directory" : "single"
             })
         };
 
-        const handleClick = () => {
-            this.setState({
-                isOpen: !this.state.isOpen,
-                sourceType: this.state.sourceType
-            });
-        };
+        let options = [];
+        options.push(<option key="informationText" selected disabled>Select a single L1A file...</option>);
+        for (let i in this.props.sourceFiles) {
+            options.push(<option key={i}>{this.props.sourceFiles[i].name}</option>);
+        }
 
         return (
             <div className="dedop-collapse vertical-third">
                 <OrdinaryPanelHeader title="L1A Input" icon="pt-icon-database"/>
                 <div className="dedop-panel-content l1a-input-radio-group">
-                    <table>
+                    <table width='100%'>
                         <tbody>
                         <tr>
-                            <td>
+                            <td width='20%'>
                                 <Radio label="Single file" value="single" checked={this.state.sourceType == "single"}
                                        onChange={handleChange}/>
                             </td>
-                            <td style={{width: '100%'}}>
+                            <td width='80%'>
                                 <div className="pt-select pt-fill">
                                     <select disabled={this.state.sourceType == "directory"}>
-                                        <option selected>Select a configuration...</option>
-                                        <option value="1">Alternate Delay-Doppler Processing</option>
-                                        <option value="2">Modified Surface Locations</option>
+                                        {options}
                                     </select>
                                 </div>
                             </td>
@@ -50,7 +58,7 @@ export class L1AInputPanel extends React.Component<any,any> {
                                        checked={this.state.sourceType == "directory"}
                                        onChange={handleChange}/>
                             </td>
-                            <td style={{width: '100%'}}>
+                            <td>
                                 <label className="pt-file-upload pt-fill l1a-input-file-upload">
                                     <input type="file" disabled={this.state.sourceType == "single"}/>
                                     <span
@@ -65,3 +73,5 @@ export class L1AInputPanel extends React.Component<any,any> {
         )
     }
 }
+
+export default connect(mapStateToProps)(L1AInputPanel);
