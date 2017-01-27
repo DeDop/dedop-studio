@@ -1,7 +1,7 @@
 import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {processingItems} from "../../initialStates";
-import ProcessingTable from "../ProcessingTable";
+import ProcessingTable from "../tables/ProcessingTable";
 
 export class ProcessorRunsPanel extends React.Component<any,any> {
     render() {

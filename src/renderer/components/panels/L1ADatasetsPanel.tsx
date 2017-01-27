@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import * as React from "react";
 import {FootprintsPanel} from "./FootprintsPanel";
 import {updatePanelTitle} from "../../actions";
-import SourceDataPanel from "./SourceDataPanel";
+import SourceDataPanel from "../tabpanels/SourceDataPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalMetadataCollapse";
 
 interface IL1ADatasetsPanelProps {

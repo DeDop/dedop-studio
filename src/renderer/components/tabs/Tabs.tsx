@@ -1,13 +1,13 @@
 import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
-import InputDatasetPanel from './panels/L1ADatasetsPanel';
-import ConfigurationPanel from './panels/ConfigurationPanel';
-import ProcessingPanel from './panels/ProcessingPanel';
-import ResultPanel from './panels/ResultPanel';
+import InputDatasetPanel from '../panels/L1ADatasetsPanel';
+import ConfigurationPanel from '../tabpanels/ConfigurationPanel';
+import ProcessingPanel from '../tabpanels/ProcessingPanel';
+import ResultPanel from '../tabpanels/ResultPanel';
 import {connect} from "react-redux";
-import {State} from "../state";
-import {updateMainTab} from "../actions";
+import {State} from "../../state";
+import {updateMainTab} from "../../actions";
 
 interface IMainTabsProps {
     dispatch?: (action: {type: string, payload: any}) => void;

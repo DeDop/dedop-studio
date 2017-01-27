@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from "react-redux";
 import {State, GlobalMetadata} from "../../state";
 import {Collapse} from "@blueprintjs/core";
-import {GlobalMetadataTable} from "../GlobalMetadataTable";
+import {GlobalMetadataTable} from "../tables/GlobalMetadataTable";
 import * as selectors from "../../selectors"
 
 interface IGlobalMetadataCollapseProps {

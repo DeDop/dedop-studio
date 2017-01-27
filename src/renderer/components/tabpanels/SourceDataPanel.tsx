@@ -1,5 +1,5 @@
 import * as React from "react";
-import {OrdinaryPanelHeader} from "./PanelHeader";
+import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";

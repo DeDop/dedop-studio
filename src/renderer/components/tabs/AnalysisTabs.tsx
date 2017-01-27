@@ -1,7 +1,6 @@
-import * as React from 'react';
-import {ProcessConfigurations, State} from "../state";
+import * as React from "react";
 import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
-import 'codemirror/mode/javascript/javascript';
+import "codemirror/mode/javascript/javascript";
 import MouseEventHandler = React.MouseEventHandler;
 
 interface IAnalysisTabsProps {

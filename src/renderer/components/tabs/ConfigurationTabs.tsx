@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as CodeMirror from "react-codemirror";
-import {ProcessConfigurations, State} from "../state";
+import {ProcessConfigurations, State} from "../../state";
 import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
-import {ConfigurationEditor, CnfConfigurationEditor} from "./ConfigurationEditor";
+import {ConfigurationEditor, CnfConfigurationEditor} from "../ConfigurationEditor";
 import "codemirror/mode/javascript/javascript";
 import {connect} from "react-redux";
-import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab} from "../actions";
-import * as selector from "../selectors";
+import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab} from "../../actions";
+import * as selector from "../../selectors";
 import MouseEventHandler = React.MouseEventHandler;
 import FormEvent = React.FormEvent;
 

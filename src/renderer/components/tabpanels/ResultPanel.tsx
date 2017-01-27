@@ -1,9 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 import {connect} from "react-redux";
 import {updatePanelTitle} from "../../actions";
-import {OrdinaryPanelHeader} from "./PanelHeader";
-import {OutputFilesTreeMenu} from "../TreeMenu";
-import {AnalysisTabs} from "../AnalysisTabs";
+import {OrdinaryPanelHeader} from "../panels/PanelHeader";
+import {AnalysisTabs} from "../tabs/AnalysisTabs";
 
 interface IResultPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;

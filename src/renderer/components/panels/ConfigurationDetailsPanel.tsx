@@ -1,6 +1,6 @@
 import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
-import ConfigurationTabs from "../ConfigurationTabs";
+import ConfigurationTabs from "../tabs/ConfigurationTabs";
 
 export class ConfigurationDetailsPanel extends React.Component<any,any> {
     render() {

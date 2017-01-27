@@ -1,10 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {L1AInputPanel} from "./L1AInputPanel";
+import {L1AInputPanel} from "../panels/L1AInputPanel";
 import {updatePanelTitle} from "../../actions";
-import {RunSettingsPanel} from "./RunSettingsPanel";
-import {L1BL1BSOutputPanel} from "./L1BL1BSOutputPanel";
-import {ProcessorRunsPanel} from "./ProcessorRunsPanel";
+import {RunSettingsPanel} from "../panels/RunSettingsPanel";
+import {L1BL1BSOutputPanel} from "../panels/L1BL1BSOutputPanel";
+import {ProcessorRunsPanel} from "../panels/ProcessorRunsPanel";
 
 
 interface IProcessingPanelProps {

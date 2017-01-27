@@ -1,8 +1,8 @@
 import * as React from "react";
-import {ProcessingItem, State} from "../state";
+import {ProcessingItem} from "../../state";
 import {Cell, Column, Table} from "@blueprintjs/table";
 import {connect} from "react-redux";
-import {updateMainTab} from "../actions";
+import {updateMainTab} from "../../actions";
 
 interface IProcessingTableProps {
     dispatch?: (action: {type: string, payload: any}) => void;
