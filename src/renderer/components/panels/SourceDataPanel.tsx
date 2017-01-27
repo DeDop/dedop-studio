@@ -1,5 +1,5 @@
 import * as React from "react";
-import {L1ADatasetsPanelHeader} from "./PanelHeader";
+import {OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";
@@ -45,7 +45,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
 
         return (
             <div className="dedop-collapse">
-                <L1ADatasetsPanelHeader/>
+                <OrdinaryPanelHeader title="L1A Datasets" icon="pt-icon-document"/>
                 <div className="dedop-panel-content">
                     <label className="pt-file-upload pt-fill l1a-input-file-upload">
                         <input type="file"/>

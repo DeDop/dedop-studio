@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ConfigurationPanelHeader} from "./PanelHeader";
+import {OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {
     deleteConfigName,
@@ -158,7 +158,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         return (
             <div className="panel-flexbox-item-configurations">
-                <ConfigurationPanelHeader title="Configuration Names" icon="pt-icon-properties"/>
+                <OrdinaryPanelHeader title="Configuration Names" icon="pt-icon-properties"/>
                 <div className="configuration-file-buttons">
                     <button
                         className="pt-button pt-intent-primary pt-icon-standard pt-icon-add configuration-file-button"
