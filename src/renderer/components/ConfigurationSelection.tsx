@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Configuration, State} from "../../state";
+import {Configuration, State} from "../state";
 import {connect} from "react-redux";
 
 export interface IConfigurationSelectionProps {

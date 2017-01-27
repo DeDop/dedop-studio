@@ -1,10 +1,9 @@
 import {connect} from "react-redux";
 import * as React from "react";
 import {FootprintsPanel} from "./FootprintsPanel";
-import {updatePanelTitle} from '../../actions';
+import {updatePanelTitle} from "../../actions";
 import SourceDataPanel from "./SourceDataPanel";
-import GlobalMetadataCollapse from "../collapse/GlobalMetadataCollapse"
-import {Intent, Button, Tooltip, Position} from "@blueprintjs/core";
+import GlobalMetadataCollapse from "../collapse/GlobalMetadataCollapse";
 
 interface IInputDatasetPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
@@ -14,7 +13,7 @@ function mapStateToProps(): IInputDatasetPanelProps {
     return {};
 }
 
-class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
+class L1ADatasetsPanel extends React.Component<IInputDatasetPanelProps, any> {
     componentWillMount() {
         this.props.dispatch(updatePanelTitle("Source Data"));
     }
@@ -28,18 +27,10 @@ class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
                 </div>
                 <div className="panel-flexbox-item">
                     <FootprintsPanel/>
-                    <Tooltip content="Configuration" className="dedop-nav-button-right" position={Position.LEFT}>
-                        <Button intent={Intent.SUCCESS}
-                                style={{marginLeft:'auto', width: '200px'}}
-                                iconName="pt-icon-double-chevron-right"
-                        >
-                            Next
-                        </Button>
-                    </Tooltip>
                 </div>
             </div>
         )
     }
 }
 
-export default connect(mapStateToProps)(InputDatasetPanel);
+export default connect(mapStateToProps)(L1ADatasetsPanel);
