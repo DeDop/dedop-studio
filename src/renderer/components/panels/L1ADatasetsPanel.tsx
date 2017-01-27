@@ -5,15 +5,15 @@ import {updatePanelTitle} from "../../actions";
 import SourceDataPanel from "./SourceDataPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalMetadataCollapse";
 
-interface IInputDatasetPanelProps {
+interface IL1ADatasetsPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
 }
 
-function mapStateToProps(): IInputDatasetPanelProps {
+function mapStateToProps(): IL1ADatasetsPanelProps {
     return {};
 }
 
-class L1ADatasetsPanel extends React.Component<IInputDatasetPanelProps, any> {
+class L1ADatasetsPanel extends React.Component<IL1ADatasetsPanelProps, any> {
     componentWillMount() {
         this.props.dispatch(updatePanelTitle("Source Data"));
     }

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
-import InputDatasetPanel from './panels/InputDatasetPanel';
+import InputDatasetPanel from './panels/L1ADatasetsPanel';
 import ConfigurationPanel from './panels/ConfigurationPanel';
 import ProcessingPanel from './panels/ProcessingPanel';
 import ResultPanel from './panels/ResultPanel';
