@@ -92,7 +92,7 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 cnf: action.payload.cnf,
                 cst: action.payload.cst,
                 name: configName,
-                lastUpdated: "now"
+                lastUpdated: action.payload.currentTime
             });
             return Object.assign({}, state, {
                 configurations: [
