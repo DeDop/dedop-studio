@@ -10,6 +10,7 @@ import {
 import MainTabs from './components/Tabs';
 import TopMenu from './components/TopMenu';
 import {reducers} from './reducers';
+import {WorkflowBreadcrumb} from "./components/WorkflowBreadcrumb";
 
 export function main() {
 
@@ -21,6 +22,7 @@ export function main() {
                 <HGLHeader>
                     <TopMenu/>
                 </HGLHeader>
+                <WorkflowBreadcrumb/>
                 <HGLCenter>
                     <MainTabs/>
                 </HGLCenter>

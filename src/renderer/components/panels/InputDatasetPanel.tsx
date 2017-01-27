@@ -4,6 +4,7 @@ import {FootprintsPanel} from "./FootprintsPanel";
 import {updatePanelTitle} from '../../actions';
 import SourceDataPanel from "./SourceDataPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalMetadataCollapse"
+import {Intent, Button, Tooltip, Position} from "@blueprintjs/core";
 
 interface IInputDatasetPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
@@ -27,6 +28,14 @@ class InputDatasetPanel extends React.Component<IInputDatasetPanelProps, any> {
                 </div>
                 <div className="panel-flexbox-item">
                     <FootprintsPanel/>
+                    <Tooltip content="Configuration" className="dedop-nav-button-right" position={Position.LEFT}>
+                        <Button intent={Intent.SUCCESS}
+                                style={{marginLeft:'auto', width: '200px'}}
+                                iconName="pt-icon-double-chevron-right"
+                        >
+                            Next
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
         )

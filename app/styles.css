@@ -186,6 +186,8 @@ h1, h2, h3, h4, h5 {
 }
 
 .panel-flexbox > .panel-flexbox-item {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: 500px;
@@ -288,6 +290,15 @@ h1, h2, h3, h4, h5 {
 }
 
 /* Top menu styling ==========================================================*/
+
+/* Breadcrumb styling ==========================================================*/
+
+.dedop-breadcrumb {
+    background-color: rgb(181, 201, 207);
+    padding: 0 0 0 10px;
+}
+
+/* Breadcrumb styling ==========================================================*/
 
 /* Blueprint collapse styling ================================================*/
 
@@ -561,6 +572,14 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-dialog-parameter-input {
     float: right;
     width: 300px;
+}
+
+/* Dialog styling =========================================================*/
+
+/* Dialog styling =========================================================*/
+
+.dedop-nav-button-right {
+    text-align: right;
 }
 
 /* Dialog styling =========================================================*/
