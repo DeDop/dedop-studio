@@ -137,6 +137,10 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             return Object.assign({}, state, {
                 codeEditorActive: action.payload
             });
+        case actions.ADD_CONFIG_NAME:
+            return Object.assign({}, state, {
+                selectedConfiguration: action.payload.newConfigurationName
+            });
         case actions.UPDATE_CONFIG_NAME:
             return Object.assign({}, state, {
                 selectedConfiguration: action.payload.newConfigurationName,
