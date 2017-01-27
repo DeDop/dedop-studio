@@ -1,12 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
-
-import {DedopRunSettingsCollapse, DedopL1aInputCollapse, DedopRunOutputCollapse} from "../Collapse";
-import {FootprintsPanel} from "./FootprintsPanel";
-import {OrdinaryPanelHeader} from "./PanelHeader";
-import ProcessingTable from "../ProcessingTable";
-import {processingItems} from "../../initialStates";
+import {L1AInputPanel} from "./L1AInputPanel";
 import {updatePanelTitle} from "../../actions";
+import {RunSettingsPanel} from "./RunSettingsPanel";
+import {L1BL1BSOutputPanel} from "./L1BL1BSOutputPanel";
+import {ProcessorRunsPanel} from "./ProcessorRunsPanel";
 
 
 interface IProcessingPanelProps {
@@ -27,21 +25,11 @@ class ProcessingPanel extends React.Component<IProcessingPanelProps, any> {
             <div className="panel-flexbox-vertical">
                 <div className="panel-flexbox">
                     <div className="flexbox-item-pico-config">
-                        <DedopL1aInputCollapse panelTitle="L1A Input" collapseIcon="pt-icon-database"/>
-                        <DedopRunSettingsCollapse panelTitle="Run Settings" collapseIcon="pt-icon-properties"/>
-                        <DedopRunOutputCollapse panelTitle="L1B & L1BS Output" collapseIcon="pt-icon-document"/>
-
+                        <L1AInputPanel/>
+                        <RunSettingsPanel/>
+                        <L1BL1BSOutputPanel/>
                     </div>
-                    <div className="panel-flexbox-item">
-                        <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
-                        <div style={{textAlign: 'right'}}>
-                            <button type="button" className="pt-button pt-icon-standard pt-icon-play pt-intent-primary"
-                                    style={{margin: '10px 0'}}>
-                                Run
-                            </button>
-                        </div>
-                        <ProcessingTable processingItems={processingItems}/>
-                    </div>
+                    <ProcessorRunsPanel/>
                 </div>
             </div>
         )
