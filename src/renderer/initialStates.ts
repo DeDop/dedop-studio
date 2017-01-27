@@ -663,3 +663,10 @@ export const initialDataState: DataState = {
     configurations: dummyConfigFileList,
     sourceFiles: dummyInputL1aFiles
 };
+
+export const mainTabs: string[] = [
+    "Source Data",
+    "Configuration",
+    "Processing",
+    "Result & Analysis"
+];

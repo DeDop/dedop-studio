@@ -10,7 +10,7 @@ import {
 import MainTabs from './components/Tabs';
 import TopMenu from './components/TopMenu';
 import {reducers} from './reducers';
-import {WorkflowBreadcrumb} from "./components/WorkflowBreadcrumb";
+import WorkflowBreadcrumb from "./components/WorkflowBreadcrumb";
 
 export function main() {
 

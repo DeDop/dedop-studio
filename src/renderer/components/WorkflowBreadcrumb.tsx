@@ -1,16 +1,45 @@
 import * as React from "react";
+import {State} from "../state";
+import {connect} from "react-redux";
+import {mainTabs} from "../initialStates";
+import {updateMainTab} from "../actions";
 
-export class WorkflowBreadcrumb extends React.Component<any,any> {
+interface IWorkflowBreadcrumbProps {
+    dispatch?: (action: {type: string, payload: number}) => void;
+    currentMainTabPanel: number;
+    tabNames: string[];
+}
+
+function mapStateToProps(state: State) {
+    return {
+        currentMainTabPanel: state.control.currentMainTabPanel,
+        tabNames: mainTabs
+    }
+}
+
+class WorkflowBreadcrumb extends React.Component<IWorkflowBreadcrumbProps,any> {
     public render() {
+        let items = [];
+        for (let i in this.props.tabNames) {
+            const currentTabStyle = Number(i) == this.props.currentMainTabPanel ? "pt-breadcrumb-current" : "";
+            const handleClickBreadcrumb = () => {
+                this.props.dispatch(updateMainTab(Number(i)));
+            };
+            items.push(
+                <li key={i}>
+                    <span className={"pt-breadcrumb ".concat(currentTabStyle)} onClick={handleClickBreadcrumb}>
+                        {this.props.tabNames[i]}
+                    </span>
+                </li>);
+        }
         return (
             <div className="dedop-breadcrumb">
                 <ul className="pt-breadcrumbs">
-                    <li><a className="pt-breadcrumb">Source Data</a></li>
-                    <li><a className="pt-breadcrumb" href="#">Configuration</a></li>
-                    <li><a className="pt-breadcrumb" href="#">Processing</a></li>
-                    <li><span className="pt-breadcrumb pt-breadcrumb-current">Result & Analysis</span></li>
+                    {items}
                 </ul>
             </div>
         )
     }
 }
+
+export default connect(mapStateToProps)(WorkflowBreadcrumb);
