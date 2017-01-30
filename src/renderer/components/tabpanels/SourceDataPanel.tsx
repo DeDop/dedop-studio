@@ -3,19 +3,22 @@ import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";
-import {selectSourceFile} from "../../actions";
+import {selectSourceFile, selectSourceFileDirectory} from "../../actions";
 import {Tooltip, Position} from "@blueprintjs/core";
+import {remote} from "electron";
 
 interface ISourceDataPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
     l1aInputFileNames: SourceFile[];
     selectedSourceFile: string[];
+    currentSourceFileDirectory: string;
 }
 
 function mapStateToProps(state: State): ISourceDataPanelProps {
     return {
         l1aInputFileNames: state.data.sourceFiles,
-        selectedSourceFile: [state.control.selectedSourceFile]
+        selectedSourceFile: [state.control.selectedSourceFile],
+        currentSourceFileDirectory: state.control.currentSourceFileDirectory
     };
 }
 
@@ -43,14 +46,32 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
             this.props.dispatch(selectSourceFile(newSelection.length > 0 ? newSelection[0] as string : null));
         };
 
+        const handleSelectDirectory = () => {
+            const sourceFileDirectory = remote.dialog.showOpenDialog({
+                    properties: ['openDirectory'],
+                    defaultPath: "C:\\Users\\hans\\.dedop"
+                } //TODO: use config input directory
+            );
+            this.props.dispatch(selectSourceFileDirectory(sourceFileDirectory[0]));
+        };
+
         return (
             <div className="dedop-collapse">
                 <OrdinaryPanelHeader title="L1A Datasets" icon="pt-icon-document"/>
                 <div className="dedop-panel-content">
-                    <label className="pt-file-upload pt-fill l1a-input-file-upload">
-                        <input type="file"/>
-                        <span className="pt-file-upload-input">Choose directory...</span>
-                    </label>
+                    <div className="pt-input-group">
+                        <input className="pt-input"
+                               type="text"
+                               placeholder="Choose directory..."
+                               style={{textAlign: 'left'}}
+                               readOnly={true}
+                               value={this.props.currentSourceFileDirectory}
+                               onClick={handleSelectDirectory}
+                        />
+                        <button className="pt-button pt-minimal pt-icon-folder-open"
+                                onClick={handleSelectDirectory}
+                        />
+                    </div>
                     <ListBox numItems={this.props.l1aInputFileNames.length}
                              renderItem={renderFileList}
                              onSelection={handleSelectSourceFile}

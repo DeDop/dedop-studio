@@ -1,10 +1,11 @@
-import {ProcessConfigurations} from './state';
-import * as moment from 'moment'
+import {ProcessConfigurations} from "./state";
+import * as moment from "moment";
 
 export const UPDATE_PANEL_TITLE = 'UPDATE_PANEL_TITLE';
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
+export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
 export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
@@ -27,6 +28,10 @@ export function selectCurrentConfig(currentConfigName: string) {
 
 export function selectSourceFile(fileName: string) {
     return {type: SELECT_SOURCE_FILE, payload: fileName};
+}
+
+export function selectSourceFileDirectory(fileDirectory: string) {
+    return {type: SELECT_SOURCE_FILE_DIRECTORY, payload: fileDirectory};
 }
 
 export function addConfigName(newConfigurationName: string, baseConfigurationName: string) {

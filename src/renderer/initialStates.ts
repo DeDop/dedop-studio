@@ -656,7 +656,8 @@ export const initialControlState: ControlState = {
     currentConfigurationTabPanel: 0,
     currentConfiguration: "default",
     currentMainTabPanel: 0,
-    codeEditorActive: false
+    codeEditorActive: false,
+    currentSourceFileDirectory: ""
 };
 
 export const initialDataState: DataState = {

@@ -19,6 +19,7 @@ export interface ControlState {
     selectedConfiguration ?: string;
     currentConfigurationTabPanel ?: number;
     selectedSourceFile ?: string;
+    currentSourceFileDirectory ?: string;
     currentConfiguration ?: string;
     currentMainTabPanel ?: number;
     codeEditorActive ?: boolean;
