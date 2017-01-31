@@ -3,9 +3,10 @@ import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";
-import {selectSourceFile, selectSourceFileDirectory} from "../../actions";
+import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
 import {Tooltip, Position} from "@blueprintjs/core";
 import {remote} from "electron";
+import * as moment from "moment";
 
 interface ISourceDataPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -30,7 +31,8 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                 <div className="dedop-list-box-item">
                     <span className="dedop-list-box-item-file-name">{sourceFile.name}</span>
                     <Tooltip content="file size" position={Position.LEFT}>
-                        <span className="pt-tag pt-intent-success dedop-list-box-item-file-size">{sourceFile.size}
+                        <span
+                            className="pt-tag pt-intent-success dedop-list-box-item-file-size">{(sourceFile.size).toFixed(2)}
                             MB</span>
                     </Tooltip>
                     <Tooltip content="last modified date" position={Position.RIGHT}>
@@ -49,10 +51,29 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
         const handleSelectDirectory = () => {
             const sourceFileDirectory = remote.dialog.showOpenDialog({
                     properties: ['openDirectory'],
-                    defaultPath: "C:\\Users\\hans\\.dedop"
-                } //TODO: use config input directory
+                    defaultPath: this.props.currentSourceFileDirectory
+                }
             );
             this.props.dispatch(selectSourceFileDirectory(sourceFileDirectory[0]));
+            const electronFs = remote.require("fs");
+            let sourceFiles = electronFs.readdirSync(sourceFileDirectory[0]);
+            let validSourceFiles: SourceFile[] = [];
+            for (let fileName of sourceFiles) {
+                if (fileName.endsWith(".nc")) {
+                    const stats = electronFs.statSync(sourceFileDirectory[0].concat("\\").concat(fileName));
+                    validSourceFiles.push({
+                        name: fileName,
+                        size: stats.size / (1024 * 1024),
+                        lastUpdated: moment(stats.mtime.toISOString()).format("DD/MM/YY, hh:mm:ss"),
+                        globalMetadata: []
+                    });
+                }
+
+            }
+            if (validSourceFiles.length > 0) {
+                this.props.dispatch(updateSourceFileList(validSourceFiles));
+            }
+
         };
 
         return (

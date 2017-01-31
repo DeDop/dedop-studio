@@ -102,6 +102,11 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.UPDATE_SOURCE_FILE_LIST: {
+            return Object.assign({}, state, {
+                sourceFiles: action.payload
+            })
+        }
     }
     return state;
 };

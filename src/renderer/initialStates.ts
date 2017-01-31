@@ -657,7 +657,7 @@ export const initialControlState: ControlState = {
     currentConfiguration: "default",
     currentMainTabPanel: 0,
     codeEditorActive: false,
-    currentSourceFileDirectory: ""
+    currentSourceFileDirectory: "C:\\Users\\hans\\.dedop"
 };
 
 export const initialDataState: DataState = {
