@@ -4,9 +4,10 @@ import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";
 import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
-import {Tooltip, Position} from "@blueprintjs/core";
+import {Tooltip, Position, Alert} from "@blueprintjs/core";
 import {remote} from "electron";
 import * as moment from "moment";
+import {GeneralAlert} from "../Alerts";
 
 interface ISourceDataPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -24,6 +25,23 @@ function mapStateToProps(state: State): ISourceDataPanelProps {
 }
 
 class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
+
+    constructor(props: ISourceDataPanelProps, context: any) {
+        super(props, context);
+        this.handleCloseAlert = this.handleCloseAlert.bind(this);
+    }
+
+    public state = {
+        isNoFilesAvailableAlertOpen: false,
+    };
+
+    handleCloseAlert() {
+        this.setState({
+            isNoFilesAvailableAlertOpen: false
+        })
+    };
+
+
     render() {
         const renderFileList = (itemIndex: number) => {
             const sourceFile = this.props.l1aInputFileNames[itemIndex];
@@ -72,8 +90,11 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
             }
             if (validSourceFiles.length > 0) {
                 this.props.dispatch(updateSourceFileList(validSourceFiles));
+            } else {
+                this.setState({
+                    isNoFilesAvailableAlertOpen: true
+                })
             }
-
         };
 
         return (
@@ -98,6 +119,11 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                              onSelection={handleSelectSourceFile}
                              selection={this.props.selectedSourceFile ? this.props.selectedSourceFile : []}/>
                 </div>
+                <GeneralAlert isAlertOpen={this.state.isNoFilesAvailableAlertOpen}
+                              onConfirm={this.handleCloseAlert}
+                              message="There are no NetCDF file(s) available in this directory. Please select another directory."
+                              iconName="pt-icon-warning-sign"
+                />
             </div>
         )
     }
