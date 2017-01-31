@@ -502,7 +502,7 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-list-box-item-file-name {
     display: flex;
     align-items: center;
-    width: 75%;
+    width: 80%;
 }
 
 .dedop-list-box-item-file-size {
@@ -516,6 +516,7 @@ ul.dedop-list-box li.dedop-selected {
     justify-content: center;
     font-size: x-small;
     margin-left: auto;
+    width: 125px;
 }
 
 /* Listbox styling =========================================================*/
