@@ -1,20 +1,23 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
-import {createStore} from 'redux';
-
-import {
-    HGLContainer, HGLHeader, HGLFooter,
-    HGLCenter
-} from './components/Components';
-import MainTabs from './components/tabs/Tabs';
-import TopMenu from './components/TopMenu';
-import {reducers} from './reducers';
+import {createStore, applyMiddleware} from "redux";
+import thunkMiddleware from "redux-thunk";
+import * as loggerMiddleware from "redux-logger";
+import {HGLContainer, HGLHeader, HGLFooter, HGLCenter} from "./components/Components";
+import MainTabs from "./components/tabs/Tabs";
+import TopMenu from "./components/TopMenu";
+import {reducers} from "./reducers";
 import WorkflowBreadcrumb from "./components/WorkflowBreadcrumb";
 
 export function main() {
 
-    const store = createStore(reducers);
+    const middleware = applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware({level: 'info', collapsed: true, diff: true})
+    );
+
+    const store = createStore(reducers, middleware);
 
     ReactDOM.render(
         <Provider store={store}>
