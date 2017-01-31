@@ -28,17 +28,10 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
 
     constructor(props: ISourceDataPanelProps, context: any) {
         super(props, context);
-        this.handleCloseAlert = this.handleCloseAlert.bind(this);
     }
 
     public state = {
         isNoFilesAvailableAlertOpen: false,
-    };
-
-    handleCloseAlert() {
-        this.setState({
-            isNoFilesAvailableAlertOpen: false
-        })
     };
 
 
@@ -60,6 +53,12 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                     </Tooltip>
                 </div>
             )
+        };
+
+        const handleCloseAlert = () => {
+            this.setState({
+                isNoFilesAvailableAlertOpen: false
+            })
         };
 
         const handleSelectSourceFile = (oldSelection: Array<React.Key>, newSelection: Array<React.Key>) => {
@@ -120,7 +119,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                              selection={this.props.selectedSourceFile ? this.props.selectedSourceFile : []}/>
                 </div>
                 <GeneralAlert isAlertOpen={this.state.isNoFilesAvailableAlertOpen}
-                              onConfirm={this.handleCloseAlert}
+                              onConfirm={handleCloseAlert}
                               message="There are no NetCDF file(s) available in this directory. Please select another directory."
                               iconName="pt-icon-warning-sign"
                 />

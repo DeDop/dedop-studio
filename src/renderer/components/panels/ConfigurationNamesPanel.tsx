@@ -12,6 +12,7 @@ import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
 import {Alert, Button, Intent, Dialog} from "@blueprintjs/core";
 import ConfigurationSelection from "../ConfigurationSelection";
+import {GeneralAlert} from "../Alerts";
 
 interface IConfigurationNamesPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -30,7 +31,6 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
 
 class ConfigurationNamesPanel extends React.Component<any, any> {
     public state = {
-        isNotImplementedAlertOpen: false,
         isFileNotSelectedAlertOpen: false,
         isAddConfigDialogOpen: false,
         isRenameConfigDialogOpen: false,
@@ -117,7 +117,6 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleCloseAlert = () => {
             this.setState({
-                isNotImplementedAlertOpen: false,
                 isFileNotSelectedAlertOpen: false,
             })
         };
@@ -182,22 +181,13 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                          onSelection={handleSelectConfig}
                          onItemDoubleClick={handleCurrentConfig}
                 />
-                <Alert
-                    isOpen={this.state.isNotImplementedAlertOpen}
-                    onConfirm={handleCloseAlert}
-                    className='dedop-alert-not-implemented'
-                    iconName='pt-icon-build'
-                >
-                    Not yet implemented
-                </Alert>
-                <Alert
-                    isOpen={this.state.isFileNotSelectedAlertOpen}
+                <GeneralAlert
+                    isAlertOpen={this.state.isFileNotSelectedAlertOpen}
                     onConfirm={handleCloseAlert}
                     className="dedop-alert-warning"
                     iconName="pt-icon-warning-sign"
-                >
-                    A configuration file must be selected
-                </Alert>
+                    message="A configuration file must be selected"
+                />
                 <Dialog isOpen={this.state.isAddConfigDialogOpen}
                         onClose={handleCloseAddConfigDialog}
                         title="Add a new configuration file"
