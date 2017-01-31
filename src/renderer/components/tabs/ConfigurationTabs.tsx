@@ -7,8 +7,6 @@ import "codemirror/mode/javascript/javascript";
 import {connect} from "react-redux";
 import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab} from "../../actions";
 import * as selector from "../../selectors";
-import MouseEventHandler = React.MouseEventHandler;
-import FormEvent = React.FormEvent;
 
 interface IConfigurationTabsProps {
     dispatch?: (action: {type: string, payload: any}) => void;
