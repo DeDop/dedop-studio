@@ -4,7 +4,7 @@ import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";
 import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
-import {Tooltip, Position, Alert} from "@blueprintjs/core";
+import {Tooltip, Position} from "@blueprintjs/core";
 import {remote} from "electron";
 import * as moment from "moment";
 import {GeneralAlert} from "../Alerts";

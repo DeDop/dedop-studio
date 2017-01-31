@@ -10,7 +10,7 @@ import {
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
-import {Alert, Button, Intent, Dialog} from "@blueprintjs/core";
+import {Button, Intent, Dialog} from "@blueprintjs/core";
 import ConfigurationSelection from "../ConfigurationSelection";
 import {GeneralAlert} from "../Alerts";
 
