@@ -113,10 +113,6 @@ const dataReducer = (state: DataState = initialDataState, action) => {
 
 const controlReducer = (state: ControlState = initialControlState, action) => {
     switch (action.type) {
-        case actions.UPDATE_PANEL_TITLE:
-            return Object.assign({}, state, {
-                mainPanelTitle: action.payload
-            });
         case actions.UPDATE_CONFIG_SELECTION:
             return Object.assign({}, state, {
                 selectedConfiguration: action.payload

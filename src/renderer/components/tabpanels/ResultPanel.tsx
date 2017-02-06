@@ -1,6 +1,5 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {updatePanelTitle} from "../../actions";
 import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import {AnalysisTabs} from "../tabs/AnalysisTabs";
 
@@ -13,10 +12,6 @@ function mapStateToProps(): IResultPanelProps {
 }
 
 export class ResultPanel extends React.Component<IResultPanelProps, any> {
-    componentWillMount() {
-        this.props.dispatch(updatePanelTitle("Results & Analysis"));
-    }
-
     public render() {
         return (
             <div className="panel-flexbox">

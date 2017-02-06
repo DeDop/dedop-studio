@@ -1,7 +1,5 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {updatePanelTitle} from "../../actions";
-import {Configuration} from "../../state";
 import ConfigurationNamesPanel from "../panels/ConfigurationNamesPanel";
 import {ConfigurationDetailsPanel} from "../panels/ConfigurationDetailsPanel";
 import FormEventHandler = React.FormEventHandler;
@@ -13,10 +11,6 @@ interface IConfigurationPanelProps {
 }
 
 class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> {
-    componentWillMount() {
-        this.props.dispatch(updatePanelTitle("Configuration"));
-    }
-
     public render() {
         return (
             <div className="panel-flexbox">

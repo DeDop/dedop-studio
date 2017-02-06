@@ -1,20 +1,21 @@
 import * as React from "react";
 import {State} from "../state";
 import {connect} from "react-redux";
+import {mainTabs} from "../initialStates";
 
 interface ITopMenuProps {
-    panelTitle: string;
+    currentMainTabPanel: number;
 }
 
 function mapStateToProps(state: State): ITopMenuProps {
     return {
-        panelTitle: state.control.mainPanelTitle,
+        currentMainTabPanel: state.control.currentMainTabPanel,
     };
 }
 
 export class TopMenu extends React.Component<ITopMenuProps, any> {
     public render() {
-        const panelTitle = this.props.panelTitle ? " - " + this.props.panelTitle : "";
+        const panelTitle = " - " + mainTabs[this.props.currentMainTabPanel];
         return (
             <nav className="pt-navbar .modifier">
                 <div className="pt-navbar-group pt-align-left">

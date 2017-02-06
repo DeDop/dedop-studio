@@ -1,7 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import L1AInputPanel from "../panels/L1AInputPanel";
-import {updatePanelTitle} from "../../actions";
 import RunSettingsPanel from "../panels/RunSettingsPanel";
 import {L1BL1BSOutputPanel} from "../panels/L1BL1BSOutputPanel";
 import {ProcessorRunsPanel} from "../panels/ProcessorRunsPanel";
@@ -16,10 +15,6 @@ function mapStateToProps(): IProcessingPanelProps {
 }
 
 class ProcessingPanel extends React.Component<IProcessingPanelProps, any> {
-    componentWillMount() {
-        this.props.dispatch(updatePanelTitle("Processing"));
-    }
-
     public render() {
         return (
             <div className="panel-flexbox-vertical">

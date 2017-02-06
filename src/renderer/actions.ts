@@ -1,7 +1,6 @@
 import {ProcessConfigurations, SourceFile} from "./state";
 import * as moment from "moment";
 
-export const UPDATE_PANEL_TITLE = 'UPDATE_PANEL_TITLE';
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
@@ -14,10 +13,6 @@ export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const SAVE_CONFIGURATION = 'SAVE_CONFIGURATION';
-
-export function updatePanelTitle(panelTitle: string) {
-    return {type: UPDATE_PANEL_TITLE, payload: panelTitle};
-}
 
 export function updateConfigSelection(selectedConfigName: string) {
     return {type: UPDATE_CONFIG_SELECTION, payload: selectedConfigName};

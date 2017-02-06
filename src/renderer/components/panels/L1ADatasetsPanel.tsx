@@ -1,7 +1,6 @@
 import {connect} from "react-redux";
 import * as React from "react";
 import {FootprintsPanel} from "./FootprintsPanel";
-import {updatePanelTitle} from "../../actions";
 import SourceDataPanel from "../tabpanels/SourceDataPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalMetadataCollapse";
 
@@ -14,10 +13,6 @@ function mapStateToProps(): IL1ADatasetsPanelProps {
 }
 
 class L1ADatasetsPanel extends React.Component<IL1ADatasetsPanelProps, any> {
-    componentWillMount() {
-        this.props.dispatch(updatePanelTitle("Source Data"));
-    }
-
     public render() {
         return (
             <div className="panel-flexbox">
