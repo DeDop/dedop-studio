@@ -22,8 +22,8 @@ export function selectCurrentConfig(currentConfigName: string) {
     return {type: SELECT_CURRENT_CONFIG, payload: currentConfigName};
 }
 
-export function selectSourceFile(fileName: string) {
-    return {type: SELECT_SOURCE_FILE, payload: fileName};
+export function selectSourceFile(fileIndex: number) {
+    return {type: SELECT_SOURCE_FILE, payload: fileIndex};
 }
 
 export function selectSourceFileDirectory(fileDirectory: string) {

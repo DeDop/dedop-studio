@@ -4,13 +4,13 @@ import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect} from "react-redux";
 import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
-import {Tooltip, Position} from "@blueprintjs/core";
 import {remote} from "electron";
 import * as moment from "moment";
 import {GeneralAlert} from "../Alerts";
+import SourceFileListSingle from "../SourceFileListSingle";
 
 interface ISourceDataPanelProps {
-    dispatch?: (action: {type: string, payload: any}) => void;
+    dispatch?: (action: {type: string|number, payload: any}) => void;
     l1aInputFileNames: SourceFile[];
     selectedSourceFile: string[];
     currentSourceFileDirectory: string;
@@ -39,19 +39,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
         const renderFileList = (itemIndex: number) => {
             const sourceFile = this.props.l1aInputFileNames[itemIndex];
             return (
-                <div className="dedop-list-box-item">
-                    <span className="dedop-list-box-item-file-name">{sourceFile.name}</span>
-                    <Tooltip content="file size" position={Position.LEFT}>
-                        <span
-                            className="pt-tag pt-intent-success dedop-list-box-item-file-size">{(sourceFile.size).toFixed(2)}
-                            MB</span>
-                    </Tooltip>
-                    <Tooltip content="last modified date" position={Position.RIGHT}>
-                        <span className="pt-tag pt-intent-primary dedop-list-box-item-last-updated">
-                            {sourceFile.lastUpdated}
-                            </span>
-                    </Tooltip>
-                </div>
+                <SourceFileListSingle sourceFile={sourceFile} itemIndex={itemIndex}/>
             )
         };
 
@@ -62,7 +50,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
         };
 
         const handleSelectSourceFile = (oldSelection: Array<React.Key>, newSelection: Array<React.Key>) => {
-            this.props.dispatch(selectSourceFile(newSelection.length > 0 ? newSelection[0] as string : null));
+            this.props.dispatch(selectSourceFile(newSelection.length > 0 ? newSelection[0] as number : null));
         };
 
         const handleSelectDirectory = () => {
