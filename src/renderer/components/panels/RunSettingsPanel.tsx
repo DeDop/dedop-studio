@@ -6,20 +6,25 @@ import {connect} from "react-redux";
 
 interface IRunSettingsPanelProps {
     configurationFiles: string[];
+    selectedConfiguration: string;
 }
 
 function mapStateToProps(state: State): IRunSettingsPanelProps {
     return {
-        configurationFiles: selectors.getConfigurationNames(state)
+        configurationFiles: selectors.getConfigurationNames(state),
+        selectedConfiguration: state.control.selectedConfiguration
     }
 }
 
 class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
     render() {
         let options = [];
-        options.push(<option key="informationText" selected disabled>Select a configuration...</option>);
         for (let i in this.props.configurationFiles) {
-            options.push(<option key={i}>{this.props.configurationFiles[i]}</option>)
+            if (this.props.selectedConfiguration == this.props.configurationFiles[i]) {
+                options.push(<option selected key={i}>{this.props.configurationFiles[i]}</option>);
+            } else {
+                options.push(<option key={i}>{this.props.configurationFiles[i]}</option>)
+            }
         }
         return (
             <div className="dedop-collapse vertical-third">
