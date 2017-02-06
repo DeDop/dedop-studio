@@ -44,7 +44,6 @@ export const getSelectedCst = createSelector(
 export const getConfigurationNames = createSelector(
     getConfigurations,
     (getConfigurations): string[] => {
-        console.log("inside selector", getConfigurations);
         let configNames = [];
         for (let i of getConfigurations) {
             configNames.push(i.name);
