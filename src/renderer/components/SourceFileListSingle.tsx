@@ -27,8 +27,8 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
         };
 
         return (
-            <Menu>
-                <MenuItem onClick={handleSave} text="Add"/>
+            <Menu className="dedop-context-menu">
+                <MenuItem onClick={handleSave} text="Add" iconName="pt-icon-add"/>
             </Menu>
         );
     }

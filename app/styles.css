@@ -575,13 +575,13 @@ ul.dedop-list-box li.dedop-selected {
 
 /* Dialog styling =========================================================*/
 
-/* Dialog styling =========================================================*/
+/* Context menu styling =========================================================*/
 
-.dedop-nav-button-right {
-    text-align: right;
+.dedop-context-menu {
+    color: #34687a;
 }
 
-/* Dialog styling =========================================================*/
+/* Context menu styling =========================================================*/
 
 /* Blueprint tables styling =================================================*/
 
