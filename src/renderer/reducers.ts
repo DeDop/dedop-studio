@@ -170,7 +170,16 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         case actions.DELETE_CONFIG_NAME:
             return Object.assign({}, state, {
                 selectedConfiguration: null
-            })
+            });
+        case actions.SET_PROCESS_NAME:
+            return Object.assign({}, state, {
+                processName: action.payload
+            });
+        case actions.ADD_NEW_PROCESS: {
+            return Object.assign({}, state, {
+                processName: ""
+            });
+        }
     }
     return state;
 };

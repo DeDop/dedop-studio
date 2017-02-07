@@ -657,7 +657,8 @@ export const initialControlState: ControlState = {
     currentConfiguration: "default",
     currentMainTabPanel: 0,
     codeEditorActive: false,
-    currentSourceFileDirectory: "C:\\Users\\hans\\.dedop"
+    currentSourceFileDirectory: "C:\\Users\\hans\\.dedop",
+    processName: ""
 };
 
 export const initialDataState: DataState = {

@@ -14,6 +14,7 @@ export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const SAVE_CONFIGURATION = 'SAVE_CONFIGURATION';
+export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
 export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
 
 export function updateConfigSelection(selectedConfigName: string) {
@@ -95,6 +96,10 @@ export function saveConfiguration(activeConfiguration: string,
             currentTime: currentTime
         }
     };
+}
+
+export function setProcessName(processName: string) {
+    return {type: SET_PROCESS_NAME, payload: processName};
 }
 
 export function addNewProcess(processingItem: ProcessingItem) {
