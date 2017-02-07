@@ -662,7 +662,8 @@ export const initialControlState: ControlState = {
 
 export const initialDataState: DataState = {
     configurations: dummyConfigFileList,
-    sourceFiles: dummyInputL1aFiles
+    sourceFiles: dummyInputL1aFiles,
+    addedSourceFiles: []
 };
 
 export const mainTabs: string[] = [

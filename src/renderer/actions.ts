@@ -4,6 +4,7 @@ import * as moment from "moment";
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
+export const ADD_SOURCE_FILE = 'ADD_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
@@ -24,6 +25,10 @@ export function selectCurrentConfig(currentConfigName: string) {
 
 export function selectSourceFile(fileIndex: number) {
     return {type: SELECT_SOURCE_FILE, payload: fileIndex};
+}
+
+export function addSourceFile(sourceFile: SourceFile) {
+    return {type: ADD_SOURCE_FILE, payload: sourceFile};
 }
 
 export function selectSourceFileDirectory(fileDirectory: string) {

@@ -107,6 +107,14 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 sourceFiles: action.payload
             })
         }
+        case actions.ADD_SOURCE_FILE: {
+            return Object.assign({}, state, {
+                addedSourceFiles: [
+                    ...state.addedSourceFiles,
+                    action.payload
+                ]
+            })
+        }
     }
     return state;
 };

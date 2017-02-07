@@ -9,6 +9,7 @@ export interface State {
 export interface DataState {
     configurations: Configuration[];
     sourceFiles: SourceFile[];
+    addedSourceFiles: SourceFile[];
 }
 
 export interface CommunicationState {

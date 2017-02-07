@@ -2,16 +2,18 @@ import * as React from "react";
 import {SourceFile, State} from "../state";
 import {ContextMenuTarget, Menu, MenuItem, Tooltip, Position} from "@blueprintjs/core";
 import {connect} from "react-redux";
-import {selectSourceFile} from "../actions";
+import {selectSourceFile, addSourceFile} from "../actions";
 
 interface ISourceFileListSingleProps {
     dispatch?: (action: {type: string, payload: any}) => void;
+    addedSourceFiles: SourceFile[];
     sourceFile: SourceFile;
     itemIndex: number;
 }
 
 function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile, itemIndex: number}): ISourceFileListSingleProps {
     return {
+        addedSourceFiles: state.data.addedSourceFiles,
         sourceFile: ownProps.sourceFile,
         itemIndex: ownProps.itemIndex
     };
@@ -23,7 +25,15 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
         this.props.dispatch(selectSourceFile(this.props.itemIndex));
         const handleSave = () => {
             // TODO(hans-permana, 20170206): to be hooked with add input action in the cli
-            console.log("add input file", this.props.sourceFile.name);
+            let newSourceFile: boolean = true;
+            for (let sourceFile of this.props.addedSourceFiles) {
+                if (sourceFile === this.props.sourceFile) {
+                    newSourceFile = false;
+                }
+            }
+            if (newSourceFile) {
+                this.props.dispatch(addSourceFile(this.props.sourceFile));
+            }
         };
 
         return (
