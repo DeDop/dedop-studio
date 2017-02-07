@@ -115,6 +115,14 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             })
         }
+        case actions.ADD_NEW_PROCESS: {
+            return Object.assign({}, state, {
+                processes: [
+                    ...state.processes,
+                    action.payload
+                ]
+            })
+        }
     }
     return state;
 };

@@ -10,6 +10,7 @@ export interface DataState {
     configurations: Configuration[];
     sourceFiles: SourceFile[];
     addedSourceFiles: SourceFile[];
+    processes: ProcessingItem[]
 }
 
 export interface CommunicationState {
@@ -24,6 +25,7 @@ export interface ControlState {
     currentConfiguration ?: string;
     currentMainTabPanel ?: number;
     codeEditorActive ?: boolean;
+    processName?: string;
 }
 
 export interface SessionState {
@@ -33,6 +35,7 @@ export interface LocationState {
 }
 
 export enum ProcessingStatus {
+    QUEUED,
     DONE,
     IN_PROGRESS,
     FAILED,

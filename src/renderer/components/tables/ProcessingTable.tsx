@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ProcessingItem} from "../../state";
+import {ProcessingItem, State} from "../../state";
 import {Cell, Column, Table} from "@blueprintjs/table";
 import {connect} from "react-redux";
 import {updateMainTab} from "../../actions";
@@ -7,6 +7,12 @@ import {updateMainTab} from "../../actions";
 interface IProcessingTableProps {
     dispatch?: (action: {type: string, payload: any}) => void;
     processingItems: Array<ProcessingItem>;
+}
+
+function mapStateToProps(state: State): IProcessingTableProps {
+    return {
+        processingItems: state.data.processes
+    }
 }
 
 class ProcessingTable extends React.Component<IProcessingTableProps, null> {
@@ -81,4 +87,4 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
     }
 }
 
-export default connect()(ProcessingTable);
+export default connect(mapStateToProps)(ProcessingTable);

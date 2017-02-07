@@ -1,4 +1,4 @@
-import {ProcessConfigurations, SourceFile} from "./state";
+import {ProcessConfigurations, SourceFile, ProcessingItem} from "./state";
 import * as moment from "moment";
 
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
@@ -14,6 +14,7 @@ export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const SAVE_CONFIGURATION = 'SAVE_CONFIGURATION';
+export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
 
 export function updateConfigSelection(selectedConfigName: string) {
     return {type: UPDATE_CONFIG_SELECTION, payload: selectedConfigName};
@@ -94,4 +95,8 @@ export function saveConfiguration(activeConfiguration: string,
             currentTime: currentTime
         }
     };
+}
+
+export function addNewProcess(processingItem: ProcessingItem) {
+    return {type: ADD_NEW_PROCESS, payload: processingItem};
 }

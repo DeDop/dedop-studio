@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import L1AInputPanel from "../panels/L1AInputPanel";
 import RunSettingsPanel from "../panels/RunSettingsPanel";
 import {L1BL1BSOutputPanel} from "../panels/L1BL1BSOutputPanel";
-import {ProcessorRunsPanel} from "../panels/ProcessorRunsPanel";
+import ProcessorRunsPanel from "../panels/ProcessorRunsPanel";
 
 
 interface IProcessingPanelProps {
