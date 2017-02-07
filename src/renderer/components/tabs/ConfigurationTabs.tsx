@@ -33,7 +33,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     constructor(props) {
         super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
-        this.state = {};
+        this.state = {
+            chdTemp: this.props.chd,
+            cnfTemp: this.props.cnf,
+            cstTemp: this.props.cst,
+        };
     }
 
     componentWillReceiveProps(nextProps) {
