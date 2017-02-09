@@ -1,6 +1,12 @@
 import {
-    ProcessingItem, ProcessingStatus, GlobalMetadata, ProcessConfigurations, Configuration, ControlState, DataState,
-    SourceFile,
+    ProcessingItem,
+    ProcessingStatus,
+    GlobalMetadata,
+    ProcessConfigurations,
+    Configuration,
+    ControlState,
+    DataState,
+    SourceFile
 } from "./state";
 
 export const processingItems: ProcessingItem[] = [
@@ -665,7 +671,16 @@ export const initialDataState: DataState = {
     configurations: dummyConfigFileList,
     sourceFiles: dummyInputL1aFiles,
     addedSourceFiles: [],
-    processes: processingItems
+    processes: processingItems,
+    appConfig: {
+        webAPIClient: null,
+        webAPIConfig: {
+            servicePort: 2999,
+            serviceAddress: '127.0.0.1',
+            restUrl: 'ws://127.0.0.1:2999/',
+            webSocketUrl: 'ws://127.0.0.1:2999/app'
+        }
+    }
 };
 
 export const mainTabs: string[] = [

@@ -1,2 +1,2 @@
-let app = require('./renderer/app.js');
+let app = require('./renderer/main.js');
 app.main();

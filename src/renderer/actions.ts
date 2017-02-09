@@ -1,5 +1,7 @@
-import {ProcessConfigurations, SourceFile, ProcessingItem} from "./state";
+import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace} from "./state";
 import * as moment from "moment";
+import {TestAPI} from "./webapi/apis/TestAPI";
+import {JobStatusEnum, JobProgress, JobFailure} from "./webapi/Job";
 
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
@@ -16,6 +18,12 @@ export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const SAVE_CONFIGURATION = 'SAVE_CONFIGURATION';
 export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
 export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
+export const SET_TEST_VAR = 'SET_TEST_VAR';
+export const APPLY_INITIAL_STATE = 'APPLY_INITIAL_STATE';
+export const SET_WEBAPI_STATUS = 'SET_WEBAPI_STATUS';
+export const SET_TASK_STATE = 'SET_TASK_STATE';
+
+const CANCELLED_CODE = 999;
 
 export function updateConfigSelection(selectedConfigName: string) {
     return {type: UPDATE_CONFIG_SELECTION, payload: selectedConfigName};
@@ -104,4 +112,56 @@ export function setProcessName(processName: string) {
 
 export function addNewProcess(processingItem: ProcessingItem) {
     return {type: ADD_NEW_PROCESS, payload: processingItem};
+}
+
+export function setTestVar(testVar: string) {
+    return {type: SET_TEST_VAR, payload: testVar};
+}
+
+export function setTaskState(jobId: number, taskState: TaskState) {
+    return {type: SET_TASK_STATE, payload: {jobId, taskState}};
+}
+
+function jobSubmitted(jobId: number, title: string) {
+    return setTaskState(jobId, {status: JobStatusEnum.SUBMITTED, title: title});
+}
+
+function jobProgress(progress: JobProgress) {
+    return setTaskState(progress.id, {status: JobStatusEnum.IN_PROGRESS, progress});
+}
+
+function jobDone(jobId: number) {
+    return setTaskState(jobId, {status: JobStatusEnum.DONE});
+}
+
+function jobFailed(jobId: number, failure: JobFailure) {
+    console.error(failure);
+    return setTaskState(jobId, {
+        status: failure.code === CANCELLED_CODE ? JobStatusEnum.CANCELLED : JobStatusEnum.FAILED,
+        failure
+    });
+}
+
+export function applyInitialState(initialState: Object) {
+    return {type: APPLY_INITIAL_STATE, payload: initialState};
+}
+
+export function setWebAPIStatus(webAPIClient, webAPIStatus: 'connecting'|'open'|'error'|'closed') {
+    return {type: SET_WEBAPI_STATUS, payload: {webAPIClient, webAPIStatus}};
+}
+
+function testAPI(state: State): TestAPI {
+    return new TestAPI(state.data.appConfig.webAPIClient);
+}
+
+export function testWebSocket() {
+    return (dispatch, getState) => {
+        const jobPromise = testAPI(getState()).testAction();
+        dispatch(jobSubmitted(jobPromise.getJobId(), "Websocket test"));
+        jobPromise.then((response: string) => {
+            dispatch(setTestVar(response));
+        }).catch(failure => {
+            dispatch(jobFailed(jobPromise.getJobId(), failure));
+        });
+    }
 }

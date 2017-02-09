@@ -123,6 +123,18 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             })
         }
+        case actions.APPLY_INITIAL_STATE: {
+            return Object.assign({}, state, {
+                appConfig: action.payload.appConfig
+            });
+        }
+        case actions.SET_WEBAPI_STATUS: {
+            const webAPIClient = action.payload.webAPIClient;
+            const newAppConfig = Object.assign({}, state.appConfig, {webAPIClient});
+            return Object.assign({}, state, {
+                appConfig: newAppConfig
+            });
+        }
     }
     return state;
 };
@@ -177,7 +189,12 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.ADD_NEW_PROCESS: {
             return Object.assign({}, state, {
-                processName: ""
+                testVar: state.testVar
+            });
+        }
+        case actions.SET_TEST_VAR: {
+            return Object.assign({}, state, {
+                processName: action.payload
             });
         }
     }

@@ -2,15 +2,16 @@ import * as React from "react";
 import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
-import {connect} from "react-redux";
-import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
+import {connect, Dispatch} from "react-redux";
+import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList, testWebSocket} from "../../actions";
 import {remote} from "electron";
 import * as moment from "moment";
 import {GeneralAlert} from "../Alerts";
 import SourceFileListSingle from "../SourceFileListSingle";
+import {Button} from "@blueprintjs/core";
 
 interface ISourceDataPanelProps {
-    dispatch?: (action: {type: string|number, payload: any}) => void;
+    dispatch?: Dispatch<State>;
     l1aInputFileNames: SourceFile[];
     selectedSourceFile: string[];
     currentSourceFileDirectory: string;
@@ -84,6 +85,10 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
             }
         };
 
+        const handleTestButton = () => {
+            this.props.dispatch(testWebSocket())
+        };
+
         return (
             <div className="dedop-collapse">
                 <OrdinaryPanelHeader title="L1A Datasets" icon="pt-icon-document"/>
@@ -106,6 +111,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                              onSelection={handleSelectSourceFile}
                              selection={this.props.selectedSourceFile ? this.props.selectedSourceFile : []}/>
                 </div>
+                <Button onClick={handleTestButton} className="pt-intent-primary">Test</Button>
                 <GeneralAlert isAlertOpen={this.state.isNoFilesAvailableAlertOpen}
                               onConfirm={handleCloseAlert}
                               message="There are no NetCDF file(s) available in this directory. Please select another directory."
