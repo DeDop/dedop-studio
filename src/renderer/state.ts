@@ -45,7 +45,7 @@ export interface LocationState {
 }
 
 export interface WebAPIConfig {
-    // Values read by main.ts from ./cate-config.js
+    // Values read by main.ts from ./dedop-config.js
     command?: string;
     servicePort: number;
     serviceAddress: string;

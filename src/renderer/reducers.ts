@@ -1,4 +1,4 @@
-import {ControlState, State, DataState, Configuration, ProcessConfigurations} from "./state";
+import {ControlState, State, DataState, Configuration, ProcessConfigurations, CommunicationState} from "./state";
 import * as actions from "./actions";
 import {combineReducers} from "redux";
 import {
@@ -205,7 +205,22 @@ const sessionReducer = (state: Object = {}, action) => {
     return state;
 };
 
-const communicationReducer = (state: Object = {}, action) => {
+const communicationReducer = (state: CommunicationState = {webAPIStatus: null, tasks: {}}, action) => {
+    switch (action.type) {
+        case actions.SET_WEBAPI_STATUS: {
+            return Object.assign({}, state, {
+                webAPIStatus: action.payload.webAPIStatus
+            });
+        }
+        case actions.SET_TASK_STATE:
+            const newTasks = Object.assign({}, state.tasks, {
+                ...state.tasks,
+            });
+            newTasks[action.payload.jobId] = action.payload.taskState;
+            return Object.assign({}, state, {
+                tasks: newTasks
+            });
+    }
     return state;
 };
 
