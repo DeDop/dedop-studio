@@ -11,7 +11,7 @@ import {reducers} from "./reducers";
 import WorkflowBreadcrumb from "./components/WorkflowBreadcrumb";
 import * as actions from "./actions"
 import {State} from "./state";
-import {newWebAPIClient} from "./webapi/webapiclient";
+import {newWebAPIClient} from "./webapi/WebAPIClient";
 
 export function main() {
 
