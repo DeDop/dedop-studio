@@ -4,11 +4,16 @@ import * as url from 'url';
 import * as fs from 'fs';
 import {Config} from "./Config";
 import * as childProcess from 'child_process';
+import {Configuration} from "./configuration";
 
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+
+const PREFS_OPTIONS = ['--prefs', '-p'];
+const CONFIG_OPTIONS = ['--config', '-c'];
+const DEDOP_STUDIO_PREFIX = 'dedop-studio';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -74,37 +79,43 @@ function storePrefs() {
     });
 }
 
-function loadPrefs(): Config {
-    let prefs = new Config();
-    let prefsFile = getPrefsFile();
-    prefs.load(prefsFile, (err) => {
+function loadConfiguration(options: string[], defaultConfigFile: string, configType: string): Configuration {
+    let config = new Configuration();
+    let configFile = getOptionArg(options);
+    if (!configFile) {
+        configFile = defaultConfigFile;
+        if (!fs.existsSync(configFile)) {
+            return config;
+        }
+    }
+    config.load(configFile, (err) => {
         if (err) {
-            console.error('failed to load preferences from ', prefsFile, err);
+            console.error(DEDOP_STUDIO_PREFIX, `${configType} could not be loaded from "${configFile}"`, err);
         } else {
-            console.log('preferences loaded from ', prefsFile);
+            console.log(DEDOP_STUDIO_PREFIX, `${configType} successfully loaded from "${configFile}"`);
         }
     });
-    return prefs;
-}
-
-function loadConfig(): Config {
-    let config = new Config();
-    let configFile = getConfigFile();
-    if (config) {
-        config.load(configFile, (err) => {
-            if (err) {
-                console.error('failed to load configuration from ', configFile, err);
-            } else {
-                console.log('configuration loaded from ', configFile);
-            }
-        });
-    }
     return config;
 }
 
+function getDefaultUserPrefsFile() {
+    if (_config.data.prefsFile) {
+        return _config.data.prefsFile;
+    }
+    return path.join(getAppDataDir(), 'dedop-prefs.json');
+}
+
+function loadAppConfig(): Configuration {
+    return loadConfiguration(CONFIG_OPTIONS, path.resolve('dedop-config.js'), 'App configuration');
+}
+
+function loadUserPrefs(): Configuration {
+    return loadConfiguration(PREFS_OPTIONS, getDefaultUserPrefsFile(), 'User preferences');
+}
+
 export function init() {
-    _prefs = loadPrefs();
-    _config = loadConfig();
+    _config = loadAppConfig();
+    _prefs = loadUserPrefs();
 
     // ==================== dedop-core installation (deactivated for now) =======================================
     // let installerPath;
