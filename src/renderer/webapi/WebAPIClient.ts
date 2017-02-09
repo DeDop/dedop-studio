@@ -24,7 +24,7 @@
  * @author Norman Fomferra
  */
 
-import {WebSocketMin} from './WebSocketMock'
+import {WebSocketMin} from './WebSocket'
 import {
     Job,
     JobPromise,
