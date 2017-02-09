@@ -1,7 +1,7 @@
-import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace} from "./state";
+import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState} from "./state";
 import * as moment from "moment";
 import {TestAPI} from "./webapi/apis/TestAPI";
-import {JobStatusEnum, JobProgress, JobFailure} from "./webapi/Job";
+import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
 
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
@@ -142,6 +142,41 @@ function jobFailed(jobId: number, failure: JobFailure) {
     });
 }
 
+export type JobPromiseFactory<T> = (jobProgressHandler: JobProgressHandler) => JobPromise<T>;
+export type JobPromiseAction<T> = (jobResult: T) => void;
+
+/**
+ * Call some (remote) API asynchronously.
+ *
+ * @param dispatch Redux' dispatch() function.
+ * @param title A human-readable title for the job that is being created
+ * @param call The API call which must produce a JobPromise
+ * @param action The action to be performed when the call succeeds.
+ */
+export function callAPI<T>(dispatch,
+                           title: string,
+                           call: JobPromiseFactory<T>,
+                           action?: JobPromiseAction<T>): void {
+    const onProgress = (progress: JobProgress) => {
+        dispatch(jobProgress(progress));
+    };
+
+    const jobPromise = call(onProgress);
+    dispatch(jobSubmitted(jobPromise.getJobId(), title));
+
+    const onDone = (jobResult: T) => {
+        dispatch(jobDone(jobPromise.getJobId()));
+        if (action) {
+            action(jobResult);
+        }
+    };
+    const onFailure = jobFailure => {
+        dispatch(jobFailed(jobPromise.getJobId(), jobFailure));
+    };
+
+    jobPromise.then(onDone, onFailure);
+}
+
 export function applyInitialState(initialState: Object) {
     return {type: APPLY_INITIAL_STATE, payload: initialState};
 }
@@ -156,12 +191,14 @@ function testAPI(state: State): TestAPI {
 
 export function testWebSocket() {
     return (dispatch, getState) => {
-        const jobPromise = testAPI(getState()).testAction();
-        dispatch(jobSubmitted(jobPromise.getJobId(), "Websocket test"));
-        jobPromise.then((response: string) => {
+        function call() {
+            return testAPI(getState()).testAction();
+        }
+
+        function action(response: string) {
             dispatch(setTestVar(response));
-        }).catch(failure => {
-            dispatch(jobFailed(jobPromise.getJobId(), failure));
-        });
+        }
+
+        callAPI(dispatch, "Websocket test", call, action);
     }
 }
