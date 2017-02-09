@@ -84,6 +84,6 @@ function connectWebAPIClient(store: Store<State>) {
     };
 
     webAPIClient.onWarning = (event) => {
-        console.warn(`cate-desktop: warning from cate-webapi: ${event.message}`);
+        console.warn(`dedop-desktop: warning from dedop-webapi: ${event.message}`);
     };
 }

@@ -47,7 +47,7 @@ export interface JobRequest {
 }
 
 /**
- * Job progress information, this is a Cate-specific extension to JSON-RCP 2.0.
+ * Job progress information, this is an extension to JSON-RCP 2.0, as also used in cate-desktop.
  */
 export interface JobProgress {
     /** The JSON-RCP message identifier. */
