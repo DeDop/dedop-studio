@@ -1,9 +1,11 @@
-import * as electron from 'electron';
-import * as path from 'path';
-import * as url from 'url';
-import * as fs from 'fs';
-import * as childProcess from 'child_process';
+import * as electron from "electron";
+import * as path from "path";
+import * as url from "url";
+import * as fs from "fs";
+import * as childProcess from "child_process";
 import {Configuration} from "./configuration";
+import {assignConditionally} from "../common/assign";
+import {request} from "./request";
 
 // Module to control application life.
 const app = electron.app;
@@ -112,6 +114,31 @@ function loadUserPrefs(): Configuration {
     return loadConfiguration(PREFS_OPTIONS, getDefaultUserPrefsFile(), 'User preferences');
 }
 
+function getWebAPICommonArgs(webAPIConfig) {
+    return [
+        '--caller', 'dedop-studio',
+        '--port', webAPIConfig.servicePort,
+        '--address', webAPIConfig.serviceAddress,
+        '--file', webAPIConfig.serviceFile,
+    ];
+}
+
+function getWebAPIStartArgs(webAPIConfig) {
+    return getWebAPICommonArgs(webAPIConfig).concat('start');
+}
+
+function getWebAPIStopArgs(webAPIConfig) {
+    return getWebAPICommonArgs(webAPIConfig).concat('stop');
+}
+
+function getWebAPIRestUrl(webAPIConfig) {
+    return `http://${webAPIConfig.serviceAddress || '127.0.0.1'}:${webAPIConfig.servicePort}/`;
+}
+
+function getWebAPIWebSocketsUrl(webAPIConfig) {
+    return `ws://${webAPIConfig.serviceAddress || '127.0.0.1'}:${webAPIConfig.servicePort}/app`;
+}
+
 export function init() {
     _config = loadAppConfig();
     _prefs = loadUserPrefs();
@@ -157,10 +184,117 @@ export function init() {
 
     // ==================== dedop-core installation (deactivated for now) =======================================
 
+    let webAPIConfig = _config.get('webAPIConfig', {});
+    webAPIConfig = assignConditionally(webAPIConfig, {
+        command: path.join(app.getAppPath(), process.platform === 'win32' ? 'python/Scripts/dedop-webapi.exe' : 'python/bin/dedop-webapi'),
+        servicePort: 9090,
+        serviceAddress: '',
+        serviceFile: 'dedop-webapi.json',
+        // Refer to https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
+        processOptions: {},
+        useMockService: false,
+    });
+
+    _config.set('webAPIConfig', webAPIConfig);
+
+    console.log(DEDOP_STUDIO_PREFIX, 'appConfig:', _config.data);
+    console.log(DEDOP_STUDIO_PREFIX, 'userPrefs:', _prefs.data);
+
+    let webAPIStarted = false;
+    // Remember error occurred so
+    let webAPIError = null;
+
+    let webAPIProcess = null;
+
+    function startWebapiService(): childProcess.ChildProcess {
+        const webAPIStartArgs = getWebAPIStartArgs(webAPIConfig);
+        console.log(DEDOP_STUDIO_PREFIX, `starting DeDop WebAPI service using arguments: ${webAPIStartArgs}`);
+        const webAPIProcess = childProcess.spawn(webAPIConfig.command, webAPIStartArgs, webAPIConfig.processOptions);
+        webAPIStarted = true;
+        webAPIProcess.stdout.on('data', (data: any) => {
+            console.log(DEDOP_STUDIO_PREFIX, `${data}`);
+        });
+        webAPIProcess.stderr.on('data', (data: any) => {
+            console.error(DEDOP_STUDIO_PREFIX, `${data}`);
+        });
+        webAPIProcess.on('error', (err: Error) => {
+            let message = 'Failed to start DeDop WebAPI service.';
+            console.log(DEDOP_STUDIO_PREFIX, message, err);
+            if (!webAPIError) {
+                electron.dialog.showErrorBox('Internal Error', message);
+            }
+            webAPIError = err;
+            // exit immediately
+            app.exit(1);
+        });
+        webAPIProcess.on('close', (code: number) => {
+            let message = `DeDop WebAPI service process exited with code ${code}.`;
+            console.log(DEDOP_STUDIO_PREFIX, message);
+            if (code != 0) {
+                if (!webAPIError) {
+                    electron.dialog.showErrorBox('Internal Error', message);
+                }
+                webAPIError = new Error(message);
+                // exit immediately
+                app.exit(2);
+            }
+        });
+        return webAPIProcess;
+    }
+
+    function startUpWithWebapiService() {
+        const msServiceAccessTimeout = 1000; // ms
+        const msServiceStartTimeout = 5000; // ms
+        const msDelay = 500; // ms
+        let msSpend = 0; // ms
+        let webAPIRestUrl = getWebAPIRestUrl(_config.data.webAPIConfig);
+        console.log(DEDOP_STUDIO_PREFIX, `Waiting for response from ${webAPIRestUrl}`);
+        request(webAPIRestUrl, msServiceAccessTimeout)
+            .then((response: string) => {
+                console.log(DEDOP_STUDIO_PREFIX, `Response: ${response}`);
+                createMainWindow();
+            })
+            .catch((err) => {
+                console.log(DEDOP_STUDIO_PREFIX, `No response within ${msServiceAccessTimeout} ms. Error: `, err);
+                if (!webAPIStarted) {
+                    webAPIProcess = startWebapiService();
+                }
+                if (msSpend > msServiceStartTimeout) {
+                    let message = `Failed to start DeDop WebAPI service within ${msSpend} ms.`;
+                    console.error(DEDOP_STUDIO_PREFIX, message, err);
+                    if (!webAPIError) {
+                        electron.dialog.showErrorBox("Internal Error", message);
+                    }
+                    webAPIError = new Error(message);
+                    app.exit(2);
+                } else {
+                    setTimeout(startUpWithWebapiService, msDelay);
+                    msSpend += msDelay;
+                }
+            });
+    }
+
+    function stopWebapiService(webAPIProcess) {
+        if (!webAPIProcess) {
+            return;
+        }
+        // Note we are async here, because sync can take a lot of time...
+        const webAPIStopArgs = getWebAPIStopArgs(webAPIConfig);
+        childProcess.spawn(webAPIConfig.command, webAPIStopArgs, webAPIConfig.processOptions);
+    }
+
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
-    app.on('ready', createMainWindow);
+    app.on('ready', (): void => {
+        console.log(DEDOP_STUDIO_PREFIX, 'Ready.');
+        if (!webAPIConfig.useMockService) {
+            console.log(DEDOP_STUDIO_PREFIX, 'Using DeDop WebAPI service...');
+            startUpWithWebapiService();
+        } else {
+            createMainWindow();
+        }
+    });
 
     // Quit when all windows are closed.
     app.on('window-all-closed', function () {
@@ -168,6 +302,14 @@ export function init() {
         // to stay active until the user quits explicitly with Cmd + Q
         if (process.platform !== 'darwin') {
             app.quit();
+        }
+    });
+
+    // Emitted when all windows have been closed and the application will quit.
+    app.on('quit', () => {
+        console.log(DEDOP_STUDIO_PREFIX, 'Quit.');
+        if (!webAPIConfig.useMockService) {
+            stopWebapiService(webAPIProcess);
         }
     });
 
@@ -217,6 +359,22 @@ function createMainWindow() {
         // Open the DevTools.
         _mainWindow.webContents.openDevTools();
     }
+
+    _mainWindow.webContents.on('did-finish-load', () => {
+        console.log(DEDOP_STUDIO_PREFIX, 'Main window UI loaded.');
+
+        const webAPIConfig = _config.data.webAPIConfig;
+        _mainWindow.webContents.send('apply-initial-state', {
+            session: _prefs.data,
+            appConfig: Object.assign({}, _config.data, {
+                appPath: app.getAppPath(),
+                webAPIConfig: Object.assign({}, webAPIConfig, {
+                    restUrl: getWebAPIRestUrl(webAPIConfig),
+                    webSocketUrl: getWebAPIWebSocketsUrl(webAPIConfig),
+                }),
+            })
+        });
+    });
 
     // Emitted when the window is going to be closed.
     _mainWindow.on('close', function () {

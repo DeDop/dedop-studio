@@ -9,9 +9,10 @@ import MainTabs from "./components/tabs/Tabs";
 import TopMenu from "./components/TopMenu";
 import {reducers} from "./reducers";
 import WorkflowBreadcrumb from "./components/WorkflowBreadcrumb";
-import * as actions from "./actions"
+import * as actions from "./actions";
 import {State} from "./state";
 import {newWebAPIClient} from "./webapi/WebAPIClient";
+import {ipcRenderer} from "electron";
 
 export function main() {
 
@@ -22,29 +23,10 @@ export function main() {
 
     const store = createStore(reducers, middleware);
 
-    connectWebAPIClient(store);
-
-    ReactDOM.render(
-        <Provider store={store}>
-            <HGLContainer>
-                <HGLHeader>
-                    <TopMenu/>
-                </HGLHeader>
-                <WorkflowBreadcrumb/>
-                <HGLCenter>
-                    <MainTabs/>
-                </HGLCenter>
-                <HGLFooter>
-                    <div style={{margin: '0 0 0 10px'}}>Ready.</div>
-                    {/*<div className="footer-core-status">
-                     <span className="core-status-text">dedop-core</span>
-                     <span className="pt-icon pt-icon-disable"/>
-                     </div>*/}
-                </HGLFooter>
-            </HGLContainer>
-        </Provider>,
-        document.getElementById('container')
-    );
+    ipcRenderer.on('apply-initial-state', (event, initialState) => {
+        store.dispatch(actions.applyInitialState(initialState));
+        connectWebAPIClient(store);
+    });
 }
 
 function connectWebAPIClient(store: Store<State>) {

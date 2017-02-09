@@ -4,6 +4,7 @@ npm-debug.log
 node_modules
 /dist
 
+app/common
 app/main
 app/renderer
 app/dedop-core
