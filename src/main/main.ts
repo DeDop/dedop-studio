@@ -2,7 +2,6 @@ import * as electron from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as fs from 'fs';
-import {Config} from "./Config";
 import * as childProcess from 'child_process';
 import {Configuration} from "./configuration";
 
