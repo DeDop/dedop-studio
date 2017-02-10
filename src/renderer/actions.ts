@@ -1,7 +1,8 @@
-import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState} from "./state";
+import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace} from "./state";
 import * as moment from "moment";
 import {TestAPI} from "./webapi/apis/TestAPI";
 import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
+import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
@@ -202,3 +203,32 @@ export function testWebSocket() {
         callAPI(dispatch, "Websocket test", call, action);
     }
 }
+
+
+// ======================== Workspace related actions via WebAPI =============================================
+
+export const ADD_WORKSPACE = "ADD_WORKSPACE";
+
+function workspaceAPI(state: State): WorkspaceAPI {
+    return new WorkspaceAPI(state.data.appConfig.webAPIClient)
+}
+
+function addWorkSpace(newWorkspace: Workspace) {
+    return {type: ADD_WORKSPACE, payload: newWorkspace};
+}
+
+export function newWorkspace(newWorkspaceName: string) {
+    return (dispatch, getState) => {
+        function call() {
+            return workspaceAPI(getState()).newWorkspace(newWorkspaceName);
+        }
+
+        function action(workspace: Workspace) {
+            dispatch(addWorkSpace(workspace));
+        }
+
+        callAPI(dispatch, "Websocket test", call, action);
+    }
+}
+
+// ======================== Workspace related actions via WebAPI =============================================

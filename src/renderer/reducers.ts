@@ -135,6 +135,17 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 appConfig: newAppConfig
             });
         }
+        case actions.ADD_WORKSPACE: {
+            const newWorkspaces = Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces,
+                    action.payload
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: newWorkspaces
+            });
+        }
     }
     return state;
 };

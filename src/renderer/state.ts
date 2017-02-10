@@ -14,7 +14,7 @@ export interface DataState {
     sourceFiles: SourceFile[];
     addedSourceFiles: SourceFile[];
     processes: ProcessingItem[];
-    workspace?: Workspace;
+    workspaces?: Workspace[];
     appConfig: AppConfigState;
 }
 
@@ -32,6 +32,7 @@ export interface ControlState {
     selectedSourceFile ?: string;
     currentSourceFileDirectory ?: string;
     currentConfiguration ?: string;
+    currentWorkspace?: string;
     currentMainTabPanel ?: number;
     codeEditorActive ?: boolean;
     processName?: string;
@@ -73,8 +74,12 @@ export interface TaskState {
 
 export interface Workspace {
     name: string;
-    baseDir: string;
-    isSaved: boolean;
+    workspaceDir: string;
+    isCurrent: boolean;
+}
+
+export interface Workspaces {
+    workspaces: String[]
 }
 
 export enum ProcessingStatus {
