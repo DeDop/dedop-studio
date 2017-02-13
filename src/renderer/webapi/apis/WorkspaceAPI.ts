@@ -1,6 +1,6 @@
 import {WebAPIClient} from "../WebAPIClient";
 import {JobPromise, JobProgress} from "../Job";
-import {Workspace, Workspaces} from "../../state";
+import {Workspace} from "../../state";
 
 function responseToWorkspace(workspaceResponse: any): Workspace {
     if (!workspaceResponse) {
@@ -13,13 +13,11 @@ function responseToWorkspace(workspaceResponse: any): Workspace {
     };
 }
 
-function responseToWorkspaces(workspaceResponse: any): Workspaces {
+function responseToWorkspaces(workspaceResponse: any): string[] {
     if (!workspaceResponse) {
         return null;
     }
-    return {
-        workspaces: workspaceResponse.workspaces
-    };
+    return workspaceResponse.workspaces;
 }
 
 export class WorkspaceAPI {
@@ -54,7 +52,8 @@ export class WorkspaceAPI {
         return this.webAPIClient.call('set_current_workspace', [baseDir, toDir], null, responseToWorkspace);
     }
 
-    getAllWorkspaces(baseDir: string, toDir: string): JobPromise<Workspaces> {
-        return this.webAPIClient.call('set_current_workspace', [baseDir, toDir], null, responseToWorkspaces);
+    getAllWorkspaces(): JobPromise<string[]> {
+        console.log("inside workspaceapi, before the call");
+        return this.webAPIClient.call('get_all_workspaces', [], null, responseToWorkspaces);
     }
 }

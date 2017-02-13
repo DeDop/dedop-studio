@@ -143,6 +143,11 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.UPDATE_WORKSPACES: {
+            return Object.assign({}, state, {
+                workspaceNames: action.payload
+            });
+        }
     }
     return state;
 };

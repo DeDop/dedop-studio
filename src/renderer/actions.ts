@@ -227,7 +227,27 @@ export function newWorkspace(newWorkspaceName: string) {
             dispatch(addWorkSpace(workspace));
         }
 
-        callAPI(dispatch, "Websocket test", call, action);
+        callAPI(dispatch, "Add new workspace", call, action);
+    }
+}
+
+export const UPDATE_WORKSPACES = "UPDATE_WORKSPACES";
+
+function updateWorkSpaces(workspace_names: string[]) {
+    return {type: UPDATE_WORKSPACES, payload: workspace_names};
+}
+
+export function getAllWorkspaces() {
+    return (dispatch, getState) => {
+        function call() {
+            return workspaceAPI(getState()).getAllWorkspaces();
+        }
+
+        function action(workspace_names: string[]) {
+            dispatch(updateWorkSpaces(workspace_names));
+        }
+
+        callAPI(dispatch, "Get all workspace names", call, action);
     }
 }
 

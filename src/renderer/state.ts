@@ -15,6 +15,7 @@ export interface DataState {
     addedSourceFiles: SourceFile[];
     processes: ProcessingItem[];
     workspaces?: Workspace[];
+    workspaceNames?: string[]
     appConfig: AppConfigState;
 }
 

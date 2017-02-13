@@ -44,6 +44,7 @@ function connectWebAPIClient(store: Store<State>) {
         store.dispatch(actions.setWebAPIStatus(webAPIClient, 'open'));
         // TODO (forman): store.dispatch(actions.loadOperations());
 
+        store.dispatch(actions.getAllWorkspaces());
 
         // This is a test, we keep it as a test an a code template for code that need to run later
         store.dispatch(dispatch => {
