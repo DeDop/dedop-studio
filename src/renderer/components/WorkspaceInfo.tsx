@@ -1,8 +1,18 @@
 import * as React from "react";
-import {PopoverInteractionKind, Popover, Position, Menu, MenuItem, MenuDivider} from "@blueprintjs/core";
+import {
+    PopoverInteractionKind,
+    Popover,
+    Position,
+    Menu,
+    MenuItem,
+    MenuDivider,
+    Dialog,
+    Button,
+    Intent
+} from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {State} from "../state";
-import {setCurrentWorkspace} from "../actions";
+import {setCurrentWorkspace, newWorkspace} from "../actions";
 
 interface IWorkspaceInfoProps {
     dispatch?: Dispatch<State>;
@@ -20,7 +30,10 @@ function mapStateToProps(state: State): IWorkspaceInfoProps {
 class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
     public state = {
         editButtonVisible: "hidden",
-        isPopoverOpen: false
+        isPopoverOpen: false,
+        isAddWorkspaceDialogOpen: false,
+        newWorkspaceName: "",
+        workspaceNameValid: true
     };
 
     render() {
@@ -50,11 +63,25 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                                               onClick={() => handleSelectWorkspace(workspaceName)}/>)
         }
 
+        const handleCloseAddWorkspaceDialog = () => {
+            this.setState({
+                isAddWorkspaceDialogOpen: false
+            })
+        };
+
+        const handleShowAddWorkspaceDialog = () => {
+            this.setState({
+                isAddWorkspaceDialogOpen: true
+            })
+        };
+
         let popoverContent = (
             <Menu>
                 <MenuItem
                     iconName="pt-icon-add"
-                    text="New workspace"/>
+                    text="New workspace"
+                    onClick={handleShowAddWorkspaceDialog}
+                />
                 <MenuItem
                     iconName="pt-icon-exchange"
                     text="Change to...">
@@ -74,10 +101,38 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 />
             </Menu>
         );
+
         const handleInteraction = () => {
             this.setState({
                 isPopoverOpen: !this.state.isPopoverOpen
             })
+        };
+
+        const handleWorkspaceNameEdit = (event: any) => {
+            const value = event.currentTarget.value;
+            this.setState({
+                newWorkspaceName: value
+            })
+        };
+
+        const resetConfigInvalidStatus = () => {
+            this.setState({
+                workspaceNameValid: true
+            })
+        };
+
+        const handleAddWorkspace = () => {
+            if (this.state.newWorkspaceName) {
+                this.props.dispatch(newWorkspace(this.state.newWorkspaceName));
+                handleCloseAddWorkspaceDialog();
+                this.setState({
+                    newWorkspaceName: ""
+                })
+            } else {
+                this.setState({
+                    workspaceNameValid: false
+                })
+            }
         };
 
         return (
@@ -96,6 +151,38 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                     <span className="pt-icon-standard pt-icon-edit dedop-workspace-top-menu-icon"
                           style={{visibility: this.state.editButtonVisible}}/>
                 </Popover>
+                <Dialog isOpen={this.state.isAddWorkspaceDialogOpen}
+                        onClose={handleCloseAddWorkspaceDialog}
+                        title="Add a new workspace"
+                        className="dedop-dialog-body-add-config"
+                >
+                    <div className="pt-dialog-body">
+                        <div className="dedop-dialog-parameter-item">
+                            <label className="pt-label pt-inline">
+                                <span className="dedop-dialog-parameter-label">Name</span>
+                                <input
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.workspaceNameValid? "" : "pt-intent-danger")}
+                                    type="text"
+                                    placeholder="new workspace name"
+                                    dir="auto"
+                                    value={this.state.newWorkspaceName}
+                                    onChange={handleWorkspaceNameEdit}
+                                    onFocus={resetConfigInvalidStatus}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button intent={Intent.PRIMARY}
+                                    onClick={handleAddWorkspace}
+                                    text="Save"/>
+                            <Button onClick={handleCloseAddWorkspaceDialog}
+                                    text="Cancel"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
             </div>
         )
     }

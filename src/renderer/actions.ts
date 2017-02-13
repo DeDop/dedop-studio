@@ -213,8 +213,8 @@ function workspaceAPI(state: State): WorkspaceAPI {
     return new WorkspaceAPI(state.data.appConfig.webAPIClient)
 }
 
-function addWorkSpace(newWorkspace: Workspace) {
-    return {type: ADD_WORKSPACE, payload: newWorkspace};
+function addWorkSpace(newWorkspaceName: string) {
+    return {type: ADD_WORKSPACE, payload: newWorkspaceName};
 }
 
 export function newWorkspace(newWorkspaceName: string) {
@@ -224,7 +224,7 @@ export function newWorkspace(newWorkspaceName: string) {
         }
 
         function action(workspace: Workspace) {
-            dispatch(addWorkSpace(workspace));
+            dispatch(addWorkSpace(workspace.name));
         }
 
         callAPI(dispatch, "Add new workspace", call, action);

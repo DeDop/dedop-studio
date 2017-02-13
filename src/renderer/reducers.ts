@@ -137,8 +137,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
         }
         case actions.ADD_WORKSPACE: {
             return Object.assign({}, state, {
-                workspaces: [
-                    ...state.workspaces,
+                workspaceNames: [
+                    ...state.workspaceNames,
                     action.payload
                 ]
             });
