@@ -680,7 +680,8 @@ export const initialDataState: DataState = {
             restUrl: 'ws://127.0.0.1:2999/',
             webSocketUrl: 'ws://127.0.0.1:2999/app'
         }
-    }
+    },
+    workspaces: []
 };
 
 export const mainTabs: string[] = [

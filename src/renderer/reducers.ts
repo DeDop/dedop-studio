@@ -136,14 +136,11 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
         }
         case actions.ADD_WORKSPACE: {
-            const newWorkspaces = Object.assign({}, state, {
+            return Object.assign({}, state, {
                 workspaces: [
                     ...state.workspaces,
                     action.payload
                 ]
-            });
-            return Object.assign({}, state, {
-                workspaces: newWorkspaces
             });
         }
     }
