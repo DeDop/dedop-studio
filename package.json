@@ -60,7 +60,6 @@
     "chai-as-promised": "^6.0.0",
     "codemirror": "^5.21.0",
     "electron": "1.4.12",
-    "electron-builder": "latest",
     "enzyme": "^2.6.0",
     "mocha": "^3.1.2",
     "moment": "^2.17.1",
