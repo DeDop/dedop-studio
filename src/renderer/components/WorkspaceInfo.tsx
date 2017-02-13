@@ -1,15 +1,19 @@
 import * as React from "react";
 import {PopoverInteractionKind, Popover, Position, Menu, MenuItem, MenuDivider} from "@blueprintjs/core";
-import {connect} from "react-redux";
+import {connect, Dispatch} from "react-redux";
 import {State} from "../state";
+import {setCurrentWorkspace} from "../actions";
 
 interface IWorkspaceInfoProps {
+    dispatch?: Dispatch<State>;
     workspaceName: string;
+    workspaceNames: string[];
 }
 
 function mapStateToProps(state: State): IWorkspaceInfoProps {
     return {
-        workspaceName: state.control.currentWorkspace
+        workspaceName: state.control.currentWorkspace,
+        workspaceNames: state.data.workspaceNames
     }
 }
 
@@ -31,6 +35,21 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 editButtonVisible: "hidden"
             })
         };
+
+        const handleSelectWorkspace = (workspaceName: string) => {
+            this.props.dispatch(setCurrentWorkspace(workspaceName))
+        };
+
+        let workspaceItems = [];
+        const workspaceNames = this.props.workspaceNames;
+        for (let i in workspaceNames) {
+            const workspaceName = workspaceNames[i];
+            if (this.props.workspaceName != workspaceName)
+                workspaceItems.push(<MenuItem key={i}
+                                              text={workspaceName}
+                                              onClick={() => handleSelectWorkspace(workspaceName)}/>)
+        }
+
         let popoverContent = (
             <Menu>
                 <MenuItem
@@ -38,7 +57,9 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                     text="New workspace"/>
                 <MenuItem
                     iconName="pt-icon-exchange"
-                    text="Change to..."/>
+                    text="Change to...">
+                    {workspaceItems}
+                </MenuItem>
                 <MenuItem
                     iconName="pt-icon-duplicate"
                     text="Copy workspace"/>

@@ -79,10 +79,6 @@ export interface Workspace {
     isCurrent: boolean;
 }
 
-export interface Workspaces {
-    workspaces: String[]
-}
-
 export enum ProcessingStatus {
     QUEUED,
     DONE,

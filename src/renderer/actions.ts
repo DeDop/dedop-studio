@@ -271,4 +271,18 @@ export function getCurrentWorkspace() {
     }
 }
 
+export function setCurrentWorkspace(newWorkspaceName: string) {
+    return (dispatch, getState) => {
+        function call() {
+            return workspaceAPI(getState()).setCurrentWorkspace(newWorkspaceName);
+        }
+
+        function action(new_workspace: Workspace) {
+            dispatch(updateCurrentWorkspace(new_workspace.name));
+        }
+
+        callAPI(dispatch, "Set current workspace", call, action);
+    }
+}
+
 // ======================== Workspace related actions via WebAPI =============================================
