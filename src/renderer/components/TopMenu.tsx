@@ -2,7 +2,7 @@ import * as React from "react";
 import {State} from "../state";
 import {connect} from "react-redux";
 import {mainTabs} from "../initialStates";
-import {WorkspaceInfo} from "./WorkspaceInfo";
+import WorkspaceInfo from "./WorkspaceInfo";
 
 interface ITopMenuProps {
     currentMainTabPanel: number;

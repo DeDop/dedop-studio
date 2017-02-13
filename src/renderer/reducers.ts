@@ -210,6 +210,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 testVar: action.payload
             });
         }
+        case actions.UPDATE_CURRENT_WORKSPACE: {
+            return Object.assign({}, state, {
+                currentWorkspace: action.payload
+            });
+        }
     }
     return state;
 };

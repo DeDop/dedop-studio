@@ -251,4 +251,24 @@ export function getAllWorkspaces() {
     }
 }
 
+export const UPDATE_CURRENT_WORKSPACE = "UPDATE_CURRENT_WORKSPACE";
+
+function updateCurrentWorkspace(current_workspace_name: string) {
+    return {type: UPDATE_CURRENT_WORKSPACE, payload: current_workspace_name};
+}
+
+export function getCurrentWorkspace() {
+    return (dispatch, getState) => {
+        function call() {
+            return workspaceAPI(getState()).getCurrentWorkspace();
+        }
+
+        function action(current_workspace: Workspace) {
+            dispatch(updateCurrentWorkspace(current_workspace.name));
+        }
+
+        callAPI(dispatch, "Get current workspace name", call, action);
+    }
+}
+
 // ======================== Workspace related actions via WebAPI =============================================

@@ -1,7 +1,19 @@
 import * as React from "react";
 import {PopoverInteractionKind, Popover, Position, Menu, MenuItem, MenuDivider} from "@blueprintjs/core";
+import {connect} from "react-redux";
+import {State} from "../state";
 
-export class WorkspaceInfo extends React.Component<any, any> {
+interface IWorkspaceInfoProps {
+    workspaceName: string;
+}
+
+function mapStateToProps(state: State): IWorkspaceInfoProps {
+    return {
+        workspaceName: state.control.currentWorkspace
+    }
+}
+
+class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
     public state = {
         editButtonVisible: "hidden",
         isPopoverOpen: false
@@ -51,7 +63,7 @@ export class WorkspaceInfo extends React.Component<any, any> {
             <div className="dedop-workspace-top-menu"
                  onMouseOver={handleMouseOver}
                  onMouseLeave={handleMouseLeave}>
-                <span className="dedop-workspace-top-menu-text">WORKSPACE_NAME</span>
+                <span className="dedop-workspace-top-menu-text">{this.props.workspaceName}</span>
 
                 <Popover content={popoverContent}
                          interactionKind={PopoverInteractionKind.CLICK}
@@ -67,3 +79,5 @@ export class WorkspaceInfo extends React.Component<any, any> {
         )
     }
 }
+
+export default connect(mapStateToProps)(WorkspaceInfo);

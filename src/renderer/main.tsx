@@ -45,6 +45,7 @@ function connectWebAPIClient(store: Store<State>) {
         // TODO (forman): store.dispatch(actions.loadOperations());
 
         store.dispatch(actions.getAllWorkspaces());
+        store.dispatch(actions.getCurrentWorkspace());
 
         // This is a test, we keep it as a test an a code template for code that need to run later
         store.dispatch(dispatch => {
