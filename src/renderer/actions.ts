@@ -285,4 +285,29 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
     }
 }
 
+export const RENAME_WORKSPACE = "RENAME_WORKSPACE";
+
+function updateWorkspaceNameList(oldWorkspaceName: string, newWorkspaceName: string) {
+    return {
+        type: RENAME_WORKSPACE, payload: {
+            oldWorkspaceName: oldWorkspaceName,
+            newWorkspaceName: newWorkspaceName
+        }
+    };
+}
+
+export function renameWorkspace(oldWorkspaceName: string, newWorkspaceName: string) {
+    return (dispatch, getState) => {
+        function call() {
+            return workspaceAPI(getState()).renameWorkspace(oldWorkspaceName, newWorkspaceName);
+        }
+
+        function action() {
+            dispatch(updateWorkspaceNameList(oldWorkspaceName, newWorkspaceName));
+        }
+
+        callAPI(dispatch, "Rename workspace ".concat(oldWorkspaceName).concat(" to ").concat(newWorkspaceName), call, action);
+    }
+}
+
 // ======================== Workspace related actions via WebAPI =============================================

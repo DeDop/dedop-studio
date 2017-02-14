@@ -148,6 +148,16 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 workspaceNames: action.payload
             });
         }
+        case actions.RENAME_WORKSPACE: {
+            const index = state.workspaceNames.findIndex((x) => x === action.payload.oldWorkspaceName);
+            return Object.assign({}, state, {
+                workspaceNames: [
+                    ...state.workspaceNames.slice(0, index),
+                    action.payload.newWorkspaceName,
+                    ...state.workspaceNames.slice(index + 1)
+                ]
+            });
+        }
     }
     return state;
 };

@@ -12,7 +12,8 @@ import {
 } from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {State} from "../state";
-import {setCurrentWorkspace, newWorkspace} from "../actions";
+import {setCurrentWorkspace, newWorkspace, renameWorkspace} from "../actions";
+import WorkspaceSelection from "./WorkspaceSelection";
 
 interface IWorkspaceInfoProps {
     dispatch?: Dispatch<State>;
@@ -32,8 +33,10 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
         editButtonVisible: "hidden",
         isPopoverOpen: false,
         isAddWorkspaceDialogOpen: false,
+        isRenameWorkspaceDialogOpen: false,
         newWorkspaceName: "",
-        workspaceNameValid: true
+        workspaceNameValid: true,
+        selectedWorkspace: ""
     };
 
     render() {
@@ -75,6 +78,18 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             })
         };
 
+        const handleCloseRenameWorkspaceDialog = () => {
+            this.setState({
+                isRenameWorkspaceDialogOpen: false
+            })
+        };
+
+        const handleShowRenameWorkspaceDialog = () => {
+            this.setState({
+                isRenameWorkspaceDialogOpen: true
+            })
+        };
+
         let popoverContent = (
             <Menu>
                 <MenuItem
@@ -92,7 +107,9 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                     text="Copy workspace"/>
                 <MenuItem
                     iconName="pt-icon-new-text-box"
-                    text="Rename workspace"/>
+                    text="Rename workspace"
+                    onClick={handleShowRenameWorkspaceDialog}
+                />
                 <MenuDivider />
                 <MenuItem
                     iconName="pt-icon-delete"
@@ -133,6 +150,29 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                     workspaceNameValid: false
                 })
             }
+        };
+
+        const handleRenameWorkspace = () => {
+            if (this.state.newWorkspaceName) {
+                this.props.dispatch(renameWorkspace(this.state.selectedWorkspace, this.state.newWorkspaceName));
+                handleCloseRenameWorkspaceDialog();
+                this.setState({
+                    newWorkspaceName: "",
+                    selectedWorkspace: ""
+                })
+            } else {
+                this.setState({
+                    workspaceNameValid: false,
+                    selectedWorkspace: ""
+                })
+            }
+        };
+
+        const handleOnChangeSelection = (event: React.FormEvent<HTMLSelectElement>) => {
+            const value = event.currentTarget.value;
+            this.setState({
+                selectedWorkspace: value
+            })
         };
 
         return (
@@ -178,6 +218,39 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                                     onClick={handleAddWorkspace}
                                     text="Save"/>
                             <Button onClick={handleCloseAddWorkspaceDialog}
+                                    text="Cancel"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
+                <Dialog isOpen={this.state.isRenameWorkspaceDialogOpen}
+                        onClose={handleCloseRenameWorkspaceDialog}
+                        title="Rename a workspace"
+                        className="dedop-dialog-body-add-config"
+                >
+                    <div className="pt-dialog-body">
+                        <WorkspaceSelection onChangeSelection={handleOnChangeSelection}/>
+                        <div className="dedop-dialog-parameter-item">
+                            <label className="pt-label pt-inline">
+                                <span className="dedop-dialog-parameter-label">Name</span>
+                                <input
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.workspaceNameValid? "" : "pt-intent-danger")}
+                                    type="text"
+                                    placeholder="new workspace name"
+                                    dir="auto"
+                                    value={this.state.newWorkspaceName}
+                                    onChange={handleWorkspaceNameEdit}
+                                    onFocus={resetConfigInvalidStatus}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button intent={Intent.PRIMARY}
+                                    onClick={handleRenameWorkspace}
+                                    text="Save"/>
+                            <Button onClick={handleCloseRenameWorkspaceDialog}
                                     text="Cancel"
                             />
                         </div>

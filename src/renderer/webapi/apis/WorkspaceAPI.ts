@@ -40,8 +40,8 @@ export class WorkspaceAPI {
         return this.webAPIClient.call('copy_workspace', [baseDir], onProgress, responseToWorkspace);
     }
 
-    renameWorkspace(baseDir: string): JobPromise<null> {
-        return this.webAPIClient.call('rename_workspace', [baseDir], null, responseToWorkspace);
+    renameWorkspace(oldWorkspaceName: string, newWorkspaceName: string): JobPromise<null> {
+        return this.webAPIClient.call('rename_workspace', [oldWorkspaceName, newWorkspaceName], null, responseToWorkspace);
     }
 
     getCurrentWorkspace(): JobPromise<Workspace> {
