@@ -286,4 +286,18 @@ export function renameWorkspace(oldWorkspaceName: string, newWorkspaceName: stri
     }
 }
 
+export function copyWorkspace(oldWorkspaceName: string, newWorkspaceName: string) {
+    return (dispatch, getState) => {
+        function call(onProgress) {
+            return workspaceAPI(getState()).copyWorkspace(oldWorkspaceName, newWorkspaceName, onProgress);
+        }
+
+        function action() {
+            dispatch(addWorkSpace(newWorkspaceName));
+        }
+
+        callAPI(dispatch, "Copy workspace ".concat(oldWorkspaceName).concat(" to ").concat(newWorkspaceName), call, action);
+    }
+}
+
 // ======================== Workspace related actions via WebAPI =============================================

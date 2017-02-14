@@ -12,7 +12,7 @@ import {
 } from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {State} from "../state";
-import {setCurrentWorkspace, newWorkspace, renameWorkspace} from "../actions";
+import {setCurrentWorkspace, newWorkspace, renameWorkspace, copyWorkspace} from "../actions";
 import WorkspaceSelection from "./WorkspaceSelection";
 
 interface IWorkspaceInfoProps {
@@ -34,6 +34,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
         isPopoverOpen: false,
         isAddWorkspaceDialogOpen: false,
         isRenameWorkspaceDialogOpen: false,
+        isCopyWorkspaceDialogOpen: false,
         newWorkspaceName: "",
         workspaceNameValid: true,
         selectedWorkspace: ""
@@ -90,6 +91,18 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             })
         };
 
+        const handleCloseCopyWorkspaceDialog = () => {
+            this.setState({
+                isCopyWorkspaceDialogOpen: false
+            })
+        };
+
+        const handleShowCopyWorkspaceDialog = () => {
+            this.setState({
+                isCopyWorkspaceDialogOpen: true
+            })
+        };
+
         let popoverContent = (
             <Menu>
                 <MenuItem
@@ -104,7 +117,9 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 </MenuItem>
                 <MenuItem
                     iconName="pt-icon-duplicate"
-                    text="Copy workspace"/>
+                    text="Copy workspace"
+                    onClick={handleShowCopyWorkspaceDialog}
+                />
                 <MenuItem
                     iconName="pt-icon-new-text-box"
                     text="Rename workspace"
@@ -132,7 +147,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             })
         };
 
-        const resetConfigInvalidStatus = () => {
+        const resetWorkspaceInvalidStatus = () => {
             this.setState({
                 workspaceNameValid: true
             })
@@ -156,6 +171,22 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             if (this.state.newWorkspaceName) {
                 this.props.dispatch(renameWorkspace(this.state.selectedWorkspace, this.state.newWorkspaceName));
                 handleCloseRenameWorkspaceDialog();
+                this.setState({
+                    newWorkspaceName: "",
+                    selectedWorkspace: ""
+                })
+            } else {
+                this.setState({
+                    workspaceNameValid: false,
+                    selectedWorkspace: ""
+                })
+            }
+        };
+
+        const handleCopyWorkspace = () => {
+            if (this.state.newWorkspaceName) {
+                this.props.dispatch(copyWorkspace(this.state.selectedWorkspace, this.state.newWorkspaceName));
+                handleCloseCopyWorkspaceDialog();
                 this.setState({
                     newWorkspaceName: "",
                     selectedWorkspace: ""
@@ -207,7 +238,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                                     dir="auto"
                                     value={this.state.newWorkspaceName}
                                     onChange={handleWorkspaceNameEdit}
-                                    onFocus={resetConfigInvalidStatus}
+                                    onFocus={resetWorkspaceInvalidStatus}
                                 />
                             </label>
                         </div>
@@ -240,7 +271,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                                     dir="auto"
                                     value={this.state.newWorkspaceName}
                                     onChange={handleWorkspaceNameEdit}
-                                    onFocus={resetConfigInvalidStatus}
+                                    onFocus={resetWorkspaceInvalidStatus}
                                 />
                             </label>
                         </div>
@@ -251,6 +282,39 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                                     onClick={handleRenameWorkspace}
                                     text="Save"/>
                             <Button onClick={handleCloseRenameWorkspaceDialog}
+                                    text="Cancel"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
+                <Dialog isOpen={this.state.isCopyWorkspaceDialogOpen}
+                        onClose={handleCloseCopyWorkspaceDialog}
+                        title="Copy workspace"
+                        className="dedop-dialog-body-add-config"
+                >
+                    <div className="pt-dialog-body">
+                        <WorkspaceSelection onChangeSelection={handleOnChangeSelection}/>
+                        <div className="dedop-dialog-parameter-item">
+                            <label className="pt-label pt-inline">
+                                <span className="dedop-dialog-parameter-label">Name</span>
+                                <input
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.workspaceNameValid? "" : "pt-intent-danger")}
+                                    type="text"
+                                    placeholder="new workspace name"
+                                    dir="auto"
+                                    value={this.state.newWorkspaceName}
+                                    onChange={handleWorkspaceNameEdit}
+                                    onFocus={resetWorkspaceInvalidStatus}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button intent={Intent.PRIMARY}
+                                    onClick={handleCopyWorkspace}
+                                    text="Save"/>
+                            <Button onClick={handleCloseCopyWorkspaceDialog}
                                     text="Cancel"
                             />
                         </div>

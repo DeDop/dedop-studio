@@ -27,17 +27,17 @@ export class WorkspaceAPI {
         this.webAPIClient = webAPI;
     }
 
-    newWorkspace(baseDir: string|null): JobPromise<Workspace> {
-        return this.webAPIClient.call('new_workspace', [baseDir], null, responseToWorkspace);
+    newWorkspace(newWorkspaceName: string): JobPromise<Workspace> {
+        return this.webAPIClient.call('new_workspace', [newWorkspaceName], null, responseToWorkspace);
     }
 
     deleteWorkspace(baseDir: string|null): JobPromise<Workspace> {
         return this.webAPIClient.call('delete_workspace', [baseDir]);
     }
 
-    copyWorkspace(baseDir: string,
+    copyWorkspace(oldWorkspaceName: string, newWorkspaceName: string,
                   onProgress: (progress: JobProgress) => void): JobPromise<Workspace> {
-        return this.webAPIClient.call('copy_workspace', [baseDir], onProgress, responseToWorkspace);
+        return this.webAPIClient.call('copy_workspace', [oldWorkspaceName, newWorkspaceName], onProgress, responseToWorkspace);
     }
 
     renameWorkspace(oldWorkspaceName: string, newWorkspaceName: string): JobPromise<null> {
