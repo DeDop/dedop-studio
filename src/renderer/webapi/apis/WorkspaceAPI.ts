@@ -53,7 +53,6 @@ export class WorkspaceAPI {
     }
 
     getAllWorkspaces(): JobPromise<string[]> {
-        console.log("inside workspaceapi, before the call");
         return this.webAPIClient.call('get_all_workspaces', [], null, responseToWorkspaces);
     }
 }

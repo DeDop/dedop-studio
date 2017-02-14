@@ -280,6 +280,9 @@ export function renameWorkspace(oldWorkspaceName: string, newWorkspaceName: stri
 
         function action() {
             dispatch(updateWorkspaceNameList(oldWorkspaceName, newWorkspaceName));
+            if (getState().control.currentWorkspace == oldWorkspaceName) {
+                dispatch(updateCurrentWorkspace(newWorkspaceName))
+            }
         }
 
         callAPI(dispatch, "Rename workspace ".concat(oldWorkspaceName).concat(" to ").concat(newWorkspaceName), call, action);
