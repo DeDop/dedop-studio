@@ -158,6 +158,15 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.REMOVE_WORKSPACE: {
+            const index = state.workspaceNames.findIndex((x) => x === action.payload);
+            return Object.assign({}, state, {
+                workspaceNames: [
+                    ...state.workspaceNames.slice(0, index),
+                    ...state.workspaceNames.slice(index + 1)
+                ]
+            });
+        }
     }
     return state;
 };

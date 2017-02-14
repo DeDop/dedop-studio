@@ -31,8 +31,8 @@ export class WorkspaceAPI {
         return this.webAPIClient.call('new_workspace', [newWorkspaceName], null, responseToWorkspace);
     }
 
-    deleteWorkspace(baseDir: string|null): JobPromise<Workspace> {
-        return this.webAPIClient.call('delete_workspace', [baseDir]);
+    deleteWorkspace(workspaceName: string): JobPromise<Workspace> {
+        return this.webAPIClient.call('delete_workspace', [workspaceName]);
     }
 
     copyWorkspace(oldWorkspaceName: string, newWorkspaceName: string,

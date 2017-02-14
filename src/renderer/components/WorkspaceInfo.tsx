@@ -12,7 +12,7 @@ import {
 } from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {State} from "../state";
-import {setCurrentWorkspace, newWorkspace, renameWorkspace, copyWorkspace} from "../actions";
+import {setCurrentWorkspace, newWorkspace, renameWorkspace, copyWorkspace, deleteWorkspace} from "../actions";
 import WorkspaceSelection from "./WorkspaceSelection";
 
 interface IWorkspaceInfoProps {
@@ -35,6 +35,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
         isAddWorkspaceDialogOpen: false,
         isRenameWorkspaceDialogOpen: false,
         isCopyWorkspaceDialogOpen: false,
+        isDeleteWorkspaceDialogOpen: false,
         newWorkspaceName: "",
         workspaceNameValid: true,
         selectedWorkspace: ""
@@ -103,6 +104,18 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             })
         };
 
+        const handleCloseDeleteWorkspaceDialog = () => {
+            this.setState({
+                isDeleteWorkspaceDialogOpen: false
+            })
+        };
+
+        const handleShowDeleteWorkspaceDialog = () => {
+            this.setState({
+                isDeleteWorkspaceDialogOpen: true
+            })
+        };
+
         let popoverContent = (
             <Menu>
                 <MenuItem
@@ -132,6 +145,8 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                     iconName="pt-icon-delete"
                     text="Delete workspace"
                     className="pt-intent-danger"
+                    onClick={handleShowDeleteWorkspaceDialog}
+                    disabled={workspaceItems.length <= 0}
                 />
             </Menu>
         );
@@ -199,6 +214,14 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                     selectedWorkspace: ""
                 })
             }
+        };
+
+        const handleDeleteWorkspace = () => {
+            this.props.dispatch(deleteWorkspace(this.state.selectedWorkspace));
+            handleCloseDeleteWorkspaceDialog();
+            this.setState({
+                selectedWorkspace: ""
+            })
         };
 
         const handleOnChangeSelection = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -317,6 +340,26 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                                     onClick={handleCopyWorkspace}
                                     text="Save"/>
                             <Button onClick={handleCloseCopyWorkspaceDialog}
+                                    text="Cancel"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
+                <Dialog isOpen={this.state.isDeleteWorkspaceDialogOpen}
+                        onClose={handleCloseDeleteWorkspaceDialog}
+                        title="Delete a workspace"
+                        className="dedop-dialog-body-add-config"
+                >
+                    <div className="pt-dialog-body">
+                        <WorkspaceSelection onChangeSelection={handleOnChangeSelection}/>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button intent={Intent.DANGER}
+                                    iconName="pt-icon-delete"
+                                    onClick={handleDeleteWorkspace}
+                                    text="Delete"/>
+                            <Button onClick={handleCloseDeleteWorkspaceDialog}
                                     text="Cancel"
                             />
                         </div>

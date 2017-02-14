@@ -203,7 +203,7 @@ export function newWorkspace(newWorkspaceName: string) {
             dispatch(addWorkSpace(workspace.name));
         }
 
-        callAPI(dispatch, "Add new workspace", call, action);
+        callAPI(dispatch, "Add new workspace ".concat(newWorkspaceName), call, action);
     }
 }
 
@@ -257,7 +257,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(updateCurrentWorkspace(new_workspace.name));
         }
 
-        callAPI(dispatch, "Set current workspace", call, action);
+        callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
     }
 }
 
@@ -300,6 +300,35 @@ export function copyWorkspace(oldWorkspaceName: string, newWorkspaceName: string
         }
 
         callAPI(dispatch, "Copy workspace ".concat(oldWorkspaceName).concat(" to ").concat(newWorkspaceName), call, action);
+    }
+}
+
+export const REMOVE_WORKSPACE = "REMOVE_WORKSPACE";
+
+function removeWorkspace(workspaceName: string) {
+    return {
+        type: REMOVE_WORKSPACE, payload: workspaceName
+    };
+}
+
+export function deleteWorkspace(workspaceName: string) {
+    return (dispatch, getState) => {
+        function call() {
+            return workspaceAPI(getState()).deleteWorkspace(workspaceName);
+        }
+
+        function action() {
+            dispatch(removeWorkspace(workspaceName));
+            if (getState().control.currentWorkspace == workspaceName) {
+                if (getState().data.workspaceNames.length > 0) {
+                    dispatch(updateCurrentWorkspace(getState().data.workspaceNames[0]))
+                } else {
+                    dispatch(updateCurrentWorkspace(""))
+                }
+            }
+        }
+
+        callAPI(dispatch, "Delete workspace ".concat(workspaceName), call, action);
     }
 }
 
