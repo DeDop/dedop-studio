@@ -3,19 +3,19 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {State} from "../../state";
 import * as selectors from "../../selectors";
 import {connect} from "react-redux";
-import {setProcessName} from "../../actions";
+import {setProcessName, updateConfigSelection, selectCurrentConfig} from "../../actions";
 
 interface IRunSettingsPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
     configurationFiles: string[];
-    selectedConfiguration: string;
+    currentConfiguration: string;
     processName: string;
 }
 
 function mapStateToProps(state: State): IRunSettingsPanelProps {
     return {
         configurationFiles: selectors.getConfigurationNames(state),
-        selectedConfiguration: state.control.selectedConfiguration,
+        currentConfiguration: state.control.currentConfiguration,
         processName: state.control.processName
     }
 }
@@ -34,7 +34,7 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
     render() {
         let options = [];
         for (let i in this.props.configurationFiles) {
-            if (this.props.selectedConfiguration == this.props.configurationFiles[i]) {
+            if (this.props.currentConfiguration == this.props.configurationFiles[i]) {
                 options.push(<option selected key={i}>{this.props.configurationFiles[i]}</option>);
             } else {
                 options.push(<option key={i}>{this.props.configurationFiles[i]}</option>)
@@ -49,6 +49,10 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
 
         const handleOnBlur = () => {
             this.props.dispatch(setProcessName(this.state.processName));
+        };
+
+        const handleOnChangeConfiguration = (event: React.FormEvent<HTMLSelectElement>) => {
+            this.props.dispatch(selectCurrentConfig(event.currentTarget.value));
         };
 
         return (
@@ -78,7 +82,7 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
                             </td>
                             <td>
                                 <div className="pt-select pt-fill">
-                                    <select>
+                                    <select onChange={handleOnChangeConfiguration}>
                                         {options}
                                     </select>
                                 </div>
