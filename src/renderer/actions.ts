@@ -1,6 +1,5 @@
 import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace} from "./state";
 import * as moment from "moment";
-import {TestAPI} from "./webapi/apis/TestAPI";
 import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 
@@ -115,10 +114,6 @@ export function addNewProcess(processingItem: ProcessingItem) {
     return {type: ADD_NEW_PROCESS, payload: processingItem};
 }
 
-export function setTestVar(testVar: string) {
-    return {type: SET_TEST_VAR, payload: testVar};
-}
-
 export function setTaskState(jobId: number, taskState: TaskState) {
     return {type: SET_TASK_STATE, payload: {jobId, taskState}};
 }
@@ -185,25 +180,6 @@ export function applyInitialState(initialState: Object) {
 export function setWebAPIStatus(webAPIClient, webAPIStatus: 'connecting'|'open'|'error'|'closed') {
     return {type: SET_WEBAPI_STATUS, payload: {webAPIClient, webAPIStatus}};
 }
-
-function testAPI(state: State): TestAPI {
-    return new TestAPI(state.data.appConfig.webAPIClient);
-}
-
-export function testWebSocket() {
-    return (dispatch, getState) => {
-        function call() {
-            return testAPI(getState()).testAction();
-        }
-
-        function action(response: string) {
-            dispatch(setTestVar(response));
-        }
-
-        callAPI(dispatch, "Websocket test", call, action);
-    }
-}
-
 
 // ======================== Workspace related actions via WebAPI =============================================
 

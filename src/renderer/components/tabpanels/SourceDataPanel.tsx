@@ -85,10 +85,6 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
             }
         };
 
-        const handleTestButton = () => {
-            this.props.dispatch(newWorkspace("button"))
-        };
-
         return (
             <div className="dedop-collapse">
                 <OrdinaryPanelHeader title="L1A Datasets" icon="pt-icon-document"/>
@@ -111,7 +107,6 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                              onSelection={handleSelectSourceFile}
                              selection={this.props.selectedSourceFile ? this.props.selectedSourceFile : []}/>
                 </div>
-                <Button onClick={handleTestButton} className="pt-intent-primary">Test</Button>
                 <GeneralAlert isAlertOpen={this.state.isNoFilesAvailableAlertOpen}
                               onConfirm={handleCloseAlert}
                               message="There are no NetCDF file(s) available in this directory. Please select another directory."
