@@ -112,7 +112,9 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 />
                 <MenuItem
                     iconName="pt-icon-exchange"
-                    text="Change to...">
+                    text="Change to..."
+                    disabled={workspaceItems.length <= 0}
+                >
                     {workspaceItems}
                 </MenuItem>
                 <MenuItem
