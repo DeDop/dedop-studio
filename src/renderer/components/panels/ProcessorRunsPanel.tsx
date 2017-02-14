@@ -5,6 +5,7 @@ import ProcessingTable from "../tables/ProcessingTable";
 import {ProcessingItem, State, ProcessingStatus} from "../../state";
 import {connect} from "react-redux";
 import {addNewProcess} from "../../actions";
+import {GeneralAlert} from "../Alerts";
 
 interface IProcessorRunsPanelProps {
     dispatch?: (action: {type: string, payload: ProcessingItem}) => void;
@@ -22,6 +23,10 @@ function mapStateToProps(state: State): IProcessorRunsPanelProps {
 }
 
 class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
+    public state = {
+        isNameAlertOpen: false
+    };
+
     render() {
         const handleRunProcess = () => {
             const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
@@ -34,7 +39,20 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
                 status: processingStatus,
                 startedTime: currentTime
             };
-            this.props.dispatch(addNewProcess(processItem));
+            // TODO (hans-permana, 20170214): add checking to input dataset as well as output directory
+            if (!processItem.name) {
+                this.setState({
+                    isNameAlertOpen: true
+                })
+            } else {
+                this.props.dispatch(addNewProcess(processItem));
+            }
+        };
+
+        const handleCloseNameAlert = () => {
+            this.setState({
+                isNameAlertOpen: false
+            })
         };
 
         return (
@@ -47,6 +65,11 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
                     </button>
                 </div>
                 <ProcessingTable/>
+                <GeneralAlert isAlertOpen={this.state.isNameAlertOpen}
+                              message="Process name is invalid"
+                              onConfirm={handleCloseNameAlert}
+                              iconName="pt-icon-warning-sign"
+                />
             </div>
         )
     }

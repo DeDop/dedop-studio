@@ -3,7 +3,7 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {State} from "../../state";
 import * as selectors from "../../selectors";
 import {connect} from "react-redux";
-import {setProcessName, updateConfigSelection, selectCurrentConfig} from "../../actions";
+import {setProcessName, selectCurrentConfig} from "../../actions";
 
 interface IRunSettingsPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
