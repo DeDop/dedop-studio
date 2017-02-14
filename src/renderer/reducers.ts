@@ -212,12 +212,7 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.ADD_NEW_PROCESS: {
             return Object.assign({}, state, {
-                processName: action.payload
-            });
-        }
-        case actions.SET_TEST_VAR: {
-            return Object.assign({}, state, {
-                testVar: action.payload
+                processName: ""
             });
         }
         case actions.UPDATE_CURRENT_WORKSPACE: {

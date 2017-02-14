@@ -21,6 +21,12 @@ function mapStateToProps(state: State): IRunSettingsPanelProps {
 }
 
 class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            processName: nextProps.processName
+        })
+    }
+
     public state = {
         processName: this.props.processName
     };
