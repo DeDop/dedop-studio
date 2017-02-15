@@ -8,7 +8,6 @@ import {remote} from "electron";
 import * as moment from "moment";
 import {GeneralAlert} from "../Alerts";
 import SourceFileListSingle from "../SourceFileListSingle";
-import {Button} from "@blueprintjs/core";
 
 interface ISourceDataPanelProps {
     dispatch?: Dispatch<State>;

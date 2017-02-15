@@ -2,11 +2,11 @@ import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Wor
 import * as moment from "moment";
 import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
+import {InputsAPI} from "./webapi/apis/InputsAPI";
 
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
-export const ADD_SOURCE_FILE = 'ADD_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
@@ -35,10 +35,6 @@ export function selectCurrentConfig(currentConfigName: string) {
 
 export function selectSourceFile(fileIndex: number) {
     return {type: SELECT_SOURCE_FILE, payload: fileIndex};
-}
-
-export function addSourceFile(sourceFile: SourceFile) {
-    return {type: ADD_SOURCE_FILE, payload: sourceFile};
 }
 
 export function selectSourceFileDirectory(fileDirectory: string) {
@@ -333,3 +329,33 @@ export function deleteWorkspace(workspaceName: string) {
 }
 
 // ======================== Workspace related actions via WebAPI =============================================
+
+
+// ======================== Input dataset related actions via WebAPI =============================================
+
+function inputsAPI(state: State): InputsAPI {
+    return new InputsAPI(state.data.appConfig.webAPIClient)
+}
+
+export const ADD_SOURCE_FILE = 'ADD_SOURCE_FILE';
+
+export function addSourceFile(sourceFile: SourceFile[]) {
+    return {type: ADD_SOURCE_FILE, payload: sourceFile};
+}
+
+export function addInputFiles(workspaceName: string, inputFilePaths: string[], inputFiles: SourceFile[]) {
+    return (dispatch, getState) => {
+        function call() {
+            return inputsAPI(getState()).addInputFiles(workspaceName, inputFilePaths);
+        }
+
+        function action() {
+            dispatch(addSourceFile(inputFiles));
+        }
+
+        callAPI(dispatch, "Add ".concat(inputFilePaths.length.toString()).concat(" input file(s) to workspace ").concat(workspaceName), call, action);
+    }
+}
+
+
+// ======================== Input dataset related actions via WebAPI =============================================

@@ -111,7 +111,7 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             return Object.assign({}, state, {
                 addedSourceFiles: [
                     ...state.addedSourceFiles,
-                    action.payload
+                    ...action.payload
                 ]
             })
         }
