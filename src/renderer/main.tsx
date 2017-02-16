@@ -13,6 +13,8 @@ import * as actions from "./actions";
 import {State} from "./state";
 import {newWebAPIClient} from "./webapi/WebAPIClient";
 import {ipcRenderer} from "electron";
+import {WebAPIServiceMock} from "./webapi/WebAPIServiceMock";
+import {WebSocketMock} from "./webapi/WebSocketMock";
 
 export function main() {
 
@@ -36,6 +38,8 @@ function connectWebAPIClient(store: Store<State>) {
     let webAPIClient;
     if (!webAPIConfig.useMockService && webAPIConfig.webSocketUrl) {
         webAPIClient = newWebAPIClient(webAPIConfig.webSocketUrl);
+    } else {
+        webAPIClient = newWebAPIClient('ws://mock', 0, new WebSocketMock(100, new WebAPIServiceMock(), true));
     }
 
     // TODO (forman): this code can take considerable time and is executed BEFORE the window UI shows up
