@@ -8,10 +8,26 @@ DeDop Desktop Application
 * nodejs v6.9.1
 * npm v3.10.8
 * git
+* dedop-core 
 
 ## How-to-start
 * `git clone https://github.com/DeDop/dedop-studio.git`
 * `cd dedop-studio`
 * `npm install`
+* create a dedop-config.js and add webAPIConfig entry to be able to start the web API. Below is a sample configuration. 
+
+  ```
+  module.exports = {
+    webAPIConfig: {
+        command: "C:\\Miniconda3\\envs\\pycharm-dedop\\Scripts\\dedop-webapi.exe",
+        servicePort: 2999,
+        serviceAddress: '',
+        serviceFile: 'dedop-webapi-info.json',
+        processOptions: {},
+        useMockService: true,
+    },
+  };
+  ```
+  Information about each field can be found in `dedop-config.template.js`.
 * `npm run compile`
 * `npm start`
