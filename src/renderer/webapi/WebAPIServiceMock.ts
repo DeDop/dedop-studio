@@ -8,13 +8,13 @@ import {Workspace} from "../state";
 export class WebAPIServiceMock implements IServiceObject {
     mockWorkspaces = {
         workspaces: [
-            "ws1",
-            "ws2",
-            "ws3"
+            "workspace1",
+            "workspace2",
+            "workspace3"
         ]
     };
     mockCurrentWorkspace: Workspace = {
-        name: "ws1",
+        name: "workspace1",
         workspaceDir: "mockDir",
         isCurrent: true
     };
@@ -48,19 +48,72 @@ export class WebAPIServiceMock implements IServiceObject {
 
     delete_workspace(workspace_name: string) {
         const index = this.mockWorkspaces.workspaces.findIndex((x) => x == workspace_name);
-        return Object.assign({}, this.mockWorkspaces, {
+        this.mockWorkspaces = Object.assign({}, this.mockWorkspaces, {
             workspaces: [
-                this.mockWorkspaces.workspaces.slice(0, index),
-                this.mockWorkspaces.workspaces.slice(index + 1)
+                ...this.mockWorkspaces.workspaces.slice(0, index),
+                ...this.mockWorkspaces.workspaces.slice(index + 1)
             ]
         });
+        if (this.mockCurrentWorkspace.name == workspace_name) {
+            if (this.mockWorkspaces.workspaces.length > 0) {
+                this.mockCurrentWorkspace.name = this.mockWorkspaces.workspaces[0];
+            } else {
+                this.mockCurrentWorkspace.name = "";
+            }
+        }
+        return {}
     }
 
-    get_all_workspaces(): Object {
-        return this.mockWorkspaces
+    copy_workspace(old_workspace_name: string, new_workspace_name: string): Workspace {
+        const newWorkspace: Workspace = {
+            name: new_workspace_name,
+            workspaceDir: "mockDir",
+            isCurrent: false
+        };
+        this.mockWorkspaces.workspaces = [
+            ...this.mockWorkspaces.workspaces,
+            newWorkspace.name
+        ];
+        return newWorkspace
+    }
+
+    rename_workspace(old_workspace_name: string, new_workspace_name: string): Workspace {
+        const newWorkspace: Workspace = {
+            name: new_workspace_name,
+            workspaceDir: "mockDir",
+            isCurrent: false
+        };
+        const index = this.mockWorkspaces.workspaces.findIndex((x) => x == old_workspace_name);
+        if (index < 0) {
+            throw Error(`Workspace '${old_workspace_name}' cannot be found`)
+        }
+        this.mockWorkspaces = Object.assign({}, this.mockWorkspaces, {
+            workspaces: [
+                ...this.mockWorkspaces.workspaces.slice(0, index),
+                newWorkspace.name,
+                ...this.mockWorkspaces.workspaces.slice(index + 1)
+            ]
+        });
+        return newWorkspace;
     }
 
     get_current_workspace(): Workspace {
         return this.mockCurrentWorkspace
+    }
+
+    set_current_workspace(new_workspace_name: string): Workspace {
+        if (this.mockWorkspaces.workspaces.indexOf(new_workspace_name) < 0) {
+            throw Error(`Workspace '${new_workspace_name}' cannot be found`)
+        }
+        this.mockCurrentWorkspace = {
+            name: new_workspace_name,
+            workspaceDir: "mockDir",
+            isCurrent: true
+        };
+        return this.mockCurrentWorkspace
+    }
+
+    get_all_workspaces(): Object {
+        return this.mockWorkspaces
     }
 }
