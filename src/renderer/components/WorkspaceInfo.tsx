@@ -41,6 +41,12 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
         selectedWorkspace: ""
     };
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            selectedWorkspace: nextProps.workspaceNames[0]
+        })
+    }
+
     render() {
         const handleMouseOver = () => {
             this.setState({
@@ -190,12 +196,12 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 handleCloseRenameWorkspaceDialog();
                 this.setState({
                     newWorkspaceName: "",
-                    selectedWorkspace: ""
+                    selectedWorkspace: this.props.workspaceNames[0]
                 })
             } else {
                 this.setState({
                     workspaceNameValid: false,
-                    selectedWorkspace: ""
+                    selectedWorkspace: this.props.workspaceNames[0]
                 })
             }
         };
@@ -206,12 +212,12 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 handleCloseCopyWorkspaceDialog();
                 this.setState({
                     newWorkspaceName: "",
-                    selectedWorkspace: ""
+                    selectedWorkspace: this.props.workspaceNames[0]
                 })
             } else {
                 this.setState({
                     workspaceNameValid: false,
-                    selectedWorkspace: ""
+                    selectedWorkspace: this.props.workspaceNames[0]
                 })
             }
         };
@@ -220,7 +226,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             this.props.dispatch(deleteWorkspace(this.state.selectedWorkspace));
             handleCloseDeleteWorkspaceDialog();
             this.setState({
-                selectedWorkspace: ""
+                selectedWorkspace: this.props.workspaceNames[0]
             })
         };
 
