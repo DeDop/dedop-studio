@@ -1,4 +1,6 @@
 import * as electron from "electron";
+import installDevToolsExtension from 'electron-devtools-installer';
+import * as devTools from 'electron-devtools-installer';
 import * as path from "path";
 import * as url from "url";
 import * as fs from "fs";
@@ -328,9 +330,13 @@ export function init() {
 function createMainWindow() {
 
     if (_config.data.devToolsExtensions) {
-        for (let path of _config.data.devToolsExtensions) {
-            BrowserWindow.addDevToolsExtension(path);
-            console.log('added DevTools extension: ', path);
+        for (let devToolsExtensionName of _config.data.devToolsExtensions) {
+            const devToolExtension = devTools[devToolsExtensionName];
+            if (devToolExtension) {
+                installDevToolsExtension(devToolExtension)
+                    .then((name) => console.log(DEDOP_STUDIO_PREFIX, `Added DevTools extension "${devToolsExtensionName}"`))
+                    .catch((err) => console.error(DEDOP_STUDIO_PREFIX, 'Failed to add DevTools extension: ', err));
+            }
         }
     }
 
