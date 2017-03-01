@@ -37,7 +37,9 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
                 }
             }
             if (newSourceFile) {
-                this.props.dispatch(addInputFiles(this.props.currentWorkspace, [this.props.currentSourceFileDirectory.concat("/").concat(this.props.sourceFile.name)], [this.props.sourceFile]));
+                this.props.dispatch(addInputFiles(this.props.currentWorkspace,
+                    [this.props.currentSourceFileDirectory.concat("/").concat(this.props.sourceFile.name)],
+                    [this.props.sourceFile]));
             }
         };
 

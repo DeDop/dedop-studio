@@ -185,8 +185,8 @@ function workspaceAPI(state: State): WorkspaceAPI {
     return new WorkspaceAPI(state.data.appConfig.webAPIClient)
 }
 
-function addWorkSpace(newWorkspaceName: string) {
-    return {type: ADD_WORKSPACE, payload: newWorkspaceName};
+function addWorkSpace(newWorkspace: Workspace) {
+    return {type: ADD_WORKSPACE, payload: newWorkspace};
 }
 
 export function newWorkspace(newWorkspaceName: string) {
@@ -196,7 +196,7 @@ export function newWorkspace(newWorkspaceName: string) {
         }
 
         function action(workspace: Workspace) {
-            dispatch(addWorkSpace(workspace.name));
+            dispatch(addWorkSpace(workspace));
         }
 
         callAPI(dispatch, "Add new workspace ".concat(newWorkspaceName), call, action);
@@ -205,8 +205,8 @@ export function newWorkspace(newWorkspaceName: string) {
 
 export const UPDATE_WORKSPACES = "UPDATE_WORKSPACES";
 
-function updateWorkSpaces(workspace_names: string[]) {
-    return {type: UPDATE_WORKSPACES, payload: workspace_names};
+function updateWorkSpaces(workspaces: Workspace[]) {
+    return {type: UPDATE_WORKSPACES, payload: workspaces};
 }
 
 export function getAllWorkspaces() {
@@ -215,8 +215,8 @@ export function getAllWorkspaces() {
             return workspaceAPI(getState()).getAllWorkspaces();
         }
 
-        function action(workspace_names: string[]) {
-            dispatch(updateWorkSpaces(workspace_names));
+        function action(workspaces: Workspace[]) {
+            dispatch(updateWorkSpaces(workspaces));
         }
 
         callAPI(dispatch, "Get all workspace names", call, action);
@@ -291,8 +291,8 @@ export function copyWorkspace(oldWorkspaceName: string, newWorkspaceName: string
             return workspaceAPI(getState()).copyWorkspace(oldWorkspaceName, newWorkspaceName, onProgress);
         }
 
-        function action() {
-            dispatch(addWorkSpace(newWorkspaceName));
+        function action(new_workspace: Workspace) {
+            dispatch(addWorkSpace(new_workspace));
         }
 
         callAPI(dispatch, "Copy workspace ".concat(oldWorkspaceName).concat(" to ").concat(newWorkspaceName), call, action);
@@ -339,8 +339,13 @@ function inputsAPI(state: State): InputsAPI {
 
 export const ADD_SOURCE_FILE = 'ADD_SOURCE_FILE';
 
-export function addSourceFile(sourceFile: SourceFile[]) {
-    return {type: ADD_SOURCE_FILE, payload: sourceFile};
+export function addSourceFile(workspaceName: string, sourceFile: SourceFile[]) {
+    return {
+        type: ADD_SOURCE_FILE, payload: {
+            workspaceName: workspaceName,
+            sourceFile: sourceFile
+        }
+    };
 }
 
 export function addInputFiles(workspaceName: string, inputFilePaths: string[], inputFiles: SourceFile[]) {
@@ -350,7 +355,7 @@ export function addInputFiles(workspaceName: string, inputFilePaths: string[], i
         }
 
         function action() {
-            dispatch(addSourceFile(inputFiles));
+            dispatch(addSourceFile(workspaceName, inputFiles));
         }
 
         callAPI(dispatch, "Add ".concat(inputFilePaths.length.toString()).concat(" input file(s) to workspace ").concat(workspaceName), call, action);

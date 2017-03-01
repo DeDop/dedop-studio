@@ -1,15 +1,15 @@
-import * as React from 'react'
-import {Configuration, State} from "../state";
+import * as React from "react";
+import {State, Workspace} from "../state";
 import {connect} from "react-redux";
 
 export interface IWorkspaceSelectionProps {
-    workspaceNames: string[];
+    workspaces: Workspace[];
     onChangeSelection: (event: any) => void;
 }
 
 function mapStateToProps(state: State, ownProps): IWorkspaceSelectionProps {
     return {
-        workspaceNames: state.data.workspaceNames,
+        workspaces: state.data.workspaces,
         onChangeSelection: ownProps.onChangeSelection
     };
 }
@@ -18,10 +18,10 @@ class WorkspaceSelection extends React.Component<IWorkspaceSelectionProps,any> {
     public render() {
 
         let workspaceSelectionItem = [];
-        const workspaces = this.props.workspaceNames;
+        const workspaces = this.props.workspaces;
         for (let i in workspaces) {
             workspaceSelectionItem.push(<option key={i}
-                                                value={workspaces[i]}
+                                                value={workspaces[i].name}
             >
                 {workspaces[i]}
             </option>)

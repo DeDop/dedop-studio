@@ -8,16 +8,24 @@ function responseToWorkspace(workspaceResponse: any): Workspace {
     }
     return {
         name: workspaceResponse.name,
-        workspaceDir: workspaceResponse.workspace_dir,
-        isCurrent: workspaceResponse.is_current,
+        inputs: [],
+        configs: []
     };
 }
 
-function responseToWorkspaces(workspaceResponse: any): string[] {
+function responseToWorkspaces(workspaceResponse: any): Workspace[] {
     if (!workspaceResponse) {
         return null;
     }
-    return workspaceResponse.workspaces;
+    let workspaces: Workspace[] = [];
+    for (let i of workspaceResponse.workspaces) {
+        workspaces.push({
+            name: i,
+            inputs: [],
+            configs: []
+        })
+    }
+    return workspaces;
 }
 
 export class WorkspaceAPI {
@@ -52,7 +60,7 @@ export class WorkspaceAPI {
         return this.webAPIClient.call('set_current_workspace', [newWorkspaceName], null, responseToWorkspace);
     }
 
-    getAllWorkspaces(): JobPromise<string[]> {
+    getAllWorkspaces(): JobPromise<Workspace[]> {
         return this.webAPIClient.call('get_all_workspaces', [], null, responseToWorkspaces);
     }
 }

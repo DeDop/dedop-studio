@@ -1,4 +1,12 @@
-import {ControlState, State, DataState, Configuration, ProcessConfigurations, CommunicationState} from "./state";
+import {
+    ControlState,
+    State,
+    DataState,
+    Configuration,
+    ProcessConfigurations,
+    CommunicationState,
+    Workspace
+} from "./state";
 import * as actions from "./actions";
 import {combineReducers} from "redux";
 import {
@@ -108,10 +116,20 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             })
         }
         case actions.ADD_SOURCE_FILE: {
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            console.log("inside reducer", action.payload.workspaceName);
+            console.log("inside reducer", workspace);
+            const updatedWorkspace = Object.assign({}, workspace, {
+                inputs: [
+                    ...workspace.inputs,
+                    ...action.payload.sourceFile
+                ]
+            });
             return Object.assign({}, state, {
-                addedSourceFiles: [
-                    ...state.addedSourceFiles,
-                    ...action.payload
+                workspaces: [
+                    ...state.workspaces,
+                    updatedWorkspace
                 ]
             })
         }
@@ -137,33 +155,45 @@ const dataReducer = (state: DataState = initialDataState, action) => {
         }
         case actions.ADD_WORKSPACE: {
             return Object.assign({}, state, {
-                workspaceNames: [
-                    ...state.workspaceNames,
+                workspaces: [
+                    ...state.workspaces,
                     action.payload
                 ]
             });
         }
         case actions.UPDATE_WORKSPACES: {
+            let newWorkspaces: Workspace[] = [];
+            for (let i of state.workspaces) {
+                const index = state.workspaces.findIndex((x) => x.name == action.payload.name);
+                if (index < 0) {
+                    newWorkspaces.push(i)
+                }
+            }
             return Object.assign({}, state, {
-                workspaceNames: action.payload
+                ...state.workspaces,
+                newWorkspaces
             });
         }
         case actions.RENAME_WORKSPACE: {
-            const index = state.workspaceNames.findIndex((x) => x === action.payload.oldWorkspaceName);
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.oldWorkspaceName);
+            const newWorkspace = {
+                ...state.workspaces[index],
+                name: action.payload.newWorkspaceName
+            };
             return Object.assign({}, state, {
-                workspaceNames: [
-                    ...state.workspaceNames.slice(0, index),
-                    action.payload.newWorkspaceName,
-                    ...state.workspaceNames.slice(index + 1)
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    newWorkspace,
+                    ...state.workspaces.slice(index + 1)
                 ]
             });
         }
         case actions.REMOVE_WORKSPACE: {
-            const index = state.workspaceNames.findIndex((x) => x === action.payload);
+            const index = state.workspaces.findIndex((x) => x.name === action.payload);
             return Object.assign({}, state, {
                 workspaceNames: [
-                    ...state.workspaceNames.slice(0, index),
-                    ...state.workspaceNames.slice(index + 1)
+                    ...state.workspaces.slice(0, index),
+                    ...state.workspaces.slice(index + 1)
                 ]
             });
         }

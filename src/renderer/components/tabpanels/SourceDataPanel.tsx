@@ -11,14 +11,14 @@ import SourceFileListSingle from "../SourceFileListSingle";
 
 interface ISourceDataPanelProps {
     dispatch?: Dispatch<State>;
-    l1aInputFileNames: SourceFile[];
+    l1aInputFiles: SourceFile[];
     selectedSourceFile: string[];
     currentSourceFileDirectory: string;
 }
 
 function mapStateToProps(state: State): ISourceDataPanelProps {
     return {
-        l1aInputFileNames: state.data.sourceFiles,
+        l1aInputFiles: state.data.sourceFiles,
         selectedSourceFile: [state.control.selectedSourceFile],
         currentSourceFileDirectory: state.control.currentSourceFileDirectory
     };
@@ -37,7 +37,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
 
     render() {
         const renderFileList = (itemIndex: number) => {
-            const sourceFile = this.props.l1aInputFileNames[itemIndex];
+            const sourceFile = this.props.l1aInputFiles[itemIndex];
             return (
                 <SourceFileListSingle sourceFile={sourceFile} itemIndex={itemIndex}/>
             )
@@ -101,7 +101,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                                 onClick={handleSelectDirectory}
                         />
                     </div>
-                    <ListBox numItems={this.props.l1aInputFileNames.length}
+                    <ListBox numItems={this.props.l1aInputFiles.length}
                              renderItem={renderFileList}
                              onSelection={handleSelectSourceFile}
                              selection={this.props.selectedSourceFile ? this.props.selectedSourceFile : []}/>

@@ -1,5 +1,5 @@
 import {WebAPIClient} from "../WebAPIClient";
-import {JobPromise, JobProgress} from "../Job";
+import {JobPromise} from "../Job";
 import {Workspace} from "../../state";
 
 export class InputsAPI {

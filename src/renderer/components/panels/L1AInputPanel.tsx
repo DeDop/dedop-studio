@@ -1,17 +1,16 @@
 import * as React from "react";
 import {Radio} from "@blueprintjs/core";
 import {OrdinaryPanelHeader} from "./PanelHeader";
-import {SourceFile} from "../../state";
-import {dummyInputL1aFiles} from "../../initialStates";
+import {SourceFile, State} from "../../state";
 import {connect} from "react-redux";
 
 interface IL1AInputPanelProps {
     sourceFiles: SourceFile[];
 }
 
-function mapStateToProps(): IL1AInputPanelProps {
+function mapStateToProps(state: State): IL1AInputPanelProps {
     return {
-        sourceFiles: dummyInputL1aFiles
+        sourceFiles: state.data.addedSourceFiles
     }
 }
 

@@ -11,20 +11,20 @@ import {
     Intent
 } from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
-import {State} from "../state";
+import {State, Workspace} from "../state";
 import {setCurrentWorkspace, newWorkspace, renameWorkspace, copyWorkspace, deleteWorkspace} from "../actions";
 import WorkspaceSelection from "./WorkspaceSelection";
 
 interface IWorkspaceInfoProps {
     dispatch?: Dispatch<State>;
     workspaceName: string;
-    workspaceNames: string[];
+    workspaces: Workspace[];
 }
 
 function mapStateToProps(state: State): IWorkspaceInfoProps {
     return {
         workspaceName: state.control.currentWorkspace,
-        workspaceNames: state.data.workspaceNames
+        workspaces: state.data.workspaces
     }
 }
 
@@ -65,9 +65,9 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
         };
 
         let workspaceItems = [];
-        const workspaceNames = this.props.workspaceNames;
-        for (let i in workspaceNames) {
-            const workspaceName = workspaceNames[i];
+        const workspaces = this.props.workspaces;
+        for (let i in workspaces) {
+            const workspaceName = workspaces[i].name;
             if (this.props.workspaceName != workspaceName)
                 workspaceItems.push(<MenuItem key={i}
                                               text={workspaceName}
@@ -196,12 +196,12 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 handleCloseRenameWorkspaceDialog();
                 this.setState({
                     newWorkspaceName: "",
-                    selectedWorkspace: this.props.workspaceNames[0]
+                    selectedWorkspace: this.props.workspaces[0].name
                 })
             } else {
                 this.setState({
                     workspaceNameValid: false,
-                    selectedWorkspace: this.props.workspaceNames[0]
+                    selectedWorkspace: this.props.workspaces[0].name
                 })
             }
         };
@@ -212,12 +212,12 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                 handleCloseCopyWorkspaceDialog();
                 this.setState({
                     newWorkspaceName: "",
-                    selectedWorkspace: this.props.workspaceNames[0]
+                    selectedWorkspace: this.props.workspaces[0].name
                 })
             } else {
                 this.setState({
                     workspaceNameValid: false,
-                    selectedWorkspace: this.props.workspaceNames[0]
+                    selectedWorkspace: this.props.workspaces[0].name
                 })
             }
         };
@@ -226,7 +226,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             this.props.dispatch(deleteWorkspace(this.state.selectedWorkspace));
             handleCloseDeleteWorkspaceDialog();
             this.setState({
-                selectedWorkspace: this.props.workspaceNames[0]
+                selectedWorkspace: this.props.workspaces[0].name
             })
         };
 

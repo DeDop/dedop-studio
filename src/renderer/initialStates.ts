@@ -681,8 +681,7 @@ export const initialDataState: DataState = {
             webSocketUrl: 'ws://127.0.0.1:2999/app'
         }
     },
-    workspaces: [],
-    workspaceNames: []
+    workspaces: []
 };
 
 export const mainTabs: string[] = [
