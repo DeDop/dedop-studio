@@ -16,14 +16,13 @@ function mapStateToProps(state: State, ownProps): IWorkspaceSelectionProps {
 
 class WorkspaceSelection extends React.Component<IWorkspaceSelectionProps,any> {
     public render() {
-
         let workspaceSelectionItem = [];
         const workspaces = this.props.workspaces;
         for (let i in workspaces) {
             workspaceSelectionItem.push(<option key={i}
                                                 value={workspaces[i].name}
             >
-                {workspaces[i]}
+                {workspaces[i].name}
             </option>)
         }
 

@@ -163,15 +163,21 @@ const dataReducer = (state: DataState = initialDataState, action) => {
         }
         case actions.UPDATE_WORKSPACES: {
             let newWorkspaces: Workspace[] = [];
-            for (let i of state.workspaces) {
-                const index = state.workspaces.findIndex((x) => x.name == action.payload.name);
-                if (index < 0) {
-                    newWorkspaces.push(i)
+            if (state.workspaces.length > 0) {
+                for (let i in state.workspaces) {
+                    const index = state.workspaces.findIndex((x) => x.name == action.payload[i].name);
+                    if (index < 0) {
+                        newWorkspaces.push(action.payload[i])
+                    }
                 }
+            } else {
+                newWorkspaces = action.payload;
             }
             return Object.assign({}, state, {
-                ...state.workspaces,
-                newWorkspaces
+                workspaces: [
+                    ...state.workspaces,
+                    ...newWorkspaces
+                ]
             });
         }
         case actions.RENAME_WORKSPACE: {

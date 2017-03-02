@@ -22,6 +22,13 @@ export class WebAPIServiceMock implements IServiceObject {
             inputs: [],
             configs: []
         }];
+    mockGetAllWorkspacesResponse = {
+        workspaces: [
+            "workspace1",
+            "workspace2",
+            "workspace3"
+        ]
+    };
     mockCurrentWorkspace: Workspace = {
         name: "workspace1",
         inputs: [],
@@ -123,7 +130,7 @@ export class WebAPIServiceMock implements IServiceObject {
     }
 
     get_all_workspaces(): Object {
-        return this.mockWorkspaces
+        return this.mockGetAllWorkspacesResponse
     }
 
     add_input_files(workspaceName: string, inputFilePaths: string[]) {

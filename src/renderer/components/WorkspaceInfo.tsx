@@ -43,7 +43,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            selectedWorkspace: nextProps.workspaceNames[0]
+            selectedWorkspace: nextProps.workspaces[0].name
         })
     }
 
