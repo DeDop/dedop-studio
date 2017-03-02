@@ -1,11 +1,7 @@
 # build is disabled because it expects MS Visual Studio solution file
 build: off
 
-branches:
-  only:
-    - master
-
-skip_tags: true
+version: '0.1.0.dev1.{build}'
 
 environment:
   nodejs_version: "6.9.0"
