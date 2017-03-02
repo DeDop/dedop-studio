@@ -153,24 +153,13 @@ describe('WebAPIServiceMock', function () {
         });
     });
     it('can mock get_all_workspaces action', function () {
-        expect(serviceMock.get_all_workspaces()).to.deep.equal(
-            [
-                {
-                    name: "workspace1",
-                    inputs: [],
-                    configs: []
-                },
-                {
-                    name: "workspace2",
-                    inputs: [],
-                    configs: []
-                },
-                {
-                    name: "workspace3",
-                    inputs: [],
-                    configs: []
-                }
-            ]
+        expect(serviceMock.get_all_workspaces()).to.deep.equal({
+                workspaces: [
+                    "workspace1",
+                    "workspace2",
+                    "workspace3"
+                ]
+            }
         );
     });
 });
