@@ -124,6 +124,7 @@ export interface Configuration {
 
 export interface SourceFile {
     name: string;
+    path: string;
     size: number;
     lastUpdated: string;
     globalMetadata: GlobalMetadata[];

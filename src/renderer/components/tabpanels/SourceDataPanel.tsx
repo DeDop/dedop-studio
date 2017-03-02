@@ -65,9 +65,11 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
             let validSourceFiles: SourceFile[] = [];
             for (let fileName of sourceFiles) {
                 if (fileName.endsWith(".nc")) {
-                    const stats = electronFs.statSync(sourceFileDirectory[0].concat("\\").concat(fileName));
+                    const filePath = sourceFileDirectory[0].concat("\\").concat(fileName);
+                    const stats = electronFs.statSync(filePath);
                     validSourceFiles.push({
                         name: fileName,
+                        path: filePath,
                         size: stats.size / (1024 * 1024),
                         lastUpdated: moment(stats.mtime.toISOString()).format("DD/MM/YY, hh:mm:ss"),
                         globalMetadata: []
