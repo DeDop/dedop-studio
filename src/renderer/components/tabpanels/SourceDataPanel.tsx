@@ -3,7 +3,7 @@ import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect, Dispatch} from "react-redux";
-import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList, newWorkspace} from "../../actions";
+import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
 import {remote} from "electron";
 import * as moment from "moment";
 import {GeneralAlert} from "../Alerts";

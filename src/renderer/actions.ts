@@ -1,5 +1,6 @@
 import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace} from "./state";
 import * as moment from "moment";
+import * as path from "path";
 import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
@@ -22,6 +23,7 @@ export const SET_TEST_VAR = 'SET_TEST_VAR';
 export const APPLY_INITIAL_STATE = 'APPLY_INITIAL_STATE';
 export const SET_WEBAPI_STATUS = 'SET_WEBAPI_STATUS';
 export const SET_TASK_STATE = 'SET_TASK_STATE';
+export const APPLY_INITIAL_SOURCE_FILE_DIRECTORY = 'APPLY_INITIAL_SOURCE_FILE_DIRECTORY';
 
 const CANCELLED_CODE = 999;
 
@@ -225,8 +227,14 @@ export function getAllWorkspaces() {
 
 export const UPDATE_CURRENT_WORKSPACE = "UPDATE_CURRENT_WORKSPACE";
 
-function updateCurrentWorkspace(current_workspace_name: string) {
-    return {type: UPDATE_CURRENT_WORKSPACE, payload: current_workspace_name};
+function updateCurrentWorkspace(current_workspace: Workspace) {
+    const newSourceFileDirectory = path.join(current_workspace.directory, "inputs");
+    return {
+        type: UPDATE_CURRENT_WORKSPACE, payload: {
+            name: current_workspace.name,
+            sourceFileDirectory: newSourceFileDirectory
+        }
+    };
 }
 
 export function getCurrentWorkspace() {
@@ -236,7 +244,7 @@ export function getCurrentWorkspace() {
         }
 
         function action(current_workspace: Workspace) {
-            dispatch(updateCurrentWorkspace(current_workspace.name));
+            dispatch(updateCurrentWorkspace(current_workspace));
         }
 
         callAPI(dispatch, "Get current workspace name", call, action);
@@ -250,7 +258,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
         }
 
         function action(new_workspace: Workspace) {
-            dispatch(updateCurrentWorkspace(new_workspace.name));
+            dispatch(updateCurrentWorkspace(new_workspace));
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
@@ -274,10 +282,10 @@ export function renameWorkspace(oldWorkspaceName: string, newWorkspaceName: stri
             return workspaceAPI(getState()).renameWorkspace(oldWorkspaceName, newWorkspaceName);
         }
 
-        function action() {
+        function action(new_workspace: Workspace) {
             dispatch(updateWorkspaceNameList(oldWorkspaceName, newWorkspaceName));
             if (getState().control.currentWorkspace == oldWorkspaceName) {
-                dispatch(updateCurrentWorkspace(newWorkspaceName))
+                dispatch(updateCurrentWorkspace(new_workspace))
             }
         }
 
@@ -319,7 +327,11 @@ export function deleteWorkspace(workspaceName: string) {
                 if (getState().data.workspaceNames.length > 0) {
                     dispatch(updateCurrentWorkspace(getState().data.workspaceNames[0]))
                 } else {
-                    dispatch(updateCurrentWorkspace(""))
+                    //TODO (hans-permana, 20170302): handle deletion of last workspace properly
+                    dispatch(updateCurrentWorkspace({
+                        name: "default",
+                        directory: "no-dir"
+                    }))
                 }
             }
         }

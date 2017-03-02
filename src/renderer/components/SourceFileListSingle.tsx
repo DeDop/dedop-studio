@@ -28,7 +28,6 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
     public renderContextMenu() {
         this.props.dispatch(selectSourceFile(this.props.itemIndex));
         const handleSave = () => {
-            // TODO(hans-permana, 20170206): to be hooked with add input action in the cli
             let newSourceFile: boolean = true;
             for (let sourceFile of this.props.addedSourceFiles) {
                 if (sourceFile === this.props.sourceFile) {
