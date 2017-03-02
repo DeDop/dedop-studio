@@ -11,27 +11,32 @@ describe('WebAPIServiceMock', function () {
     it('can mock new_workspace action', function () {
         expect(serviceMock.new_workspace("new_workspace")).to.deep.equal({
             name: "new_workspace",
+            directory: "/home/.dedop/new_workspace",
             inputs: [],
             configs: []
         });
         expect(serviceMock.mockWorkspaces).to.deep.equal([
             {
                 name: "workspace1",
+                directory: "/home/.dedop/workspace1",
                 inputs: [],
                 configs: []
             },
             {
                 name: "workspace2",
+                directory: "/home/.dedop/workspace2",
                 inputs: [],
                 configs: []
             },
             {
                 name: "workspace3",
+                directory: "/home/.dedop/workspace3",
                 inputs: [],
                 configs: []
             },
             {
                 name: "new_workspace",
+                directory: "/home/.dedop/new_workspace",
                 inputs: [],
                 configs: []
             }
@@ -43,21 +48,25 @@ describe('WebAPIServiceMock', function () {
             [
                 {
                     name: "workspace1",
+                    directory: "/home/.dedop/workspace1",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "workspace2",
+                    directory: "/home/.dedop/workspace2",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "workspace3",
+                    directory: "/home/.dedop/workspace3",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "test",
+                    directory: "/home/.dedop/test",
                     inputs: [],
                     configs: []
                 }
@@ -68,16 +77,19 @@ describe('WebAPIServiceMock', function () {
             [
                 {
                     name: "workspace1",
+                    directory: "/home/.dedop/workspace1",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "workspace2",
+                    directory: "/home/.dedop/workspace2",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "workspace3",
+                    directory: "/home/.dedop/workspace3",
                     inputs: [],
                     configs: []
                 }
@@ -86,27 +98,32 @@ describe('WebAPIServiceMock', function () {
     });
     it('can mock copy_workspace action', function () {
         expect(serviceMock.copy_workspace("old_workspace", "new_workspace")).to.deep.equal({
-            name: "new_workspace"
+            name: "new_workspace",
+            directory: "/home/.dedop/new_workspace"
         });
         expect(serviceMock.mockWorkspaces).to.deep.equal(
             [
                 {
                     name: "workspace1",
+                    directory: "/home/.dedop/workspace1",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "workspace2",
+                    directory: "/home/.dedop/workspace2",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "workspace3",
+                    directory: "/home/.dedop/workspace3",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "new_workspace",
+                    directory: "/home/.dedop/new_workspace",
                     inputs: [],
                     configs: []
                 }
@@ -119,35 +136,41 @@ describe('WebAPIServiceMock', function () {
             [
                 {
                     name: "workspace1",
+                    directory: "/home/.dedop/workspace1",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "workspace2",
+                    directory: "/home/.dedop/workspace2",
                     inputs: [],
                     configs: []
                 },
                 {
                     name: "new_workspace",
+                    directory: "/home/.dedop/new_workspace",
                     inputs: [],
                     configs: []
-                }
+                },
             ]
         );
     });
     it('can mock set_ and get_current_workspace action', function () {
         expect(serviceMock.get_current_workspace()).to.deep.equal({
             name: "workspace1",
+            directory: "/home/.dedop/workspace1",
             inputs: [],
             configs: []
         });
         expect(serviceMock.set_current_workspace("workspace3")).to.deep.equal({
             name: "workspace3",
+            directory: "/home/.dedop/workspace3",
             inputs: [],
             configs: []
         });
         expect(serviceMock.get_current_workspace()).to.deep.equal({
             name: "workspace3",
+            directory: "/home/.dedop/workspace3",
             inputs: [],
             configs: []
         });

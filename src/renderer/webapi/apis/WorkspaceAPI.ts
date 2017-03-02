@@ -8,6 +8,7 @@ function responseToWorkspace(workspaceResponse: any): Workspace {
     }
     return {
         name: workspaceResponse.name,
+        directory: workspaceResponse.workspace_dir,
         inputs: [],
         configs: []
     };
@@ -21,6 +22,7 @@ function responseToWorkspaces(workspaceResponse: any): Workspace[] {
     for (let i of workspaceResponse.workspaces) {
         workspaces.push({
             name: i,
+            directory: i.workspace_dir,
             inputs: [],
             configs: []
         })

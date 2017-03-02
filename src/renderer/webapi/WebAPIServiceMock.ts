@@ -9,16 +9,19 @@ export class WebAPIServiceMock implements IServiceObject {
     mockWorkspaces: Workspace[] = [
         {
             name: "workspace1",
+            directory: "/home/.dedop/workspace1",
             inputs: [],
             configs: []
         },
         {
             name: "workspace2",
+            directory: "/home/.dedop/workspace2",
             inputs: [],
             configs: []
         },
         {
             name: "workspace3",
+            directory: "/home/.dedop/workspace3",
             inputs: [],
             configs: []
         }];
@@ -31,6 +34,7 @@ export class WebAPIServiceMock implements IServiceObject {
     };
     mockCurrentWorkspace: Workspace = {
         name: "workspace1",
+        directory: "/home/.dedop/workspace1",
         inputs: [],
         configs: []
     };
@@ -51,6 +55,7 @@ export class WebAPIServiceMock implements IServiceObject {
     new_workspace(new_workspace_name: string): Workspace {
         const newWorkspace = {
             name: new_workspace_name,
+            directory: "/home/.dedop/" + new_workspace_name,
             inputs: [],
             configs: []
         };
@@ -80,12 +85,14 @@ export class WebAPIServiceMock implements IServiceObject {
 
     copy_workspace(old_workspace_name: string, new_workspace_name: string): Workspace {
         const newWorkspace: Workspace = {
-            name: new_workspace_name
+            name: new_workspace_name,
+            directory: "/home/.dedop/" + new_workspace_name,
         };
         this.mockWorkspaces = [
             ...this.mockWorkspaces,
             {
                 name: newWorkspace.name,
+                directory: "/home/.dedop/" + new_workspace_name,
                 inputs: [],
                 configs: []
             }
@@ -96,6 +103,7 @@ export class WebAPIServiceMock implements IServiceObject {
     rename_workspace(old_workspace_name: string, new_workspace_name: string): Workspace {
         const newWorkspace: Workspace = {
             name: new_workspace_name,
+            directory: "/home/.dedop/" + new_workspace_name,
             inputs: [],
             configs: []
         };
@@ -123,6 +131,7 @@ export class WebAPIServiceMock implements IServiceObject {
         }
         this.mockCurrentWorkspace = {
             name: new_workspace_name,
+            directory: "/home/.dedop/" + new_workspace_name,
             inputs: [],
             configs: []
         };

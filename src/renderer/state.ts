@@ -74,6 +74,7 @@ export interface TaskState {
 
 export interface Workspace {
     name: string;
+    directory: string;
     inputs?: SourceFile[];
     configs?: Configuration[];
 }
