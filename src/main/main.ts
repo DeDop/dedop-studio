@@ -26,7 +26,7 @@ let _config;
 let installFinished = false;
 
 function getAppIconPath() {
-    let icon_file = "dedop-16.png";
+    let icon_file = "linux/16x16.png";
     if (process.platform === "darwin") {
         icon_file = "darwin/dedop.icns";
     } else if (process.platform === "win32") {
