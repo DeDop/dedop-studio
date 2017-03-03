@@ -41,4 +41,4 @@ script:
     else
       INSTALLER_FILE="dist/dedop-studio*.AppImage";
     fi
-  - "curl -v --ftp-create-dirs -T $INSTALLER_FILE -u $FTP_USER:$FTP_PASSWORD ftp://ftp.brockmann-consult.de/$TRAVIS_OS_NAME/"
+  - "curl --ftp-create-dirs -T $INSTALLER_FILE -u $FTP_USER:$FTP_PASSWORD ftp://ftp.brockmann-consult.de/$TRAVIS_OS_NAME/"
