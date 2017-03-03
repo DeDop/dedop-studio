@@ -26,11 +26,11 @@ script:
 #  - npm run test:e2e
   - mkdir dedop-conda-installer
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-MacOSX-x86_64.sh"
-      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE"
+      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-MacOSX-x86_64.sh";
+      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE";
     else
-      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-Linux-x86_64.sh"
-      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE"
+      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-Linux-x86_64.sh";
+      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE";
   - echo "$DOWNLOAD_URL"
   - wget "$DOWNLOAD_URL" -O dedop-conda-installer/$INSTALLER_FILE
   - ls -al dedop-conda-installer
