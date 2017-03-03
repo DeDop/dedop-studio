@@ -30,8 +30,8 @@ artifacts:
 
 deploy:
     # FTP deployment provider settings
-  - provider: dedop BC FTP
-    protocol: ftp|ftps|sftp
+  - provider: FTP
+    protocol: ftp
     host: ftp.brockmann-consult.de
     username: dedop
     password:
