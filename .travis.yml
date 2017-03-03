@@ -1,12 +1,13 @@
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: required
-    - os: osx
-      sudo: required
-
 language: node_js
+
+env:
+  global:
+    - DEDOP_VERSION: "0.0.1"
+    - DEDOP_CONDA_INSTALLER_VERSION: "0.5.4.dev1"
+
+os:
+  - linux
+  - osx
 
 node_js:
   - "6"
@@ -23,3 +24,13 @@ script:
 #  at the moment disable the spectron test in travis CI because it keeps failing in Linux
 # TODO find out why the electron window cannot open in Linux in Travis CI
 #  - npm run test:e2e
+  - mkdir dedop-conda-installer
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-MacOSX-x86_64.sh"
+      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE"
+    else
+      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-Linux-x86_64.sh"
+      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE"
+  - wget $DOWNLOAD_URL -O dedop-conda-installer/$INSTALLER_FILE
+  - ls -al dedop-conda-installer
+  - npm run dist
