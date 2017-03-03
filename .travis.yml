@@ -31,6 +31,7 @@ script:
     else
       INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-Linux-x86_64.sh"
       DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE"
-  - wget $DOWNLOAD_URL -O dedop-conda-installer/$INSTALLER_FILE
+  - echo "$DOWNLOAD_URL"
+  - wget "$DOWNLOAD_URL" -O dedop-conda-installer/$INSTALLER_FILE
   - ls -al dedop-conda-installer
   - npm run dist
