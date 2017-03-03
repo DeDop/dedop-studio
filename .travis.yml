@@ -2,7 +2,7 @@ language: node_js
 
 env:
   global:
-    - DEDOP_VERSION: "0.0.1"
+    - DEDOP_VERSION: "0.0.1.dev"
     - DEDOP_CONDA_INSTALLER_VERSION: "0.5.4.dev1"
 
 os:
