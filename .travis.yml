@@ -2,8 +2,10 @@ language: node_js
 
 env:
   global:
-    - DEDOP_VERSION: "0.0.1.dev"
+    - DEDOP_VERSION: "0.0.1"
     - DEDOP_CONDA_INSTALLER_VERSION: "0.5.4.dev1"
+    - FTP_USER: "dedop"
+    - secure: "IlQTo0e5BdXu78gHFWUVDeu5bK3z+LaROmIXN7+EiJI38qZtJeh3HaSmPYSBgkfCZa2wQ/8osIp8gcjHG5nAyzYssYmihfP22o7lIpXxE7CtF647A+EMNfw6Fx/VIgOFF+T+J3XUt9m86qGyke2747ymlfCYQ8x43WixFj8c626IZo8N0V7E9shel6wYW5botTBkEbCFp+1DuVvhQV37fTZf9CalhcEa/NkJI4cp4CcfznxwszQ18HVeMGxSB/8Nf3UFIBFZGQwU+/T9w/rzD6+Ng/ryjmUI4zLOURyZwUBtKi6MZOuvJV+Dys+DT3XJ+0b+XHElvGCR0ynctEKGV1m45vDV5ixD2LWlS1ucaTe0Q6bfbn3if2xG+Qlcf6RCS9XP1r+JbvFAs4MXaC1CiNw8FCC0m32MqPFrDSibxW6pUs9SGUGTX5TvO+TYQI5BYfS5418en33/A46fMtf97SX2nCHayAIn7aptgIf6AtBIfjK/TPtunU3R9j9a1FIgshKfhj+YaR9FvA1vBwMGY4jWchtMbEq2oY6+Y8Ij0i+77riIENpsc8Q2kRtVQ5HbbqL3h62rmzglJLTwLGskXf0Pvx8UG6IxYlnaP1KqMvC0pjjb6NiPkGge9l3fyggFCk5XHspRLQzCGqnkts1wEMCbw+Ayu6kKDg6FOB8QnSk="
 
 os:
   - linux
@@ -26,13 +28,19 @@ script:
 #  - npm run test:e2e
   - mkdir dedop-conda-installer
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-MacOSX-x86_64.sh";
-      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE";
+      CONDA_INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-MacOSX-x86_64.sh";
+      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$CONDA_INSTALLER_FILE";
     else
-      INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-Linux-x86_64.sh";
-      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$INSTALLER_FILE";
+      CONDA_INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-Linux-x86_64.sh";
+      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$CONDA_INSTALLER_FILE";
     fi
   - echo "$DOWNLOAD_URL"
-  - wget "$DOWNLOAD_URL" -O dedop-conda-installer/$INSTALLER_FILE
+  - wget "$DOWNLOAD_URL" -O dedop-conda-installer/$CONDA_INSTALLER_FILE
   - ls -al dedop-conda-installer
   - npm run dist
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      INSTALLER_FILE="dedop-studio*.dmg";
+    else
+      INSTALLER_FILE="dedop-studio*.AppImage";
+    fi
+  - "curl -v --ftp-create-dirs -T $INSTALLER_FILE -u $FTP_USER:$FTP_PASSWORD ftp://ftp.brockmann-consult.de/$TRAVIS_OS_NAME/"
