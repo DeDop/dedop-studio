@@ -27,3 +27,14 @@ artifacts:
     name: dedop-studio-installer-exe
   - path: 'dist\*.zip'
     name: dedop-studio-installer-zip
+
+deploy:
+    # FTP deployment provider settings
+  - provider: dedop BC FTP
+    protocol: ftp|ftps|sftp
+    host: ftp.brockmann-consult.de
+    username: dedop
+    password:
+      secure: GL7E4cOZi9mzFvaDMAVOaQ==
+    folder: windows
+    debug: true     # show complete FTP log
