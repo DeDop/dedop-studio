@@ -36,6 +36,7 @@ script:
     fi
   - wget "$DOWNLOAD_URL" -O dedop-conda-installer/$CONDA_INSTALLER_FILE
   - npm run dist
+  - ls -al dist
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       INSTALLER_FILE="dist/dedop-studio*.dmg";
     else
