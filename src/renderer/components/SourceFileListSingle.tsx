@@ -3,6 +3,7 @@ import {SourceFile, State} from "../state";
 import {ContextMenuTarget, Menu, MenuItem, Tooltip, Position} from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {selectSourceFile, addInputFiles} from "../actions";
+import * as selector from "../selectors";
 
 interface ISourceFileListSingleProps {
     dispatch?: Dispatch<State>;
@@ -15,7 +16,7 @@ interface ISourceFileListSingleProps {
 
 function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile, itemIndex: number}): ISourceFileListSingleProps {
     return {
-        addedSourceFiles: state.data.addedSourceFiles,
+        addedSourceFiles: selector.getAddedSourceFiles(state),
         sourceFile: ownProps.sourceFile,
         itemIndex: ownProps.itemIndex,
         currentWorkspace: state.control.currentWorkspace,

@@ -3,6 +3,7 @@ import {Radio} from "@blueprintjs/core";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {SourceFile, State} from "../../state";
 import {connect} from "react-redux";
+import * as selector from "../../selectors";
 
 interface IL1AInputPanelProps {
     sourceFiles: SourceFile[];
@@ -10,7 +11,7 @@ interface IL1AInputPanelProps {
 
 function mapStateToProps(state: State): IL1AInputPanelProps {
     return {
-        sourceFiles: state.data.addedSourceFiles
+        sourceFiles: selector.getAddedSourceFiles(state)
     }
 }
 

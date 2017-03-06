@@ -1,10 +1,12 @@
-import {createSelector} from 'reselect'
-import {State, GlobalMetadata, ProcessConfigurations} from "./state";
+import {createSelector} from "reselect";
+import {State, GlobalMetadata, ProcessConfigurations, SourceFile} from "./state";
 
 const getSourceFiles = (state: State) => state.control.sourceFiles;
 const getSelectedSourceFile = (state: State) => state.control.selectedSourceFile;
 const getConfigurations = (state: State) => state.data.configurations;
 const getSelectedConfiguration = (state: State) => state.control.selectedConfiguration;
+const getWorkspaces = (state: State) => state.data.workspaces;
+const getCurrentWorkspace = (state: State) => state.control.currentWorkspace;
 
 export const getSelectedGlobalMetadata = createSelector(
     getSourceFiles,
@@ -49,5 +51,14 @@ export const getConfigurationNames = createSelector(
             configNames.push(i.name);
         }
         return configNames;
+    }
+);
+
+export const getAddedSourceFiles = createSelector(
+    getWorkspaces,
+    getCurrentWorkspace,
+    (getWorkspaces, getCurrentWorkspace): SourceFile[] => {
+        const workspaceIndex = getWorkspaces.findIndex((x) => x.name == getCurrentWorkspace);
+        return getWorkspaces[workspaceIndex].inputs
     }
 );

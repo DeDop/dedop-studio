@@ -5,8 +5,7 @@ import {
     ProcessConfigurations,
     Configuration,
     ControlState,
-    DataState,
-    SourceFile
+    DataState
 } from "./state";
 
 export const processingItems: ProcessingItem[] = [
@@ -631,7 +630,6 @@ export const initialControlState: ControlState = {
 
 export const initialDataState: DataState = {
     configurations: dummyConfigFileList,
-    addedSourceFiles: [],
     processes: processingItems,
     appConfig: {
         webAPIClient: null,
