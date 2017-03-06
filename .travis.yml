@@ -38,7 +38,7 @@ script:
   - npm run dist
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       ls -al dist/mac;
-      INSTALLER_FILE="dist/mac/dedop-studio*.dmg";
+      INSTALLER_FILE="dist/mac/DeDop*.dmg";
     else
       INSTALLER_FILE="dist/dedop-studio*.AppImage";
     fi
