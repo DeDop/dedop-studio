@@ -99,6 +99,7 @@
       "icon": "app/resources/linux"
     },
     "mac": {
+      "title": "${name}-${version}",
       "icon": "app/resources/darwin/dedop.icns"
     },
     "dmg": {
