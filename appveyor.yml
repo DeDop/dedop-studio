@@ -22,14 +22,16 @@ test_script:
   - .\node_modules\.bin\npm --version
   - .\node_modules\.bin\npm test
 
+after_build:
+  - move dist win64
+
 artifacts:
-  - path: 'dist\*.exe'
+  - path: 'win64\*.exe'
     name: dedop-studio-installer-exe
-  - path: 'dist\*.zip'
+  - path: 'win64\*.zip'
     name: dedop-studio-installer-zip
 
 deploy:
-    # FTP deployment provider settings
   - provider: FTP
     protocol: ftp
     host: ftp.brockmann-consult.de
@@ -37,5 +39,4 @@ deploy:
     password:
       secure: GL7E4cOZi9mzFvaDMAVOaQ==
     artifact: dedop-studio-installer-exe
-    folder: win64
     debug: true     # show complete FTP log
