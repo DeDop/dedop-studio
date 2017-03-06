@@ -110,16 +110,9 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
-        case actions.UPDATE_SOURCE_FILE_LIST: {
-            return Object.assign({}, state, {
-                sourceFiles: action.payload
-            })
-        }
         case actions.ADD_SOURCE_FILE: {
             const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
             const workspace = state.workspaces[index];
-            console.log("inside reducer", action.payload.workspaceName);
-            console.log("inside reducer", workspace);
             const updatedWorkspace = Object.assign({}, workspace, {
                 inputs: [
                     ...workspace.inputs,
@@ -203,6 +196,19 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.UPDATE_WORKSPACE_SOURCE_FILES: {
+            let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspace.name);
+            let newWorkspace = Object.assign({}, action.payload.workspace, {
+                inputs: action.payload.sourceFiles
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, workspaceIndex),
+                    newWorkspace,
+                    ...state.workspaces.slice(workspaceIndex + 1)
+                ]
+            });
+        }
     }
     return state;
 };
@@ -259,6 +265,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             return Object.assign({}, state, {
                 processName: ""
             });
+        }
+        case actions.UPDATE_SOURCE_FILE_LIST: {
+            return Object.assign({}, state, {
+                sourceFiles: action.payload
+            })
         }
         case actions.UPDATE_CURRENT_WORKSPACE: {
             return Object.assign({}, state, {

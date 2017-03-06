@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
 import {State, GlobalMetadata, ProcessConfigurations} from "./state";
 
-const getSourceFiles = (state: State) => state.data.sourceFiles;
+const getSourceFiles = (state: State) => state.control.sourceFiles;
 const getSelectedSourceFile = (state: State) => state.control.selectedSourceFile;
 const getConfigurations = (state: State) => state.data.configurations;
 const getSelectedConfiguration = (state: State) => state.control.selectedConfiguration;

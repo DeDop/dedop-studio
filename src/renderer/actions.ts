@@ -4,6 +4,7 @@ import * as path from "path";
 import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
+import {getSourceFiles} from "../common/sourceFileUtils";
 
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
@@ -237,6 +238,17 @@ function updateCurrentWorkspace(current_workspace: Workspace) {
     };
 }
 
+export const UPDATE_WORKSPACE_SOURCE_FILES = "UPDATE_WORKSPACE_SOURCE_FILES";
+
+function updateWorkspaceSourceFile(workspace: Workspace, source_files: SourceFile[]) {
+    return {
+        type: UPDATE_WORKSPACE_SOURCE_FILES, payload: {
+            workspace: workspace,
+            sourceFiles: source_files
+        }
+    };
+}
+
 export function getCurrentWorkspace() {
     return (dispatch, getState) => {
         function call() {
@@ -245,6 +257,10 @@ export function getCurrentWorkspace() {
 
         function action(current_workspace: Workspace) {
             dispatch(updateCurrentWorkspace(current_workspace));
+            let sourceFileDirectory = getState().control.currentSourceFileDirectory;
+            let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
+            dispatch(updateWorkspaceSourceFile(current_workspace, validSourceFiles));
+            dispatch(updateSourceFileList(validSourceFiles));
         }
 
         callAPI(dispatch, "Get current workspace name", call, action);
@@ -259,6 +275,10 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
 
         function action(new_workspace: Workspace) {
             dispatch(updateCurrentWorkspace(new_workspace));
+            let sourceFileDirectory = getState().control.currentSourceFileDirectory;
+            let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
+            dispatch(updateWorkspaceSourceFile(new_workspace, validSourceFiles));
+            dispatch(updateSourceFileList(validSourceFiles));
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);

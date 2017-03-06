@@ -11,7 +11,6 @@ export interface State {
 
 export interface DataState {
     configurations: Configuration[];
-    sourceFiles: SourceFile[];
     addedSourceFiles: SourceFile[];
     processes: ProcessingItem[];
     workspaces?: Workspace[];
@@ -26,6 +25,7 @@ export interface CommunicationState {
 }
 
 export interface ControlState {
+    sourceFiles: SourceFile[];
     mainPanelTitle ?: string;
     selectedConfiguration ?: string;
     currentConfigurationTabPanel ?: number;

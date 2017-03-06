@@ -5,9 +5,9 @@ import {State, SourceFile} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
 import {remote} from "electron";
-import * as moment from "moment";
 import {GeneralAlert} from "../Alerts";
 import SourceFileListSingle from "../SourceFileListSingle";
+import {getSourceFiles} from "../../../common/sourceFileUtils";
 
 interface ISourceDataPanelProps {
     dispatch?: Dispatch<State>;
@@ -18,7 +18,7 @@ interface ISourceDataPanelProps {
 
 function mapStateToProps(state: State): ISourceDataPanelProps {
     return {
-        l1aInputFiles: state.data.sourceFiles,
+        l1aInputFiles: state.control.sourceFiles,
         selectedSourceFile: [state.control.selectedSourceFile],
         currentSourceFileDirectory: state.control.currentSourceFileDirectory
     };
@@ -60,23 +60,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                 }
             );
             this.props.dispatch(selectSourceFileDirectory(sourceFileDirectory[0]));
-            const electronFs = remote.require("fs");
-            let sourceFiles = electronFs.readdirSync(sourceFileDirectory[0]);
-            let validSourceFiles: SourceFile[] = [];
-            for (let fileName of sourceFiles) {
-                if (fileName.endsWith(".nc")) {
-                    const filePath = sourceFileDirectory[0].concat("\\").concat(fileName);
-                    const stats = electronFs.statSync(filePath);
-                    validSourceFiles.push({
-                        name: fileName,
-                        path: filePath,
-                        size: stats.size / (1024 * 1024),
-                        lastUpdated: moment(stats.mtime.toISOString()).format("DD/MM/YY, hh:mm:ss"),
-                        globalMetadata: []
-                    });
-                }
-
-            }
+            let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory[0]);
             if (validSourceFiles.length > 0) {
                 this.props.dispatch(updateSourceFileList(validSourceFiles));
             } else {
