@@ -36,5 +36,6 @@ deploy:
     username: dedop
     password:
       secure: GL7E4cOZi9mzFvaDMAVOaQ==
-    folder: windows
+    artifact: dedop-studio-installer-exe
+    folder: win64
     debug: true     # show complete FTP log
