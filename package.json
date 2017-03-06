@@ -91,6 +91,7 @@
       "icon": "app/resources/win32/dedop.ico"
     },
     "nsis": {
+      "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
       "oneClick": true,
       "installerHeaderIcon": "app/resources/win32/dedop.ico"
     },
