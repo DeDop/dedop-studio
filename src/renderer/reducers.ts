@@ -121,8 +121,9 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
             return Object.assign({}, state, {
                 workspaces: [
-                    ...state.workspaces,
-                    updatedWorkspace
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1),
                 ]
             })
         }

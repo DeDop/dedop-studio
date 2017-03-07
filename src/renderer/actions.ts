@@ -278,6 +278,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             let sourceFileDirectory = getState().control.currentSourceFileDirectory;
             let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
             dispatch(updateWorkspaceSourceFile(new_workspace, validSourceFiles));
+            dispatch(selectSourceFile(null));
             dispatch(updateSourceFileList(validSourceFiles));
         }
 

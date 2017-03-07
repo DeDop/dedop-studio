@@ -52,7 +52,6 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
 
     render() {
         const index = this.props.addedSourceFiles.findIndex((x) => x.name === this.props.sourceFile.name);
-        console.log("visible", this.props.sourceFile, index);
         const added = index >= 0;
 
         return (

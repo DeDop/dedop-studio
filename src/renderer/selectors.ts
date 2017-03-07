@@ -12,7 +12,11 @@ export const getSelectedGlobalMetadata = createSelector(
     getSourceFiles,
     getSelectedSourceFile,
     (getSourceFiles, getSelectedSourceFile): GlobalMetadata[] => {
-        return getSelectedSourceFile != null ? getSourceFiles[getSelectedSourceFile].globalMetadata : [];
+        if (getSourceFiles.length > 0) {
+            return getSelectedSourceFile != null ? getSourceFiles[getSelectedSourceFile].globalMetadata : [];
+        } else {
+            return [];
+        }
     }
 );
 
