@@ -51,9 +51,17 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
     }
 
     render() {
+        const index = this.props.addedSourceFiles.findIndex((x) => x.name === this.props.sourceFile.name);
+        console.log("visible", this.props.sourceFile, index);
+        const added = index >= 0;
+
         return (
             <div className="dedop-list-box-item">
                 <span className="dedop-list-box-item-file-name">{this.props.sourceFile.name}</span>
+                {added ? <span
+                        className="pt-tag pt-intent-success dedop-list-box-item-file-size">Added</span>
+                    : null
+                }
                 <Tooltip content="file size" position={Position.LEFT}>
                         <span
                             className="pt-tag pt-intent-success dedop-list-box-item-file-size">{(this.props.sourceFile.size).toFixed(2)}
