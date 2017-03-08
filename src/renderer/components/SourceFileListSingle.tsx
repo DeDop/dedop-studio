@@ -58,7 +58,8 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
             <div className="dedop-list-box-item">
                 <span className="dedop-list-box-item-file-name">{this.props.sourceFile.name}</span>
                 {added ? <span
-                        className="pt-tag pt-intent-success dedop-list-box-item-file-size">Added</span>
+                        className="pt-tag pt-round dedop-list-box-item-file-size"
+                        style={{paddingRight: '10px'}}>Added</span>
                     : null
                 }
                 <Tooltip content="file size" position={Position.LEFT}>
