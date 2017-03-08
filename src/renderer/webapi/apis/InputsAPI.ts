@@ -12,4 +12,8 @@ export class InputsAPI {
     addInputFiles(workspaceName: string, inputFilePaths: string[]): JobPromise<Workspace> {
         return this.webAPIClient.call('add_input_files', [workspaceName, inputFilePaths], null, null);
     }
+
+    removeInputFiles(workspaceName: string, inputFileNames: string[]): JobPromise<Workspace> {
+        return this.webAPIClient.call('remove_input_files', [workspaceName, inputFileNames], null, null);
+    }
 }

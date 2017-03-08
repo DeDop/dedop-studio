@@ -2,7 +2,7 @@ import * as React from "react";
 import {SourceFile, State} from "../state";
 import {ContextMenuTarget, Menu, MenuItem, Tooltip, Position} from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
-import {selectSourceFile, addInputFiles} from "../actions";
+import {selectSourceFile, addInputFiles, removeInputFiles} from "../actions";
 import * as selector from "../selectors";
 
 interface ISourceFileListSingleProps {
@@ -26,38 +26,39 @@ function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile, itemIn
 
 @ContextMenuTarget
 class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,any> {
+    isSourceFileAdded() {
+        const index = this.props.addedSourceFiles.findIndex((x) => x.name === this.props.sourceFile.name);
+        return index >= 0;
+    }
+
     public renderContextMenu() {
         this.props.dispatch(selectSourceFile(this.props.itemIndex));
-        const handleSave = () => {
-            let newSourceFile: boolean = true;
-            for (let sourceFile of this.props.addedSourceFiles) {
-                if (sourceFile === this.props.sourceFile) {
-                    newSourceFile = false;
-                    break;
-                }
-            }
-            if (newSourceFile) {
-                this.props.dispatch(addInputFiles(this.props.currentWorkspace,
-                    [this.props.currentSourceFileDirectory.concat("/").concat(this.props.sourceFile.name)],
-                    [this.props.sourceFile]));
-            }
+        const handleAdd = () => {
+            this.props.dispatch(addInputFiles(this.props.currentWorkspace,
+                [this.props.currentSourceFileDirectory.concat("/").concat(this.props.sourceFile.name)],
+                [this.props.sourceFile]));
+        };
+
+        const handleRemove = () => {
+            console.log("remove ", this.props.sourceFile);
+            this.props.dispatch(removeInputFiles(this.props.currentWorkspace, [this.props.sourceFile.name]));
         };
 
         return (
             <Menu className="dedop-context-menu">
-                <MenuItem onClick={handleSave} text="Add" iconName="pt-icon-add"/>
+                {this.isSourceFileAdded() ?
+                    <MenuItem onClick={handleRemove} text="Remove" iconName="pt-icon-add"/>
+                    :
+                    <MenuItem onClick={handleAdd} text="Add" iconName="pt-icon-add"/>}
             </Menu>
         );
     }
 
     render() {
-        const index = this.props.addedSourceFiles.findIndex((x) => x.name === this.props.sourceFile.name);
-        const added = index >= 0;
-
         return (
             <div className="dedop-list-box-item">
                 <span className="dedop-list-box-item-file-name">{this.props.sourceFile.name}</span>
-                {added ? <span
+                {this.isSourceFileAdded() ? <span
                         className="pt-tag pt-round dedop-list-box-item-file-size"
                         style={{paddingRight: '10px'}}>Added</span>
                     : null

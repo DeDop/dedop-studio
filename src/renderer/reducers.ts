@@ -5,7 +5,8 @@ import {
     Configuration,
     ProcessConfigurations,
     CommunicationState,
-    Workspace
+    Workspace,
+    SourceFile
 } from "./state";
 import * as actions from "./actions";
 import {combineReducers} from "redux";
@@ -117,6 +118,30 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 inputs: [
                     ...workspace.inputs,
                     ...action.payload.sourceFile
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1),
+                ]
+            })
+        }
+        case actions.REMOVE_SOURCE_FILE: {
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            let updatedInputs: SourceFile[] = [];
+            for (let sourceFile of workspace.inputs) {
+                const inputFileIndex = action.payload.sourceFileNames.findIndex((x) => x.name === sourceFile.name);
+                if (inputFileIndex < 0) {
+                    updatedInputs.push(sourceFile);
+                }
+            }
+            const updatedWorkspace = Object.assign({}, workspace, {
+                inputs: [
+                    ...workspace.inputs,
+                    ...updatedInputs
                 ]
             });
             return Object.assign({}, state, {
@@ -277,6 +302,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 currentWorkspace: action.payload.name,
                 currentSourceFileDirectory: action.payload.sourceFileDirectory
             });
+        }
+        case actions.REMOVE_SOURCE_FILE: {
+            return Object.assign({}, state, {
+                selectedSourceFile: null
+            })
         }
     }
     return state;

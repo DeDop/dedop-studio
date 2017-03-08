@@ -395,5 +395,30 @@ export function addInputFiles(workspaceName: string, inputFilePaths: string[], i
     }
 }
 
+export const REMOVE_SOURCE_FILE = 'REMOVE_SOURCE_FILE';
+
+export function removeSourceFile(workspaceName: string, sourceFileNames: string[]) {
+    return {
+        type: REMOVE_SOURCE_FILE, payload: {
+            workspaceName: workspaceName,
+            sourceFileNames: sourceFileNames
+        }
+    };
+}
+
+export function removeInputFiles(workspaceName: string, sourceFileName: string[]){
+    return (dispatch, getState) => {
+        function call() {
+            return inputsAPI(getState()).removeInputFiles(workspaceName, sourceFileName);
+        }
+
+        function action() {
+            dispatch(removeSourceFile(workspaceName, sourceFileName));
+        }
+
+        callAPI(dispatch, "Remove ".concat(sourceFileName.length.toString()).concat(" input file(s) from workspace ").concat(workspaceName), call, action);
+    }
+}
+
 
 // ======================== Input dataset related actions via WebAPI =============================================
