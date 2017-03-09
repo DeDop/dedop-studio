@@ -6,13 +6,15 @@ import {
     updateConfigSelection,
     selectCurrentConfig,
     addConfigName,
-    updateConfigName
+    updateConfigName,
+    getAllConfigs
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
 import {Button, Intent, Dialog} from "@blueprintjs/core";
 import ConfigurationSelection from "../ConfigurationSelection";
 import {GeneralAlert} from "../Alerts";
+import * as selector from "../../selectors";
 
 interface IConfigurationNamesPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -25,11 +27,15 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
     return {
         selectedConfiguration: [state.control.selectedConfiguration],
         currentConfiguration: state.control.currentConfiguration,
-        configurations: state.data.configurations
+        configurations: selector.getConfigurations(state)
     }
 }
 
 class ConfigurationNamesPanel extends React.Component<any, any> {
+    componentWillMount() {
+        this.props.dispatch(getAllConfigs());
+    }
+
     public state = {
         isFileNotSelectedAlertOpen: false,
         isAddConfigDialogOpen: false,

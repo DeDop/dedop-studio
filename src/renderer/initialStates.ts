@@ -509,7 +509,6 @@ const dummyCstConfigurations1: ProcessConfigurations = {
 
 const dummyConfigFileList: Configuration[] = [
     {
-        id: "1",
         name: "default",
         lastUpdated: "04/12/2016 11:18:40",
         chd: defaultChdConfigurations,
@@ -517,7 +516,6 @@ const dummyConfigFileList: Configuration[] = [
         cst: defaultCstConfigurations
     },
     {
-        id: "2",
         name: "Alternate Delay-Doppler Processing",
         lastUpdated: "09/12/2016 08:01:22",
         chd: dummyChdConfigurations1,
@@ -525,7 +523,6 @@ const dummyConfigFileList: Configuration[] = [
         cst: defaultCstConfigurations
     },
     {
-        id: "3",
         name: "Modified Surface Locations",
         lastUpdated: "02/12/2016 18:22:13",
         chd: defaultChdConfigurations,
@@ -533,7 +530,6 @@ const dummyConfigFileList: Configuration[] = [
         cst: dummyCstConfigurations1
     },
     {
-        id: "4",
         name: "Experimental",
         lastUpdated: "03/12/2016 13:44:23",
         chd: dummyChdConfigurations1,
@@ -541,7 +537,6 @@ const dummyConfigFileList: Configuration[] = [
         cst: defaultCstConfigurations
     },
     {
-        id: "5",
         name: "Test",
         lastUpdated: "04/12/2016 11:18:40",
         chd: defaultChdConfigurations,

@@ -1,10 +1,18 @@
 import {createSelector} from "reselect";
-import {State, ProcessConfigurations, SourceFile} from "./state";
+import {State, ProcessConfigurations, SourceFile, Configuration} from "./state";
 
-const getConfigurations = (state: State) => state.data.configurations;
 const getSelectedConfiguration = (state: State) => state.control.selectedConfiguration;
 const getWorkspaces = (state: State) => state.data.workspaces;
 const getCurrentWorkspace = (state: State) => state.control.currentWorkspace;
+
+export const getConfigurations = createSelector(
+    getWorkspaces,
+    getCurrentWorkspace,
+    (getWorkspaces, getCurrentWorkspace): Configuration[] => {
+        const workspaceIndex = getWorkspaces.findIndex((x) => x.name == getCurrentWorkspace);
+        return getWorkspaces[workspaceIndex].configs
+    }
+);
 
 export const getSelectedChd = createSelector(
     getConfigurations,

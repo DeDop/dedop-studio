@@ -26,15 +26,15 @@ export interface CommunicationState {
 export interface ControlState {
     sourceFiles: SourceFile[];
     globalAttributes: GlobalAttribute[];
-    mainPanelTitle ?: string;
-    selectedConfiguration ?: string;
-    currentConfigurationTabPanel ?: number;
-    selectedSourceFile ?: string;
-    currentSourceFileDirectory ?: string;
-    currentConfiguration ?: string;
+    mainPanelTitle?: string;
+    selectedConfiguration?: string;
+    currentConfigurationTabPanel?: number;
+    selectedSourceFile?: string;
+    currentSourceFileDirectory?: string;
+    currentConfiguration?: string;
     currentWorkspace?: string;
-    currentMainTabPanel ?: number;
-    codeEditorActive ?: boolean;
+    currentMainTabPanel?: number;
+    codeEditorActive?: boolean;
     processName?: string;
     testVar?: string;
 }
@@ -112,12 +112,11 @@ export interface ConfigurationItem {
 }
 
 export interface Configuration {
-    id: string;
     name: string;
-    lastUpdated: string;
-    chd: ProcessConfigurations;
-    cnf: ProcessConfigurations;
-    cst: ProcessConfigurations;
+    lastUpdated?: string;
+    chd?: ProcessConfigurations;
+    cnf?: ProcessConfigurations;
+    cst?: ProcessConfigurations;
 }
 
 export interface SourceFile {

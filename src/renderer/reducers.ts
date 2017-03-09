@@ -17,17 +17,6 @@ import {
     defaultCstConfigurations
 } from "./initialStates";
 
-function getLastId(configurations: Configuration[]): string {
-    let maxId = 0;
-    for (let i in configurations) {
-        if (Number(configurations[i].id) > maxId) {
-            maxId = Number(configurations[i].id);
-        }
-    }
-    maxId++;
-    return maxId.toString(10);
-}
-
 function getSelectedConfigurations(baseConfigurationName: string, configurations: Configuration[]): {chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations} {
     for (let i in configurations) {
         if (configurations[i].name == baseConfigurationName) {
@@ -51,12 +40,10 @@ const dataReducer = (state: DataState = initialDataState, action) => {
     switch (action.type) {
         case actions.ADD_CONFIG_NAME: {
             const configs = getSelectedConfigurations(action.payload.baseConfigurationName, state.configurations);
-            const lastId = getLastId(state.configurations);
             return Object.assign({}, state, {
                 configurations: [
                     ...state.configurations,
                     {
-                        id: lastId,
                         name: action.payload.newConfigurationName,
                         lastUpdated: action.payload.currentTime,
                         chd: configs.chd,
@@ -224,6 +211,28 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 workspaces: [
                     ...state.workspaces.slice(0, workspaceIndex),
                     newWorkspace,
+                    ...state.workspaces.slice(workspaceIndex + 1)
+                ]
+            });
+        }
+        case actions.UPDATE_CONFIGS: {
+            let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
+            let newConfigs: Configuration[] = [];
+            for (let newConfig of action.payload.configs) {
+                const configIndex = workspace.configs.findIndex((x) => x.name === newConfig);
+                if (configIndex < 0) {
+                    newConfigs.push(newConfig);
+                }
+            }
+            const updatedWorkspace = Object.assign({}, workspace, {
+                ...workspace,
+                configs: newConfigs
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, workspaceIndex),
+                    updatedWorkspace,
                     ...state.workspaces.slice(workspaceIndex + 1)
                 ]
             });

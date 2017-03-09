@@ -1,10 +1,20 @@
-import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace, GlobalAttribute} from "./state";
+import {
+    ProcessConfigurations,
+    SourceFile,
+    ProcessingItem,
+    State,
+    TaskState,
+    Workspace,
+    GlobalAttribute,
+    Configuration
+} from "./state";
 import * as moment from "moment";
 import * as path from "path";
 import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
 import {getSourceFiles} from "../common/sourceFileUtils";
+import {ConfigAPI} from "./webapi/apis/ConfigAPI";
 
 export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
@@ -446,3 +456,40 @@ export function getGlobalAttributes(inputFilePath: string) {
 
 
 // ======================== Input dataset related actions via WebAPI =============================================
+
+
+// ======================== Configuration related actions via WebAPI =============================================
+
+function configAPI(state: State): ConfigAPI {
+    return new ConfigAPI(state.data.appConfig.webAPIClient)
+}
+
+export const UPDATE_CONFIGS = "UPDATE_CONFIGS";
+
+function updateConfigs(workspaceName: string, configs: Configuration[]) {
+    return {
+        type: UPDATE_CONFIGS, payload: {
+            workspaceName: workspaceName,
+            configs: configs
+        }
+    };
+}
+
+export function getAllConfigs() {
+    return (dispatch, getState) => {
+        const workspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).getAllConfigs(workspaceName);
+        }
+
+        function action(configs: Configuration[]) {
+            dispatch(updateConfigs(workspaceName, configs));
+        }
+
+        callAPI(dispatch, "Get all configuration names", call, action);
+    }
+}
+
+
+// ======================== Configuration related actions via WebAPI =============================================
