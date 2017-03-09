@@ -7,14 +7,12 @@ function responseToGlobalAttributes(globalAttributesResponse: any): GlobalAttrib
         return null;
     }
     let globalAttributes: GlobalAttribute[] = [];
-    console.log("global attributes from backend", globalAttributesResponse);
     for (let attributeName of Object.keys(globalAttributesResponse)) {
         globalAttributes.push({
             name: attributeName,
             value: globalAttributesResponse[attributeName]
         })
     }
-    console.log("global attributes", globalAttributes);
     return globalAttributes;
 }
 
