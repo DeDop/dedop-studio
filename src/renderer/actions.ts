@@ -397,26 +397,30 @@ export function addInputFiles(workspaceName: string, inputFilePaths: string[], i
 
 export const REMOVE_SOURCE_FILE = 'REMOVE_SOURCE_FILE';
 
-export function removeSourceFile(workspaceName: string, sourceFileNames: string[]) {
+export function removeSourceFile(workspaceName: string, sourceFileName: string) {
     return {
         type: REMOVE_SOURCE_FILE, payload: {
             workspaceName: workspaceName,
-            sourceFileNames: sourceFileNames
+            sourceFileName: sourceFileName
         }
     };
 }
 
-export function removeInputFiles(workspaceName: string, sourceFileName: string[]){
+export function removeInputFiles(workspaceName: string, sourceFileNames: string[]) {
     return (dispatch, getState) => {
         function call() {
-            return inputsAPI(getState()).removeInputFiles(workspaceName, sourceFileName);
+            return inputsAPI(getState()).removeInputFiles(workspaceName, sourceFileNames);
         }
 
         function action() {
-            dispatch(removeSourceFile(workspaceName, sourceFileName));
+            for (let sourceFileName of sourceFileNames) {
+                dispatch(removeSourceFile(workspaceName, sourceFileName));
+            }
+            const currentWorkspaceIndex = getState().data.workspaces.findIndex((x) => x.name === workspaceName);
+            dispatch(updateSourceFileList(getState().data.workspaces[currentWorkspaceIndex].inputs));
         }
 
-        callAPI(dispatch, "Remove ".concat(sourceFileName.length.toString()).concat(" input file(s) from workspace ").concat(workspaceName), call, action);
+        callAPI(dispatch, "Remove ".concat(sourceFileNames.length.toString()).concat(" input file(s) from workspace ").concat(workspaceName), call, action);
     }
 }
 

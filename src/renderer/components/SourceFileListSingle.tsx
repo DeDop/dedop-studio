@@ -40,7 +40,6 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
         };
 
         const handleRemove = () => {
-            console.log("remove ", this.props.sourceFile);
             this.props.dispatch(removeInputFiles(this.props.currentWorkspace, [this.props.sourceFile.name]));
         };
 
