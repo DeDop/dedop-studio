@@ -1,24 +1,10 @@
 import {createSelector} from "reselect";
-import {State, GlobalAttribute, ProcessConfigurations, SourceFile} from "./state";
+import {State, ProcessConfigurations, SourceFile} from "./state";
 
-const getSourceFiles = (state: State) => state.control.sourceFiles;
-const getSelectedSourceFile = (state: State) => state.control.selectedSourceFile;
 const getConfigurations = (state: State) => state.data.configurations;
 const getSelectedConfiguration = (state: State) => state.control.selectedConfiguration;
 const getWorkspaces = (state: State) => state.data.workspaces;
 const getCurrentWorkspace = (state: State) => state.control.currentWorkspace;
-
-export const getSelectedGlobalMetadata = createSelector(
-    getSourceFiles,
-    getSelectedSourceFile,
-    (getSourceFiles, getSelectedSourceFile): GlobalAttribute[] => {
-        if (getSourceFiles.length > 0) {
-            return getSelectedSourceFile != null ? getSourceFiles[getSelectedSourceFile].globalMetadata : [];
-        } else {
-            return [];
-        }
-    }
-);
 
 export const getSelectedChd = createSelector(
     getConfigurations,

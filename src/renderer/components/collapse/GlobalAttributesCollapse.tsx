@@ -2,31 +2,31 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {State, GlobalAttribute} from "../../state";
 import {Collapse} from "@blueprintjs/core";
-import {GlobalMetadataTable} from "../tables/GlobalMetadataTable";
+import {GlobalAttributesTable} from "../tables/GlobalAttributesTable";
 
-interface IGlobalMetadataCollapseProps {
+interface IGlobalAttributesCollapseProps {
     dispatch?: (action: {type: string, payload: any}) => void;
-    globalMetadata: GlobalAttribute[];
+    globalAttributes: GlobalAttribute[];
     openCollapse: boolean;
 }
 
-function mapStateToProps(state: State): IGlobalMetadataCollapseProps {
+function mapStateToProps(state: State): IGlobalAttributesCollapseProps {
     return {
-        globalMetadata: state.control.globalAttributes,
+        globalAttributes: state.control.globalAttributes,
         openCollapse: state.control.globalAttributes.length > 0
     }
 }
 
-class GlobalMetadataCollapse extends React.Component<IGlobalMetadataCollapseProps,any> {
+class GlobalAttributesCollapse extends React.Component<IGlobalAttributesCollapseProps,any> {
     render() {
         return (
             <div className="dedop-collapse">
                 <div className="dedop-collapse-header">
                     <span className="dedop-collapse-header-icon pt-icon-standard pt-icon-th-list"/>
-                    <span className="dedop-collapse-header-text">Global Metadata</span>
+                    <span className="dedop-collapse-header-text">Global Attributes</span>
                 </div>
                 < Collapse isOpen={this.props.openCollapse} className="dedop-panel-content">
-                    <GlobalMetadataTable globalMetadataArray={this.props.globalMetadata}/>
+                    <GlobalAttributesTable globalAttributes={this.props.globalAttributes}/>
                 </Collapse>
             </div>
         )
@@ -34,4 +34,4 @@ class GlobalMetadataCollapse extends React.Component<IGlobalMetadataCollapseProp
 
 }
 
-export default connect(mapStateToProps)(GlobalMetadataCollapse);
+export default connect(mapStateToProps)(GlobalAttributesCollapse);

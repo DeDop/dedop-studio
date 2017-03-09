@@ -293,7 +293,9 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         case actions.UPDATE_CURRENT_WORKSPACE: {
             return Object.assign({}, state, {
                 currentWorkspace: action.payload.name,
-                currentSourceFileDirectory: action.payload.sourceFileDirectory
+                currentSourceFileDirectory: action.payload.sourceFileDirectory,
+                selectedSourceFile: null,
+                globalAttributes: []
             });
         }
         case actions.REMOVE_SOURCE_FILE: {
