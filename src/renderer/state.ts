@@ -25,6 +25,7 @@ export interface CommunicationState {
 
 export interface ControlState {
     sourceFiles: SourceFile[];
+    globalAttributes: GlobalAttribute[];
     mainPanelTitle ?: string;
     selectedConfiguration ?: string;
     currentConfigurationTabPanel ?: number;
@@ -95,10 +96,8 @@ export interface ProcessingItem {
     processingDuration: string;
 }
 
-export interface GlobalMetadata {
-    id: string;
+export interface GlobalAttribute {
     name: string;
-    type: string;
     value: string;
 }
 
@@ -126,5 +125,5 @@ export interface SourceFile {
     path: string;
     size: number;
     lastUpdated: string;
-    globalMetadata: GlobalMetadata[];
+    globalMetadata: GlobalAttribute[];
 }

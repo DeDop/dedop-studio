@@ -1,4 +1,4 @@
-import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace} from "./state";
+import {ProcessConfigurations, SourceFile, ProcessingItem, State, TaskState, Workspace, GlobalAttribute} from "./state";
 import * as moment from "moment";
 import * as path from "path";
 import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
@@ -421,6 +421,26 @@ export function removeInputFiles(workspaceName: string, sourceFileNames: string[
         }
 
         callAPI(dispatch, "Remove ".concat(sourceFileNames.length.toString()).concat(" input file(s) from workspace ").concat(workspaceName), call, action);
+    }
+}
+
+export const UPDATE_CURRENT_GLOBAL_ATTRIBUTES = 'UPDATE_CURRENT_GLOBAL_ATTRIBUTES';
+
+export function updateCurrentGlobalAttributes(globalAttributes: GlobalAttribute[]) {
+    return {type: UPDATE_CURRENT_GLOBAL_ATTRIBUTES, payload: globalAttributes};
+}
+
+export function getGlobalAttributes(inputFilePath: string) {
+    return (dispatch, getState) => {
+        function call() {
+            return inputsAPI(getState()).getGlobalAttributes(inputFilePath);
+        }
+
+        function action(globalAttributes: GlobalAttribute[]) {
+            dispatch(updateCurrentGlobalAttributes(globalAttributes))
+        }
+
+        callAPI(dispatch, "Get global attributes of ".concat(inputFilePath), call, action);
     }
 }
 

@@ -1,7 +1,7 @@
 import {
     ProcessingItem,
     ProcessingStatus,
-    GlobalMetadata,
+    GlobalAttribute,
     ProcessConfigurations,
     Configuration,
     ControlState,
@@ -550,74 +550,9 @@ const dummyConfigFileList: Configuration[] = [
     }
 ];
 
-export const dummyGlobalMetadata1: GlobalMetadata[] = [
-    {
-        id: "1",
-        name: "name",
-        type: "string",
-        value: "S6_P4_SIM_RMC_L1A"
-    },
-    {
-        id: "2",
-        name: "sensing_start",
-        type: "string",
-        value: "2019-01-19T06:40:00"
-    },
-    {
-        id: "3",
-        name: "sensing_stop",
-        type: "string",
-        value: "2019-01-19T06:40:36"
-    },
-    {
-        id: "4",
-        name: "orbit_num",
-        type: "int",
-        value: "128"
-    },
-    {
-        id: "5",
-        name: "processing_centre",
-        type: "string",
-        value: "ESA ESRIN"
-    }
-];
-
-export const dummyGlobalMetadata2: GlobalMetadata[] = [
-    {
-        id: "1",
-        name: "name",
-        type: "string",
-        value: "S6_P4_SIM_RAW_L1A__20210929T064000_20210929T064019_T02"
-    },
-    {
-        id: "2",
-        name: "sensing_start",
-        type: "string",
-        value: "2016-01-19T06:40:00"
-    },
-    {
-        id: "3",
-        name: "sensing_stop",
-        type: "string",
-        value: "2019-01-19T06:40:36"
-    },
-    {
-        id: "4",
-        name: "orbit_num",
-        type: "int",
-        value: "64"
-    },
-    {
-        id: "5",
-        name: "processing_centre",
-        type: "string",
-        value: "Brockmann Consult GmbH"
-    }
-];
-
 export const initialControlState: ControlState = {
     sourceFiles: [],
+    globalAttributes: [],
     mainPanelTitle: null,
     selectedConfiguration: "default",
     currentConfigurationTabPanel: 0,

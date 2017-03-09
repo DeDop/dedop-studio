@@ -1,20 +1,19 @@
-import * as React from 'react';
+import * as React from "react";
 import {connect} from "react-redux";
-import {State, GlobalMetadata} from "../../state";
+import {State, GlobalAttribute} from "../../state";
 import {Collapse} from "@blueprintjs/core";
 import {GlobalMetadataTable} from "../tables/GlobalMetadataTable";
-import * as selectors from "../../selectors"
 
 interface IGlobalMetadataCollapseProps {
     dispatch?: (action: {type: string, payload: any}) => void;
-    globalMetadata: GlobalMetadata[];
+    globalMetadata: GlobalAttribute[];
     openCollapse: boolean;
 }
 
 function mapStateToProps(state: State): IGlobalMetadataCollapseProps {
     return {
-        globalMetadata: selectors.getSelectedGlobalMetadata(state),
-        openCollapse: selectors.getSelectedGlobalMetadata(state).length > 0
+        globalMetadata: state.control.globalAttributes,
+        openCollapse: state.control.globalAttributes.length > 0
     }
 }
 

@@ -3,11 +3,12 @@ import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import {ListBox} from "../ListBox";
 import {State, SourceFile} from "../../state";
 import {connect, Dispatch} from "react-redux";
-import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList} from "../../actions";
+import {selectSourceFile, selectSourceFileDirectory, updateSourceFileList, getGlobalAttributes} from "../../actions";
 import {remote} from "electron";
 import {GeneralAlert} from "../Alerts";
 import SourceFileListSingle from "../SourceFileListSingle";
 import {getSourceFiles} from "../../../common/sourceFileUtils";
+import * as path from "path";
 
 interface ISourceDataPanelProps {
     dispatch?: Dispatch<State>;
@@ -51,6 +52,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
 
         const handleSelectSourceFile = (oldSelection: Array<React.Key>, newSelection: Array<React.Key>) => {
             this.props.dispatch(selectSourceFile(newSelection.length > 0 ? newSelection[0] as number : null));
+            this.props.dispatch(getGlobalAttributes(path.join(this.props.l1aInputFiles[newSelection[0]].path)))
         };
 
         const handleSelectDirectory = () => {

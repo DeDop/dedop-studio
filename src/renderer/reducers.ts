@@ -301,6 +301,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 selectedSourceFile: null
             })
         }
+        case actions.UPDATE_CURRENT_GLOBAL_ATTRIBUTES: {
+            return Object.assign({}, state, {
+                globalAttributes: action.payload
+            })
+        }
     }
     return state;
 };
