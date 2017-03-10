@@ -21,19 +21,27 @@ interface IConfigurationNamesPanelProps {
     selectedConfiguration: string[];
     currentConfiguration: string;
     configurations: Configuration[];
+    currentWorkspace: string;
 }
 
 function mapStateToProps(state: State): IConfigurationNamesPanelProps {
     return {
         selectedConfiguration: [state.control.selectedConfiguration],
         currentConfiguration: state.control.currentConfiguration,
-        configurations: selector.getConfigurations(state)
+        configurations: selector.getConfigurations(state),
+        currentWorkspace: state.control.currentWorkspace
     }
 }
 
 class ConfigurationNamesPanel extends React.Component<any, any> {
     componentWillMount() {
         this.props.dispatch(getAllConfigs());
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.currentWorkspace != nextProps.currentWorkspace) {
+            this.props.dispatch(getAllConfigs());
+        }
     }
 
     public state = {

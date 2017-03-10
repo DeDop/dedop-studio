@@ -219,8 +219,9 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
             const workspace = state.workspaces[workspaceIndex];
             let newConfigs: Configuration[] = [];
-            for (let newConfig of action.payload.configs) {
-                const configIndex = workspace.configs.findIndex((x) => x.name === newConfig);
+            let payloadConfigs: Configuration[] = action.payload.configs ? action.payload.configs : [];
+            for (let newConfig of payloadConfigs) {
+                const configIndex = workspace.configs.findIndex((x) => x.name === newConfig.name);
                 if (configIndex < 0) {
                     newConfigs.push(newConfig);
                 }
