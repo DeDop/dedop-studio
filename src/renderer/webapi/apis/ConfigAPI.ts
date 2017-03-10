@@ -40,4 +40,8 @@ export class ConfigAPI {
     copyConfig(workspaceName: string, configName: string, newConfigName: string) {
         return this.webAPIClient.call('copy_config', [workspaceName, configName, newConfigName], null, null);
     }
+
+    renameConfig(workspaceName: string, configName: string, newConfigName: string) {
+        return this.webAPIClient.call('rename_config', [workspaceName, configName, newConfigName], null, null);
+    }
 }

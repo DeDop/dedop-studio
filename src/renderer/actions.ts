@@ -16,12 +16,10 @@ import {InputsAPI} from "./webapi/apis/InputsAPI";
 import {getSourceFiles} from "../common/sourceFileUtils";
 import {ConfigAPI} from "./webapi/apis/ConfigAPI";
 
-export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
 export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
-export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
@@ -35,10 +33,6 @@ export const SET_TASK_STATE = 'SET_TASK_STATE';
 export const APPLY_INITIAL_SOURCE_FILE_DIRECTORY = 'APPLY_INITIAL_SOURCE_FILE_DIRECTORY';
 
 const CANCELLED_CODE = 999;
-
-export function updateConfigSelection(selectedConfigName: string) {
-    return {type: UPDATE_CONFIG_SELECTION, payload: selectedConfigName};
-}
 
 export function selectCurrentConfig(currentConfigName: string) {
     return {type: SELECT_CURRENT_CONFIG, payload: currentConfigName};
@@ -54,19 +48,6 @@ export function selectSourceFileDirectory(fileDirectory: string) {
 
 export function updateSourceFileList(sourceFiles: SourceFile[]) {
     return {type: UPDATE_SOURCE_FILE_LIST, payload: sourceFiles};
-}
-
-export function updateConfigName(oldConfigurationName: string, newConfigurationName: string, oldCurrentConfiguration: string) {
-    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
-    const currentConfiguration = oldCurrentConfiguration == oldConfigurationName ? newConfigurationName : oldCurrentConfiguration;
-    return {
-        type: UPDATE_CONFIG_NAME, payload: {
-            oldConfigurationName: oldConfigurationName,
-            newConfigurationName: newConfigurationName,
-            currentTime: currentTime,
-            currentConfiguration: currentConfiguration
-        }
-    }
 }
 
 export function updateMainTab(newTabId: number) {
@@ -541,6 +522,43 @@ export function copyConfig(configName: string, newConfigName: string) {
 
         function action() {
             dispatch(addConfigName(currentWorkspaceName, newConfigName));
+        }
+
+        callAPI(dispatch, "Copy configuration '".concat(configName).concat("' to '").concat(newConfigName).concat("'"), call, action);
+    }
+}
+
+export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
+
+export function updateConfigName(workspaceName: string, configName: string, newConfigName: string) {
+    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    return {
+        type: UPDATE_CONFIG_NAME, payload: {
+            workspaceName: workspaceName,
+            configName: configName,
+            newConfigName: newConfigName,
+            currentTime: currentTime
+        }
+    }
+}
+
+export const UPDATE_CONFIG_SELECTION = 'UPDATE_CONFIG_SELECTION';
+
+export function updateConfigSelection(selectedConfigName: string) {
+    return {type: UPDATE_CONFIG_SELECTION, payload: selectedConfigName};
+}
+
+export function renameConfig(configName: string, newConfigName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).renameConfig(currentWorkspaceName, configName, newConfigName);
+        }
+
+        function action() {
+            dispatch(updateConfigName(currentWorkspaceName, configName, newConfigName));
+            dispatch(updateConfigSelection(newConfigName));
         }
 
         callAPI(dispatch, "Copy configuration '".concat(configName).concat("' to '").concat(newConfigName).concat("'"), call, action);

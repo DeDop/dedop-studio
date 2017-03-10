@@ -4,18 +4,17 @@ import {ListBox} from "../ListBox";
 import {
     updateConfigSelection,
     selectCurrentConfig,
-    updateConfigName,
     getAllConfigs,
     addNewConfig,
     removeConfig,
-    copyConfig
+    copyConfig,
+    renameConfig
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
 import {Button, Intent, Dialog} from "@blueprintjs/core";
 import {GeneralAlert} from "../Alerts";
 import * as selector from "../../selectors";
-import ConfigurationSelection from "../ConfigurationSelection";
 
 interface IConfigurationNamesPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -145,7 +144,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleRenameConfig = () => {
             if (this.state.newConfigName) {
-                this.props.dispatch(updateConfigName(this.props.selectedConfiguration[0], this.state.newConfigName, this.props.currentConfiguration));
+                this.props.dispatch(renameConfig(this.props.selectedConfiguration[0], this.state.newConfigName));
                 handleCloseRenameConfigDialog();
                 this.setState({
                     newConfigName: ""

@@ -27,18 +27,26 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
         }
         case actions.UPDATE_CONFIG_NAME: {
-            const index = state.configurations.findIndex((x) => x.name === action.payload.oldConfigurationName);
-            const updatedConfigurations = Object.assign({}, state.configurations[index], {
-                name: action.payload.newConfigurationName,
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
+            const updateConfig = Object.assign({}, workspace.configs[configIndex], {
+                name: action.payload.newConfigName,
                 lastUpdated: action.payload.currentTime
             });
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs.slice(0, configIndex),
+                    updateConfig,
+                    ...workspace.configs.slice(configIndex + 1)
+                ]
+            });
             return Object.assign({}, state, {
-                ...state,
-                configurations: [
-                    ...state.configurations.slice(0, index),
-                    updatedConfigurations,
-                    ...state.configurations.slice(index + 1),
-                ],
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1)
+                ]
             });
         }
         case actions.DELETE_CONFIG_NAME: {
@@ -260,11 +268,6 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         case actions.ADD_CONFIG_NAME:
             return Object.assign({}, state, {
                 selectedConfiguration: action.payload.newConfigurationName
-            });
-        case actions.UPDATE_CONFIG_NAME:
-            return Object.assign({}, state, {
-                selectedConfiguration: action.payload.newConfigurationName,
-                currentConfiguration: action.payload.currentConfiguration
             });
         case actions.DELETE_CONFIG_NAME:
             return Object.assign({}, state, {
