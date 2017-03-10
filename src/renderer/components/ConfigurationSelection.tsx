@@ -1,6 +1,7 @@
-import * as React from 'react'
+import * as React from "react";
 import {Configuration, State} from "../state";
 import {connect} from "react-redux";
+import * as selector from "../selectors";
 
 export interface IConfigurationSelectionProps {
     configurations: Configuration[];
@@ -9,7 +10,7 @@ export interface IConfigurationSelectionProps {
 
 function mapStateToProps(state: State, ownProps): IConfigurationSelectionProps {
     return {
-        configurations: state.data.configurations,
+        configurations: selector.getConfigurations(state),
         onChangeSelection: ownProps.onChangeSelection
     };
 }
@@ -22,7 +23,7 @@ class ConfigurationSelection extends React.Component<IConfigurationSelectionProp
         for (let i in configurations) {
             configurationSelectionItem.push(<option key={i}
                                                     value={configurations[i].name}
-                                                    >
+            >
                 {configurations[i].name}
             </option>)
         }

@@ -39,17 +39,22 @@ const dataReducer = (state: DataState = initialDataState, action) => {
 
     switch (action.type) {
         case actions.ADD_CONFIG_NAME: {
-            const configs = getSelectedConfigurations(action.payload.baseConfigurationName, state.configurations);
-            return Object.assign({}, state, {
-                configurations: [
-                    ...state.configurations,
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs,
                     {
                         name: action.payload.newConfigurationName,
-                        lastUpdated: action.payload.currentTime,
-                        chd: configs.chd,
-                        cnf: configs.cnf,
-                        cst: configs.cst
+                        lastUpdated: action.payload.currentTime
                     }
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1)
                 ]
             });
         }

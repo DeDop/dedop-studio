@@ -5,9 +5,9 @@ import {
     deleteConfigName,
     updateConfigSelection,
     selectCurrentConfig,
-    addConfigName,
     updateConfigName,
-    getAllConfigs
+    getAllConfigs,
+    addNewConfig
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
@@ -137,7 +137,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleAddConfig = () => {
             if (this.state.newConfigName) {
-                this.props.dispatch(addConfigName(this.state.newConfigName, this.state.baseConfigName));
+                this.props.dispatch(addNewConfig(this.state.newConfigName));
                 handleCloseAddConfigDialog();
                 this.setState({
                     newConfigName: ""
@@ -222,8 +222,6 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                                 />
                             </label>
                         </div>
-                        <ConfigurationSelection onChangeSelection={handleOnChangeSelection}/>
-
                     </div>
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">

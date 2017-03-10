@@ -21,7 +21,6 @@ export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
-export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
 export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
@@ -56,17 +55,6 @@ export function selectSourceFileDirectory(fileDirectory: string) {
 
 export function updateSourceFileList(sourceFiles: SourceFile[]) {
     return {type: UPDATE_SOURCE_FILE_LIST, payload: sourceFiles};
-}
-
-export function addConfigName(newConfigurationName: string, baseConfigurationName: string) {
-    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
-    return {
-        type: ADD_CONFIG_NAME, payload: {
-            newConfigurationName: newConfigurationName,
-            baseConfigurationName: baseConfigurationName,
-            currentTime: currentTime
-        }
-    };
 }
 
 export function updateConfigName(oldConfigurationName: string, newConfigurationName: string, oldCurrentConfiguration: string) {
@@ -488,6 +476,35 @@ export function getAllConfigs() {
         }
 
         callAPI(dispatch, "Get all configuration names", call, action);
+    }
+}
+
+export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
+
+export function addConfigName(workspaceName: string, newConfigurationName: string) {
+    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    return {
+        type: ADD_CONFIG_NAME, payload: {
+            workspaceName: workspaceName,
+            newConfigurationName: newConfigurationName,
+            currentTime: currentTime
+        }
+    };
+}
+
+export function addNewConfig(configName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).addNewConfig(currentWorkspaceName, configName);
+        }
+
+        function action() {
+            dispatch(addConfigName(currentWorkspaceName, configName));
+        }
+
+        callAPI(dispatch, "Add new configuration ".concat(configName), call, action);
     }
 }
 
