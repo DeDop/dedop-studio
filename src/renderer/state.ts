@@ -27,16 +27,15 @@ export interface ControlState {
     sourceFiles: SourceFile[];
     globalAttributes: GlobalAttribute[];
     mainPanelTitle?: string;
-    selectedConfiguration?: string;
+    currentMainTabPanel?: number;
     currentConfigurationTabPanel?: number;
-    selectedSourceFile?: string;
     currentSourceFileDirectory?: string;
     currentConfiguration?: string;
     currentWorkspace?: string;
-    currentMainTabPanel?: number;
+    selectedConfiguration?: string;
+    selectedSourceFile?: string;
     codeEditorActive?: boolean;
     processName?: string;
-    testVar?: string;
 }
 
 export interface SessionState {

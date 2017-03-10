@@ -248,7 +248,7 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             return Object.assign({}, state, {
                 currentSourceFileDirectory: action.payload
             });
-        case actions.SELECT_CURRENT_CONFIG:
+        case actions.UPDATE_CURRENT_CONFIG:
             return Object.assign({}, state, {
                 currentConfiguration: action.payload,
                 selectedConfiguration: action.payload

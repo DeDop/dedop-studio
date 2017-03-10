@@ -3,12 +3,13 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {
     updateConfigSelection,
-    selectCurrentConfig,
     getAllConfigs,
     addNewConfig,
     removeConfig,
     copyConfig,
-    renameConfig
+    renameConfig,
+    setCurrentConfig,
+    getCurrentConfig
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
@@ -36,6 +37,7 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
 class ConfigurationNamesPanel extends React.Component<any, any> {
     componentWillMount() {
         this.props.dispatch(getAllConfigs());
+        this.props.dispatch(getCurrentConfig())
     }
 
     public state = {
@@ -107,7 +109,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
         };
 
         const handleCurrentConfig = (key: React.Key) => {
-            this.props.dispatch(selectCurrentConfig(key as string));
+            this.props.dispatch(setCurrentConfig(key as string));
         };
 
         const handleCloseAddConfigDialog = () => {

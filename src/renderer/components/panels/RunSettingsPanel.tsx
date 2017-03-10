@@ -3,7 +3,7 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {State} from "../../state";
 import * as selectors from "../../selectors";
 import {connect, Dispatch} from "react-redux";
-import {setProcessName, selectCurrentConfig, getAllConfigs} from "../../actions";
+import {setProcessName, getAllConfigs, setCurrentConfig} from "../../actions";
 
 interface IRunSettingsPanelProps {
     dispatch?: Dispatch<State>;
@@ -56,7 +56,7 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
         };
 
         const handleOnChangeConfiguration = (event: React.FormEvent<HTMLSelectElement>) => {
-            this.props.dispatch(selectCurrentConfig(event.currentTarget.value));
+            this.props.dispatch(setCurrentConfig(event.currentTarget.value));
         };
 
         return (

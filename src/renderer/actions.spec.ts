@@ -8,8 +8,8 @@ describe("Test actions", function () {
         assert.equal(updateConfigSelectionAction.payload, "Config2");
     });
     it('can select current configuration', function () {
-        let selectCurrentConfigAction = actions.selectCurrentConfig("newCurrentConfig");
-        assert.equal(selectCurrentConfigAction.type, "SELECT_CURRENT_CONFIG");
+        let selectCurrentConfigAction = actions.updateCurrentConfig("newCurrentConfig");
+        assert.equal(selectCurrentConfigAction.type, "UPDATE_CURRENT_CONFIG");
         assert.equal(selectCurrentConfigAction.payload, "newCurrentConfig");
     });
     // commented out because of a new delete config implementation with async backend call

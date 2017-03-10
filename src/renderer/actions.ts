@@ -16,7 +16,6 @@ import {InputsAPI} from "./webapi/apis/InputsAPI";
 import {getSourceFiles} from "../common/sourceFileUtils";
 import {ConfigAPI} from "./webapi/apis/ConfigAPI";
 
-export const SELECT_CURRENT_CONFIG = 'SELECT_CURRENT_CONFIG';
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
@@ -33,10 +32,6 @@ export const SET_TASK_STATE = 'SET_TASK_STATE';
 export const APPLY_INITIAL_SOURCE_FILE_DIRECTORY = 'APPLY_INITIAL_SOURCE_FILE_DIRECTORY';
 
 const CANCELLED_CODE = 999;
-
-export function selectCurrentConfig(currentConfigName: string) {
-    return {type: SELECT_CURRENT_CONFIG, payload: currentConfigName};
-}
 
 export function selectSourceFile(fileIndex: number) {
     return {type: SELECT_SOURCE_FILE, payload: fileIndex};
@@ -255,6 +250,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(selectSourceFile(null));
             dispatch(updateSourceFileList(validSourceFiles));
             dispatch(getAllConfigs());
+            dispatch(setCurrentConfig(""))
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
@@ -562,6 +558,44 @@ export function renameConfig(configName: string, newConfigName: string) {
         }
 
         callAPI(dispatch, "Copy configuration '".concat(configName).concat("' to '").concat(newConfigName).concat("'"), call, action);
+    }
+}
+
+export const UPDATE_CURRENT_CONFIG = 'UPDATE_CURRENT_CONFIG';
+
+export function updateCurrentConfig(currentConfigName: string) {
+    return {type: UPDATE_CURRENT_CONFIG, payload: currentConfigName};
+}
+
+export function getCurrentConfig() {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).getCurrentConfig(currentWorkspaceName);
+        }
+
+        function action(current_config: string) {
+            dispatch(updateCurrentConfig(current_config));
+        }
+
+        callAPI(dispatch, "Get current configuration name", call, action);
+    }
+}
+
+export function setCurrentConfig(configName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).setCurrentConfig(currentWorkspaceName, configName);
+        }
+
+        function action() {
+            dispatch(updateCurrentConfig(configName));
+        }
+
+        callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
     }
 }
 

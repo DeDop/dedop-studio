@@ -18,6 +18,11 @@ function configNamesToConfigurations(configsNameResponse: any): Configuration[] 
     return configurations;
 }
 
+function responseToConfigName(configNameResponse: string): string {
+    console.log("response from backend", configNameResponse);
+    return configNameResponse;
+}
+
 export class ConfigAPI {
     private webAPIClient: WebAPIClient;
 
@@ -44,4 +49,13 @@ export class ConfigAPI {
     renameConfig(workspaceName: string, configName: string, newConfigName: string) {
         return this.webAPIClient.call('rename_config', [workspaceName, configName, newConfigName], null, null);
     }
+
+    getCurrentConfig(workspaceName: string) {
+        return this.webAPIClient.call('get_current_config', [workspaceName], null, responseToConfigName);
+    }
+
+    setCurrentConfig(workspaceName: string, configName: string) {
+        return this.webAPIClient.call('set_current_config', [workspaceName, configName], null, null);
+    }
+
 }
