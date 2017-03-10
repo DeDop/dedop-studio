@@ -1,39 +1,7 @@
-import {
-    ControlState,
-    State,
-    DataState,
-    Configuration,
-    ProcessConfigurations,
-    CommunicationState,
-    Workspace
-} from "./state";
+import {ControlState, State, DataState, Configuration, CommunicationState, Workspace} from "./state";
 import * as actions from "./actions";
 import {combineReducers} from "redux";
-import {
-    initialControlState,
-    initialDataState,
-    defaultChdConfigurations,
-    defaultCnfConfigurations,
-    defaultCstConfigurations
-} from "./initialStates";
-
-function getSelectedConfigurations(baseConfigurationName: string, configurations: Configuration[]): {chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations} {
-    for (let i in configurations) {
-        if (configurations[i].name == baseConfigurationName) {
-            return {
-                chd: configurations[i].chd,
-                cnf: configurations[i].cnf,
-                cst: configurations[i].cst
-            }
-        }
-    }
-    return {
-        chd: defaultChdConfigurations,
-        cnf: defaultCnfConfigurations,
-        cst: defaultCstConfigurations
-    }
-
-}
+import {initialControlState, initialDataState} from "./initialStates";
 
 const dataReducer = (state: DataState = initialDataState, action) => {
 
@@ -74,12 +42,21 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
         }
         case actions.DELETE_CONFIG_NAME: {
-            const configName = action.payload;
-            const index = state.configurations.findIndex((x) => x.name === configName);
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs.slice(0, configIndex),
+                    ...workspace.configs.slice(configIndex + 1)
+
+                ]
+            });
             return Object.assign({}, state, {
-                configurations: [
-                    ...state.configurations.slice(0, index),
-                    ...state.configurations.slice(index + 1)
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1)
                 ]
             });
         }

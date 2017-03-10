@@ -32,4 +32,8 @@ export class ConfigAPI {
     addNewConfig(workspaceName: string, configName: string) {
         return this.webAPIClient.call('add_new_config', [workspaceName, configName], null, null);
     }
+
+    deleteConfig(workspaceName: string, configName: string) {
+        return this.webAPIClient.call('delete_config', [workspaceName, configName], null, null);
+    }
 }

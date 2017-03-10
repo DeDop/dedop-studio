@@ -2,17 +2,16 @@ import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {
-    deleteConfigName,
     updateConfigSelection,
     selectCurrentConfig,
     updateConfigName,
     getAllConfigs,
-    addNewConfig
+    addNewConfig,
+    removeConfig
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
 import {Button, Intent, Dialog} from "@blueprintjs/core";
-import ConfigurationSelection from "../ConfigurationSelection";
 import {GeneralAlert} from "../Alerts";
 import * as selector from "../../selectors";
 
@@ -68,7 +67,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleDeleteConfig = () => {
             if (this.props.selectedConfiguration[0]) {
-                this.props.dispatch(deleteConfigName(this.props.selectedConfiguration[0]));
+                this.props.dispatch(removeConfig(this.props.selectedConfiguration[0]));
             } else {
                 this.setState({
                     isFileNotSelectedAlertOpen: true
@@ -147,13 +146,6 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
             const value = event.currentTarget.value;
             this.setState({
                 newConfigName: value
-            })
-        };
-
-        const handleOnChangeSelection = (event: React.FormEvent<HTMLSelectElement>) => {
-            const value = event.currentTarget.value;
-            this.setState({
-                baseConfigName: value
             })
         };
 

@@ -22,7 +22,6 @@ export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
 export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
-export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
@@ -68,10 +67,6 @@ export function updateConfigName(oldConfigurationName: string, newConfigurationN
             currentConfiguration: currentConfiguration
         }
     }
-}
-
-export function deleteConfigName(configName: string) {
-    return {type: DELETE_CONFIG_NAME, payload: configName};
 }
 
 export function updateMainTab(newTabId: number) {
@@ -505,7 +500,34 @@ export function addNewConfig(configName: string) {
             dispatch(addConfigName(currentWorkspaceName, configName));
         }
 
-        callAPI(dispatch, "Add new configuration ".concat(configName), call, action);
+        callAPI(dispatch, "Add new configuration ".concat(configName).concat(" to workspace ").concat(currentWorkspaceName), call, action);
+    }
+}
+
+export function deleteConfigName(workspaceName: string, configName: string) {
+    return {
+        type: DELETE_CONFIG_NAME, payload: {
+            workspaceName: workspaceName,
+            configName: configName
+        }
+    };
+}
+
+export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
+
+export function removeConfig(configName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).deleteConfig(currentWorkspaceName, configName);
+        }
+
+        function action() {
+            dispatch(deleteConfigName(currentWorkspaceName, configName));
+        }
+
+        callAPI(dispatch, "Remove configuration ".concat(configName).concat(" from workspace ").concat(currentWorkspaceName), call, action);
     }
 }
 
