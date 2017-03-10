@@ -38,12 +38,6 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
         this.props.dispatch(getAllConfigs());
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.currentWorkspace != nextProps.currentWorkspace) {
-            this.props.dispatch(getAllConfigs());
-        }
-    }
-
     public state = {
         isFileNotSelectedAlertOpen: false,
         isAddConfigDialogOpen: false,

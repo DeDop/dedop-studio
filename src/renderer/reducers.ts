@@ -229,6 +229,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 const configIndex = workspace.configs.findIndex((x) => x.name === newConfig.name);
                 if (configIndex < 0) {
                     newConfigs.push(newConfig);
+                } else {
+                    newConfigs.push(workspace.configs[configIndex])
                 }
             }
             const updatedWorkspace = Object.assign({}, workspace, {

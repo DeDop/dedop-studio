@@ -2,11 +2,11 @@ import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {State} from "../../state";
 import * as selectors from "../../selectors";
-import {connect} from "react-redux";
-import {setProcessName, selectCurrentConfig} from "../../actions";
+import {connect, Dispatch} from "react-redux";
+import {setProcessName, selectCurrentConfig, getAllConfigs} from "../../actions";
 
 interface IRunSettingsPanelProps {
-    dispatch?: (action: {type: string, payload: string}) => void;
+    dispatch?: Dispatch<State>;
     configurationFiles: string[];
     currentConfiguration: string;
     processName: string;
@@ -21,6 +21,10 @@ function mapStateToProps(state: State): IRunSettingsPanelProps {
 }
 
 class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
+    componentWillMount() {
+        this.props.dispatch(getAllConfigs());
+    }
+
     componentWillReceiveProps(nextProps) {
         this.setState({
             processName: nextProps.processName

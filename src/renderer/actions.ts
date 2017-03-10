@@ -278,6 +278,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(updateWorkspaceSourceFile(new_workspace, validSourceFiles));
             dispatch(selectSourceFile(null));
             dispatch(updateSourceFileList(validSourceFiles));
+            dispatch(getAllConfigs());
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
