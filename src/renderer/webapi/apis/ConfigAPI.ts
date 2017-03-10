@@ -36,4 +36,8 @@ export class ConfigAPI {
     deleteConfig(workspaceName: string, configName: string) {
         return this.webAPIClient.call('delete_config', [workspaceName, configName], null, null);
     }
+
+    copyConfig(workspaceName: string, configName: string, newConfigName: string) {
+        return this.webAPIClient.call('copy_config', [workspaceName, configName, newConfigName], null, null);
+    }
 }

@@ -7,13 +7,15 @@ import {
     updateConfigName,
     getAllConfigs,
     addNewConfig,
-    removeConfig
+    removeConfig,
+    copyConfig
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
 import {Button, Intent, Dialog} from "@blueprintjs/core";
 import {GeneralAlert} from "../Alerts";
 import * as selector from "../../selectors";
+import ConfigurationSelection from "../ConfigurationSelection";
 
 interface IConfigurationNamesPanelProps {
     dispatch?: (action: {type: string, payload: any}) => void;
@@ -40,6 +42,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
     public state = {
         isFileNotSelectedAlertOpen: false,
         isAddConfigDialogOpen: false,
+        isCopyConfigDialogOpen: false,
         isRenameConfigDialogOpen: false,
         newConfigName: "",
         baseConfigName: "default",
@@ -51,6 +54,18 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
             this.setState({
                 isAddConfigDialogOpen: true
             })
+        };
+
+        const handleOpenCopyConfigDialog = () => {
+            if (this.props.selectedConfiguration[0]) {
+                this.setState({
+                    isCopyConfigDialogOpen: true
+                })
+            } else {
+                this.setState({
+                    isFileNotSelectedAlertOpen: true
+                })
+            }
         };
 
         const handleOpenRenameConfigDialog = () => {
@@ -102,10 +117,30 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
             })
         };
 
+        const handleCloseCopyConfigDialog = () => {
+            this.setState({
+                isCopyConfigDialogOpen: false
+            })
+        };
+
         const handleCloseRenameConfigDialog = () => {
             this.setState({
                 isRenameConfigDialogOpen: false
             })
+        };
+
+        const handleCopyConfig = () => {
+            if (this.state.newConfigName) {
+                this.props.dispatch(copyConfig(this.props.selectedConfiguration[0], this.state.newConfigName));
+                handleCloseCopyConfigDialog();
+                this.setState({
+                    newConfigName: ""
+                })
+            } else {
+                this.setState({
+                    configNameValid: false
+                })
+            }
         };
 
         const handleRenameConfig = () => {
@@ -165,6 +200,10 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                     >
                         Add
                     </button>
+                    <button className="pt-button configuration-file-button pt-icon-duplicate"
+                            onClick={handleOpenCopyConfigDialog}>
+                        Copy
+                    </button>
                     <button className="pt-button configuration-file-button"
                             onClick={handleOpenRenameConfigDialog}>
                         Rename
@@ -215,6 +254,39 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                                     onClick={handleAddConfig}
                                     text="Save"/>
                             <Button onClick={handleCloseAddConfigDialog}
+                                    text="Cancel"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
+                <Dialog isOpen={this.state.isCopyConfigDialogOpen}
+                        onClose={handleCloseCopyConfigDialog}
+                        title="Copy configuration file"
+                        className="dedop-dialog-body-add-config"
+                >
+                    <div className="pt-dialog-body">
+                        <div className="dedop-dialog-parameter-item">
+                            <label className="pt-label pt-inline">
+                                <span className="dedop-dialog-parameter-label">Copy as</span>
+                                <input
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid? "" : "pt-intent-danger")}
+                                    type="text"
+                                    placeholder="configuration name"
+                                    dir="auto"
+                                    value={this.state.newConfigName}
+                                    onChange={handleConfigNameEdit}
+                                    onFocus={resetConfigInvalidStatus}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button intent={Intent.PRIMARY}
+                                    onClick={handleCopyConfig}
+                                    iconName="pt-icon-duplicate"
+                                    text="Copy"/>
+                            <Button onClick={handleCloseCopyConfigDialog}
                                     text="Cancel"
                             />
                         </div>

@@ -531,5 +531,21 @@ export function removeConfig(configName: string) {
     }
 }
 
+export function copyConfig(configName: string, newConfigName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).copyConfig(currentWorkspaceName, configName, newConfigName);
+        }
+
+        function action() {
+            dispatch(addConfigName(currentWorkspaceName, newConfigName));
+        }
+
+        callAPI(dispatch, "Copy configuration '".concat(configName).concat("' to '").concat(newConfigName).concat("'"), call, action);
+    }
+}
+
 
 // ======================== Configuration related actions via WebAPI =============================================
