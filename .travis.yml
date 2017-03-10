@@ -23,22 +23,3 @@ install:
 
 script:
   - npm run test
-#  at the moment disable the spectron test in travis CI because it keeps failing in Linux
-# TODO find out why the electron window cannot open in Linux in Travis CI
-#  - npm run test:e2e
-  - mkdir dedop-conda-installer
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      CONDA_INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-MacOSX-x86_64.sh";
-      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$CONDA_INSTALLER_FILE";
-    else
-      CONDA_INSTALLER_FILE="DeDop-$DEDOP_CONDA_INSTALLER_VERSION-Linux-x86_64.sh";
-      DOWNLOAD_URL="https://anaconda.org/dedop/dedop-installer/$DEDOP_CONDA_INSTALLER_VERSION/download/$CONDA_INSTALLER_FILE";
-    fi
-  - wget "$DOWNLOAD_URL" -O dedop-conda-installer/$CONDA_INSTALLER_FILE
-  - npm run dist
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      INSTALLER_FILE="dist/mac/DeDop*.dmg";
-    else
-      INSTALLER_FILE="dist/dedop-studio*.AppImage";
-    fi
-  - "curl --ftp-create-dirs -T $INSTALLER_FILE -u $FTP_USER:$FTP_PASSWORD ftp://ftp.brockmann-consult.de/$TRAVIS_OS_NAME/"
