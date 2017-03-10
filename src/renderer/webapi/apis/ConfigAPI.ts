@@ -18,9 +18,15 @@ function configNamesToConfigurations(configsNameResponse: any): Configuration[] 
     return configurations;
 }
 
-function responseToConfigName(configNameResponse: string): string {
-    console.log("response from backend", configNameResponse);
-    return configNameResponse;
+function responseToConfigName(configNameResponse: any): string {
+    if (configNameResponse.name == "") {
+        return null;
+    }
+    return configNameResponse.name;
+}
+
+function responseToConfigurations(configurationsResponse): Configuration {
+    return configurationsResponse;
 }
 
 export class ConfigAPI {
@@ -30,8 +36,8 @@ export class ConfigAPI {
         this.webAPIClient = webAPI;
     }
 
-    getAllConfigs(workspaceName: string): JobPromise<Configuration[]> {
-        return this.webAPIClient.call('get_all_configs', [workspaceName], null, configNamesToConfigurations);
+    getConfigNames(workspaceName: string): JobPromise<Configuration[]> {
+        return this.webAPIClient.call('get_config_names', [workspaceName], null, configNamesToConfigurations);
     }
 
     addNewConfig(workspaceName: string, configName: string) {
@@ -58,4 +64,7 @@ export class ConfigAPI {
         return this.webAPIClient.call('set_current_config', [workspaceName, configName], null, null);
     }
 
+    getConfigs(workspaceName: string, configName: string): JobPromise<Configuration> {
+        return this.webAPIClient.call('get_configs', [workspaceName, configName], null, responseToConfigurations);
+    }
 }

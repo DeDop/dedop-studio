@@ -4,12 +4,12 @@ import {ProcessConfigurations, State} from "../../state";
 import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
 import {ConfigurationEditor, CnfConfigurationEditor} from "../ConfigurationEditor";
 import "codemirror/mode/javascript/javascript";
-import {connect} from "react-redux";
+import {connect, Dispatch} from "react-redux";
 import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab} from "../../actions";
 import * as selector from "../../selectors";
 
 interface IConfigurationTabsProps {
-    dispatch?: (action: {type: string, payload: any}) => void;
+    dispatch?: Dispatch<State>;
     chd: ProcessConfigurations;
     cnf: ProcessConfigurations;
     cst: ProcessConfigurations;

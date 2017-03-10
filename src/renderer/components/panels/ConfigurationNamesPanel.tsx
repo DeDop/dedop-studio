@@ -9,7 +9,8 @@ import {
     copyConfig,
     renameConfig,
     setCurrentConfig,
-    getCurrentConfig
+    getCurrentConfig,
+    getConfigurations
 } from "../../actions";
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
@@ -106,6 +107,9 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleSelectConfig = (oldSelection: Array<React.Key>, newSelection: Array<React.Key>) => {
             this.props.dispatch(updateConfigSelection(newSelection.length > 0 ? newSelection[0] as string : null));
+            if (newSelection[0] || newSelection[0] == 0) {
+                this.props.dispatch(getConfigurations(newSelection[0] as string));
+            }
         };
 
         const handleCurrentConfig = (key: React.Key) => {

@@ -230,6 +230,31 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.UPDATE_CONFIG: {
+            let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
+            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configuration.name);
+            const updateConfig = Object.assign({}, workspace.configs[configIndex], {
+                lastUpdated: action.payload.currentTime,
+                chd: action.payload.configuration.chd,
+                cnf: action.payload.configuration.cnf,
+                cst: action.payload.configuration.cst,
+            });
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs.slice(0, configIndex),
+                    updateConfig,
+                    ...workspace.configs.slice(configIndex + 1)
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, workspaceIndex),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(workspaceIndex + 1)
+                ]
+            });
+        }
     }
     return state;
 };

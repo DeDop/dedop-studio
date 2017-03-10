@@ -441,7 +441,7 @@ export function getAllConfigs() {
         const workspaceName = getState().control.currentWorkspace;
 
         function call() {
-            return configAPI(getState()).getAllConfigs(workspaceName);
+            return configAPI(getState()).getConfigNames(workspaceName);
         }
 
         function action(configs: Configuration[]) {
@@ -596,6 +596,35 @@ export function setCurrentConfig(configName: string) {
         }
 
         callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
+    }
+}
+
+export const UPDATE_CONFIG = 'UPDATE_CONFIG';
+
+export function updateConfiguration(workspaceName: string, configuration: Configuration) {
+    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    return {
+        type: UPDATE_CONFIG, payload: {
+            workspaceName: workspaceName,
+            configuration: configuration,
+            currentTime: currentTime
+        }
+    };
+}
+
+export function getConfigurations(configName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).getConfigs(currentWorkspaceName, configName);
+        }
+
+        function action(configuration: Configuration) {
+            dispatch(updateConfiguration(currentWorkspaceName, configuration));
+        }
+
+        callAPI(dispatch, "Set configuration values of '".concat(configName).concat("'"), call, action);
     }
 }
 
