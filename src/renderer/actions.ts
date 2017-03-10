@@ -281,7 +281,7 @@ export function renameWorkspace(oldWorkspaceName: string, newWorkspaceName: stri
         function action(new_workspace: Workspace) {
             dispatch(updateWorkspaceNameList(oldWorkspaceName, newWorkspaceName));
             if (getState().control.currentWorkspace == oldWorkspaceName) {
-                dispatch(updateCurrentWorkspace(new_workspace))
+                dispatch(setCurrentWorkspace(new_workspace.name))
             }
         }
 

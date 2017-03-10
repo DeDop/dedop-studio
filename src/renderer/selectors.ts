@@ -10,7 +10,7 @@ export const getConfigurations = createSelector(
     getCurrentWorkspace,
     (getWorkspaces, getCurrentWorkspace): Configuration[] => {
         const workspaceIndex = getWorkspaces.findIndex((x) => x.name == getCurrentWorkspace);
-        return getWorkspaces[workspaceIndex].configs
+        return workspaceIndex >= 0 ? getWorkspaces[workspaceIndex].configs : [];
     }
 );
 
@@ -57,6 +57,6 @@ export const getAddedSourceFiles = createSelector(
     getCurrentWorkspace,
     (getWorkspaces, getCurrentWorkspace): SourceFile[] => {
         const workspaceIndex = getWorkspaces.findIndex((x) => x.name == getCurrentWorkspace);
-        return getWorkspaces[workspaceIndex].inputs
+        return workspaceIndex >= 0 ? getWorkspaces[workspaceIndex].inputs : [];
     }
 );
