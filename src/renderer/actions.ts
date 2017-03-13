@@ -577,6 +577,7 @@ export function getCurrentConfig() {
 
         function action(current_config: string) {
             dispatch(updateCurrentConfig(current_config));
+            dispatch(getConfigurations(current_config));
         }
 
         callAPI(dispatch, "Get current configuration name", call, action);

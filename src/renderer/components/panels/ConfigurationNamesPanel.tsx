@@ -38,7 +38,7 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
 class ConfigurationNamesPanel extends React.Component<any, any> {
     componentWillMount() {
         this.props.dispatch(getAllConfigs());
-        this.props.dispatch(getCurrentConfig())
+        this.props.dispatch(getCurrentConfig());
     }
 
     public state = {
