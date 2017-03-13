@@ -1,6 +1,6 @@
 import * as electron from "electron";
-import installDevToolsExtension from 'electron-devtools-installer';
-import * as devTools from 'electron-devtools-installer';
+import installDevToolsExtension from "electron-devtools-installer";
+import * as devTools from "electron-devtools-installer";
 import * as path from "path";
 import * as url from "url";
 import * as fs from "fs";
@@ -23,6 +23,7 @@ const DEDOP_STUDIO_PREFIX = 'dedop-studio';
 let _mainWindow;
 let _prefs;
 let _config;
+let _splashWindow;
 let installFinished = false;
 
 function getAppIconPath() {
@@ -290,12 +291,14 @@ export function init() {
     // Some APIs can only be used after this event occurs.
     app.on('ready', (): void => {
         console.log(DEDOP_STUDIO_PREFIX, 'Ready.');
-        if (!webAPIConfig.useMockService) {
-            console.log(DEDOP_STUDIO_PREFIX, 'Using DeDop WebAPI service...');
-            startUpWithWebapiService();
-        } else {
-            createMainWindow();
-        }
+        createSplashWindow(() => {
+            if (!webAPIConfig.useMockService) {
+                console.log(DEDOP_STUDIO_PREFIX, 'Using DeDop WebAPI service...');
+                startUpWithWebapiService();
+            } else {
+                createMainWindow();
+            }
+        })
     });
 
     // Quit when all windows are closed.
@@ -325,6 +328,27 @@ export function init() {
 
     // In this file you can include the rest of your app's specific main process
     // code. You can also put them in separate files and require them here.
+}
+
+function createSplashWindow(callback: () => void) {
+    _splashWindow = new BrowserWindow({
+        width: 256,
+        height: 276,
+        center: true,
+        useContentSize: true,
+        frame: false,
+        alwaysOnTop: true,
+        transparent: true,
+    });
+    _splashWindow.loadURL(url.format({
+        pathname: path.join(app.getAppPath(), 'splash.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    _splashWindow.on('closed', () => {
+        _splashWindow = null;
+    });
+    _splashWindow.webContents.on('did-finish-load', callback);
 }
 
 function createMainWindow() {
@@ -361,20 +385,24 @@ function createMainWindow() {
     }
 
     _mainWindow.webContents.on('did-finish-load', () => {
-        console.log(DEDOP_STUDIO_PREFIX, 'Main window UI loaded.');
+            if (_splashWindow) {
+                _splashWindow.close();
+            }
+            console.log(DEDOP_STUDIO_PREFIX, 'Main window UI loaded.');
 
-        const webAPIConfig = _config.data.webAPIConfig;
-        _mainWindow.webContents.send('apply-initial-state', {
-            session: _prefs.data,
-            appConfig: Object.assign({}, _config.data, {
-                appPath: app.getAppPath(),
-                webAPIConfig: Object.assign({}, webAPIConfig, {
-                    restUrl: getWebAPIRestUrl(webAPIConfig),
-                    webSocketUrl: getWebAPIWebSocketsUrl(webAPIConfig),
-                }),
-            })
-        });
-    });
+            const webAPIConfig = _config.data.webAPIConfig;
+            _mainWindow.webContents.send('apply-initial-state', {
+                session: _prefs.data,
+                appConfig: Object.assign({}, _config.data, {
+                    appPath: app.getAppPath(),
+                    webAPIConfig: Object.assign({}, webAPIConfig, {
+                        restUrl: getWebAPIRestUrl(webAPIConfig),
+                        webSocketUrl: getWebAPIWebSocketsUrl(webAPIConfig),
+                    }),
+                })
+            });
+        }
+    );
 
     // Emitted when the window is going to be closed.
     _mainWindow.on('close', function () {
