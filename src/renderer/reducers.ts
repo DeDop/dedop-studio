@@ -6,87 +6,6 @@ import {initialControlState, initialDataState} from "./initialStates";
 const dataReducer = (state: DataState = initialDataState, action) => {
 
     switch (action.type) {
-        case actions.ADD_CONFIG_NAME: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
-            const updatedWorkspace = Object.assign({}, workspace, {
-                configs: [
-                    ...workspace.configs,
-                    {
-                        name: action.payload.newConfigurationName,
-                        lastUpdated: action.payload.currentTime
-                    }
-                ]
-            });
-            return Object.assign({}, state, {
-                workspaces: [
-                    ...state.workspaces.slice(0, index),
-                    updatedWorkspace,
-                    ...state.workspaces.slice(index + 1)
-                ]
-            });
-        }
-        case actions.UPDATE_CONFIG_NAME: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
-            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
-            const updateConfig = Object.assign({}, workspace.configs[configIndex], {
-                name: action.payload.newConfigName,
-                lastUpdated: action.payload.currentTime
-            });
-            const updatedWorkspace = Object.assign({}, workspace, {
-                configs: [
-                    ...workspace.configs.slice(0, configIndex),
-                    updateConfig,
-                    ...workspace.configs.slice(configIndex + 1)
-                ]
-            });
-            return Object.assign({}, state, {
-                workspaces: [
-                    ...state.workspaces.slice(0, index),
-                    updatedWorkspace,
-                    ...state.workspaces.slice(index + 1)
-                ]
-            });
-        }
-        case actions.DELETE_CONFIG_NAME: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
-            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
-            const updatedWorkspace = Object.assign({}, workspace, {
-                configs: [
-                    ...workspace.configs.slice(0, configIndex),
-                    ...workspace.configs.slice(configIndex + 1)
-
-                ]
-            });
-            return Object.assign({}, state, {
-                workspaces: [
-                    ...state.workspaces.slice(0, index),
-                    updatedWorkspace,
-                    ...state.workspaces.slice(index + 1)
-                ]
-            });
-        }
-        case actions.SAVE_CONFIGURATION: {
-            const configName = action.payload.activeConfiguration;
-            const index = state.configurations.findIndex((x) => x.name === configName);
-            const oldConfiguration = state.configurations[index];
-            const newConfiguration = Object.assign({}, oldConfiguration, {
-                chd: action.payload.chd,
-                cnf: action.payload.cnf,
-                cst: action.payload.cst,
-                name: configName,
-                lastUpdated: action.payload.currentTime
-            });
-            return Object.assign({}, state, {
-                configurations: [
-                    ...state.configurations.slice(0, index),
-                    newConfiguration,
-                    ...state.configurations.slice(index + 1)
-                ]
-            });
-        }
         case actions.ADD_SOURCE_FILE: {
             const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
             const workspace = state.workspaces[index];
@@ -205,7 +124,7 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
-        case actions.UPDATE_CONFIGS: {
+        case actions.UPDATE_CONFIG_NAMES: {
             let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
             const workspace = state.workspaces[workspaceIndex];
             let newConfigs: Configuration[] = [];
@@ -227,6 +146,68 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                     ...state.workspaces.slice(0, workspaceIndex),
                     updatedWorkspace,
                     ...state.workspaces.slice(workspaceIndex + 1)
+                ]
+            });
+        }
+        case actions.ADD_CONFIG_NAME: {
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs,
+                    {
+                        name: action.payload.newConfigurationName,
+                        lastUpdated: action.payload.currentTime
+                    }
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1)
+                ]
+            });
+        }
+        case actions.UPDATE_CONFIG_NAME: {
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
+            const updateConfig = Object.assign({}, workspace.configs[configIndex], {
+                name: action.payload.newConfigName,
+                lastUpdated: action.payload.currentTime
+            });
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs.slice(0, configIndex),
+                    updateConfig,
+                    ...workspace.configs.slice(configIndex + 1)
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1)
+                ]
+            });
+        }
+        case actions.DELETE_CONFIG_NAME: {
+            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspace = state.workspaces[index];
+            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs.slice(0, configIndex),
+                    ...workspace.configs.slice(configIndex + 1)
+
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, index),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(index + 1)
                 ]
             });
         }

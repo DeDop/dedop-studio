@@ -1,6 +1,6 @@
 import {WebAPIClient} from "../WebAPIClient";
 import {JobPromise} from "../Job";
-import {Configuration} from "../../state";
+import {Configuration, ProcessConfigurations} from "../../state";
 import * as moment from "moment";
 
 function configNamesToConfigurations(configsNameResponse: any): Configuration[] {
@@ -26,7 +26,22 @@ function responseToConfigName(configNameResponse: any): string {
 }
 
 function responseToConfigurations(configurationsResponse): Configuration {
-    return configurationsResponse;
+    function sort(configuration: ProcessConfigurations) {
+        let sortedConfiguration: ProcessConfigurations = {};
+        Object.keys(configuration).sort().forEach((key) => {
+            sortedConfiguration[key] = configuration[key];
+        });
+        return sortedConfiguration;
+    }
+
+    const sortedChd: ProcessConfigurations = configurationsResponse.chd ? sort(configurationsResponse.chd) : {};
+    const sortedCnf: ProcessConfigurations = configurationsResponse.cnf ? sort(configurationsResponse.cnf) : {};
+    const sortedCst: ProcessConfigurations = configurationsResponse.cst ? sort(configurationsResponse.cst) : {};
+    return Object.assign({}, configurationsResponse, {
+        chd: sortedChd,
+        cnf: sortedCnf,
+        cst: sortedCst,
+    });
 }
 
 export class ConfigAPI {
@@ -66,5 +81,9 @@ export class ConfigAPI {
 
     getConfigs(workspaceName: string, configName: string): JobPromise<Configuration> {
         return this.webAPIClient.call('get_configs', [workspaceName, configName], null, responseToConfigurations);
+    }
+
+    saveConfigs(workspaceName: string, configName: string, configurations: {chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations}) {
+        return this.webAPIClient.call('save_configs', [workspaceName, configName, configurations], null, null);
     }
 }

@@ -22,7 +22,6 @@ export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
-export const SAVE_CONFIGURATION = 'SAVE_CONFIGURATION';
 export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
 export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
 export const SET_TEST_VAR = 'SET_TEST_VAR';
@@ -55,23 +54,6 @@ export function updateConfigurationTab(newTabId: number) {
 
 export function updateConfigEditorMode(codeEditorActive: boolean) {
     return {type: UPDATE_CONFIG_EDITOR_MODE, payload: codeEditorActive};
-}
-
-export function saveConfiguration(activeConfiguration: string,
-                                  chd: ProcessConfigurations,
-                                  cnf: ProcessConfigurations,
-                                  cst: ProcessConfigurations) {
-    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
-    return {
-        type: SAVE_CONFIGURATION,
-        payload: {
-            activeConfiguration: activeConfiguration,
-            chd: chd,
-            cnf: cnf,
-            cst: cst,
-            currentTime: currentTime
-        }
-    };
 }
 
 export function setProcessName(processName: string) {
@@ -425,11 +407,11 @@ function configAPI(state: State): ConfigAPI {
     return new ConfigAPI(state.data.appConfig.webAPIClient)
 }
 
-export const UPDATE_CONFIGS = "UPDATE_CONFIGS";
+export const UPDATE_CONFIG_NAMES = "UPDATE_CONFIG_NAMES";
 
 function updateConfigs(workspaceName: string, configs: Configuration[]) {
     return {
-        type: UPDATE_CONFIGS, payload: {
+        type: UPDATE_CONFIG_NAMES, payload: {
             workspaceName: workspaceName,
             configs: configs
         }
@@ -629,5 +611,33 @@ export function getConfigurations(configName: string) {
     }
 }
 
+export function saveConfiguration(currentConfiguration: string,
+                                  chd: ProcessConfigurations,
+                                  cnf: ProcessConfigurations,
+                                  cst: ProcessConfigurations) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspace;
+
+        function call() {
+            return configAPI(getState()).saveConfigs(currentWorkspaceName, currentConfiguration, {
+                chd: chd,
+                cnf: cnf,
+                cst: cst
+            });
+        }
+
+        function action() {
+            const updatedConfiguration = {
+                name: currentConfiguration,
+                chd: chd,
+                cnf: cnf,
+                cst: cst
+            };
+            dispatch(updateConfiguration(currentWorkspaceName, updatedConfiguration));
+        }
+
+        callAPI(dispatch, "Save configuration values.", call, action);
+    }
+}
 
 // ======================== Configuration related actions via WebAPI =============================================
