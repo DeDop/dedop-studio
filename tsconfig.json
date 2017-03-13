@@ -15,6 +15,9 @@
       "mocha",
       "chai"
     ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "experimentalDecorators": true
   }
 }
