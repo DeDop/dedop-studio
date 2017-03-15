@@ -197,17 +197,17 @@ class WebAPIClientImpl implements WebAPIClient {
         try {
             message = JSON.parse(messageText);
         } catch (err) {
-            this.warnInvalidJsonRcpMessage('Message is no valid JSON', messageText);
+            this.warnInvalidJsonRpcMessage('Message is no valid JSON', messageText);
             return;
         }
-        if (message.jsonrcp !== '2.0' || typeof message.id !== 'number') {
-            this.warnInvalidJsonRcpMessage('Message is not JSON-RCP 2.0 compliant', messageText);
+        if (message.jsonrpc !== '2.0' || typeof message.id !== 'number') {
+            this.warnInvalidJsonRpcMessage('Message is not JSON-RCP 2.0 compliant', messageText);
             return;
         }
 
         const job = this.activeJobs[message.id];
         if (!job) {
-            this.warnInvalidJsonRcpMessage(`Method with "id"=${message.id} has no associated job`, messageText);
+            this.warnInvalidJsonRpcMessage(`Method with "id"=${message.id} has no associated job`, messageText);
             return;
         }
 
@@ -221,14 +221,14 @@ class WebAPIClientImpl implements WebAPIClient {
             job.notifyFailed(message.error);
             delete this.activeJobs[message.id];
         } else {
-            this.warnInvalidJsonRcpMessage(`Method is neither a "response", "progress", nor "error"`, messageText);
+            this.warnInvalidJsonRpcMessage(`Method is neither a "response", "progress", nor "error"`, messageText);
             return;
         }
     }
 
-    private warnInvalidJsonRcpMessage(detailsMessage: string, jsonRcpMessage: string) {
+    private warnInvalidJsonRpcMessage(detailsMessage: string, jsonRpcMessage: string) {
         if (this.onWarning) {
-            const message = `Received invalid JSON-RCP message from WebAPI. ${detailsMessage}. Ignoring it.\n--------------------\n${jsonRcpMessage}\n--------------------`;
+            const message = `Received invalid JSON-RCP message from WebAPI. ${detailsMessage}. Ignoring it.\n--------------------\n${jsonRpcMessage}\n--------------------`;
             this.onWarning({type: 'warning', message});
         }
     }
