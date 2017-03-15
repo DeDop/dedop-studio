@@ -457,6 +457,7 @@ export function addNewConfig(configName: string) {
 
         function action() {
             dispatch(addConfigName(currentWorkspaceName, configName));
+            dispatch(getConfigurations(configName));
         }
 
         callAPI(dispatch, "Add new configuration ".concat(configName).concat(" to workspace ").concat(currentWorkspaceName), call, action);
@@ -500,6 +501,7 @@ export function copyConfig(configName: string, newConfigName: string) {
 
         function action() {
             dispatch(addConfigName(currentWorkspaceName, newConfigName));
+            dispatch(getConfigurations(newConfigName));
         }
 
         callAPI(dispatch, "Copy configuration '".concat(configName).concat("' to '").concat(newConfigName).concat("'"), call, action);
