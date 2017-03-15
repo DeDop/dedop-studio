@@ -104,9 +104,6 @@
     "dmg": {
       "title": "${name}-${version}",
       "icon": "app/resources/darwin/dedop.icns"
-    },
-    "extraFiles": [
-      "app/dedop-core/*/**"
-    ]
+    }
   }
 }

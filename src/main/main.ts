@@ -8,15 +8,27 @@ import * as childProcess from "child_process";
 import {Configuration} from "./configuration";
 import {assignConditionally} from "../common/assign";
 import {request} from "./request";
+import {error} from "util";
 
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
+const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
+
 const PREFS_OPTIONS = ['--prefs', '-p'];
 const CONFIG_OPTIONS = ['--config', '-c'];
 const DEDOP_STUDIO_PREFIX = 'dedop-studio';
+
+const WEBAPI_INSTALLER_CANCELLED = 1;
+const WEBAPI_INSTALLER_ERROR = 2;
+const WEBAPI_INSTALLER_MISSING = 3;
+const WEBAPI_INSTALLER_BAD_EXIT = 4;
+const WEBAPI_ERROR = 5;
+const WEBAPI_BAD_EXIT = 6;
+const WEBAPI_TIMEOUT = 7;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -24,7 +36,6 @@ let _mainWindow;
 let _prefs;
 let _config;
 let _splashWindow;
-let installFinished = false;
 
 function getAppIconPath() {
     let icon_file = "linux/16x16.png";
@@ -40,23 +51,6 @@ function getAppDataDir() {
     return path.join(app.getPath('home'), '.dedop');
 }
 
-function getConfigFile() {
-    let file = getOptionArg(['--config', '-c']);
-    if (file) {
-        return file;
-    }
-    file = path.resolve('dedop-config.js');
-    return fs.existsSync(file) ? file : null;
-}
-
-function getPrefsFile() {
-    let file = getOptionArg(['--prefs', '-p']);
-    if (file) {
-        return file;
-    }
-    return path.join(getAppDataDir(), 'dedop-prefs.json');
-}
-
 function getOptionArg(options: string[]) {
     let args: Array<string> = process.argv.slice(1);
     for (let i = 0; i < args.length; i++) {
@@ -68,17 +62,20 @@ function getOptionArg(options: string[]) {
     return null;
 }
 
-function storePrefs() {
-    let stats = fs.statSync(getAppDataDir());
-    if (!stats.isDirectory()) {
-        fs.mkdirSync(getAppDataDir());
+function storeConfiguration(config: Configuration, options: string[], defaultConfigFile: string, configType: string) {
+    let configFile = getOptionArg(options);
+    if (!configFile) {
+        configFile = defaultConfigFile;
+        let dir = path.dirname(configFile);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
     }
-    let prefsFile = getPrefsFile();
-    _prefs.store(prefsFile, (err) => {
+    config.store(configFile, (err) => {
         if (err) {
-            console.log('failed to store preferences to ', prefsFile, err);
+            console.error(DEDOP_STUDIO_PREFIX, `${configType} could not be stored in "${configFile}"`, err);
         } else {
-            console.log('preferences stored to ', prefsFile);
+            console.log(DEDOP_STUDIO_PREFIX, `${configType} successfully stored in "${configFile}"`);
         }
     });
 }
@@ -111,6 +108,10 @@ function getDefaultUserPrefsFile() {
 
 function loadAppConfig(): Configuration {
     return loadConfiguration(CONFIG_OPTIONS, path.resolve('dedop-config.js'), 'App configuration');
+}
+
+function storeUserPrefs(prefs: Configuration) {
+    storeConfiguration(prefs, PREFS_OPTIONS, getDefaultUserPrefsFile(), 'User preferences')
 }
 
 function loadUserPrefs(): Configuration {
@@ -146,51 +147,10 @@ export function init() {
     _config = loadAppConfig();
     _prefs = loadUserPrefs();
 
-    // ==================== dedop-core installation (deactivated for now) =======================================
-    // let installerPath;
-    // let installerFile;
-    // let commandArgs;
-    // let initializeDedopCommand;
-    //
-    // const dedopHome = path.join(app.getAppPath(), 'dedop-core', 'installed');
-    //
-    // if (process.platform === "darwin") {
-    //     console.log("configure dedop-core installation for MacOS");
-    // } else if (process.platform === "linux") {
-    //     console.log("configure dedop-core installation for Linux");
-    // } else if (process.platform === "win32") {
-    //     installerPath = path.join(app.getAppPath(), 'dedop-core', 'win');
-    //
-    //     let files = fs.readdirSync(installerPath);
-    //     for (let i = 0; i < files.length; i++) {
-    //         if (files[i].endsWith('.exe')) {
-    //             installerFile = files[i];
-    //         }
-    //     }
-    //     commandArgs = ' /AddToPath=0 /RegisterPython=0 /S /D=' + dedopHome + '';
-    //     initializeDedopCommand = 'Scripts\\activate.bat && conda env list && dedop -h';
-    // }
-    //
-    // const installerFullPath = path.join(installerPath, installerFile);
-
-    // // refer to http://conda.pydata.org/docs/help/silent.html for silent mode installation
-    // childProcess.exec(installerFullPath + commandArgs, function (code, stdout, stderr) {
-    //     if (!stderr) {
-    //         installFinished = true;
-    //         console.log("dedop-core installation finished...");
-    //         console.log(childProcess.execSync(initializeDedopCommand, {cwd: dedopHome}).toString());
-    //     } else {
-    //         console.log("dedop-core installation was not successful...", stderr, stdout);
-    //     }
-    // });
-    // console.log(installFinished);
-
-    // ==================== dedop-core installation (deactivated for now) =======================================
-
     let webAPIConfig = _config.get('webAPIConfig', {});
     webAPIConfig = assignConditionally(webAPIConfig, {
         command: path.join(app.getAppPath(), process.platform === 'win32' ? 'python/Scripts/dedop-webapi.exe' : 'python/bin/dedop-webapi'),
-        servicePort: 9090,
+        servicePort: 2999,
         serviceAddress: '',
         serviceFile: 'dedop-webapi.json',
         // Refer to https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
@@ -227,8 +187,7 @@ export function init() {
                 electron.dialog.showErrorBox('Internal Error', message);
             }
             webAPIError = err;
-            // exit immediately
-            app.exit(1);
+            app.exit(WEBAPI_ERROR); // exit immediately
         });
         webAPIProcess.on('close', (code: number) => {
             let message = `DeDop WebAPI service process exited with code ${code}.`;
@@ -238,8 +197,7 @@ export function init() {
                     electron.dialog.showErrorBox('Internal Error', message);
                 }
                 webAPIError = new Error(message);
-                // exit immediately
-                app.exit(2);
+                app.exit(WEBAPI_BAD_EXIT); // exit immediately
             }
         });
         return webAPIProcess;
@@ -252,6 +210,7 @@ export function init() {
         let msSpend = 0; // ms
         let webAPIRestUrl = getWebAPIRestUrl(_config.data.webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `Waiting for response from ${webAPIRestUrl}`);
+        showSplashMessage('Starting back-end...');
         request(webAPIRestUrl, msServiceAccessTimeout)
             .then((response: string) => {
                 console.log(DEDOP_STUDIO_PREFIX, `Response: ${response}`);
@@ -269,7 +228,7 @@ export function init() {
                         electron.dialog.showErrorBox("Internal Error", message);
                     }
                     webAPIError = new Error(message);
-                    app.exit(2);
+                    app.exit(WEBAPI_TIMEOUT);
                 } else {
                     setTimeout(startUpWithWebapiService, msDelay);
                     msSpend += msDelay;
@@ -290,14 +249,18 @@ export function init() {
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
     app.on('ready', (): void => {
-        console.log(DEDOP_STUDIO_PREFIX, 'Ready.');
-        createSplashWindow(() => {
-            if (!webAPIConfig.useMockService) {
-                console.log(DEDOP_STUDIO_PREFIX, 'Using DeDop WebAPI service...');
-                startUpWithWebapiService();
-            } else {
-                createMainWindow();
-            }
+        checkWebapiServiceExecutable((installerPath: string) => {
+            createSplashWindow(() => {
+                installWebapiServiceExecutable(installerPath, () => {
+                    console.log(DEDOP_STUDIO_PREFIX, 'Ready.');
+                    if (!webAPIConfig.useMockService) {
+                        console.log(DEDOP_STUDIO_PREFIX, 'Using DeDop WebAPI service...');
+                        startUpWithWebapiService();
+                    } else {
+                        createMainWindow();
+                    }
+                })
+            })
         })
     });
 
@@ -412,11 +375,161 @@ function createMainWindow() {
 
     // Emitted when the window is closed.
     _mainWindow.on('closed', function () {
-        storePrefs();
+        storeUserPrefs(_prefs);
+        _prefs = null;
+        _config = null;
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         _mainWindow = null;
     });
+
+    ipcMain.on('show-open-dialog', (event, openDialogOptions, synchronous?: boolean) => {
+        dialog.showOpenDialog(_mainWindow, openDialogOptions, (filePaths: Array<string>) => {
+            // console.log('show-open-dialog: filePaths =', filePaths);
+            if (synchronous) {
+                event.returnValue = filePaths && filePaths.length ? filePaths : null;
+            } else {
+                event.sender.send('show-open-dialog-reply', filePaths);
+            }
+        });
+    });
+
+    ipcMain.on('show-save-dialog', (event, saveDialogOptions, synchronous?: boolean) => {
+        dialog.showSaveDialog(_mainWindow, saveDialogOptions, (filePath: string) => {
+            // console.log('show-save-dialog: filePath =', filePath);
+            if (synchronous) {
+                event.returnValue = filePath ? filePath : null;
+            } else {
+                event.sender.send('show-save-dialog-reply', filePath);
+            }
+        });
+    });
+
+    ipcMain.on('show-message-box', (event, messageBoxOptions, synchronous?: boolean) => {
+        dialog.showMessageBox(_mainWindow, messageBoxOptions, (index: number) => {
+            // console.log('show-message-box: index =', index);
+            if (synchronous) {
+                event.returnValue = index;
+            } else {
+                event.sender.send('show-message-box-reply', index);
+            }
+        });
+    });
+
+    ipcMain.on('set-preferences', (event, preferences) => {
+        _prefs.setAll(preferences);
+        // let error;
+        // try {
+        //     storeUserPrefs(_prefs);
+        //     error = null;
+        // } catch (e) {
+        //     error = e;
+        // }
+        event.sender.send('set-preferences-reply', error);
+    });
 }
 
+function showSplashMessage(message: string) {
+    console.log(DEDOP_STUDIO_PREFIX, message);
+    if (_splashWindow && _splashWindow.isVisible()) {
+        _splashWindow.webContents.send('update-splash-message', message);
+    } else {
+        console.warn(DEDOP_STUDIO_PREFIX, 'showSplashMessage: splash not visible', message);
+    }
+}
+
+function checkWebapiServiceExecutable(callback: (installerPath?: string) => void): boolean {
+    const webAPIConfig = _config.data.webAPIConfig;
+    if (fs.existsSync(webAPIConfig.command)) {
+        callback();
+        return true;
+    }
+
+    const fileNames = fs.readdirSync(path.join(app.getAppPath()));
+    // console.log('fileNames =', fileNames);
+    const isWin = process.platform === 'win32';
+    const finder = n => n.startsWith('DeDop-') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
+    const installerExeName = fileNames.find(finder);
+    if (installerExeName) {
+        const installerPath = path.join(app.getAppPath(), installerExeName);
+        const response = electron.dialog.showMessageBox({
+            type: 'info',
+            title: 'Dedop - Information',
+            buttons: ['Cancel', 'OK'],
+            cancelId: 0,
+            message: 'About to install missing Dedop back-end.',
+            detail: 'It seems that Dedop is run for the first time from this installation.\n' +
+            'Dedop will now install a local (Python) back-end which may take\n' +
+            'some minutes. This is a one-time job and only applies to this\n' +
+            'Dedop installation, no other computer settings will be changed.',
+        });
+        if (response == 0) {
+            electron.app.exit(WEBAPI_INSTALLER_CANCELLED);
+            return false;
+        } else {
+            callback(installerPath);
+            return true;
+        }
+    } else {
+        electron.dialog.showMessageBox({
+            type: 'error',
+            title: 'Dedop - Fatal Error',
+            buttons: ['Close'],
+            message: 'Can find neither the required Dedop backend service\n"' +
+            webAPIConfig.command + '"\n' +
+            'nor a bundled Dedop Python installer. Application will exit now.',
+        });
+        electron.app.exit(WEBAPI_INSTALLER_MISSING);
+        return false;
+    }
+}
+
+function installWebapiServiceExecutable(installerCommand: string, callback: () => void) {
+
+    if (!installerCommand) {
+        callback();
+        return;
+    }
+
+    const isWin = process.platform === 'win32';
+    const installDir = path.join(app.getAppPath(), 'python');
+    const installerArgs = isWin
+        ? ['/S', '/InstallationType=JustMe', '/AddToPath=0', '/RegisterPython=0', `/D=${installDir}`]
+        : ['-b', '-f', '-p', installDir];
+
+    console.log(DEDOP_STUDIO_PREFIX, `running WebAPI service installer "${installerCommand}" with arguments ${installerArgs}`);
+    showSplashMessage('Running back-end installer, please wait...');
+    const installerProcess = childProcess.spawn(installerCommand, installerArgs);
+
+    installerProcess.stdout.on('data', (data: any) => {
+        console.log(DEDOP_STUDIO_PREFIX, `${data}`);
+    });
+    installerProcess.stderr.on('data', (data: any) => {
+        console.error(DEDOP_STUDIO_PREFIX, `${data}`);
+    });
+    installerProcess.on('error', (err: Error) => {
+        console.log(DEDOP_STUDIO_PREFIX, 'Dedop WebAPI service installation failed', err);
+        electron.dialog.showMessageBox({
+            type: 'error',
+            title: 'Dedop - Fatal Error',
+            message: 'Dedop back-end installation failed.',
+            detail: `${err}`
+        });
+        app.exit(WEBAPI_INSTALLER_ERROR); // exit immediately
+    });
+    installerProcess.on('close', (code: number) => {
+        console.log(DEDOP_STUDIO_PREFIX, `Dedop WebAPI service installation closed with exit code ${code}`);
+        if (code == 0) {
+            callback();
+            return;
+        }
+        electron.dialog.showMessageBox({
+            type: 'error',
+            title: 'Dedop - Fatal Error',
+            message: `Dedop back-end installation failed with exit code ${code}.`,
+        });
+        app.exit(WEBAPI_INSTALLER_BAD_EXIT); // exit immediately
+    });
+    return installerProcess;
+}
