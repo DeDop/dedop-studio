@@ -32,8 +32,8 @@ export const APPLY_INITIAL_SOURCE_FILE_DIRECTORY = 'APPLY_INITIAL_SOURCE_FILE_DI
 
 const CANCELLED_CODE = 999;
 
-export function selectSourceFile(fileIndex: number) {
-    return {type: SELECT_SOURCE_FILE, payload: fileIndex};
+export function selectSourceFile(fileName: string) {
+    return {type: SELECT_SOURCE_FILE, payload: fileName};
 }
 
 export function selectSourceFileDirectory(fileDirectory: string) {

@@ -46,7 +46,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
         const renderFileList = (itemIndex: number) => {
             const sourceFile = this.props.l1aInputFiles[itemIndex];
             return (
-                <SourceFileListSingle sourceFile={sourceFile} itemIndex={itemIndex}/>
+                <SourceFileListSingle sourceFile={sourceFile}/>
             )
         };
 
@@ -57,9 +57,10 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
         };
 
         const handleSelectSourceFile = (oldSelection: Array<React.Key>, newSelection: Array<React.Key>) => {
-            this.props.dispatch(selectSourceFile(newSelection.length > 0 ? newSelection[0] as number : null));
+            this.props.dispatch(selectSourceFile(newSelection.length > 0 ? newSelection[0] as string : null));
             if (newSelection[0] || newSelection[0] == 0) {
-                this.props.dispatch(getGlobalAttributes(path.join(this.props.l1aInputFiles[newSelection[0]].path)))
+                const sourceFileIndex = this.props.l1aInputFiles.findIndex((x) => x.name == newSelection[0]);
+                this.props.dispatch(getGlobalAttributes(path.join(this.props.l1aInputFiles[sourceFileIndex].path)));
             } else {
                 this.props.dispatch(updateCurrentGlobalAttributes([]));
             }
@@ -100,6 +101,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                         />
                     </div>
                     <ListBox numItems={this.props.l1aInputFiles.length}
+                             getItemKey={index => this.props.l1aInputFiles[index].name}
                              renderItem={renderFileList}
                              onSelection={handleSelectSourceFile}
                              selection={this.props.selectedSourceFile ? this.props.selectedSourceFile : []}/>

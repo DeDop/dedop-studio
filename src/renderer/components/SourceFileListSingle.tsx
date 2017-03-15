@@ -2,23 +2,22 @@ import * as React from "react";
 import {SourceFile, State} from "../state";
 import {ContextMenuTarget, Menu, MenuItem, Tooltip, Position} from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
-import {selectSourceFile, addInputFiles, removeInputFiles} from "../actions";
+import {selectSourceFile, addInputFiles, removeInputFiles, getGlobalAttributes} from "../actions";
 import * as selector from "../selectors";
+import * as path from "path";
 
 interface ISourceFileListSingleProps {
     dispatch?: Dispatch<State>;
     addedSourceFiles: SourceFile[];
     sourceFile: SourceFile;
-    itemIndex: number;
     currentWorkspace: string;
     currentSourceFileDirectory: string;
 }
 
-function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile, itemIndex: number}): ISourceFileListSingleProps {
+function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile}): ISourceFileListSingleProps {
     return {
         addedSourceFiles: selector.getAddedSourceFiles(state),
         sourceFile: ownProps.sourceFile,
-        itemIndex: ownProps.itemIndex,
         currentWorkspace: state.control.currentWorkspace,
         currentSourceFileDirectory: state.control.currentSourceFileDirectory
     };
@@ -32,7 +31,8 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
     }
 
     public renderContextMenu() {
-        this.props.dispatch(selectSourceFile(this.props.itemIndex));
+        this.props.dispatch(selectSourceFile(this.props.sourceFile.name));
+        this.props.dispatch(getGlobalAttributes(path.join(this.props.sourceFile.path)));
         const handleAdd = () => {
             this.props.dispatch(addInputFiles(this.props.currentWorkspace,
                 [this.props.currentSourceFileDirectory.concat("/").concat(this.props.sourceFile.name)],

@@ -2,16 +2,20 @@ import * as React from "react";
 import {Radio} from "@blueprintjs/core";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {SourceFile, State} from "../../state";
-import {connect} from "react-redux";
+import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
+import {selectSourceFile} from "../../actions";
 
 interface IL1AInputPanelProps {
+    dispatch?: Dispatch<State>;
     sourceFiles: SourceFile[];
+    currentSourceFile: string;
 }
 
 function mapStateToProps(state: State): IL1AInputPanelProps {
     return {
-        sourceFiles: selector.getAddedSourceFiles(state)
+        sourceFiles: selector.getAddedSourceFiles(state),
+        currentSourceFile: state.control.selectedSourceFile
     }
 }
 
@@ -28,10 +32,18 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
         };
 
         let options = [];
-        options.push(<option key="informationText" selected disabled>Select a single L1A file...</option>);
-        for (let i in this.props.sourceFiles) {
-            options.push(<option key={i}>{this.props.sourceFiles[i].name}</option>);
+        options.push(<option key="informationText" disabled>Select a single L1A file...</option>);
+        for (let i of this.props.sourceFiles) {
+            if (this.props.currentSourceFile == i.name) {
+                options.push(<option selected key={i.name}>{i.name}</option>);
+            } else {
+                options.push(<option key={i.name}>{i.name}</option>);
+            }
         }
+
+        const handleOnChangeSourceFile = (event: React.FormEvent<HTMLSelectElement>) => {
+            this.props.dispatch(selectSourceFile(event.currentTarget.value));
+        };
 
         return (
             <div className="dedop-collapse vertical-third">
@@ -46,7 +58,8 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
                             </td>
                             <td width='80%'>
                                 <div className="pt-select pt-fill">
-                                    <select disabled={this.state.sourceType == "directory"}>
+                                    <select disabled={this.state.sourceType == "directory"}
+                                            onChange={handleOnChangeSourceFile}>
                                         {options}
                                     </select>
                                 </div>
