@@ -311,6 +311,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 globalAttributes: action.payload
             })
         }
+        case actions.UPDATE_SELECTED_SOURCE_TYPE: {
+            return Object.assign({}, state, {
+                selectedSourceType: action.payload
+            })
+        }
     }
     return state;
 };

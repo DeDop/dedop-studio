@@ -4,31 +4,41 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {SourceFile, State} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
-import {selectSourceFile} from "../../actions";
+import {
+    selectSourceFile,
+    updateSourceFileList,
+    selectSourceFileDirectory,
+    updateSelectedSourceType
+} from "../../actions";
+import {remote} from "electron";
+import {getSourceFiles} from "../../../common/sourceFileUtils";
+import {GeneralAlert} from "../Alerts";
 
 interface IL1AInputPanelProps {
     dispatch?: Dispatch<State>;
     sourceFiles: SourceFile[];
     currentSourceFile: string;
+    currentSourceFileDirectory: string;
+    selectedSourceType: string;
 }
 
 function mapStateToProps(state: State): IL1AInputPanelProps {
     return {
         sourceFiles: selector.getAddedSourceFiles(state),
-        currentSourceFile: state.control.selectedSourceFile
+        currentSourceFile: state.control.selectedSourceFile,
+        currentSourceFileDirectory: state.control.currentSourceFileDirectory,
+        selectedSourceType: state.control.selectedSourceType
     }
 }
 
 class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
     public state = {
-        sourceType: "single"
+        isNoFilesAvailableAlertOpen: false,
     };
 
     render() {
         const handleChange = () => {
-            this.setState({
-                sourceType: this.state.sourceType === "single" ? "directory" : "single"
-            })
+            this.props.dispatch(updateSelectedSourceType(this.props.selectedSourceType == "single" ? "directory" : "single"))
         };
 
         let options = [];
@@ -45,6 +55,29 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
             this.props.dispatch(selectSourceFile(event.currentTarget.value));
         };
 
+        const handleCloseAlert = () => {
+            this.setState({
+                isNoFilesAvailableAlertOpen: false
+            })
+        };
+
+        const handleSelectDirectory = () => {
+            const sourceFileDirectory = remote.dialog.showOpenDialog({
+                    properties: ['openDirectory'],
+                    defaultPath: this.props.currentSourceFileDirectory
+                }
+            );
+            let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory[0]);
+            if (validSourceFiles.length > 0) {
+                this.props.dispatch(selectSourceFileDirectory(sourceFileDirectory[0]));
+                this.props.dispatch(updateSourceFileList(validSourceFiles));
+            } else {
+                this.setState({
+                    isNoFilesAvailableAlertOpen: true
+                })
+            }
+        };
+
         return (
             <div className="dedop-collapse vertical-third">
                 <OrdinaryPanelHeader title="L1A Input" icon="pt-icon-database"/>
@@ -53,12 +86,13 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
                         <tbody>
                         <tr>
                             <td width='20%'>
-                                <Radio label="Single file" value="single" checked={this.state.sourceType == "single"}
+                                <Radio label="Single file" value="single"
+                                       checked={this.props.selectedSourceType == "single"}
                                        onChange={handleChange}/>
                             </td>
                             <td width='80%'>
                                 <div className="pt-select pt-fill">
-                                    <select disabled={this.state.sourceType == "directory"}
+                                    <select disabled={this.props.selectedSourceType == "directory"}
                                             onChange={handleOnChangeSourceFile}>
                                         {options}
                                     </select>
@@ -68,20 +102,33 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
                         <tr>
                             <td>
                                 <Radio label="Directory" value="directory"
-                                       checked={this.state.sourceType == "directory"}
+                                       checked={this.props.selectedSourceType == "directory"}
                                        onChange={handleChange}/>
                             </td>
                             <td>
-                                <label className="pt-file-upload pt-fill l1a-input-file-upload">
-                                    <input type="file" disabled={this.state.sourceType == "single"}/>
-                                    <span
-                                        className="pt-file-upload-input">Choose directory...</span>
-                                </label>
+                                <div className="pt-input-group">
+                                    <input type="text"
+                                           className="pt-input"
+                                           style={{textAlign: 'left'}}
+                                           disabled={this.props.selectedSourceType == "single"}
+                                           readOnly={true}
+                                           value={this.props.currentSourceFileDirectory}
+                                           onClick={handleSelectDirectory}/>
+                                    <button className="pt-button pt-minimal pt-icon-folder-open"
+                                            onClick={handleSelectDirectory}
+                                            disabled={this.props.selectedSourceType == "single"}
+                                    />
+                                </div>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+                <GeneralAlert isAlertOpen={this.state.isNoFilesAvailableAlertOpen}
+                              onConfirm={handleCloseAlert}
+                              message="There are no NetCDF file(s) available in this directory. Please select another directory."
+                              iconName="pt-icon-warning-sign"
+                />
             </div>
         )
     }

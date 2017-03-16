@@ -1,12 +1,4 @@
-import {
-    ProcessingItem,
-    ProcessingStatus,
-    GlobalAttribute,
-    ProcessConfigurations,
-    Configuration,
-    ControlState,
-    DataState
-} from "./state";
+import {ProcessingItem, ProcessingStatus, ProcessConfigurations, Configuration, ControlState, DataState} from "./state";
 
 export const processingItems: ProcessingItem[] = [
     {
@@ -555,6 +547,7 @@ export const initialControlState: ControlState = {
     currentMainTabPanel: 0,
     codeEditorActive: false,
     currentSourceFileDirectory: "",
+    selectedSourceType: "single",
     processName: ""
 };
 

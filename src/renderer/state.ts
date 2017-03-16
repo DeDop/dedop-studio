@@ -34,6 +34,7 @@ export interface ControlState {
     currentWorkspace?: string;
     selectedConfiguration?: string;
     selectedSourceFile?: string;
+    selectedSourceType?: string;
     codeEditorActive?: boolean;
     processName?: string;
 }

@@ -22,6 +22,7 @@ export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
+export const UPDATE_SELECTED_SOURCE_TYPE = 'UPDATE_SELECTED_SOURCE_TYPE';
 export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
 export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
 export const SET_TEST_VAR = 'SET_TEST_VAR';
@@ -54,6 +55,10 @@ export function updateConfigurationTab(newTabId: number) {
 
 export function updateConfigEditorMode(codeEditorActive: boolean) {
     return {type: UPDATE_CONFIG_EDITOR_MODE, payload: codeEditorActive};
+}
+
+export function updateSelectedSourceType(sourceType: string) {
+    return {type: UPDATE_SELECTED_SOURCE_TYPE, payload: sourceType};
 }
 
 export function setProcessName(processName: string) {
