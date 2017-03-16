@@ -242,7 +242,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(selectSourceFile(null));
             dispatch(updateSourceFileList(validSourceFiles));
             dispatch(getAllConfigs());
-            dispatch(setCurrentConfig(""))
+            dispatch(getCurrentConfig())
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
@@ -573,6 +573,8 @@ export function getCurrentConfig() {
             dispatch(updateCurrentConfig(current_config));
             if (current_config) {
                 dispatch(getConfigurations(current_config));
+                const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, current_config);
+                dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
             }
         }
 
@@ -590,9 +592,8 @@ export function setCurrentConfig(configName: string) {
 
         function action() {
             dispatch(updateCurrentConfig(configName));
-            const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
-            const currentOutputDirectory = path.join(getState().data.workspaces[currentWorkspaceIndex].directory, "configs", configName, "outputs");
-            dispatch(updateCurrentOutputDirectory(currentOutputDirectory))
+            const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, configName);
+            dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
         }
 
         callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
@@ -662,4 +663,9 @@ export function saveConfiguration(currentConfiguration: string,
 
 function getCurrentWorkspaceIndex(state: State, workspaceName: string) {
     return state.data.workspaces.findIndex((x) => x.name === workspaceName);
+}
+
+function constructCurrentOutputDirectory(getState, currentWorkspaceName: string, configName: string) {
+    const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
+    return path.join(getState().data.workspaces[currentWorkspaceIndex].directory, "configs", configName, "outputs");
 }
