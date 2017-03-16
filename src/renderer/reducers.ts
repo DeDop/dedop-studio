@@ -316,6 +316,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 selectedSourceType: action.payload
             })
         }
+        case actions.UPDATE_CURRENT_OUTPUT_DIRECTORY: {
+            return Object.assign({}, state, {
+                currentOutputDirectory: action.payload
+            })
+        }
     }
     return state;
 };

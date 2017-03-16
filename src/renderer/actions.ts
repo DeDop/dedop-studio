@@ -23,6 +23,7 @@ export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const UPDATE_SELECTED_SOURCE_TYPE = 'UPDATE_SELECTED_SOURCE_TYPE';
+export const UPDATE_CURRENT_OUTPUT_DIRECTORY = 'UPDATE_CURRENT_OUTPUT_DIRECTORY';
 export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
 export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
 export const SET_TEST_VAR = 'SET_TEST_VAR';
@@ -59,6 +60,10 @@ export function updateConfigEditorMode(codeEditorActive: boolean) {
 
 export function updateSelectedSourceType(sourceType: string) {
     return {type: UPDATE_SELECTED_SOURCE_TYPE, payload: sourceType};
+}
+
+export function updateCurrentOutputDirectory(outputDirectory: string) {
+    return {type: UPDATE_CURRENT_OUTPUT_DIRECTORY, payload: outputDirectory};
 }
 
 export function setProcessName(processName: string) {
@@ -374,7 +379,7 @@ export function removeInputFiles(workspaceName: string, sourceFileNames: string[
             for (let sourceFileName of sourceFileNames) {
                 dispatch(removeSourceFile(workspaceName, sourceFileName));
             }
-            const currentWorkspaceIndex = getState().data.workspaces.findIndex((x) => x.name === workspaceName);
+            const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), workspaceName);
             dispatch(updateSourceFileList(getState().data.workspaces[currentWorkspaceIndex].inputs));
         }
 
@@ -566,7 +571,9 @@ export function getCurrentConfig() {
 
         function action(current_config: string) {
             dispatch(updateCurrentConfig(current_config));
-            dispatch(getConfigurations(current_config));
+            if (current_config) {
+                dispatch(getConfigurations(current_config));
+            }
         }
 
         callAPI(dispatch, "Get current configuration name", call, action);
@@ -583,6 +590,9 @@ export function setCurrentConfig(configName: string) {
 
         function action() {
             dispatch(updateCurrentConfig(configName));
+            const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
+            const currentOutputDirectory = path.join(getState().data.workspaces[currentWorkspaceIndex].directory, "configs", configName, "outputs");
+            dispatch(updateCurrentOutputDirectory(currentOutputDirectory))
         }
 
         callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
@@ -648,3 +658,8 @@ export function saveConfiguration(currentConfiguration: string,
 }
 
 // ======================== Configuration related actions via WebAPI =============================================
+
+
+function getCurrentWorkspaceIndex(state: State, workspaceName: string) {
+    return state.data.workspaces.findIndex((x) => x.name === workspaceName);
+}

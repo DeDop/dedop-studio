@@ -30,6 +30,7 @@ export interface ControlState {
     currentMainTabPanel?: number;
     currentConfigurationTabPanel?: number;
     currentSourceFileDirectory?: string;
+    currentOutputDirectory?: string;
     currentConfiguration?: string;
     currentWorkspace?: string;
     selectedConfiguration?: string;
