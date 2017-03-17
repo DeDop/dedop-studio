@@ -3,6 +3,7 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {remote} from "electron";
 import {Dispatch, connect} from "react-redux";
 import {State} from "../../state";
+import {updateCurrentOutputDirectory} from "../../actions";
 
 interface IL1BL1BSOutputPanelProps {
     dispatch?: Dispatch<State>;
@@ -23,6 +24,7 @@ class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps,any> {
                     defaultPath: this.props.currentOutputDirectory
                 }
             );
+            this.props.dispatch(updateCurrentOutputDirectory(outputFileDirectory[0]))
         };
 
         return (
