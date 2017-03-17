@@ -4,8 +4,8 @@ import ProcessingTable from "../tables/ProcessingTable";
 import {State, SourceFile} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import {runProcess} from "../../actions";
-import {GeneralAlert} from "../Alerts";
 import * as selector from "../../selectors";
+import {Dialog, Button} from "@blueprintjs/core";
 
 interface IProcessorRunsPanelProps {
     dispatch?: Dispatch<State>;
@@ -29,6 +29,43 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
         isIncompleteDataDialogOpen: false
     };
 
+    successfulTag = <span className="pt-tag pt-intent-success">OK</span>;
+    missingTag = <span className="pt-tag pt-intent-danger">Missing</span>;
+
+    renderIncompleteValuesMessage = () => {
+        return (
+            <div>
+                <table className="dedop-table-missing-parameters">
+                    <tbody>
+                    <tr>
+                        <td>Process name</td>
+                        <td> :</td>
+                        <td>{this.props.processName ? this.props.processName : ""}</td>
+                        <td>{this.props.processName ? this.successfulTag : this.missingTag}</td>
+                    </tr>
+                    <tr>
+                        <td>Input file</td>
+                        <td> :</td>
+                        <td>{this.props.selectedSourceFile ? this.props.selectedSourceFile.path : ""}</td>
+                        <td>{this.props.selectedSourceFile ? this.successfulTag : this.missingTag}</td>
+                    </tr>
+                    <tr>
+                        <td>Configuration</td>
+                        <td> :</td>
+                        <td>{this.props.currentConfiguration ? this.props.currentConfiguration : ""}</td>
+                        <td>{this.props.currentConfiguration ? this.successfulTag : this.missingTag}</td>
+                    </tr>
+                    <tr>
+                        <td>Output directory</td>
+                        <td> :</td>
+                        <td>{this.props.currentOutputDirectory ? this.props.currentOutputDirectory : ""}</td>
+                        <td>{this.props.currentOutputDirectory ? this.successfulTag : this.missingTag}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>)
+    };
+
     render() {
         const handleRunProcess = () => {
             // TODO (hans-permana, 20170214): add checking to input dataset as well as output directory
@@ -41,7 +78,7 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
             }
         };
 
-        const handleCloseNameAlert = () => {
+        const handleCloseIncompleteParameterDialogAlert = () => {
             this.setState({
                 isIncompleteDataDialogOpen: false
             })
@@ -57,11 +94,22 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
                     </button>
                 </div>
                 <ProcessingTable/>
-                <GeneralAlert isAlertOpen={this.state.isIncompleteDataDialogOpen}
-                              message="Process name is invalid"
-                              onConfirm={handleCloseNameAlert}
-                              iconName="pt-icon-warning-sign"
-                />
+                <Dialog isOpen={this.state.isIncompleteDataDialogOpen}
+                        onClose={handleCloseIncompleteParameterDialogAlert}
+                        title="Incomplete parameters"
+                        className="dedop-dialog-missing-parameters"
+                >
+                    <div className="pt-dialog-body">
+                        {this.renderIncompleteValuesMessage()}
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button onClick={handleCloseIncompleteParameterDialogAlert}
+                                    text="Close"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
             </div>
         )
     }
