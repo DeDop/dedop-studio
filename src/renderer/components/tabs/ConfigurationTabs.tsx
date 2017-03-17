@@ -24,7 +24,7 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
         cnf: selector.getSelectedCnf(state),
         cst: selector.getSelectedCst(state),
         codeEditorActive: state.control.codeEditorActive,
-        activeConfiguration: state.control.selectedConfiguration,
+        activeConfiguration: state.control.selectedConfigurationName,
         currentTab: state.control.currentConfigurationTabPanel
     }
 }

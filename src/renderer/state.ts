@@ -31,19 +31,25 @@ export interface ControlState {
     currentConfigurationTabPanel?: number;
     currentSourceFileDirectory?: string;
     currentOutputDirectory?: string;
-    currentConfiguration?: string;
-    currentWorkspace?: string;
-    selectedConfiguration?: string;
-    selectedSourceFile?: string;
+    currentConfigurationName?: string;
+    currentWorkspaceName?: string;
+    selectedConfigurationName?: string;
+    selectedSourceFileName?: string;
     selectedSourceType?: string;
     codeEditorActive?: boolean;
     processName?: string;
+    currentToasterState?: ToasterState[]
 }
 
 export interface SessionState {
 }
 
 export interface LocationState {
+}
+
+export interface  ToasterState {
+    key: string;
+    taskIndex: number;
 }
 
 export interface WebAPIConfig {
@@ -89,7 +95,7 @@ export enum ProcessingStatus {
 }
 
 export interface ProcessingItem {
-    id: string;
+    id: number;
     name: string;
     configuration: string;
     startedTime: string;

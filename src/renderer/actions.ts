@@ -15,6 +15,7 @@ import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
 import {getSourceFiles} from "../common/sourceFileUtils";
 import {ConfigAPI} from "./webapi/apis/ConfigAPI";
+import {ProcessAPI} from "./webapi/apis/ProcessAPI";
 
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
@@ -25,7 +26,6 @@ export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const UPDATE_SELECTED_SOURCE_TYPE = 'UPDATE_SELECTED_SOURCE_TYPE';
 export const UPDATE_CURRENT_OUTPUT_DIRECTORY = 'UPDATE_CURRENT_OUTPUT_DIRECTORY';
 export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
-export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
 export const SET_TEST_VAR = 'SET_TEST_VAR';
 export const APPLY_INITIAL_STATE = 'APPLY_INITIAL_STATE';
 export const SET_WEBAPI_STATUS = 'SET_WEBAPI_STATUS';
@@ -68,10 +68,6 @@ export function updateCurrentOutputDirectory(outputDirectory: string) {
 
 export function setProcessName(processName: string) {
     return {type: SET_PROCESS_NAME, payload: processName};
-}
-
-export function addNewProcess(processingItem: ProcessingItem) {
-    return {type: ADD_NEW_PROCESS, payload: processingItem};
 }
 
 export function setTaskState(jobId: number, taskState: TaskState) {
@@ -268,7 +264,7 @@ export function renameWorkspace(oldWorkspaceName: string, newWorkspaceName: stri
 
         function action(new_workspace: Workspace) {
             dispatch(updateWorkspaceNameList(oldWorkspaceName, newWorkspaceName));
-            if (getState().control.currentWorkspace == oldWorkspaceName) {
+            if (getState().control.currentWorkspaceName == oldWorkspaceName) {
                 dispatch(setCurrentWorkspace(new_workspace.name))
             }
         }
@@ -307,7 +303,7 @@ export function deleteWorkspace(workspaceName: string) {
 
         function action() {
             dispatch(removeWorkspace(workspaceName));
-            if (getState().control.currentWorkspace == workspaceName) {
+            if (getState().control.currentWorkspaceName == workspaceName) {
                 if (getState().data.workspaceNames.length > 0) {
                     dispatch(updateCurrentWorkspace(getState().data.workspaceNames[0]))
                 } else {
@@ -430,7 +426,7 @@ function updateConfigs(workspaceName: string, configs: Configuration[]) {
 
 export function getAllConfigs() {
     return (dispatch, getState) => {
-        const workspaceName = getState().control.currentWorkspace;
+        const workspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).getConfigNames(workspaceName);
@@ -459,7 +455,7 @@ export function addConfigName(workspaceName: string, newConfigurationName: strin
 
 export function addNewConfig(configName: string) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).addNewConfig(currentWorkspaceName, configName);
@@ -487,7 +483,7 @@ export const DELETE_CONFIG_NAME = 'DELETE_CONFIG_NAME';
 
 export function removeConfig(configName: string) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).deleteConfig(currentWorkspaceName, configName);
@@ -503,7 +499,7 @@ export function removeConfig(configName: string) {
 
 export function copyConfig(configName: string, newConfigName: string) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).copyConfig(currentWorkspaceName, configName, newConfigName);
@@ -540,7 +536,7 @@ export function updateConfigSelection(selectedConfigName: string) {
 
 export function renameConfig(configName: string, newConfigName: string) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).renameConfig(currentWorkspaceName, configName, newConfigName);
@@ -563,7 +559,7 @@ export function updateCurrentConfig(currentConfigName: string) {
 
 export function getCurrentConfig() {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).getCurrentConfig(currentWorkspaceName);
@@ -584,7 +580,7 @@ export function getCurrentConfig() {
 
 export function setCurrentConfig(configName: string) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).setCurrentConfig(currentWorkspaceName, configName);
@@ -615,7 +611,7 @@ export function updateConfiguration(workspaceName: string, configuration: Config
 
 export function getConfigurations(configName: string) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).getConfigs(currentWorkspaceName, configName);
@@ -634,7 +630,7 @@ export function saveConfiguration(currentConfiguration: string,
                                   cnf: ProcessConfigurations,
                                   cst: ProcessConfigurations) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspace;
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
             return configAPI(getState()).saveConfigs(currentWorkspaceName, currentConfiguration, {
@@ -659,6 +655,57 @@ export function saveConfiguration(currentConfiguration: string,
 }
 
 // ======================== Configuration related actions via WebAPI =============================================
+
+
+// ======================== Process related actions via WebAPI =============================================
+
+function processAPI(state: State): ProcessAPI {
+    return new ProcessAPI(state.data.appConfig.webAPIClient)
+}
+
+export const ADD_NEW_PROCESS = 'ADD_NEW_PROCESS';
+
+export function addNewProcess(processingItem: ProcessingItem) {
+    return {type: ADD_NEW_PROCESS, payload: processingItem};
+}
+
+export function runProcess(processName: string, outputPath: string, l1aFilePath: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+        const currentConfigName = getState().control.selectedConfigurationName;
+        let jobId: number = 0;
+        let jobStatus: string;
+
+        function call(onProgress) {
+            const job = processAPI(getState()).process(
+                processName,
+                currentWorkspaceName,
+                currentConfigName,
+                outputPath,
+                l1aFilePath,
+                onProgress);
+            jobId = job.getJobId();
+            jobStatus = job.getJob().getStatus();
+            const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+            const newProcess: ProcessingItem = {
+                id: jobId,
+                name: processName,
+                configuration: currentConfigName,
+                startedTime: currentTime,
+                status: jobStatus,
+                processingDuration: ""
+            };
+            dispatch(addNewProcess(newProcess));
+            return job;
+        }
+
+        function action() {
+        }
+        callAPI(dispatch, "Create a new process '".concat(processName).concat("'"), call, action);
+    }
+}
+
+// ======================== Process related actions via WebAPI =============================================
 
 
 function getCurrentWorkspaceIndex(state: State, workspaceName: string) {

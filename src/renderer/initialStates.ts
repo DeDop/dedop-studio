@@ -2,7 +2,7 @@ import {ProcessingItem, ProcessingStatus, ProcessConfigurations, Configuration, 
 
 export const processingItems: ProcessingItem[] = [
     {
-        id: "1",
+        id: 0,
         name: "Task1",
         configuration: "config1",
         startedTime: "05/01/15 12:00:12",
@@ -10,7 +10,7 @@ export const processingItems: ProcessingItem[] = [
         processingDuration: "1 min 37 s"
     },
     {
-        id: "2",
+        id: 1,
         name: "Task2",
         configuration: "config2",
         startedTime: "07/01/15 11:02:31",
@@ -18,7 +18,7 @@ export const processingItems: ProcessingItem[] = [
         processingDuration: "1 min 37 s"
     },
     {
-        id: "3",
+        id: 2,
         name: "Task3",
         configuration: "config3",
         startedTime: "07/07/16 08:23:59",
@@ -26,7 +26,7 @@ export const processingItems: ProcessingItem[] = [
         processingDuration: "1 min 37 s"
     },
     {
-        id: "4",
+        id: 3,
         name: "Task4",
         configuration: "Alternate Delay-Doppler Processing",
         startedTime: "07/07/16 18:33:00",
@@ -34,7 +34,7 @@ export const processingItems: ProcessingItem[] = [
         processingDuration: "11 min 37 s"
     },
     {
-        id: "11",
+        id: 4,
         name: "Task11",
         configuration: "Modified Surface Locations",
         startedTime: "13/12/16 10:23:11",
@@ -541,9 +541,9 @@ export const initialControlState: ControlState = {
     sourceFiles: [],
     globalAttributes: [],
     mainPanelTitle: null,
-    selectedConfiguration: "default",
+    selectedConfigurationName: "default",
     currentConfigurationTabPanel: 0,
-    currentConfiguration: "default",
+    currentConfigurationName: "default",
     currentMainTabPanel: 0,
     codeEditorActive: false,
     currentSourceFileDirectory: "",

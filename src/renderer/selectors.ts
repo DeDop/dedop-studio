@@ -1,42 +1,50 @@
 import {createSelector} from "reselect";
-import {State, ProcessConfigurations, SourceFile, Configuration} from "./state";
+import {State, ProcessConfigurations, SourceFile, Configuration, Workspace} from "./state";
 
-const getSelectedConfiguration = (state: State) => state.control.selectedConfiguration;
+const getSelectedConfigurationName = (state: State) => state.control.selectedConfigurationName;
 const getWorkspaces = (state: State) => state.data.workspaces;
-const getCurrentWorkspace = (state: State) => state.control.currentWorkspace;
+const getCurrentWorkspaceName = (state: State) => state.control.currentWorkspaceName;
+const getSelectedSourceFileName = (state: State) => state.control.selectedSourceFileName;
+
+export const getCurrentWorkspace = createSelector(
+    getWorkspaces,
+    getCurrentWorkspaceName,
+    (getWorkspaces, getCurrentWorkspaceName): Workspace => {
+        const workspaceIndex = getWorkspaces.findIndex((x) => x.name == getCurrentWorkspaceName);
+        return workspaceIndex >= 0 ? getWorkspaces[workspaceIndex] : null;
+    }
+);
 
 export const getConfigurations = createSelector(
-    getWorkspaces,
     getCurrentWorkspace,
-    (getWorkspaces, getCurrentWorkspace): Configuration[] => {
-        const workspaceIndex = getWorkspaces.findIndex((x) => x.name == getCurrentWorkspace);
-        return workspaceIndex >= 0 ? getWorkspaces[workspaceIndex].configs : [];
+    (getCurrentWorkspace): Configuration[] => {
+        return getCurrentWorkspace ? getCurrentWorkspace.configs : [];
     }
 );
 
 export const getSelectedChd = createSelector(
     getConfigurations,
-    getSelectedConfiguration,
-    (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
-        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
+    getSelectedConfigurationName,
+    (getConfigurations, getSelectedConfigurationName): ProcessConfigurations => {
+        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfigurationName);
         return configIndex >= 0 ? getConfigurations[configIndex].chd : null;
     }
 );
 
 export const getSelectedCnf = createSelector(
     getConfigurations,
-    getSelectedConfiguration,
-    (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
-        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
+    getSelectedConfigurationName,
+    (getConfigurations, getSelectedConfigurationName): ProcessConfigurations => {
+        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfigurationName);
         return configIndex >= 0 ? getConfigurations[configIndex].cnf : null;
     }
 );
 
 export const getSelectedCst = createSelector(
     getConfigurations,
-    getSelectedConfiguration,
-    (getConfigurations, getSelectedConfiguration): ProcessConfigurations => {
-        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfiguration);
+    getSelectedConfigurationName,
+    (getConfigurations, getSelectedConfigurationName): ProcessConfigurations => {
+        const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfigurationName);
         return configIndex >= 0 ? getConfigurations[configIndex].cst : null;
     }
 );
@@ -53,10 +61,17 @@ export const getConfigurationNames = createSelector(
 );
 
 export const getAddedSourceFiles = createSelector(
-    getWorkspaces,
     getCurrentWorkspace,
-    (getWorkspaces, getCurrentWorkspace): SourceFile[] => {
-        const workspaceIndex = getWorkspaces.findIndex((x) => x.name == getCurrentWorkspace);
-        return workspaceIndex >= 0 ? getWorkspaces[workspaceIndex].inputs : [];
+    (getCurrentWorkspace): SourceFile[] => {
+        return getCurrentWorkspace ? getCurrentWorkspace.inputs : [];
+    }
+);
+
+export const getSelectedSourceFile = createSelector(
+    getAddedSourceFiles,
+    getSelectedSourceFileName,
+    (getAddedSourceFiles, getSelectedSourceFileName): SourceFile => {
+        const sourceFileIndex = getAddedSourceFiles.findIndex((x) => x.name == getSelectedSourceFileName);
+        return sourceFileIndex >= 0 ? getAddedSourceFiles[sourceFileIndex] : null;
     }
 );

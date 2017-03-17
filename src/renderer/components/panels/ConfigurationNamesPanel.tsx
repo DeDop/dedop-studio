@@ -28,10 +28,10 @@ interface IConfigurationNamesPanelProps {
 
 function mapStateToProps(state: State): IConfigurationNamesPanelProps {
     return {
-        selectedConfiguration: [state.control.selectedConfiguration],
-        currentConfiguration: state.control.currentConfiguration,
+        selectedConfiguration: [state.control.selectedConfigurationName],
+        currentConfiguration: state.control.currentConfigurationName,
         configurations: selector.getConfigurations(state),
-        currentWorkspace: state.control.currentWorkspace
+        currentWorkspace: state.control.currentWorkspaceName
     }
 }
 

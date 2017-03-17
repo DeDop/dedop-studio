@@ -244,11 +244,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
     switch (action.type) {
         case actions.UPDATE_CONFIG_SELECTION:
             return Object.assign({}, state, {
-                selectedConfiguration: action.payload
+                selectedConfigurationName: action.payload
             });
         case actions.SELECT_SOURCE_FILE:
             return Object.assign({}, state, {
-                selectedSourceFile: action.payload
+                selectedSourceFileName: action.payload
             });
         case actions.SELECT_SOURCE_FILE_DIRECTORY:
             return Object.assign({}, state, {
@@ -256,8 +256,8 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.UPDATE_CURRENT_CONFIG:
             return Object.assign({}, state, {
-                currentConfiguration: action.payload,
-                selectedConfiguration: action.payload
+                currentConfigurationName: action.payload,
+                selectedConfigurationName: action.payload
             });
         case actions.UPDATE_MAIN_TAB:
             return Object.assign({}, state, {
@@ -265,7 +265,7 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.UPDATE_CONFIGURATION_TAB:
             return Object.assign({}, state, {
-                currentConfigurationTabPanel: action.payload
+                currentConfigurationNameTabPanel: action.payload
             });
         case actions.UPDATE_CONFIG_EDITOR_MODE:
             return Object.assign({}, state, {
@@ -273,11 +273,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             });
         case actions.ADD_CONFIG_NAME:
             return Object.assign({}, state, {
-                selectedConfiguration: action.payload.newConfigurationName
+                selectedConfigurationName: action.payload.newConfigurationName
             });
         case actions.DELETE_CONFIG_NAME:
             return Object.assign({}, state, {
-                selectedConfiguration: null
+                selectedConfigurationName: null
             });
         case actions.SET_PROCESS_NAME:
             return Object.assign({}, state, {
@@ -295,15 +295,15 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         }
         case actions.UPDATE_CURRENT_WORKSPACE: {
             return Object.assign({}, state, {
-                currentWorkspace: action.payload.name,
+                currentWorkspaceName: action.payload.name,
                 currentSourceFileDirectory: action.payload.sourceFileDirectory,
-                selectedSourceFile: null,
+                selectedSourceFileName: null,
                 globalAttributes: []
             });
         }
         case actions.REMOVE_SOURCE_FILE: {
             return Object.assign({}, state, {
-                selectedSourceFile: null
+                selectedSourceFileName: null
             })
         }
         case actions.UPDATE_CURRENT_GLOBAL_ATTRIBUTES: {

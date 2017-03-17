@@ -23,7 +23,7 @@ interface IWorkspaceInfoProps {
 
 function mapStateToProps(state: State): IWorkspaceInfoProps {
     return {
-        workspaceName: state.control.currentWorkspace,
+        workspaceName: state.control.currentWorkspaceName,
         workspaces: state.data.workspaces
     }
 }

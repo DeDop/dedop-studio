@@ -18,7 +18,7 @@ function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile}): ISou
     return {
         addedSourceFiles: selector.getAddedSourceFiles(state),
         sourceFile: ownProps.sourceFile,
-        currentWorkspace: state.control.currentWorkspace,
+        currentWorkspace: state.control.currentWorkspaceName,
         currentSourceFileDirectory: state.control.currentSourceFileDirectory
     };
 }

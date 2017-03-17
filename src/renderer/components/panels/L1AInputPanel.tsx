@@ -25,7 +25,7 @@ interface IL1AInputPanelProps {
 function mapStateToProps(state: State): IL1AInputPanelProps {
     return {
         sourceFiles: selector.getAddedSourceFiles(state),
-        currentSourceFile: state.control.selectedSourceFile,
+        currentSourceFile: state.control.selectedSourceFileName,
         currentSourceFileDirectory: state.control.currentSourceFileDirectory,
         selectedSourceType: state.control.selectedSourceType
     }

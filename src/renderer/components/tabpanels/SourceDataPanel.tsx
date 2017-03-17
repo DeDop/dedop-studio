@@ -26,7 +26,7 @@ interface ISourceDataPanelProps {
 function mapStateToProps(state: State): ISourceDataPanelProps {
     return {
         l1aInputFiles: state.control.sourceFiles,
-        selectedSourceFile: [state.control.selectedSourceFile],
+        selectedSourceFile: [state.control.selectedSourceFileName],
         currentSourceFileDirectory: state.control.currentSourceFileDirectory
     };
 }

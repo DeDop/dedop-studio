@@ -1,57 +1,49 @@
 import * as React from "react";
-import * as moment from "moment";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import ProcessingTable from "../tables/ProcessingTable";
-import {ProcessingItem, State, ProcessingStatus} from "../../state";
-import {connect} from "react-redux";
-import {addNewProcess} from "../../actions";
+import {State, SourceFile} from "../../state";
+import {connect, Dispatch} from "react-redux";
+import {runProcess} from "../../actions";
 import {GeneralAlert} from "../Alerts";
+import * as selector from "../../selectors";
 
 interface IProcessorRunsPanelProps {
-    dispatch?: (action: {type: string, payload: ProcessingItem}) => void;
-    selectedSourceFile: string;
+    dispatch?: Dispatch<State>;
+    selectedSourceFile: SourceFile;
     currentConfiguration: string;
+    currentOutputDirectory: string;
     processName: string;
 }
 
 function mapStateToProps(state: State): IProcessorRunsPanelProps {
     return {
-        selectedSourceFile: state.control.selectedSourceFile,
-        currentConfiguration: state.control.currentConfiguration,
+        selectedSourceFile: selector.getSelectedSourceFile(state),
+        currentConfiguration: state.control.currentConfigurationName,
+        currentOutputDirectory: state.control.currentOutputDirectory,
         processName: state.control.processName
     }
 }
 
 class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
     public state = {
-        isNameAlertOpen: false
+        isIncompleteDataDialogOpen: false
     };
 
     render() {
         const handleRunProcess = () => {
-            const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
-            const processingStatus = ProcessingStatus[ProcessingStatus.QUEUED];
-            const processItem: ProcessingItem = {
-                id: "",
-                name: this.props.processName,
-                configuration: this.props.currentConfiguration,
-                processingDuration: "-",
-                status: processingStatus,
-                startedTime: currentTime
-            };
             // TODO (hans-permana, 20170214): add checking to input dataset as well as output directory
-            if (!processItem.name) {
+            if (!this.props.processName || !this.props.selectedSourceFile || !this.props.currentConfiguration || !this.props.currentOutputDirectory) {
                 this.setState({
-                    isNameAlertOpen: true
+                    isIncompleteDataDialogOpen: true
                 })
             } else {
-                this.props.dispatch(addNewProcess(processItem));
+                this.props.dispatch(runProcess(this.props.processName, this.props.currentOutputDirectory, this.props.selectedSourceFile.path));
             }
         };
 
         const handleCloseNameAlert = () => {
             this.setState({
-                isNameAlertOpen: false
+                isIncompleteDataDialogOpen: false
             })
         };
 
@@ -65,7 +57,7 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
                     </button>
                 </div>
                 <ProcessingTable/>
-                <GeneralAlert isAlertOpen={this.state.isNameAlertOpen}
+                <GeneralAlert isAlertOpen={this.state.isIncompleteDataDialogOpen}
                               message="Process name is invalid"
                               onConfirm={handleCloseNameAlert}
                               iconName="pt-icon-warning-sign"

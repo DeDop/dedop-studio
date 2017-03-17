@@ -15,7 +15,7 @@ interface IRunSettingsPanelProps {
 function mapStateToProps(state: State): IRunSettingsPanelProps {
     return {
         configurationFiles: selectors.getConfigurationNames(state),
-        currentConfiguration: state.control.currentConfiguration,
+        currentConfiguration: state.control.currentConfigurationName,
         processName: state.control.processName
     }
 }
