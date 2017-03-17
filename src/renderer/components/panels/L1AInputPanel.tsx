@@ -44,11 +44,7 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
         let options = [];
         options.push(<option key="informationText" disabled>Select a single L1A file...</option>);
         for (let i of this.props.sourceFiles) {
-            if (this.props.currentSourceFile == i.name) {
-                options.push(<option selected key={i.name}>{i.name}</option>);
-            } else {
-                options.push(<option key={i.name}>{i.name}</option>);
-            }
+            options.push(<option key={i.name}>{i.name}</option>);
         }
 
         const handleOnChangeSourceFile = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -93,6 +89,7 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
                             <td width='80%'>
                                 <div className="pt-select pt-fill">
                                     <select disabled={this.props.selectedSourceType == "directory"}
+                                            value={this.props.currentSourceFile ? this.props.currentSourceFile : undefined}
                                             onChange={handleOnChangeSourceFile}>
                                         {options}
                                     </select>

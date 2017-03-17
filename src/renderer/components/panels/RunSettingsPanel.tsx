@@ -38,11 +38,7 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
     render() {
         let options = [];
         for (let i in this.props.configurationFiles) {
-            if (this.props.currentConfiguration == this.props.configurationFiles[i]) {
-                options.push(<option selected key={i}>{this.props.configurationFiles[i]}</option>);
-            } else {
-                options.push(<option key={i}>{this.props.configurationFiles[i]}</option>)
-            }
+            options.push(<option key={i}>{this.props.configurationFiles[i]}</option>)
         }
 
         const handleOnChange = (event: any) => {
@@ -86,7 +82,9 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
                             </td>
                             <td>
                                 <div className="pt-select pt-fill">
-                                    <select onChange={handleOnChangeConfiguration}>
+                                    <select onChange={handleOnChangeConfiguration}
+                                            value={this.props.currentConfiguration ? this.props.currentConfiguration : undefined}
+                                    >
                                         {options}
                                     </select>
                                 </div>
