@@ -218,6 +218,7 @@ export function getCurrentWorkspace() {
             let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
             dispatch(updateWorkspaceSourceFile(current_workspace, validSourceFiles));
             dispatch(updateSourceFileList(validSourceFiles));
+            dispatch(getCurrentConfig());
         }
 
         callAPI(dispatch, "Get current workspace name", call, action);
