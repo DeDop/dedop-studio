@@ -10,7 +10,6 @@ export interface State {
 }
 
 export interface DataState {
-    configurations: Configuration[];
     processes: ProcessingItem[];
     workspaces?: Workspace[];
     appConfig: AppConfigState;
@@ -84,14 +83,6 @@ export interface Workspace {
     directory: string;
     inputs?: SourceFile[];
     configs?: Configuration[];
-}
-
-export enum ProcessingStatus {
-    QUEUED,
-    DONE,
-    IN_PROGRESS,
-    FAILED,
-    CANCELLED
 }
 
 export interface ProcessingItem {
