@@ -10,7 +10,7 @@ import {
 } from "./state";
 import * as moment from "moment";
 import * as path from "path";
-import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
+import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler, JobStatus} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
 import {getSourceFiles} from "../common/sourceFileUtils";
@@ -670,12 +670,19 @@ export function addNewProcess(processingItem: ProcessingItem) {
     return {type: ADD_NEW_PROCESS, payload: processingItem};
 }
 
+export const MARK_PROCESS_AS_FINISHED = 'MARK_PROCESS_AS_FINISHED';
+
+export function markProcessAsFinished(jobId: number, processingDuration: string, status: JobStatus) {
+    return {type: MARK_PROCESS_AS_FINISHED, payload: jobId, processingDuration, status};
+}
+
 export function runProcess(processName: string, outputPath: string, l1aFilePath: string) {
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
         const currentConfigName = getState().control.selectedConfigurationName;
         let jobId: number = 0;
         let jobStatus: string;
+        let startTime: number;
 
         function call(onProgress) {
             const job = processAPI(getState()).process(
@@ -687,12 +694,13 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
                 onProgress);
             jobId = job.getJobId();
             jobStatus = job.getJob().getStatus();
-            const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+            startTime = moment.now();
+            const startTimeFormatted = moment(startTime).format("DD/MM/YY, hh:mm:ss");
             const newProcess: ProcessingItem = {
                 id: jobId,
                 name: processName,
                 configuration: currentConfigName,
-                startedTime: currentTime,
+                startedTime: startTimeFormatted,
                 status: jobStatus,
                 processingDuration: ""
             };
@@ -701,7 +709,10 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
         }
 
         function action() {
+            const processingDuration = moment.duration(moment(startTime).diff(moment.now(), 'minutes')).humanize();
+            dispatch(markProcessAsFinished(jobId, processingDuration.toString(), getState().communication.tasks[jobId].status))
         }
+
         callAPI(dispatch, "Create a new process '".concat(processName).concat("'"), call, action);
     }
 }

@@ -236,6 +236,21 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.MARK_PROCESS_AS_FINISHED: {
+            let processIndex = state.processes.findIndex((x) => x.id === action.payload.jobId);
+            const process = state.processes[processIndex];
+            let updatedProcess = Object.assign({}, process, {
+                status: action.payload.status,
+                processingDuration: action.payload.processingDuration
+            });
+            return Object.assign({}, state, {
+                processes: [
+                    ...state.processes.slice(0, processIndex),
+                    updatedProcess,
+                    ...state.processes.slice(processIndex + 1)
+                ]
+            });
+        }
     }
     return state;
 };

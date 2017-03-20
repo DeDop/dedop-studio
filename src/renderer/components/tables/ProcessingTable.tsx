@@ -1,17 +1,20 @@
 import * as React from "react";
-import {ProcessingItem, State} from "../../state";
+import {ProcessingItem, State, TaskState} from "../../state";
 import {Cell, Column, Table} from "@blueprintjs/table";
 import {connect} from "react-redux";
 import {updateMainTab} from "../../actions";
+import {JobStatusEnum} from "../../webapi/Job";
 
 interface IProcessingTableProps {
     dispatch?: (action: {type: string, payload: any}) => void;
-    processingItems: Array<ProcessingItem>;
+    tasks: {[jobId: number]: TaskState;};
+    processes: ProcessingItem[];
 }
 
 function mapStateToProps(state: State): IProcessingTableProps {
     return {
-        processingItems: state.data.processes
+        tasks: state.communication.tasks,
+        processes: state.data.processes
     }
 }
 
@@ -19,20 +22,32 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
 
     public render() {
         const runCell = (rowIndex: number) => {
-            return <Cell>{this.props.processingItems[rowIndex].name}</Cell>
+            return <Cell>{this.props.processes[rowIndex].name}</Cell>
         };
         const configCell = (rowIndex: number) => {
-            return <Cell>{this.props.processingItems[rowIndex].configuration}</Cell>
+            return <Cell>{this.props.processes[rowIndex].configuration}</Cell>
         };
         const startedCell = (rowIndex: number) => {
-            return <Cell>{this.props.processingItems[rowIndex].startedTime}</Cell>
+            return <Cell>{this.props.processes[rowIndex].startedTime}</Cell>
         };
         const statusCell = (rowIndex: number) => {
-            return <Cell>{this.props.processingItems[rowIndex].status.toString()}</Cell>
+            const jobId = this.props.processes[rowIndex].id;
+            if (this.props.tasks[jobId].status == JobStatusEnum.IN_PROGRESS) {
+                const percentage = ((this.props.tasks[jobId].progress.worked / this.props.tasks[jobId].progress.total) * 100).toFixed(2).toString();
+                return (
+                    <Cell tooltip={percentage.concat("%")}>
+                        <div className="pt-progress-bar" style={{marginTop: "5px"}}>
+                            <div className="pt-progress-meter" style={{width: percentage.concat("%")}}></div>
+                        </div>
+                    </Cell>)
+            } else {
+                return <Cell>{this.props.tasks[jobId].status.toString()}</Cell>
+            }
         };
         const processingTimeCell = (rowIndex: number) => {
+            const jobId = this.props.processes[rowIndex].id;
             return (
-                <Cell>{this.props.processingItems[rowIndex].status === "IN_PROGRESS" ? "-" : this.props.processingItems[rowIndex].processingDuration}</Cell>
+                <Cell>{this.props.tasks[jobId].status === "IN_PROGRESS" ? "-" : this.props.processes[rowIndex].processingDuration}</Cell>
             )
         };
         const handleOpenResult = () => {
@@ -40,7 +55,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
             this.props.dispatch(updateMainTab(3));
         };
         const actionCell = (rowIndex: number) => {
-            switch (this.props.processingItems[rowIndex].status) {
+            switch (this.props.processes[rowIndex].status) {
                 case "DONE":
                     return (
                         <Cell style={{textAlign: "center"}}>
@@ -74,8 +89,11 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
         };
 
         return (
-            <Table numRows={this.props.processingItems.length} isRowHeaderShown={false}
-                   columnWidths={[75, 150, 120, 100, 100, 100]}>
+            <Table numRows={this.props.processes.length}
+                   isRowHeaderShown={false}
+                   maxColumnWidth={150}
+                   maxRowHeight={30}
+            >
                 <Column name="Run" renderCell={runCell}/>
                 <Column name="Configuration" renderCell={configCell}/>
                 <Column name="Started" renderCell={startedCell}/>

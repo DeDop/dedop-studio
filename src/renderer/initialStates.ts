@@ -553,7 +553,7 @@ export const initialControlState: ControlState = {
 
 export const initialDataState: DataState = {
     configurations: dummyConfigFileList,
-    processes: processingItems,
+    processes: [],
     appConfig: {
         webAPIClient: null,
         webAPIConfig: {
