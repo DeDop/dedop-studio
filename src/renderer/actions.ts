@@ -444,7 +444,7 @@ export function getAllConfigs() {
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 
 export function addConfigName(workspaceName: string, newConfigurationName: string) {
-    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
     return {
         type: ADD_CONFIG_NAME, payload: {
             workspaceName: workspaceName,
@@ -518,7 +518,7 @@ export function copyConfig(configName: string, newConfigName: string) {
 export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
 
 export function updateConfigName(workspaceName: string, configName: string, newConfigName: string) {
-    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
     return {
         type: UPDATE_CONFIG_NAME, payload: {
             workspaceName: workspaceName,
@@ -600,7 +600,7 @@ export function setCurrentConfig(configName: string) {
 export const UPDATE_CONFIG = 'UPDATE_CONFIG';
 
 export function updateConfiguration(workspaceName: string, configuration: Configuration) {
-    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
     return {
         type: UPDATE_CONFIG, payload: {
             workspaceName: workspaceName,
@@ -695,7 +695,7 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
             jobId = job.getJobId();
             jobStatus = job.getJob().getStatus();
             startTime = moment.now();
-            const startTimeFormatted = moment(startTime).format("DD/MM/YY, hh:mm:ss");
+            const startTimeFormatted = moment(startTime).format("DD/MM/YY, HH:mm:ss");
             const newProcess: ProcessingItem = {
                 id: jobId,
                 name: processName,
