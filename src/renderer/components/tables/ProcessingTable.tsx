@@ -91,10 +91,9 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
         return (
             <Table numRows={this.props.processes.length}
                    isRowHeaderShown={false}
-                   maxColumnWidth={150}
                    maxRowHeight={30}
             >
-                <Column name="Run" renderCell={runCell}/>
+                <Column name="Process Name" renderCell={runCell}/>
                 <Column name="Configuration" renderCell={configCell}/>
                 <Column name="Started" renderCell={startedCell}/>
                 <Column name="Status" renderCell={statusCell}/>

@@ -63,7 +63,7 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
                         <tbody>
                         <tr>
                             <td width='20%'>
-                                Name
+                                Process name
                             </td>
                             <td width='80%'>
                                 <input className="pt-input pt-fill"
