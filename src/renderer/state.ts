@@ -88,6 +88,7 @@ export interface Workspace {
 export interface ProcessingItem {
     id: number;
     name: string;
+    workspace: string;
     configuration: string;
     startedTime: string;
     status: string;

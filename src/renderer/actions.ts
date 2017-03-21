@@ -711,6 +711,7 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
             const newProcess: ProcessingItem = {
                 id: jobId,
                 name: processName,
+                workspace: currentWorkspaceName,
                 configuration: currentConfigName,
                 startedTime: startTimeFormatted,
                 status: jobStatus,
