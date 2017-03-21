@@ -104,11 +104,13 @@ export type JobPromiseAction<T> = (jobResult: T) => void;
  * @param title A human-readable title for the job that is being created
  * @param call The API call which must produce a JobPromise
  * @param action The action to be performed when the call succeeds.
+ * @param failureAction The action to be performed when the call fails.
  */
 export function callAPI<T>(dispatch,
                            title: string,
                            call: JobPromiseFactory<T>,
-                           action?: JobPromiseAction<T>): void {
+                           action?: JobPromiseAction<T>,
+                           failureAction?: JobPromiseAction<JobFailure>): void {
     const onProgress = (progress: JobProgress) => {
         dispatch(jobProgress(progress));
     };
@@ -124,6 +126,9 @@ export function callAPI<T>(dispatch,
     };
     const onFailure = jobFailure => {
         dispatch(jobFailed(jobPromise.getJobId(), jobFailure));
+        if (failureAction) {
+            failureAction(jobFailure);
+        }
     };
 
     jobPromise.then(onDone, onFailure);
@@ -672,12 +677,13 @@ export function addNewProcess(processingItem: ProcessingItem) {
 
 export const MARK_PROCESS_AS_FINISHED = 'MARK_PROCESS_AS_FINISHED';
 
-export function markProcessAsFinished(jobId: number, processingDuration: string, status: string) {
+export function markProcessAsFinished(jobId: number, processingDuration: string, status: string, message: string) {
     return {
         type: MARK_PROCESS_AS_FINISHED, payload: {
             jobId: jobId,
             processingDuration: processingDuration,
-            status: status
+            status: status,
+            message: message
         }
     };
 }
@@ -716,10 +722,20 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
 
         function action() {
             const processingDuration = moment.duration(moment().diff(startTime)).humanize();
-            dispatch(markProcessAsFinished(jobId, processingDuration.toString(), getState().communication.tasks[jobId].status))
+            dispatch(markProcessAsFinished(jobId, processingDuration.toString(),
+                getState().communication.tasks[jobId].status,
+                "successful"
+            ))
         }
 
-        callAPI(dispatch, "Create a new process '".concat(processName).concat("'"), call, action);
+        function failureAction(jobFailure: JobFailure) {
+            const processingDuration = moment.duration(moment().diff(startTime)).humanize();
+            dispatch(markProcessAsFinished(jobId, processingDuration.toString(),
+                getState().communication.tasks[jobId].status,
+                jobFailure.message))
+        }
+
+        callAPI(dispatch, "Create a new process '".concat(processName).concat("'"), call, action, failureAction);
     }
 }
 

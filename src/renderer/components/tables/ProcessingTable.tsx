@@ -63,7 +63,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
                         </Cell>);
                 case "FAILED":
                     return (
-                        <Cell style={{textAlign: "center"}}>
+                        <Cell style={{textAlign: "center"}} tooltip={"Error: ".concat(this.props.processes[rowIndex].message)}>
                             <span className="pt-icon-standard pt-icon-warning-sign"/>
                         </Cell>);
                 case "IN_PROGRESS":

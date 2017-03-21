@@ -241,7 +241,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             const process = state.processes[processIndex];
             let updatedProcess = Object.assign({}, process, {
                 status: action.payload.status,
-                processingDuration: action.payload.processingDuration
+                processingDuration: action.payload.processingDuration,
+                message: action.payload.message
             });
             return Object.assign({}, state, {
                 processes: [

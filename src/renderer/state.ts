@@ -92,6 +92,7 @@ export interface ProcessingItem {
     startedTime: string;
     status: string;
     processingDuration: string;
+    message?: string;
 }
 
 export interface GlobalAttribute {
