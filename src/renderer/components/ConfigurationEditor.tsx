@@ -107,6 +107,9 @@ export class ConfigurationEditor extends React.Component<IConfigEditorProps, any
         let configurationElements = [];
         const configurations = this.props.configurations;
         for (let i in configurations) {
+            if (i == "__metainf__") {
+                continue;
+            }
             configurationElements.push(<ConfigurationSingleEntry key={i}
                                                                  configName={i}
                                                                  configuration={configurations[i]}
