@@ -8,6 +8,9 @@ import {connect, Dispatch} from "react-redux";
 import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab} from "../../actions";
 import * as selector from "../../selectors";
 
+const CONFIGURATION_VERSION_NOT_FOUND = -1;
+const CONFIGURATION_NOT_FOUND = -2;
+
 interface IConfigurationTabsProps {
     dispatch?: Dispatch<State>;
     chd: ProcessConfigurations;
@@ -43,6 +46,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.handleCnfInputChange = this.handleCnfInputChange.bind(this);
         this.handleCstInputChange = this.handleCstInputChange.bind(this);
         this.handleChangeTab = this.handleChangeTab.bind(this);
+        this.handleUpgradeConfig = this.handleUpgradeConfig.bind(this);
 
         const chdVersion = ConfigurationTabs.getConfigVersion(this.props.chd);
         const cnfVersion = ConfigurationTabs.getConfigVersion(this.props.cnf);
@@ -84,10 +88,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
             if ("__metainf__" in config) {
                 return config["__metainf__"]["version"];
             } else {
-                return -1;
+                return CONFIGURATION_VERSION_NOT_FOUND;
             }
         } else {
-            return -1;
+            return CONFIGURATION_NOT_FOUND;
         }
     }
 
@@ -152,6 +156,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.props.dispatch(updateConfigurationTab(selectedTabIndex));
     };
 
+    private handleUpgradeConfig = () => {
+        console.log("upgrade now.")
+    };
+
     public render() {
         return (
             <div>
@@ -184,14 +192,33 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     onChange={this.updateChdCode}
                                     options={this.state.options}/>
                                 :
-                                <div>
-                                    <span
-                                        className={"pt-tag ".concat(this.state.chdVersion < this.props.defaultConfVersion.chd ? "pt-intent-warning" : "pt-intent-success")}>
-                                        Version {this.state.chdVersion >= 0 ? this.state.chdVersion : "N/A"}
-                                    </span>
-                                    <ConfigurationEditor configurations={this.props.chd}
-                                                         handleInputChange={this.handleChdInputChange}/>
-                                </div>
+                                (
+                                    this.state.chdVersion != CONFIGURATION_NOT_FOUND
+                                        ?
+                                        <div>
+                                            <span
+                                                className={"pt-tag ".concat(this.state.chdVersion < this.props.defaultConfVersion.chd ? "pt-intent-warning" : "pt-intent-success")}>
+                                                Version {this.state.chdVersion >= 0 ? this.state.chdVersion : "N/A"}
+                                            </span>
+                                            {
+                                                this.state.chdVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.chdVersion < this.props.defaultConfVersion.chd
+                                                    ?
+                                                    <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
+                                                          onClick={this.handleUpgradeConfig}
+                                                    >
+                                                        upgrade
+                                                    </span>
+                                                    :
+                                                    null
+                                            }
+                                            <ConfigurationEditor configurations={this.props.chd}
+                                                                 handleInputChange={this.handleChdInputChange}/>
+                                        </div>
+                                        :
+                                        <div>
+                                            Please select a configuration.
+                                        </div>
+                                )
                             }
                         </div>
                     </TabPanel>
@@ -204,14 +231,33 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     onChange={this.updateCnfCode}
                                     options={this.state.options}/>
                                 :
-                                <div>
-                                    <span
-                                        className={"pt-tag ".concat(this.state.cnfVersion < this.props.defaultConfVersion.cnf ? "pt-intent-warning" : "pt-intent-success")}>
-                                        Version {this.state.cnfVersion >= 0 ? this.state.cnfVersion : "N/A"}
-                                    </span>
-                                    <CnfConfigurationEditor configurations={this.state.cnfTemp}
-                                                            handleInputChange={this.handleCnfInputChange}/>
-                                </div>
+                                (
+                                    this.state.cnfVersion != CONFIGURATION_NOT_FOUND
+                                        ?
+                                        <div>
+                                            <span
+                                                className={"pt-tag ".concat(this.state.cnfVersion < this.props.defaultConfVersion.cnf ? "pt-intent-warning" : "pt-intent-success")}>
+                                                Version {this.state.cnfVersion >= 0 ? this.state.cnfVersion : "N/A"}
+                                            </span>
+                                            {
+                                                this.state.cnfVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.cnfVersion < this.props.defaultConfVersion.cnf
+                                                    ?
+                                                    <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
+                                                          onClick={this.handleUpgradeConfig}
+                                                    >
+                                                        upgrade
+                                                    </span>
+                                                    :
+                                                    null
+                                            }
+                                            <CnfConfigurationEditor configurations={this.props.cnf}
+                                                                    handleInputChange={this.handleCnfInputChange}/>
+                                        </div>
+                                        :
+                                        <div>
+                                            Please select a configuration.
+                                        </div>
+                                )
                             }
                         </div>
                     </TabPanel>
@@ -224,14 +270,33 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     onChange={this.updateCstCode}
                                     options={this.state.options}/>
                                 :
-                                <div>
-                                    <span
-                                        className={"pt-tag ".concat(this.state.cstVersion < this.props.defaultConfVersion.cst ? "pt-intent-warning" : "pt-intent-success")}>
-                                        Version {this.state.cstVersion >= 0 ? this.state.cstVersion : "N/A"}
-                                    </span>
-                                    <ConfigurationEditor configurations={this.state.cstTemp}
-                                                         handleInputChange={this.handleCstInputChange}/>
-                                </div>
+                                (
+                                    this.state.cstVersion != CONFIGURATION_NOT_FOUND
+                                        ?
+                                        <div>
+                                            <span
+                                                className={"pt-tag ".concat(this.state.cstVersion < this.props.defaultConfVersion.cst ? "pt-intent-warning" : "pt-intent-success")}>
+                                                Version {this.state.cstVersion >= 0 ? this.state.cstVersion : "N/A"}
+                                            </span>
+                                            {
+                                                this.state.cstVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.cstVersion < this.props.defaultConfVersion.cst
+                                                    ?
+                                                    <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
+                                                          onClick={this.handleUpgradeConfig}
+                                                    >
+                                                        upgrade
+                                                    </span>
+                                                    :
+                                                    null
+                                            }
+                                            <ConfigurationEditor configurations={this.props.cst}
+                                                                 handleInputChange={this.handleCstInputChange}/>
+                                        </div>
+                                        :
+                                        <div>
+                                            Please select a configuration.
+                                        </div>
+                                )
                             }
                         </div>
                     </TabPanel>
