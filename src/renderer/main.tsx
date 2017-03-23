@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import {Provider, Store} from "react-redux";
 import {createStore, applyMiddleware} from "redux";
 import thunkMiddleware from "redux-thunk";
-import * as loggerMiddleware from "redux-logger";
+import createLogger from "redux-logger";
 import {HGLContainer, HGLHeader, HGLFooter, HGLCenter} from "./components/Components";
 import MainTabs from "./components/tabs/Tabs";
 import TopMenu from "./components/TopMenu";
@@ -20,7 +20,7 @@ export function main() {
 
     const middleware = applyMiddleware(
         thunkMiddleware,
-        loggerMiddleware({level: 'info', collapsed: true, diff: true})
+        createLogger({level: 'info', collapsed: true, diff: true})
     );
 
     const store = createStore(reducers, middleware);
