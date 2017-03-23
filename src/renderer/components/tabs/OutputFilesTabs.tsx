@@ -1,17 +1,39 @@
 import * as React from "react";
 import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
 import "codemirror/mode/javascript/javascript";
+import {State} from "../../state";
+import * as selector from "../../selectors";
+import {connect, Dispatch} from "react-redux";
+import {getOutputFileNames} from "../../actions";
 import MouseEventHandler = React.MouseEventHandler;
 
-interface IAnalysisTabsProps {
+interface IOutputFilesTabsProps {
+    dispatch?: Dispatch<State>;
+    outputs: string[];
 }
 
-export class AnalysisTabs extends React.Component<IAnalysisTabsProps,any> {
+function mapStateToProps(state: State): IOutputFilesTabsProps {
+    return {
+        outputs: selector.getOutputNames(state)
+    }
+}
+
+class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
     constructor(props) {
         super(props);
     }
 
+    componentWillMount() {
+        this.props.dispatch(getOutputFileNames());
+    }
+
     public render() {
+        let outputFiles = [];
+        outputFiles.push(<option key="informationText" disabled>Select an output file...</option>);
+        for (let i in this.props.outputs) {
+            outputFiles.push(<option key={i}>{this.props.outputs[i]}</option>);
+        }
+
         return (
             <div className="dedop-panel-content">
                 <Tabs key="horizontal">
@@ -23,9 +45,7 @@ export class AnalysisTabs extends React.Component<IAnalysisTabsProps,any> {
                         <div className="panel-flexbox-configs">
                             <div className="pt-select pt-fill">
                                 <select>
-                                    <option selected>Select a configuration...</option>
-                                    <option value="1">Alternate Delay-Doppler Processing</option>
-                                    <option value="2">Modified Surface Locations</option>
+                                    {outputFiles}
                                 </select>
                             </div>
                         </div>
@@ -53,3 +73,5 @@ export class AnalysisTabs extends React.Component<IAnalysisTabsProps,any> {
         );
     }
 }
+
+export default connect(mapStateToProps)(OutputFilesTabs)

@@ -16,6 +16,7 @@ import {InputsAPI} from "./webapi/apis/InputsAPI";
 import {getSourceFiles} from "../common/sourceFileUtils";
 import {ConfigAPI} from "./webapi/apis/ConfigAPI";
 import {ProcessAPI} from "./webapi/apis/ProcessAPI";
+import {OutputAPI} from "./webapi/apis/OutputAPI";
 
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
@@ -596,6 +597,7 @@ export function setCurrentConfig(configName: string) {
             dispatch(updateCurrentConfig(configName));
             const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, configName);
             dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
+            dispatch(getOutputFileNames());
         }
 
         callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
@@ -783,6 +785,44 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
 }
 
 // ======================== Process related actions via WebAPI =============================================
+
+
+// ======================== Output related actions via WebAPI =============================================
+
+function outputAPI(state: State): OutputAPI {
+    return new OutputAPI(state.data.appConfig.webAPIClient);
+}
+
+export const UPDATE_OUTPUTS = 'UPDATE_OUTPUTS';
+
+export function updateOutputs(workspaceName: string, configName: string, outputs: string[]) {
+    return {
+        type: UPDATE_OUTPUTS, payload: {
+            workspaceName: workspaceName,
+            configName: configName,
+            outputs: outputs
+        }
+    };
+}
+
+export function getOutputFileNames() {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+        const currentConfigName = getState().control.currentConfigurationName;
+
+        function call() {
+            return outputAPI(getState()).get_output_names(currentWorkspaceName, currentConfigName);
+        }
+
+        function action(outputNames: string[]) {
+            dispatch(updateOutputs(currentWorkspaceName, currentConfigName, outputNames));
+        }
+
+        callAPI(dispatch, "Get output file names for configuration '".concat(currentConfigName).concat("'"), call, action);
+    }
+}
+
+// ======================== Output related actions via WebAPI =============================================
 
 
 function getCurrentWorkspaceIndex(state: State, workspaceName: string) {

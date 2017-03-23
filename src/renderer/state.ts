@@ -128,6 +128,7 @@ export interface Configuration {
     chd?: ProcessConfigurations;
     cnf?: ProcessConfigurations;
     cst?: ProcessConfigurations;
+    outputs?: string[];
 }
 
 export interface SourceFile {

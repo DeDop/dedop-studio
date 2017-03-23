@@ -3,12 +3,20 @@ import * as actions from "./actions";
 import {combineReducers} from "redux";
 import {initialControlState, initialDataState} from "./initialStates";
 
+function getWorkspaceIndex(workspaces: Workspace[], workspaceName: string) {
+    return workspaces.findIndex((x) => x.name === workspaceName);
+}
+
+function getConfigIndex(configurations: Configuration[], configName: string) {
+    return configurations.findIndex((x) => x.name === configName);
+}
+
 const dataReducer = (state: DataState = initialDataState, action) => {
 
     switch (action.type) {
         case actions.ADD_SOURCE_FILE: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
             const updatedWorkspace = Object.assign({}, workspace, {
                 inputs: [
                     ...workspace.inputs,
@@ -17,15 +25,15 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
             return Object.assign({}, state, {
                 workspaces: [
-                    ...state.workspaces.slice(0, index),
+                    ...state.workspaces.slice(0, workspaceIndex),
                     updatedWorkspace,
-                    ...state.workspaces.slice(index + 1),
+                    ...state.workspaces.slice(workspaceIndex + 1),
                 ]
             })
         }
         case actions.REMOVE_SOURCE_FILE: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
             const inputFileIndex = workspace.inputs.findIndex((x) => x.name === action.payload.sourceFileName);
             const updatedWorkspace = Object.assign({}, workspace, {
                 inputs: [
@@ -35,9 +43,9 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
             return Object.assign({}, state, {
                 workspaces: [
-                    ...state.workspaces.slice(0, index),
+                    ...state.workspaces.slice(0, workspaceIndex),
                     updatedWorkspace,
-                    ...state.workspaces.slice(index + 1),
+                    ...state.workspaces.slice(workspaceIndex + 1),
                 ]
             })
         }
@@ -73,8 +81,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             let newWorkspaces: Workspace[] = [];
             if (state.workspaces.length > 0) {
                 for (let i in state.workspaces) {
-                    const index = state.workspaces.findIndex((x) => x.name == action.payload[i].name);
-                    if (index < 0) {
+                    const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload[i].name);
+                    if (workspaceIndex < 0) {
                         newWorkspaces.push(action.payload[i])
                     }
                 }
@@ -89,30 +97,30 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
         }
         case actions.RENAME_WORKSPACE: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.oldWorkspaceName);
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.oldWorkspaceName);
             const newWorkspace = {
-                ...state.workspaces[index],
+                ...state.workspaces[workspaceIndex],
                 name: action.payload.newWorkspaceName
             };
             return Object.assign({}, state, {
                 workspaces: [
-                    ...state.workspaces.slice(0, index),
+                    ...state.workspaces.slice(0, workspaceIndex),
                     newWorkspace,
-                    ...state.workspaces.slice(index + 1)
+                    ...state.workspaces.slice(workspaceIndex + 1)
                 ]
             });
         }
         case actions.REMOVE_WORKSPACE: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload);
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload);
             return Object.assign({}, state, {
                 workspaceNames: [
-                    ...state.workspaces.slice(0, index),
-                    ...state.workspaces.slice(index + 1)
+                    ...state.workspaces.slice(0, workspaceIndex),
+                    ...state.workspaces.slice(workspaceIndex + 1)
                 ]
             });
         }
         case actions.UPDATE_WORKSPACE_SOURCE_FILES: {
-            let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspace.name);
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspace.name);
             let newWorkspace = Object.assign({}, action.payload.workspace, {
                 inputs: action.payload.sourceFiles
             });
@@ -125,12 +133,12 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
         }
         case actions.UPDATE_CONFIG_NAMES: {
-            let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
             const workspace = state.workspaces[workspaceIndex];
             let newConfigs: Configuration[] = [];
             let payloadConfigs: Configuration[] = action.payload.configs ? action.payload.configs : [];
             for (let newConfig of payloadConfigs) {
-                const configIndex = workspace.configs.findIndex((x) => x.name === newConfig.name);
+                const configIndex = getConfigIndex(workspace.configs, newConfig.name);
                 if (configIndex < 0) {
                     newConfigs.push(newConfig);
                 } else {
@@ -150,8 +158,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
         }
         case actions.ADD_CONFIG_NAME: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
             const updatedWorkspace = Object.assign({}, workspace, {
                 configs: [
                     ...workspace.configs,
@@ -163,16 +171,16 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
             return Object.assign({}, state, {
                 workspaces: [
-                    ...state.workspaces.slice(0, index),
+                    ...state.workspaces.slice(0, workspaceIndex),
                     updatedWorkspace,
-                    ...state.workspaces.slice(index + 1)
+                    ...state.workspaces.slice(workspaceIndex + 1)
                 ]
             });
         }
         case actions.UPDATE_CONFIG_NAME: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
-            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
+            const configIndex = getConfigIndex(workspace.configs, action.payload.configName);
             const updateConfig = Object.assign({}, workspace.configs[configIndex], {
                 name: action.payload.newConfigName,
                 lastUpdated: action.payload.currentTime
@@ -186,16 +194,16 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
             return Object.assign({}, state, {
                 workspaces: [
-                    ...state.workspaces.slice(0, index),
+                    ...state.workspaces.slice(0, workspaceIndex),
                     updatedWorkspace,
-                    ...state.workspaces.slice(index + 1)
+                    ...state.workspaces.slice(workspaceIndex + 1)
                 ]
             });
         }
         case actions.DELETE_CONFIG_NAME: {
-            const index = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
-            const workspace = state.workspaces[index];
-            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configName);
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
+            const configIndex = getConfigIndex(workspace.configs, action.payload.configName);
             const updatedWorkspace = Object.assign({}, workspace, {
                 configs: [
                     ...workspace.configs.slice(0, configIndex),
@@ -205,16 +213,16 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
             return Object.assign({}, state, {
                 workspaces: [
-                    ...state.workspaces.slice(0, index),
+                    ...state.workspaces.slice(0, workspaceIndex),
                     updatedWorkspace,
-                    ...state.workspaces.slice(index + 1)
+                    ...state.workspaces.slice(workspaceIndex + 1)
                 ]
             });
         }
         case actions.UPDATE_CONFIG: {
-            let workspaceIndex = state.workspaces.findIndex((x) => x.name === action.payload.workspaceName);
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
             const workspace = state.workspaces[workspaceIndex];
-            const configIndex = workspace.configs.findIndex((x) => x.name === action.payload.configuration.name);
+            const configIndex = getConfigIndex(workspace.configs, action.payload.configuration.name);
             const updateConfig = Object.assign({}, workspace.configs[configIndex], {
                 lastUpdated: action.payload.currentTime,
                 chd: action.payload.configuration.chd,
@@ -262,6 +270,28 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             };
             return Object.assign({}, state, {
                 version: configurationVersions
+            });
+        }
+        case actions.UPDATE_OUTPUTS: {
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
+            const configIndex = getConfigIndex(workspace.configs, action.payload.configName);
+            const updatedConfig = Object.assign({}, workspace.configs[configIndex], {
+                outputs: action.payload.outputs
+            });
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs.slice(0, configIndex),
+                    updatedConfig,
+                    ...workspace.configs.slice(configIndex + 1)
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, workspaceIndex),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(workspaceIndex + 1)
+                ]
             });
         }
     }

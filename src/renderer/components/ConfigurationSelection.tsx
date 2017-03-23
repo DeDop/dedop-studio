@@ -10,7 +10,7 @@ export interface IConfigurationSelectionProps {
 
 function mapStateToProps(state: State, ownProps): IConfigurationSelectionProps {
     return {
-        configurations: selector.getConfigurations(state),
+        configurations: selector.getAllConfigurations(state),
         onChangeSelection: ownProps.onChangeSelection
     };
 }

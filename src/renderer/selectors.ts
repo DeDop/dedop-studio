@@ -15,15 +15,24 @@ export const getCurrentWorkspace = createSelector(
     }
 );
 
-export const getConfigurations = createSelector(
+export const getAllConfigurations = createSelector(
     getCurrentWorkspace,
     (getCurrentWorkspace): Configuration[] => {
         return getCurrentWorkspace ? getCurrentWorkspace.configs : [];
     }
 );
 
+export const getCurrentConfiguration = createSelector(
+    getAllConfigurations,
+    getSelectedConfigurationName,
+    (getAllConfigurations, getSelectedConfigurationName): Configuration => {
+        const configIndex = getAllConfigurations.findIndex((x) => x.name == getSelectedConfigurationName);
+        return configIndex >= 0 ? getAllConfigurations[configIndex] : null;
+    }
+);
+
 export const getSelectedChd = createSelector(
-    getConfigurations,
+    getAllConfigurations,
     getSelectedConfigurationName,
     (getConfigurations, getSelectedConfigurationName): ProcessConfigurations => {
         const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfigurationName);
@@ -32,7 +41,7 @@ export const getSelectedChd = createSelector(
 );
 
 export const getSelectedCnf = createSelector(
-    getConfigurations,
+    getAllConfigurations,
     getSelectedConfigurationName,
     (getConfigurations, getSelectedConfigurationName): ProcessConfigurations => {
         const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfigurationName);
@@ -41,7 +50,7 @@ export const getSelectedCnf = createSelector(
 );
 
 export const getSelectedCst = createSelector(
-    getConfigurations,
+    getAllConfigurations,
     getSelectedConfigurationName,
     (getConfigurations, getSelectedConfigurationName): ProcessConfigurations => {
         const configIndex = getConfigurations.findIndex((x) => x.name === getSelectedConfigurationName);
@@ -50,7 +59,7 @@ export const getSelectedCst = createSelector(
 );
 
 export const getConfigurationNames = createSelector(
-    getConfigurations,
+    getAllConfigurations,
     (getConfigurations): string[] => {
         let configNames = [];
         for (let i of getConfigurations) {
@@ -73,5 +82,12 @@ export const getSelectedSourceFile = createSelector(
     (getAddedSourceFiles, getSelectedSourceFileName): SourceFile => {
         const sourceFileIndex = getAddedSourceFiles.findIndex((x) => x.name == getSelectedSourceFileName);
         return sourceFileIndex >= 0 ? getAddedSourceFiles[sourceFileIndex] : null;
+    }
+);
+
+export const getOutputNames = createSelector(
+    getCurrentConfiguration,
+    (getCurrentConfiguration): string[] => {
+        return getCurrentConfiguration ? getCurrentConfiguration.outputs : [];
     }
 );

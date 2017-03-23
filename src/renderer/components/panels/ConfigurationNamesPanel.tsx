@@ -30,7 +30,7 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
     return {
         selectedConfiguration: [state.control.selectedConfigurationName],
         currentConfiguration: state.control.currentConfigurationName,
-        configurations: selector.getConfigurations(state),
+        configurations: selector.getAllConfigurations(state),
         currentWorkspace: state.control.currentWorkspaceName
     }
 }
