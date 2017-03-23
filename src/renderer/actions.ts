@@ -686,6 +686,22 @@ export function getDefaultConfigurationVersions() {
     }
 }
 
+export function upgradeConfigurations(configName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+
+        function call() {
+            return configAPI(getState()).upgradeConfigs(currentWorkspaceName, configName);
+        }
+
+        function action(configuration: Configuration) {
+            dispatch(updateConfiguration(currentWorkspaceName, configuration));
+        }
+
+        callAPI(dispatch, "Upgrade configurations of '".concat(configName).concat("'"), call, action);
+    }
+}
+
 // ======================== Configuration related actions via WebAPI =============================================
 
 

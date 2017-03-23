@@ -5,7 +5,7 @@ import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
 import {ConfigurationEditor, CnfConfigurationEditor} from "../ConfigurationEditor";
 import "codemirror/mode/javascript/javascript";
 import {connect, Dispatch} from "react-redux";
-import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab} from "../../actions";
+import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab, upgradeConfigurations} from "../../actions";
 import * as selector from "../../selectors";
 
 const CONFIGURATION_VERSION_NOT_FOUND = -1;
@@ -157,7 +157,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     };
 
     private handleUpgradeConfig = () => {
-        console.log("upgrade now.")
+        this.props.dispatch(upgradeConfigurations(this.props.activeConfiguration));
     };
 
     public render() {

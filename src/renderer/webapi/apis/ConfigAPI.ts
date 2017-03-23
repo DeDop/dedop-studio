@@ -98,4 +98,8 @@ export class ConfigAPI {
     getDefaultConfigVersions(): JobPromise<{chdVersion: number, cnfVersion: number, cstVersion: number}> {
         return this.webAPIClient.call('get_default_config_versions', [], null, responseToConfigurationVersions);
     }
+
+    upgradeConfigs(workspaceName: string, configName: string): JobPromise<Configuration> {
+        return this.webAPIClient.call('upgrade_configs', [workspaceName, configName], null, responseToConfigurations);
+    }
 }
