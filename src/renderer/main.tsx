@@ -50,6 +50,7 @@ function connectWebAPIClient(store: Store<State>) {
 
         store.dispatch(actions.getAllWorkspaces());
         store.dispatch(actions.getCurrentWorkspace());
+        store.dispatch(actions.getDefaultConfigurationVersions());
 
         // This is a test, we keep it as a test an a code template for code that need to run later
         store.dispatch(dispatch => {

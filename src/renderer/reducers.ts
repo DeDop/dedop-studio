@@ -252,6 +252,18 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.UPDATE_DEFAULT_CONFIG_VERSIONS: {
+            const configurationVersions = {
+                configuration: {
+                    chd: action.payload.chdVersion,
+                    cnf: action.payload.cnfVersion,
+                    cst: action.payload.cstVersion
+                }
+            };
+            return Object.assign({}, state, {
+                version: configurationVersions
+            });
+        }
     }
     return state;
 };

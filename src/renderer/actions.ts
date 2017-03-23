@@ -244,7 +244,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(selectSourceFile(null));
             dispatch(updateSourceFileList(validSourceFiles));
             dispatch(getAllConfigs());
-            dispatch(getCurrentConfig())
+            dispatch(getCurrentConfig());
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
@@ -657,6 +657,32 @@ export function saveConfiguration(currentConfiguration: string,
         }
 
         callAPI(dispatch, "Save configuration values.", call, action);
+    }
+}
+
+export const UPDATE_DEFAULT_CONFIG_VERSIONS = 'UPDATE_DEFAULT_CONFIG_VERSIONS';
+
+export function udpateDefaultConfigurationVersions(chdVersion: number, cnfVersion: number, cstVersion: number) {
+    return {
+        type: UPDATE_DEFAULT_CONFIG_VERSIONS, payload: {
+            chdVersion: chdVersion,
+            cnfVersion: cnfVersion,
+            cstVersion: cstVersion
+        }
+    };
+}
+
+export function getDefaultConfigurationVersions() {
+    return (dispatch, getState) => {
+        function call() {
+            return configAPI(getState()).getDefaultConfigVersions();
+        }
+
+        function action(versions: {chdVersion: number, cnfVersion: number, cstVersion: number}) {
+            dispatch(udpateDefaultConfigurationVersions(versions.chdVersion, versions.cnfVersion, versions.cstVersion));
+        }
+
+        callAPI(dispatch, "Get default configuration versions.", call, action);
     }
 }
 

@@ -44,6 +44,14 @@ function responseToConfigurations(configurationsResponse): Configuration {
     });
 }
 
+function responseToConfigurationVersions(versions: any): {chdVersion: number, cnfVersion: number, cstVersion: number} {
+    return {
+        chdVersion: versions.chd_version,
+        cnfVersion: versions.cnf_version,
+        cstVersion: versions.cst_version
+    }
+}
+
 export class ConfigAPI {
     private webAPIClient: WebAPIClient;
 
@@ -85,5 +93,9 @@ export class ConfigAPI {
 
     saveConfigs(workspaceName: string, configName: string, configurations: {chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations}) {
         return this.webAPIClient.call('save_configs', [workspaceName, configName, configurations], null, null);
+    }
+
+    getDefaultConfigVersions(): JobPromise<{chdVersion: number, cnfVersion: number, cstVersion: number}> {
+        return this.webAPIClient.call('get_default_config_versions', [], null, responseToConfigurationVersions);
     }
 }

@@ -13,6 +13,7 @@ export interface DataState {
     processes: ProcessingItem[];
     workspaces?: Workspace[];
     appConfig: AppConfigState;
+    version?: Version;
 }
 
 export interface CommunicationState {
@@ -44,6 +45,16 @@ export interface SessionState {
 }
 
 export interface LocationState {
+}
+
+export interface Version {
+    configuration: ConfigurationVersion;
+}
+
+export interface ConfigurationVersion {
+    chd: number,
+    cnf: number,
+    cst: string
 }
 
 export interface  ToasterState {

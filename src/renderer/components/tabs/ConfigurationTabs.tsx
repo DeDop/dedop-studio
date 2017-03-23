@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as CodeMirror from "react-codemirror";
-import {ProcessConfigurations, State} from "../../state";
+import {ProcessConfigurations, State, ConfigurationVersion} from "../../state";
 import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
 import {ConfigurationEditor, CnfConfigurationEditor} from "../ConfigurationEditor";
 import "codemirror/mode/javascript/javascript";
@@ -13,6 +13,7 @@ interface IConfigurationTabsProps {
     chd: ProcessConfigurations;
     cnf: ProcessConfigurations;
     cst: ProcessConfigurations;
+    defaultConfVersion: ConfigurationVersion;
     codeEditorActive: boolean;
     activeConfiguration: string;
     currentTab: number;
@@ -23,6 +24,7 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
         chd: selector.getSelectedChd(state),
         cnf: selector.getSelectedCnf(state),
         cst: selector.getSelectedCst(state),
+        defaultConfVersion: state.data.version.configuration,
         codeEditorActive: state.control.codeEditorActive,
         activeConfiguration: state.control.selectedConfigurationName,
         currentTab: state.control.currentConfigurationTabPanel
@@ -77,15 +79,15 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         });
     }
 
-    private static getConfigVersion(config: ProcessConfigurations) {
+    private static getConfigVersion(config: ProcessConfigurations): number {
         if (config) {
             if ("__metainf__" in config) {
                 return config["__metainf__"]["version"];
             } else {
-                return "N/A";
+                return -1;
             }
         } else {
-            return "N/A";
+            return -1;
         }
     }
 
@@ -183,7 +185,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     options={this.state.options}/>
                                 :
                                 <div>
-                                    <span className="pt-tag pt-large">Version {this.state.chdVersion}</span>
+                                    <span
+                                        className={"pt-tag ".concat(this.state.chdVersion < this.props.defaultConfVersion.chd ? "pt-intent-warning" : "pt-intent-success")}>
+                                        Version {this.state.chdVersion >= 0 ? this.state.chdVersion : "N/A"}
+                                    </span>
                                     <ConfigurationEditor configurations={this.props.chd}
                                                          handleInputChange={this.handleChdInputChange}/>
                                 </div>
@@ -200,7 +205,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     options={this.state.options}/>
                                 :
                                 <div>
-                                    <span className="pt-tag pt-large">Version {this.state.cnfVersion}</span>
+                                    <span
+                                        className={"pt-tag ".concat(this.state.cnfVersion < this.props.defaultConfVersion.cnf ? "pt-intent-warning" : "pt-intent-success")}>
+                                        Version {this.state.cnfVersion >= 0 ? this.state.cnfVersion : "N/A"}
+                                    </span>
                                     <CnfConfigurationEditor configurations={this.state.cnfTemp}
                                                             handleInputChange={this.handleCnfInputChange}/>
                                 </div>
@@ -217,7 +225,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     options={this.state.options}/>
                                 :
                                 <div>
-                                    <span className="pt-tag pt-large">Version {this.state.cstVersion}</span>
+                                    <span
+                                        className={"pt-tag ".concat(this.state.cstVersion < this.props.defaultConfVersion.cst ? "pt-intent-warning" : "pt-intent-success")}>
+                                        Version {this.state.cstVersion >= 0 ? this.state.cstVersion : "N/A"}
+                                    </span>
                                     <ConfigurationEditor configurations={this.state.cstTemp}
                                                          handleInputChange={this.handleCstInputChange}/>
                                 </div>
