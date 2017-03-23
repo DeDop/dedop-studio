@@ -33,19 +33,44 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     constructor(props) {
         super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
+
+        const chdVersion = ConfigurationTabs.getConfigVersion(this.props.chd);
+        const cnfVersion = ConfigurationTabs.getConfigVersion(this.props.cnf);
+        const cstVersion = ConfigurationTabs.getConfigVersion(this.props.cst);
         this.state = {
             chdTemp: this.props.chd,
             cnfTemp: this.props.cnf,
             cstTemp: this.props.cst,
+            chdVersion: chdVersion,
+            cnfVersion: cnfVersion,
+            cstVersion: cstVersion
         };
     }
 
     componentWillReceiveProps(nextProps) {
+        const chdVersion = ConfigurationTabs.getConfigVersion(nextProps.chd);
+        const cnfVersion = ConfigurationTabs.getConfigVersion(nextProps.cnf);
+        const cstVersion = ConfigurationTabs.getConfigVersion(nextProps.cst);
         this.setState({
             chdTemp: nextProps.chd,
             cnfTemp: nextProps.cnf,
             cstTemp: nextProps.cst,
+            chdVersion: chdVersion,
+            cnfVersion: cnfVersion,
+            cstVersion: cstVersion
         });
+    }
+
+    private static getConfigVersion(config: ProcessConfigurations) {
+        if (config) {
+            if ("__metainf__" in config) {
+                return config["__metainf__"]["version"];
+            } else {
+                return "N/A";
+            }
+        } else {
+            return "N/A";
+        }
     }
 
     private handleChangeMode() {
@@ -151,8 +176,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     onChange={updateChdCode}
                                     options={options}/>
                                 :
-                                <ConfigurationEditor configurations={this.props.chd}
-                                                     handleInputChange={handleChdInputChange}/>
+                                <div>
+                                    <span className="pt-tag pt-large">Version {this.state.chdVersion}</span>
+                                    <ConfigurationEditor configurations={this.props.chd}
+                                                         handleInputChange={handleChdInputChange}/>
+                                </div>
                             }
                         </div>
                     </TabPanel>
@@ -165,8 +193,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     onChange={updateCnfCode}
                                     options={options}/>
                                 :
-                                <CnfConfigurationEditor configurations={this.state.cnfTemp}
-                                                        handleInputChange={handleCnfInputChange}/>
+                                <div>
+                                    <span className="pt-tag pt-large">Version {this.state.cnfVersion}</span>
+                                    <CnfConfigurationEditor configurations={this.state.cnfTemp}
+                                                            handleInputChange={handleCnfInputChange}/>
+                                </div>
                             }
                         </div>
                     </TabPanel>
@@ -179,8 +210,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                     onChange={updateCstCode}
                                     options={options}/>
                                 :
-                                <ConfigurationEditor configurations={this.state.cstTemp}
-                                                     handleInputChange={handleCstInputChange}/>
+                                <div>
+                                    <span className="pt-tag pt-large">Version {this.state.cstVersion}</span>
+                                    <ConfigurationEditor configurations={this.state.cstTemp}
+                                                         handleInputChange={handleCstInputChange}/>
+                                </div>
                             }
                         </div>
                     </TabPanel>
