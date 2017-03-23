@@ -33,6 +33,14 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     constructor(props) {
         super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
+        this.updateChdCode = this.updateChdCode.bind(this);
+        this.updateCnfCode = this.updateCnfCode.bind(this);
+        this.updateCstCode = this.updateCstCode.bind(this);
+        this.handleSaveConfig = this.handleSaveConfig.bind(this);
+        this.handleChdInputChange = this.handleChdInputChange.bind(this);
+        this.handleCnfInputChange = this.handleCnfInputChange.bind(this);
+        this.handleCstInputChange = this.handleCstInputChange.bind(this);
+        this.handleChangeTab = this.handleChangeTab.bind(this);
 
         const chdVersion = ConfigurationTabs.getConfigVersion(this.props.chd);
         const cnfVersion = ConfigurationTabs.getConfigVersion(this.props.cnf);
@@ -57,7 +65,15 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
             cstTemp: nextProps.cst,
             chdVersion: chdVersion,
             cnfVersion: cnfVersion,
-            cstVersion: cstVersion
+            cstVersion: cstVersion,
+            options: {
+                lineNumbers: true,
+                mode: {
+                    name: "javascript",
+                    json: true
+                },
+                lineWrapping: true
+            }
         });
     }
 
@@ -77,74 +93,64 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.props.dispatch(updateConfigEditorMode(!this.props.codeEditorActive));
     }
 
+    private updateChdCode = (newCode: string) => {
+        this.setState({
+            chdTemp: JSON.parse(newCode),
+        });
+    };
+
+    private updateCnfCode = (newCode: string) => {
+        this.setState({
+            cnfTemp: JSON.parse(newCode),
+        });
+    };
+
+    private updateCstCode = (newCode: string) => {
+        this.setState({
+            cstTemp: JSON.parse(newCode),
+        });
+    };
+
+    private handleSaveConfig = () => {
+        const chd = this.state.chdTemp;
+        const cnf = this.state.cnfTemp;
+        const cst = this.state.cstTemp;
+        this.props.dispatch(saveConfiguration(this.props.activeConfiguration, chd, cnf, cst));
+    };
+
+    private handleChdInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
+        const chdConfigurations = this.props.chd;
+        chdConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+        this.setState({
+            chdTemp: chdConfigurations
+        })
+    };
+
+    private handleCnfInputChange = (event: any) => {
+        const cnfConfigurations = this.props.cnf;
+        if (event.currentTarget.type == 'checkbox') {
+            cnfConfigurations[event.currentTarget.name].value = event.currentTarget.checked;
+        } else {
+            cnfConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+        }
+        this.setState({
+            cnfTemp: cnfConfigurations
+        })
+    };
+
+    private handleCstInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
+        const cstConfigurations = this.props.cst;
+        cstConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+        this.setState({
+            cstTemp: cstConfigurations
+        })
+    };
+
+    private handleChangeTab = (selectedTabIndex: number) => {
+        this.props.dispatch(updateConfigurationTab(selectedTabIndex));
+    };
+
     public render() {
-        const updateChdCode = (newCode: string) => {
-            this.setState({
-                chdTemp: JSON.parse(newCode),
-            });
-        };
-
-        const updateCnfCode = (newCode: string) => {
-            this.setState({
-                cnfTemp: JSON.parse(newCode),
-            });
-        };
-
-        const updateCstCode = (newCode: string) => {
-            this.setState({
-                cstTemp: JSON.parse(newCode),
-            });
-        };
-
-        const options = {
-            lineNumbers: true,
-            mode: {
-                name: "javascript",
-                json: true
-            },
-            lineWrapping: true
-        };
-
-        const handleSaveConfig = () => {
-            const chd = this.state.chdTemp;
-            const cnf = this.state.cnfTemp;
-            const cst = this.state.cstTemp;
-            this.props.dispatch(saveConfiguration(this.props.activeConfiguration, chd, cnf, cst));
-        };
-
-        const handleChdInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
-            const chdConfigurations = this.props.chd;
-            chdConfigurations[event.currentTarget.name].value = event.currentTarget.value;
-            this.setState({
-                chdTemp: chdConfigurations
-            })
-        };
-
-        const handleCnfInputChange = (event: any) => {
-            const cnfConfigurations = this.props.cnf;
-            if (event.currentTarget.type == 'checkbox') {
-                cnfConfigurations[event.currentTarget.name].value = event.currentTarget.checked;
-            } else {
-                cnfConfigurations[event.currentTarget.name].value = event.currentTarget.value;
-            }
-            this.setState({
-                cnfTemp: cnfConfigurations
-            })
-        };
-
-        const handleCstInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
-            const cstConfigurations = this.props.cst;
-            cstConfigurations[event.currentTarget.name].value = event.currentTarget.value;
-            this.setState({
-                cstTemp: cstConfigurations
-            })
-        };
-
-        const handleChangeTab = (selectedTabIndex: number) => {
-            this.props.dispatch(updateConfigurationTab(selectedTabIndex));
-        };
-
-
         return (
             <div>
                 <div style={{display:'flex', margin: '10px 0', flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -154,12 +160,12 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         <span className="pt-control-indicator"/>
                         Code editor
                     </label>
-                    <button className="pt-button pt-intent-primary" onClick={handleSaveConfig}>
+                    <button className="pt-button pt-intent-primary" onClick={this.handleSaveConfig}>
                         Save Configuration
                     </button>
                 </div>
                 <Tabs key="horizontal"
-                      onChange={handleChangeTab}
+                      onChange={this.handleChangeTab}
                       selectedTabIndex={this.props.currentTab ? this.props.currentTab : 0}
                 >
                     <TabList>
@@ -173,13 +179,13 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                 ?
                                 <CodeMirror
                                     value={this.state.chdTemp ? JSON.stringify(this.state.chdTemp, null, 4) : "please select a configuration"}
-                                    onChange={updateChdCode}
-                                    options={options}/>
+                                    onChange={this.updateChdCode}
+                                    options={this.state.options}/>
                                 :
                                 <div>
                                     <span className="pt-tag pt-large">Version {this.state.chdVersion}</span>
                                     <ConfigurationEditor configurations={this.props.chd}
-                                                         handleInputChange={handleChdInputChange}/>
+                                                         handleInputChange={this.handleChdInputChange}/>
                                 </div>
                             }
                         </div>
@@ -190,13 +196,13 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                 ?
                                 <CodeMirror
                                     value={this.state.cnfTemp ? JSON.stringify(this.state.cnfTemp, null, 4) : "please select a configuration"}
-                                    onChange={updateCnfCode}
-                                    options={options}/>
+                                    onChange={this.updateCnfCode}
+                                    options={this.state.options}/>
                                 :
                                 <div>
                                     <span className="pt-tag pt-large">Version {this.state.cnfVersion}</span>
                                     <CnfConfigurationEditor configurations={this.state.cnfTemp}
-                                                            handleInputChange={handleCnfInputChange}/>
+                                                            handleInputChange={this.handleCnfInputChange}/>
                                 </div>
                             }
                         </div>
@@ -207,13 +213,13 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                                 ?
                                 <CodeMirror
                                     value={this.state.cstTemp ? JSON.stringify(this.state.cstTemp, null, 4) : "please select a configuration"}
-                                    onChange={updateCstCode}
-                                    options={options}/>
+                                    onChange={this.updateCstCode}
+                                    options={this.state.options}/>
                                 :
                                 <div>
                                     <span className="pt-tag pt-large">Version {this.state.cstVersion}</span>
                                     <ConfigurationEditor configurations={this.state.cstTemp}
-                                                         handleInputChange={handleCstInputChange}/>
+                                                         handleInputChange={this.handleCstInputChange}/>
                                 </div>
                             }
                         </div>

@@ -133,6 +133,9 @@ export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, 
         let flagElements = [];
         const configurations = this.props.configurations;
         for (let i in configurations) {
+            if (i == "__metainf__") {
+                continue;
+            }
             if (configurations[i].units !== 'flag') {
                 propertiesElements.push(<ConfigurationSingleEntry key={i}
                                                                   configName={i}
