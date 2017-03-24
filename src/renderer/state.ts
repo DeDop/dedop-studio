@@ -36,6 +36,7 @@ export interface ControlState {
     selectedConfigurationName?: string;
     selectedSourceFileName?: string;
     selectedSourceType?: string;
+    selectedOutputFileNames?: string[];
     codeEditorActive?: boolean;
     processName?: string;
     currentToasterState?: ToasterState[]

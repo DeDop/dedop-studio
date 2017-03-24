@@ -823,6 +823,12 @@ export function getOutputFileNames() {
     }
 }
 
+export const UPDATE_SELECTED_OUTPUTS = 'UPDATE_SELECTED_OUTPUTS';
+
+export function updateSelectedOutputs(selectedOutputs: string[]) {
+    return {type: UPDATE_SELECTED_OUTPUTS, payload: selectedOutputs};
+}
+
 // ======================== Output related actions via WebAPI =============================================
 
 

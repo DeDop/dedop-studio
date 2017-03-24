@@ -4,28 +4,36 @@ import "codemirror/mode/javascript/javascript";
 import {State} from "../../state";
 import * as selector from "../../selectors";
 import {connect, Dispatch} from "react-redux";
-import {getOutputFileNames} from "../../actions";
+import {getOutputFileNames, updateSelectedOutputs} from "../../actions";
 import MouseEventHandler = React.MouseEventHandler;
 
 interface IOutputFilesTabsProps {
     dispatch?: Dispatch<State>;
     outputs: string[];
+    selectedOutputFileNames: string[];
 }
 
 function mapStateToProps(state: State): IOutputFilesTabsProps {
     return {
-        outputs: selector.getOutputNames(state)
+        outputs: selector.getOutputNames(state),
+        selectedOutputFileNames: state.control.selectedOutputFileNames
     }
 }
 
 class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
     constructor(props) {
         super(props);
+        this.handleOnChangeOutputFile = this.handleOnChangeOutputFile.bind(this);
     }
 
     componentWillMount() {
         this.props.dispatch(getOutputFileNames());
     }
+
+    private handleOnChangeOutputFile = (event: React.FormEvent<HTMLSelectElement>) => {
+        const selectedOutput = event.currentTarget.value;
+        this.props.dispatch(updateSelectedOutputs([selectedOutput]));
+    };
 
     public render() {
         let outputFiles = [];
@@ -44,7 +52,9 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                     <TabPanel>
                         <div className="panel-flexbox-configs">
                             <div className="pt-select pt-fill">
-                                <select>
+                                <select
+                                    value={this.props.selectedOutputFileNames ? this.props.selectedOutputFileNames[0] : undefined}
+                                    onChange={this.handleOnChangeOutputFile}>
                                     {outputFiles}
                                 </select>
                             </div>

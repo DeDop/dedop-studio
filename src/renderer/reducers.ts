@@ -379,6 +379,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 currentOutputDirectory: action.payload
             })
         }
+        case actions.UPDATE_SELECTED_OUTPUTS: {
+            return Object.assign({}, state, {
+                selectedOutputFileNames: action.payload
+            })
+        }
     }
     return state;
 };
