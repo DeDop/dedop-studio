@@ -3,13 +3,11 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
 import {
     updateConfigSelection,
-    getAllConfigs,
     addNewConfig,
     removeConfig,
     copyConfig,
     renameConfig,
     setCurrentConfig,
-    getCurrentConfig,
     getConfigurations
 } from "../../actions";
 import {Configuration, State} from "../../state";
@@ -36,11 +34,6 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
 }
 
 class ConfigurationNamesPanel extends React.Component<any, any> {
-    componentWillMount() {
-        this.props.dispatch(getAllConfigs());
-        this.props.dispatch(getCurrentConfig());
-    }
-
     public state = {
         isFileNotSelectedAlertOpen: false,
         isAddConfigDialogOpen: false,

@@ -21,10 +21,6 @@ function mapStateToProps(state: State): IRunSettingsPanelProps {
 }
 
 class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
-    componentWillMount() {
-        this.props.dispatch(getAllConfigs());
-    }
-
     componentWillReceiveProps(nextProps) {
         this.setState({
             processName: nextProps.processName
