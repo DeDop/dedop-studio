@@ -1,4 +1,5 @@
 import {createSelector} from "reselect";
+import * as path from "path";
 import {State, ProcessConfigurations, SourceFile, Configuration, Workspace} from "./state";
 
 const getSelectedConfigurationName = (state: State) => state.control.selectedConfigurationName;
@@ -89,5 +90,16 @@ export const getOutputNames = createSelector(
     getCurrentConfiguration,
     (getCurrentConfiguration): string[] => {
         return getCurrentConfiguration ? getCurrentConfiguration.outputs : [];
+    }
+);
+
+export const getOutputDirectory = createSelector(
+    getCurrentWorkspace,
+    getCurrentConfiguration,
+    (getCurrentWorkspace, getCurrentConfiguration): string => {
+        if (getCurrentWorkspace && getCurrentConfiguration) {
+            return path.join(getCurrentWorkspace.directory, "configs", getCurrentConfiguration.name, "outputs");
+        }
+        return "";
     }
 );

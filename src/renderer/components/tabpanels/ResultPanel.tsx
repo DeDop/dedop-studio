@@ -18,11 +18,6 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
                 <div className="panel-flexbox-item-configurations">
                     <OrdinaryPanelHeader title="Output Files" icon="pt-icon-document"/>
                     <OutputFileTabs/>
-                    <div style={{textAlign: 'right'}}>
-                        <button className="pt-button pt-intent-primary" style={{margin: '10px 0'}}>
-                            Open Folder
-                        </button>
-                    </div>
                 </div>
                 <div className="panel-flexbox-item">
                     <OrdinaryPanelHeader title="Analysis Configuration" icon="pt-icon-timeline-area-chart"/>

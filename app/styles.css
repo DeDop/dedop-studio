@@ -460,6 +460,22 @@ textarea.pt-input {
 
 /* Configurations styling===================================================*/
 
+/* Output files styling===================================================*/
+
+.panel-flexbox-output-select {
+    display: flex;
+    height: 100%;
+    padding-top: 10px;
+    overflow: auto;
+}
+
+.panel-flexbox-output-select-icon {
+    margin-left: 15px;
+    padding-top: 5px;
+}
+
+/* Output files styling===================================================*/
+
 /* Listbox styling =========================================================*/
 
 .dedop-list-box {
@@ -594,7 +610,6 @@ ul.dedop-list-box li.dedop-selected {
     width: 300px;
 }
 
-
 .dedop-dialog-missing-parameters {
     background-color: #86a5b0;
     width: 700px;
@@ -634,6 +649,7 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-table-missing-parameters td {
     height: 30px;
 }
+
 /* Dialog styling =========================================================*/
 
 /* Context menu styling =========================================================*/
