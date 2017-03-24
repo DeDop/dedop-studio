@@ -829,6 +829,18 @@ export function updateSelectedOutputs(selectedOutputs: string[]) {
     return {type: UPDATE_SELECTED_OUTPUTS, payload: selectedOutputs};
 }
 
+export function inspectOutput(outputFilePath: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+
+        function call() {
+            return outputAPI(getState()).inspect_output(currentWorkspaceName, outputFilePath);
+        }
+
+        callAPI(dispatch, "Inspecting output file '".concat(outputFilePath).concat("'"), call);
+    }
+}
+
 // ======================== Output related actions via WebAPI =============================================
 
 

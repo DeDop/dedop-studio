@@ -4,7 +4,7 @@ import "codemirror/mode/javascript/javascript";
 import {State} from "../../state";
 import * as selector from "../../selectors";
 import {connect, Dispatch} from "react-redux";
-import {getOutputFileNames, updateSelectedOutputs} from "../../actions";
+import {getOutputFileNames, updateSelectedOutputs, inspectOutput} from "../../actions";
 import {shell} from "electron";
 import MouseEventHandler = React.MouseEventHandler;
 
@@ -42,6 +42,10 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
         const openOutputDirectory = shell.openItem(this.props.outputDirectory)
     };
 
+    private handleInspectOutput = () => {
+        this.props.dispatch(inspectOutput(this.props.selectedOutputFileNames[0]));
+    };
+
     public render() {
         let outputFiles = [];
         outputFiles.push(<option key="informationText" disabled>Select an output file...</option>);
@@ -67,7 +71,9 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                             </div>
                             <Tooltip content="inspect output file">
                                 <span
-                                    className="pt-icon-standard pt-icon-document-open panel-flexbox-output-select-icon pt-intent-primary"/>
+                                    className="pt-icon-standard pt-icon-document-open panel-flexbox-output-select-icon pt-intent-primary"
+                                    onClick={this.handleInspectOutput}
+                                />
                             </Tooltip>
                             <Tooltip content="open output directory">
                                 <span className="pt-icon-standard pt-icon-folder-open panel-flexbox-output-select-icon"
