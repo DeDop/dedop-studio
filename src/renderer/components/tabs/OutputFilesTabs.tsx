@@ -4,22 +4,25 @@ import "codemirror/mode/javascript/javascript";
 import {State} from "../../state";
 import * as selector from "../../selectors";
 import {connect, Dispatch} from "react-redux";
-import {getOutputFileNames, updateSelectedOutputs, inspectOutput} from "../../actions";
+import {getOutputFileNames, updateSelectedOutputs, inspectOutput, updateOutputFilesTab} from "../../actions";
 import {shell} from "electron";
 import MouseEventHandler = React.MouseEventHandler;
+import {GeneralAlert} from "../Alerts";
 
 interface IOutputFilesTabsProps {
     dispatch?: Dispatch<State>;
     outputs: string[];
     selectedOutputFileNames: string[];
     outputDirectory: string;
+    currentTab: number;
 }
 
 function mapStateToProps(state: State): IOutputFilesTabsProps {
     return {
         outputs: selector.getOutputNames(state),
         selectedOutputFileNames: state.control.selectedOutputFileNames,
-        outputDirectory: selector.getOutputDirectory(state)
+        outputDirectory: selector.getOutputDirectory(state),
+        currentTab: state.control.currentOutputFilesTabPanel
     }
 }
 
@@ -27,11 +30,22 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
     constructor(props) {
         super(props);
         this.handleOnChangeOutputFile = this.handleOnChangeOutputFile.bind(this);
+        this.handleInspectOutput = this.handleInspectOutput.bind(this);
+        this.handleCloseAlert = this.handleCloseAlert.bind(this);
     }
 
     componentWillMount() {
         this.props.dispatch(getOutputFileNames());
     }
+
+    public state = {
+        isOutputFileNotSelectedAlertOpen: false,
+    };
+
+    private handleChangeTab = (selectedTabIndex: number) => {
+        this.props.dispatch(updateOutputFilesTab(selectedTabIndex));
+        this.props.dispatch(updateSelectedOutputs([]));
+    };
 
     private handleOnChangeOutputFile = (event: React.FormEvent<HTMLSelectElement>) => {
         const selectedOutput = event.currentTarget.value;
@@ -43,7 +57,18 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
     };
 
     private handleInspectOutput = () => {
+        if (!this.props.selectedOutputFileNames) {
+            this.setState({
+                isOutputFileNotSelectedAlertOpen: true
+            })
+        }
         this.props.dispatch(inspectOutput(this.props.selectedOutputFileNames[0]));
+    };
+
+    private handleCloseAlert = () => {
+        this.setState({
+            isOutputFileNotSelectedAlertOpen: false,
+        })
     };
 
     public render() {
@@ -55,7 +80,10 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
 
         return (
             <div className="dedop-panel-content">
-                <Tabs key="horizontal">
+                <Tabs key="horizontal"
+                      onChange={this.handleChangeTab}
+                      selectedTabIndex={this.props.currentTab ? this.props.currentTab : 0}
+                >
                     <TabList>
                         <Tab>Single</Tab>
                         <Tab>Multi</Tab>
@@ -65,6 +93,7 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                             <div className="pt-select pt-fill">
                                 <select
                                     value={this.props.selectedOutputFileNames ? this.props.selectedOutputFileNames[0] : undefined}
+                                    defaultValue="Select an output file..."
                                     onChange={this.handleOnChangeOutputFile}>
                                     {outputFiles}
                                 </select>
@@ -101,6 +130,13 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                         </div>
                     </TabPanel>
                 </Tabs>
+                <GeneralAlert
+                    isAlertOpen={this.state.isOutputFileNotSelectedAlertOpen}
+                    onConfirm={this.handleCloseAlert}
+                    className="dedop-alert-warning"
+                    iconName="pt-icon-warning-sign"
+                    message="No output file has been selected"
+                />
             </div>
         );
     }

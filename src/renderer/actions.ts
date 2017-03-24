@@ -23,6 +23,7 @@ export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
 export const UPDATE_SOURCE_FILE_LIST = 'UPDATE_SOURCE_FILE_LIST';
 export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
+export const UPDATE_OUTPUT_FILES_TAB = 'UPDATE_OUTPUT_FILES_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const UPDATE_SELECTED_SOURCE_TYPE = 'UPDATE_SELECTED_SOURCE_TYPE';
 export const UPDATE_CURRENT_OUTPUT_DIRECTORY = 'UPDATE_CURRENT_OUTPUT_DIRECTORY';
@@ -53,6 +54,10 @@ export function updateMainTab(newTabId: number) {
 
 export function updateConfigurationTab(newTabId: number) {
     return {type: UPDATE_CONFIGURATION_TAB, payload: newTabId};
+}
+
+export function updateOutputFilesTab(newTabId: number) {
+    return {type: UPDATE_OUTPUT_FILES_TAB, payload: newTabId};
 }
 
 export function updateConfigEditorMode(codeEditorActive: boolean) {

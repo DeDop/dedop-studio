@@ -35,7 +35,7 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
 
 class ConfigurationNamesPanel extends React.Component<any, any> {
     public state = {
-        isFileNotSelectedAlertOpen: false,
+        isOutputFileNotSelectedAlertOpen: false,
         isAddConfigDialogOpen: false,
         isCopyConfigDialogOpen: false,
         isRenameConfigDialogOpen: false,
@@ -58,7 +58,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 })
             } else {
                 this.setState({
-                    isFileNotSelectedAlertOpen: true
+                    isOutputFileNotSelectedAlertOpen: true
                 })
             }
         };
@@ -70,7 +70,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 })
             } else {
                 this.setState({
-                    isFileNotSelectedAlertOpen: true
+                    isOutputFileNotSelectedAlertOpen: true
                 })
             }
         };
@@ -80,7 +80,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 this.props.dispatch(removeConfig(this.props.selectedConfiguration[0]));
             } else {
                 this.setState({
-                    isFileNotSelectedAlertOpen: true
+                    isOutputFileNotSelectedAlertOpen: true
                 })
             }
         };
@@ -157,7 +157,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleCloseAlert = () => {
             this.setState({
-                isFileNotSelectedAlertOpen: false,
+                isOutputFileNotSelectedAlertOpen: false,
             })
         };
 
@@ -219,7 +219,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                          onItemDoubleClick={handleCurrentConfig}
                 />
                 <GeneralAlert
-                    isAlertOpen={this.state.isFileNotSelectedAlertOpen}
+                    isAlertOpen={this.state.isOutputFileNotSelectedAlertOpen}
                     onConfirm={handleCloseAlert}
                     className="dedop-alert-warning"
                     iconName="pt-icon-warning-sign"
