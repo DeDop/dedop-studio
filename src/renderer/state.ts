@@ -54,7 +54,7 @@ export interface Version {
 export interface ConfigurationVersion {
     chd: number,
     cnf: number,
-    cst: string
+    cst: number
 }
 
 export interface  ToasterState {
