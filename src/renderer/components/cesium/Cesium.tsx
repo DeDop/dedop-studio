@@ -1,5 +1,6 @@
-import * as React from 'react';
-import {IPermanentComponentProps, PermanentComponent} from '../util/PermanentComponent'
+import * as React from "react";
+import {IPermanentComponentProps, PermanentComponent} from "../util/PermanentComponent";
+import {CesiumPoint} from "../../state";
 
 const Cesium: any = require('cesium');
 // console.log(Cesium);
@@ -12,6 +13,7 @@ const Cartesian3: any = Cesium.Cartesian3;
 interface CesiumViewer {
     container: HTMLElement;
     entities: any;
+    camera: any;
 }
 
 // TODO: only used to get electron.app.getAppPath
@@ -80,12 +82,18 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
         let viewer = new CesiumViewer(container, cesiumViewerOptions);
 
         // Add the initial points
-        this.props.cities.forEach((city) => {
+        this.addNewEntities(viewer, this.props.cities);
+
+        return viewer;
+    }
+
+    private addNewEntities(viewer: any, cities: CesiumPoint[]) {
+        cities.forEach((city) => {
             //noinspection JSFileReferences
             let billboard = {
-                image: app.getAppPath() + '/resources/images/pin.svg',
-                width: 30,
-                height: 30
+                image: app.getAppPath() + '/resources/images/dot-red.png',
+                width: 10,
+                height: 10
             };
             viewer.entities.add(new Entity({
                 id: city.id,
@@ -94,21 +102,27 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
                 billboard: billboard
             }));
         });
-
-        return viewer;
     }
 
     componentWillReceiveProps(nextProps: ICesiumComponentProps) {
         console.log("CesiumComponent.componentWillReceiveProps()");
-        const patches = CesiumComponent.calculatePatches(this.props, nextProps);
-        const viewer = this.viewer;
-        // Map patch operations to Cesium's Entity API
-        patches.forEach((patch) => {
-            if (patch.attribute === 'visible') {
-                this.viewer.entities.getById(patch.id).show = patch.nextValue;
-            }
-            // else if (patch.attribute === 'name') { .. and so on .. }
-        });
+        if (this.props.cities.length == nextProps.cities.length) {
+            const patches = CesiumComponent.calculatePatches(this.props, nextProps);
+            // Map patch operations to Cesium's Entity API
+            patches.forEach((patch) => {
+                if (patch.attribute === 'visible') {
+                    this.viewer.entities.getById(patch.id).show = patch.nextValue;
+                }
+                // else if (patch.attribute === 'name') { .. and so on .. }
+            });
+        } else {
+            this.viewer.entities.removeAll();
+            this.addNewEntities(this.viewer, nextProps.cities);
+            // TODO(hans-permana, 20170326): the flyTo() zoom is at the moment does not really look nice. Try to improve it!
+            this.viewer.camera.flyTo({
+                destination: new Cartesian3.fromDegrees(nextProps.cities[0].longitude, nextProps.cities[0].latitude)
+            })
+        }
     }
 
     private static calculatePatches(currentProps: ICesiumComponentProps, nextProps: ICesiumComponentProps) {

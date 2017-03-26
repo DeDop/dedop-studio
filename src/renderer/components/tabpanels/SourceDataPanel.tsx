@@ -8,7 +8,7 @@ import {
     selectSourceFileDirectory,
     updateSourceFileList,
     getGlobalAttributes,
-    updateCurrentGlobalAttributes
+    updateCurrentGlobalAttributes, getLatLon, updateCurrentCesiumPoints
 } from "../../actions";
 import {remote} from "electron";
 import {GeneralAlert} from "../Alerts";
@@ -61,8 +61,10 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
             if (newSelection[0] || newSelection[0] == 0) {
                 const sourceFileIndex = this.props.l1aInputFiles.findIndex((x) => x.name == newSelection[0]);
                 this.props.dispatch(getGlobalAttributes(path.join(this.props.l1aInputFiles[sourceFileIndex].path)));
+                this.props.dispatch(getLatLon(path.join(this.props.l1aInputFiles[sourceFileIndex].path)));
             } else {
                 this.props.dispatch(updateCurrentGlobalAttributes([]));
+                this.props.dispatch(updateCurrentCesiumPoints([]));
             }
         };
 

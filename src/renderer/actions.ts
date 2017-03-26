@@ -6,7 +6,7 @@ import {
     TaskState,
     Workspace,
     GlobalAttribute,
-    Configuration
+    Configuration, CesiumPoint
 } from "./state";
 import * as moment from "moment";
 import * as path from "path";
@@ -410,6 +410,26 @@ export function getGlobalAttributes(inputFilePath: string) {
 
         function action(globalAttributes: GlobalAttribute[]) {
             dispatch(updateCurrentGlobalAttributes(globalAttributes))
+        }
+
+        callAPI(dispatch, "Get global attributes of ".concat(inputFilePath), call, action);
+    }
+}
+
+export const UPDATE_CURRENT_CESIUM_POINTS = 'UPDATE_CURRENT_CESIUM_POINTS';
+
+export function updateCurrentCesiumPoints(cesiumPoints: CesiumPoint[]) {
+    return {type: UPDATE_CURRENT_CESIUM_POINTS, payload: cesiumPoints};
+}
+
+export function getLatLon(inputFilePath: string) {
+    return (dispatch, getState) => {
+        function call() {
+            return inputsAPI(getState()).getLatLon(inputFilePath);
+        }
+
+        function action(cesiumPoints: CesiumPoint[]) {
+            dispatch(updateCurrentCesiumPoints(cesiumPoints))
         }
 
         callAPI(dispatch, "Get global attributes of ".concat(inputFilePath), call, action);

@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import * as React from "react";
-import {FootprintsPanel} from "./FootprintsPanel";
+import FootprintsPanel from "./FootprintsPanel";
 import SourceDataPanel from "../tabpanels/SourceDataPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalAttributesCollapse";
 

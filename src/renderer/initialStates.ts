@@ -3,6 +3,7 @@ import {Configuration, ControlState, DataState} from "./state";
 export const initialControlState: ControlState = {
     sourceFiles: [],
     globalAttributes: [],
+    cesiumPoints: [],
     mainPanelTitle: null,
     selectedConfigurationName: "default",
     currentConfigurationTabPanel: 0,

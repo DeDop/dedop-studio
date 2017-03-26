@@ -1,6 +1,6 @@
 import {WebAPIClient} from "../WebAPIClient";
 import {JobPromise} from "../Job";
-import {Workspace, GlobalAttribute} from "../../state";
+import {Workspace, GlobalAttribute, CesiumPoint} from "../../state";
 
 function responseToGlobalAttributes(globalAttributesResponse: any): GlobalAttribute[] {
     if (!globalAttributesResponse) {
@@ -14,6 +14,26 @@ function responseToGlobalAttributes(globalAttributesResponse: any): GlobalAttrib
         })
     }
     return globalAttributes;
+}
+
+function responseToCesiumPoints(latLonResponse: {lat: number[], lon: number[]}): CesiumPoint[] {
+    if (!latLonResponse) {
+        return [];
+    }
+    if (latLonResponse.lat.length != latLonResponse.lon.length) {
+        throw Error("latitude and longitude have different length");
+    }
+    let cesiumPoints: CesiumPoint[] = [];
+    for (let i in latLonResponse.lat) {
+        cesiumPoints.push({
+            id: parseInt(i),
+            name: "Record ".concat((parseInt(i) + 1).toString()),
+            latitude: latLonResponse.lat[i],
+            longitude: latLonResponse.lon[i],
+            visible: true
+        })
+    }
+    return cesiumPoints;
 }
 
 export class InputsAPI {
@@ -33,5 +53,9 @@ export class InputsAPI {
 
     getGlobalAttributes(inputFilePath: string): JobPromise<GlobalAttribute[]> {
         return this.webAPIClient.call('get_global_attributes', [inputFilePath], null, responseToGlobalAttributes);
+    }
+
+    getLatLon(inputFilePath: string): JobPromise<CesiumPoint[]> {
+        return this.webAPIClient.call('get_lat_lon', [inputFilePath], null, responseToCesiumPoints);
     }
 }

@@ -26,6 +26,7 @@ export interface CommunicationState {
 export interface ControlState {
     sourceFiles: SourceFile[];
     globalAttributes: GlobalAttribute[];
+    cesiumPoints: CesiumPoint[];
     mainPanelTitle?: string;
     currentMainTabPanel?: number;
     currentConfigurationTabPanel?: number;
@@ -51,6 +52,14 @@ export interface LocationState {
 
 export interface Version {
     configuration: ConfigurationVersion;
+}
+
+export interface CesiumPoint {
+    id: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+    visible: boolean;
 }
 
 export interface ConfigurationVersion {
