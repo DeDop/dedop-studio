@@ -1,12 +1,19 @@
 import * as React from "react";
-import {Tabs, TabList, Tab, TabPanel, Tooltip} from "@blueprintjs/core";
+import {Tabs, TabList, Tab, TabPanel, Tooltip, Button} from "@blueprintjs/core";
 import "codemirror/mode/javascript/javascript";
 import {State} from "../../state";
 import * as selector from "../../selectors";
 import {connect, Dispatch} from "react-redux";
-import {getOutputFileNames, updateSelectedOutputs, inspectOutput, updateOutputFilesTab} from "../../actions";
+import {
+    getOutputFileNames,
+    updateSelectedOutputs,
+    inspectOutput,
+    updateOutputFilesTab,
+    compareOutputs
+} from "../../actions";
 import {shell} from "electron";
 import {GeneralAlert} from "../Alerts";
+import * as path from "path";
 import MouseEventHandler = React.MouseEventHandler;
 
 interface IOutputFilesTabsProps {
@@ -79,7 +86,20 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                 isOutputFileNotSelectedAlertOpen: true
             })
         } else {
-            this.props.dispatch(inspectOutput(this.props.selectedOutputFileNames[outputFileOrder]));
+            this.props.dispatch(inspectOutput(path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[outputFileOrder])));
+        }
+    };
+
+    private handleCompareOutputs = () => {
+        if (!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length < 2) {
+            this.setState({
+                isOutputFileNotSelectedAlertOpen: true
+            })
+        } else {
+            this.props.dispatch(compareOutputs(
+                path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[0]),
+                path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[1])
+            ));
         }
     };
 
@@ -155,6 +175,11 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                                 />
                                 </Tooltip>
                             </div>
+                            <Button iconName="pt-icon-comparison pt-intent-primary"
+                                    onClick={this.handleCompareOutputs}
+                            >
+                                Compare
+                            </Button>
                             <div className="panel-flexbox-output-select">
                                 <div className="pt-select pt-fill">
                                     <select

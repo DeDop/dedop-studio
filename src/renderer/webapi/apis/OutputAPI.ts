@@ -19,4 +19,8 @@ export class OutputAPI {
     inspect_output(workspaceName: string, outputFilePath: string) {
         return this.webAPIClient.call('inspect_output', [workspaceName, outputFilePath], null, null);
     }
+
+    compare_outputs(workspaceName: string, output1FilePath: string, output2FilePath: string) {
+        return this.webAPIClient.call('compare_outputs', [workspaceName, output1FilePath, output2FilePath], null, null);
+    }
 }

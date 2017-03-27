@@ -6,7 +6,8 @@ import {
     TaskState,
     Workspace,
     GlobalAttribute,
-    Configuration, CesiumPoint
+    Configuration,
+    CesiumPoint
 } from "./state";
 import * as moment from "moment";
 import * as path from "path";
@@ -863,6 +864,18 @@ export function inspectOutput(outputFilePath: string) {
         }
 
         callAPI(dispatch, "Inspecting output file '".concat(outputFilePath).concat("'"), call);
+    }
+}
+
+export function compareOutputs(outputFile1Path: string, outputFile2Path: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+
+        function call() {
+            return outputAPI(getState()).compare_outputs(currentWorkspaceName, outputFile1Path, outputFile2Path);
+        }
+
+        callAPI(dispatch, "Comparing output files '".concat(outputFile1Path).concat("' and '").concat(outputFile2Path).concat("'"), call);
     }
 }
 
