@@ -327,7 +327,7 @@ function createMainWindow() {
         }
     }
 
-    const mainWindowBounds = _prefs.data.mainWindowBounds || {width: 800, height: 600};
+    const mainWindowBounds = _prefs.data.mainWindowBounds || {width: 1366, height: 768};
 
     // Create the browser window.
     _mainWindow = new BrowserWindow(Object.assign({

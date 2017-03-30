@@ -161,7 +161,7 @@ function addWorkSpace(newWorkspace: Workspace) {
     return {type: ADD_WORKSPACE, payload: newWorkspace};
 }
 
-export function newWorkspace(newWorkspaceName: string) {
+export function addNewWorkspace(newWorkspaceName: string) {
     return (dispatch, getState) => {
         function call() {
             return workspaceAPI(getState()).newWorkspace(newWorkspaceName);
@@ -225,13 +225,21 @@ export function getCurrentWorkspace() {
         }
 
         function action(current_workspace: Workspace) {
-            dispatch(updateCurrentWorkspace(current_workspace));
-            let sourceFileDirectory = getState().control.currentSourceFileDirectory;
-            let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
-            dispatch(updateWorkspaceSourceFile(current_workspace, validSourceFiles));
-            dispatch(updateSourceFileList(validSourceFiles));
-            dispatch(getAllConfigs());
-            dispatch(getCurrentConfig());
+            if (current_workspace.name == null) {
+                dispatch(addNewWorkspace("default"));
+                let newWorkspace: Workspace = Object.assign({}, current_workspace, {
+                    name: "default"
+                });
+                dispatch(updateCurrentWorkspace(newWorkspace));
+            } else {
+                dispatch(updateCurrentWorkspace(current_workspace));
+                let sourceFileDirectory = getState().control.currentSourceFileDirectory;
+                let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
+                dispatch(updateWorkspaceSourceFile(current_workspace, validSourceFiles));
+                dispatch(updateSourceFileList(validSourceFiles));
+                dispatch(getAllConfigs());
+                dispatch(getCurrentConfig());
+            }
         }
 
         callAPI(dispatch, "Get current workspace name", call, action);

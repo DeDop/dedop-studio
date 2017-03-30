@@ -12,7 +12,7 @@ import {
 } from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {State, Workspace} from "../state";
-import {setCurrentWorkspace, newWorkspace, renameWorkspace, copyWorkspace, deleteWorkspace} from "../actions";
+import {setCurrentWorkspace, addNewWorkspace, renameWorkspace, copyWorkspace, deleteWorkspace} from "../actions";
 import WorkspaceSelection from "./WorkspaceSelection";
 
 interface IWorkspaceInfoProps {
@@ -42,9 +42,11 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
     };
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            selectedWorkspace: nextProps.workspaces[0].name
-        })
+        if (nextProps.workspaces.length > 0) {
+            this.setState({
+                selectedWorkspace: nextProps.workspaces[0].name
+            })
+        }
     }
 
     render() {
@@ -178,7 +180,7 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
 
         const handleAddWorkspace = () => {
             if (this.state.newWorkspaceName) {
-                this.props.dispatch(newWorkspace(this.state.newWorkspaceName));
+                this.props.dispatch(addNewWorkspace(this.state.newWorkspaceName));
                 handleCloseAddWorkspaceDialog();
                 this.setState({
                     newWorkspaceName: ""
