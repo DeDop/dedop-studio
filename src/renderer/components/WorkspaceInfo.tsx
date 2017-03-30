@@ -8,23 +8,27 @@ import {
     MenuDivider,
     Dialog,
     Button,
-    Intent
+    Intent,
+    Tooltip
 } from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {State, Workspace} from "../state";
 import {setCurrentWorkspace, addNewWorkspace, renameWorkspace, copyWorkspace, deleteWorkspace} from "../actions";
 import WorkspaceSelection from "./WorkspaceSelection";
+import * as selector from "../selectors";
 
 interface IWorkspaceInfoProps {
     dispatch?: Dispatch<State>;
     workspaceName: string;
+    currentWorkspace: Workspace;
     workspaces: Workspace[];
 }
 
 function mapStateToProps(state: State): IWorkspaceInfoProps {
     return {
         workspaceName: state.control.currentWorkspaceName,
-        workspaces: state.data.workspaces
+        workspaces: state.data.workspaces,
+        currentWorkspace: selector.getCurrentWorkspace(state)
     }
 }
 
@@ -243,18 +247,27 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
             <div className="dedop-workspace-top-menu"
                  onMouseOver={handleMouseOver}
                  onMouseLeave={handleMouseLeave}>
-                <span className="dedop-workspace-top-menu-text">{this.props.workspaceName}</span>
-
-                <Popover content={popoverContent}
-                         interactionKind={PopoverInteractionKind.CLICK}
-                         isOpen={this.state.isPopoverOpen}
-                         onInteraction={handleInteraction}
-                         position={Position.LEFT_BOTTOM}
-                         useSmartPositioning={true}
-                >
+                <div style={{textAlign: 'right', paddingTop: '2px'}}>
+                    <span className="dedop-workspace-text-top-menu-text pt-tag pt-intent-primary">Workspace</span>
+                </div>
+                <div>
+                    <Popover content={popoverContent}
+                             interactionKind={PopoverInteractionKind.CLICK}
+                             isOpen={this.state.isPopoverOpen}
+                             onInteraction={handleInteraction}
+                             position={Position.LEFT_BOTTOM}
+                             useSmartPositioning={true}
+                    >
                     <span className="pt-icon-standard pt-icon-edit dedop-workspace-top-menu-icon"
-                          style={{visibility: this.state.editButtonVisible}}/>
-                </Popover>
+                          style={{visibility: this.state.editButtonVisible, paddingRight: '5px'}}/>
+                    </Popover>
+                    <Tooltip
+                        content={this.props.currentWorkspace ? this.props.currentWorkspace.directory : this.props.workspaceName}
+                        position={Position.LEFT_TOP}
+                    >
+                        <span className="dedop-workspace-top-menu-text">{this.props.workspaceName}</span>
+                    </Tooltip>
+                </div>
                 <Dialog isOpen={this.state.isAddWorkspaceDialogOpen}
                         onClose={handleCloseAddWorkspaceDialog}
                         title="Add a new workspace"

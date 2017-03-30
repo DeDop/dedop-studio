@@ -18,8 +18,8 @@ export class TopMenu extends React.Component<ITopMenuProps, any> {
     public render() {
         const panelTitle = " - " + mainTabs[this.props.currentMainTabPanel];
         return (
-            <nav className="pt-navbar .modifier">
-                <div className="pt-navbar-group pt-align-left dedop-top-menu">
+            <nav className="pt-navbar dedop-top-menu-height">
+                <div className="pt-navbar-group pt-align-left dedop-top-menu dedop-top-menu-height">
                     <img src="resources/linux/32x32.png"/>
                     <div className="pt-navbar-heading dedop-menu-title">DeDop Studio{panelTitle}</div>
                     <WorkspaceInfo/>

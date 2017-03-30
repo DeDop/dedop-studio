@@ -291,6 +291,10 @@ h1, h2, h3, h4, h5 {
     width: 100%;
 }
 
+.dedop-top-menu-height {
+    height: 60px;
+}
+
 .dedop-workspace-top-menu {
     margin-left: auto;
 }
@@ -300,12 +304,17 @@ h1, h2, h3, h4, h5 {
     color: rgba(255, 255, 255, 0.3);
 }
 
-.dedop-workspace-top-menu-text {
-    font-size: x-large;
+.dedop-workspace-text-top-menu-text {
+    font-size: medium;
+    color: rgba(248, 250, 220, 0.8);
 }
 
-.dedop-workspace-top-menu > .pt-popover-target {
-    vertical-align: bottom;
+.dedop-workspace-top-menu-text {
+    font-size: 30px;
+}
+
+.dedop-workspace-top-menu .pt-popover-target {
+    vertical-align: sub;
 }
 
 /* Top menu styling ==========================================================*/
