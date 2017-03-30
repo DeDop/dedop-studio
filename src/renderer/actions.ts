@@ -231,6 +231,9 @@ export function getCurrentWorkspace() {
                     name: "default"
                 });
                 dispatch(updateCurrentWorkspace(newWorkspace));
+                dispatch(addNewConfig("default"));
+                dispatch(getAllConfigs());
+                dispatch(getCurrentConfig());
             } else {
                 dispatch(updateCurrentWorkspace(current_workspace));
                 let sourceFileDirectory = getState().control.currentSourceFileDirectory;
