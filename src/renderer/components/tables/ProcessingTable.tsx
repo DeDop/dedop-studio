@@ -35,23 +35,31 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
         };
         const statusCell = (rowIndex: number) => {
             const jobId = this.props.processes[rowIndex].id;
-            if (this.props.tasks[jobId].status == JobStatusEnum.IN_PROGRESS) {
-                const percentage = ((this.props.tasks[jobId].progress.worked / this.props.tasks[jobId].progress.total) * 100).toFixed(2).toString();
-                return (
-                    <Cell tooltip={percentage.concat("%")}>
-                        <div className="pt-progress-bar" style={{marginTop: "5px"}}>
-                            <div className="pt-progress-meter" style={{width: percentage.concat("%")}}></div>
-                        </div>
-                    </Cell>)
+            if (this.props.processes[rowIndex].status == JobStatusEnum.DONE) {
+                return <Cell>{this.props.processes[rowIndex].status}</Cell>
             } else {
-                return <Cell>{this.props.tasks[jobId].status.toString()}</Cell>
+                if (this.props.tasks[jobId].status == JobStatusEnum.IN_PROGRESS) {
+                    const percentage = ((this.props.tasks[jobId].progress.worked / this.props.tasks[jobId].progress.total) * 100).toFixed(2).toString();
+                    return (
+                        <Cell tooltip={percentage.concat("%")}>
+                            <div className="pt-progress-bar" style={{marginTop: "5px"}}>
+                                <div className="pt-progress-meter" style={{width: percentage.concat("%")}}></div>
+                            </div>
+                        </Cell>)
+                } else {
+                    return <Cell>{this.props.tasks[jobId].status.toString()}</Cell>
+                }
             }
         };
         const processingTimeCell = (rowIndex: number) => {
             const jobId = this.props.processes[rowIndex].id;
-            return (
-                <Cell>{this.props.tasks[jobId].status === "IN_PROGRESS" ? "-" : this.props.processes[rowIndex].processingDuration}</Cell>
-            )
+            if (this.props.processes[rowIndex].status == JobStatusEnum.DONE) {
+                return <Cell>{this.props.processes[rowIndex].processingDuration}</Cell>
+            } else {
+                return (
+                    <Cell>{this.props.tasks[jobId].status === "IN_PROGRESS" ? "-" : this.props.processes[rowIndex].processingDuration}</Cell>
+                )
+            }
         };
         const handleOpenResult = () => {
             console.log("clicked");
@@ -66,7 +74,8 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
                         </Cell>);
                 case "FAILED":
                     return (
-                        <Cell style={{textAlign: "center"}} tooltip={"Error: ".concat(this.props.processes[rowIndex].message)}>
+                        <Cell style={{textAlign: "center"}}
+                              tooltip={"Error: ".concat(this.props.processes[rowIndex].message)}>
                             <span className="pt-icon-standard pt-icon-warning-sign"/>
                         </Cell>);
                 case "IN_PROGRESS":

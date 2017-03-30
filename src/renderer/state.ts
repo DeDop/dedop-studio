@@ -41,7 +41,6 @@ export interface ControlState {
     selectedOutputFileNames?: string[];
     codeEditorActive?: boolean;
     processName?: string;
-    currentToasterState?: ToasterState[]
 }
 
 export interface SessionState {

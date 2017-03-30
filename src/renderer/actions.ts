@@ -893,6 +893,38 @@ export function compareOutputs(outputFile1Path: string, outputFile2Path: string)
 // ======================== Output related actions via WebAPI =============================================
 
 
+/**
+ * Update frontend preferences (but not backend configuration).
+ *
+ * @param callback an optional function which is called with the selected button index
+ * @returns the selected button index or null, if no button was selected or the callback function is defined
+ */
+export function sendPreferencesToMain(callback?: (error: any) => void) {
+    return (dispatch, getState) => {
+        const electron = require('electron');
+        if (!electron || !electron.ipcRenderer) {
+            console.warn('sendPreferencesToMain() cannot be executed, electron/electron.ipcRenderer not available from renderer process');
+            return;
+        }
+        let finishedProcesses: ProcessingItem[] = [];
+        for (let process of getState().data.processes) {
+            if (process.status == JobStatusEnum.DONE) {
+                finishedProcesses.push(process);
+            }
+        }
+        const preferences = {
+            processes: finishedProcesses
+        };
+        const actionName = 'set-preferences';
+        electron.ipcRenderer.send(actionName, preferences);
+        if (callback) {
+            electron.ipcRenderer.once(actionName + '-reply', (event, error: any) => {
+                callback(error);
+            });
+        }
+    };
+}
+
 function getCurrentWorkspaceIndex(state: State, workspaceName: string) {
     return state.data.workspaces.findIndex((x) => x.name === workspaceName);
 }

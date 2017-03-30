@@ -29,6 +29,10 @@ export function main() {
         store.dispatch(actions.applyInitialState(initialState));
         connectWebAPIClient(store);
     });
+
+    ipcRenderer.on('get-preferences', () => {
+        store.dispatch(actions.sendPreferencesToMain());
+    });
 }
 
 function connectWebAPIClient(store: Store<State>) {

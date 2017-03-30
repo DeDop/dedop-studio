@@ -59,7 +59,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
         }
         case actions.APPLY_INITIAL_STATE: {
             return Object.assign({}, state, {
-                appConfig: action.payload.appConfig
+                appConfig: action.payload.appConfig,
+                processes: action.payload.session.processes
             });
         }
         case actions.SET_WEBAPI_STATUS: {
