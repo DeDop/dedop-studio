@@ -35,7 +35,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
         };
         const statusCell = (rowIndex: number) => {
             const jobId = this.props.processes[rowIndex].id;
-            if (this.props.processes[rowIndex].status == JobStatusEnum.DONE) {
+            if (this.props.processes[rowIndex].status == JobStatusEnum.DONE || this.props.processes[rowIndex].status == JobStatusEnum.FAILED) {
                 return <Cell>{this.props.processes[rowIndex].status}</Cell>
             } else {
                 if (this.props.tasks[jobId].status == JobStatusEnum.IN_PROGRESS) {
@@ -53,7 +53,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
         };
         const processingTimeCell = (rowIndex: number) => {
             const jobId = this.props.processes[rowIndex].id;
-            if (this.props.processes[rowIndex].status == JobStatusEnum.DONE) {
+            if (this.props.processes[rowIndex].status == JobStatusEnum.DONE || this.props.processes[rowIndex].status == JobStatusEnum.FAILED) {
                 return <Cell>{this.props.processes[rowIndex].processingDuration}</Cell>
             } else {
                 return (

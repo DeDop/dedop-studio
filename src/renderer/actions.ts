@@ -908,7 +908,7 @@ export function sendPreferencesToMain(callback?: (error: any) => void) {
         }
         let finishedProcesses: ProcessingItem[] = [];
         for (let process of getState().data.processes) {
-            if (process.status == JobStatusEnum.DONE) {
+            if (process.status != JobStatusEnum.SUBMITTED) {
                 finishedProcesses.push(process);
             }
         }
