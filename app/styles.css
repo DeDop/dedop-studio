@@ -310,7 +310,12 @@ h1, h2, h3, h4, h5 {
 }
 
 .dedop-workspace-top-menu-text {
-    font-size: 30px;
+    font-size: 18px;
+    padding-right: 10px;
+}
+
+.dedop-text-align-right {
+    text-align: right;
 }
 
 .dedop-workspace-top-menu .pt-popover-target {

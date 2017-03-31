@@ -54,18 +54,6 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
     }
 
     render() {
-        const handleMouseOver = () => {
-            this.setState({
-                editButtonVisible: "visible"
-            })
-        };
-
-        const handleMouseLeave = () => {
-            this.setState({
-                editButtonVisible: "hidden"
-            })
-        };
-
         const handleSelectWorkspace = (workspaceName: string) => {
             this.props.dispatch(setCurrentWorkspace(workspaceName))
         };
@@ -244,13 +232,8 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
         };
 
         return (
-            <div className="dedop-workspace-top-menu"
-                 onMouseOver={handleMouseOver}
-                 onMouseLeave={handleMouseLeave}>
-                <div style={{textAlign: 'right', paddingTop: '2px'}}>
-                    <span className="dedop-workspace-text-top-menu-text pt-tag pt-intent-primary">Workspace</span>
-                </div>
-                <div>
+            <div className="dedop-workspace-top-menu">
+                <div className="dedop-text-align-right" style={{paddingTop: '2px'}}>
                     <Popover content={popoverContent}
                              interactionKind={PopoverInteractionKind.CLICK}
                              isOpen={this.state.isPopoverOpen}
@@ -258,9 +241,13 @@ class WorkspaceInfo extends React.Component<IWorkspaceInfoProps, any> {
                              position={Position.LEFT_BOTTOM}
                              useSmartPositioning={true}
                     >
-                    <span className="pt-icon-standard pt-icon-edit dedop-workspace-top-menu-icon"
-                          style={{visibility: this.state.editButtonVisible, paddingRight: '5px'}}/>
+                        <Button className="pt-intent-primary dedop-workspace-text-top-menu-text"
+                                rightIconName="pt-icon-list">
+                            Workspace
+                        </Button>
                     </Popover>
+                </div>
+                <div className="dedop-text-align-right">
                     <Tooltip
                         content={this.props.currentWorkspace ? this.props.currentWorkspace.directory : this.props.workspaceName}
                         position={Position.LEFT_TOP}
