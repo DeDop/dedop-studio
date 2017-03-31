@@ -556,6 +556,11 @@ ul.dedop-list-box li.dedop-selected {
     margin-right: 10px;
 }
 
+.dedop-list-box-item-file-delete {
+    margin-left: 5px;
+    color: #B23232;
+}
+
 .dedop-list-box-item-last-updated {
     display: flex;
     align-items: center;

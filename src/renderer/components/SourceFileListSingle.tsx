@@ -1,10 +1,9 @@
 import * as React from "react";
 import {SourceFile, State} from "../state";
-import {ContextMenuTarget, Menu, MenuItem, Tooltip, Position} from "@blueprintjs/core";
+import {Tooltip, Position} from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
-import {selectSourceFile, removeInputFiles, getGlobalAttributes} from "../actions";
+import {removeInputFiles} from "../actions";
 import * as selector from "../selectors";
-import * as path from "path";
 
 interface ISourceFileListSingleProps {
     dispatch?: Dispatch<State>;
@@ -23,30 +22,10 @@ function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile}): ISou
     };
 }
 
-@ContextMenuTarget
 class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,any> {
-    isSourceFileAdded() {
-        const index = this.props.addedSourceFiles.findIndex((x) => x.name === this.props.sourceFile.name);
-        return index >= 0;
-    }
-
-    public renderContextMenu() {
-        this.props.dispatch(selectSourceFile(this.props.sourceFile.name));
-        this.props.dispatch(getGlobalAttributes(path.join(this.props.sourceFile.path)));
-
-        const handleRemove = () => {
-            this.props.dispatch(removeInputFiles(this.props.currentWorkspace, [this.props.sourceFile.name]));
-        };
-
-        return (
-            <Menu className="dedop-context-menu">
-                {this.isSourceFileAdded() ?
-                    <MenuItem onClick={handleRemove} text="Remove" iconName="pt-icon-add"/>
-                    :
-                    null}
-            </Menu>
-        );
-    }
+    private handleRemove = () => {
+        this.props.dispatch(removeInputFiles(this.props.currentWorkspace, [this.props.sourceFile.name]));
+    };
 
     render() {
         return (
@@ -57,10 +36,15 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
                             className="pt-tag pt-intent-success dedop-list-box-item-file-size">{(this.props.sourceFile.size).toFixed(2)}
                             MB</span>
                 </Tooltip>
-                <Tooltip content="last modified date" position={Position.RIGHT}>
+                <Tooltip content="last modified date" position={Position.BOTTOM}>
                         <span className="pt-tag dedop-list-box-item-last-updated">
                             {this.props.sourceFile.lastUpdated}
                             </span>
+                </Tooltip>
+                <Tooltip content="remove this file from workspace" position={Position.RIGHT}>
+                    <span className="pt-icon-standard pt-icon-delete dedop-list-box-item-file-delete"
+                          onClick={this.handleRemove}
+                    />
                 </Tooltip>
             </div>
         )
