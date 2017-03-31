@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import * as React from "react";
 import FootprintsPanel from "../panels/FootprintsPanel";
-import SourceDataPanel from "./SourceDataPanel";
+import L1aDatasetsPanel from "../panels/L1aDatasetPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalAttributesCollapse";
 
 interface ISourcePanelProps {
@@ -17,7 +17,7 @@ class SourcePanel extends React.Component<ISourcePanelProps, any> {
         return (
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item">
-                    <SourceDataPanel/>
+                    <L1aDatasetsPanel/>
                     <GlobalMetadataCollapse/>
                 </div>
                 <div className="panel-flexbox-item">
