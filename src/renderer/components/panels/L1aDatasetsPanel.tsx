@@ -100,7 +100,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                             iconName="pt-icon-add"
                             onClick={this.handleSelectDirectory}
                     >
-                        Add file
+                        Add Files
                     </Button>
                     <ListBox numItems={this.props.l1aInputFiles.length}
                              getItemKey={index => this.props.l1aInputFiles[index].name}
