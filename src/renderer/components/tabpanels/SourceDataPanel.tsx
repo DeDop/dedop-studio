@@ -17,6 +17,7 @@ import SourceFileListSingle from "../SourceFileListSingle";
 import {getSourceFilesFromPaths} from "../../../common/sourceFileUtils";
 import * as path from "path";
 import * as selector from "../../selectors";
+import {Button} from "@blueprintjs/core";
 
 interface ISourceDataPanelProps {
     dispatch?: Dispatch<State>;
@@ -43,6 +44,27 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
         isNoFilesAvailableAlertOpen: false,
     };
 
+    private handleSelectDirectory = () => {
+        const sourceFileDirectory = remote.dialog.showOpenDialog({
+                properties: ['openFile', 'multiSelections'],
+                defaultPath: this.props.currentSourceFileDirectory,
+                filters: [
+                    {
+                        name: "NetCDF files",
+                        extensions: ['nc']
+                    }
+                ]
+            }
+        );
+        let validSourceFiles: SourceFile[] = getSourceFilesFromPaths(sourceFileDirectory);
+        if (sourceFileDirectory.length > 0) {
+            this.props.dispatch(addInputFiles(validSourceFiles));
+        } else {
+            this.setState({
+                isNoFilesAvailableAlertOpen: true
+            })
+        }
+    };
 
     render() {
         const renderFileList = (itemIndex: number) => {
@@ -70,46 +92,16 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
             }
         };
 
-        const handleSelectDirectory = () => {
-            const sourceFileDirectory = remote.dialog.showOpenDialog({
-                    properties: ['openFile', 'multiSelections'],
-                    defaultPath: this.props.currentSourceFileDirectory,
-                    filters: [
-                        {
-                            name: "NetCDF files",
-                            extensions: ['nc']
-                        }
-                    ]
-                }
-            );
-            console.log("inside handle select dir", sourceFileDirectory);
-            let validSourceFiles: SourceFile[] = getSourceFilesFromPaths(sourceFileDirectory);
-            if (sourceFileDirectory.length > 0) {
-                this.props.dispatch(addInputFiles(validSourceFiles));
-            } else {
-                this.setState({
-                    isNoFilesAvailableAlertOpen: true
-                })
-            }
-        };
-
         return (
             <div className="dedop-collapse">
                 <OrdinaryPanelHeader title="L1A Datasets" icon="pt-icon-document"/>
-                <div className="dedop-panel-content">
-                    <div className="pt-input-group">
-                        <input className="pt-input"
-                               type="text"
-                               placeholder="Choose directory..."
-                               style={{textAlign: 'left'}}
-                               readOnly={true}
-                               value={this.props.currentSourceFileDirectory}
-                               onClick={handleSelectDirectory}
-                        />
-                        <button className="pt-button pt-minimal pt-icon-folder-open"
-                                onClick={handleSelectDirectory}
-                        />
-                    </div>
+                <div className="dedop-panel-content" style={{textAlign: 'right'}}>
+                    <Button className="pt-intent-primary"
+                            iconName="pt-icon-add"
+                            onClick={this.handleSelectDirectory}
+                    >
+                        Add file
+                    </Button>
                     <ListBox numItems={this.props.l1aInputFiles.length}
                              getItemKey={index => this.props.l1aInputFiles[index].name}
                              renderItem={renderFileList}
