@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
-import InputDatasetPanel from '../panels/L1ADatasetsPanel';
+import SourceDataPanel from '../tabpanels/SourceDataPanel';
 import ConfigurationPanel from '../tabpanels/ConfigurationPanel';
 import ProcessingPanel from '../tabpanels/ProcessingPanel';
 import ResultPanel from '../tabpanels/ResultPanel';
@@ -40,7 +40,7 @@ class MainTabs extends React.Component<IMainTabsProps,any> {
                     <Tab><span className="pt-icon-large pt-icon-timeline-bar-chart"/></Tab>
                 </TabList>
                 <TabPanel>
-                    <InputDatasetPanel/>
+                    <SourceDataPanel/>
                 </TabPanel>
                 <TabPanel>
                     <ConfigurationPanel/>
