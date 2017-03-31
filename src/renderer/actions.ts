@@ -230,10 +230,11 @@ export function getCurrentWorkspace() {
                 let newWorkspace: Workspace = Object.assign({}, current_workspace, {
                     name: "default"
                 });
+
                 dispatch(updateCurrentWorkspace(newWorkspace));
                 dispatch(addNewConfig("default"));
-                dispatch(getAllConfigs());
-                dispatch(getCurrentConfig());
+                dispatch(setCurrentWorkspace("default"));
+                dispatch(setCurrentConfig("default"));
             } else {
                 dispatch(updateCurrentWorkspace(current_workspace));
                 let sourceFileDirectory = getState().control.currentSourceFileDirectory;
