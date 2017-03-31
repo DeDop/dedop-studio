@@ -4,15 +4,15 @@ import FootprintsPanel from "../panels/FootprintsPanel";
 import L1aDatasetsPanel from "../panels/L1aDatasetPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalAttributesCollapse";
 
-interface ISourcePanelProps {
+interface ISourceDataPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
 }
 
-function mapStateToProps(): ISourcePanelProps {
+function mapStateToProps(): ISourceDataPanelProps {
     return {};
 }
 
-class SourcePanel extends React.Component<ISourcePanelProps, any> {
+class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
     public render() {
         return (
             <div className="panel-flexbox">
@@ -28,4 +28,4 @@ class SourcePanel extends React.Component<ISourcePanelProps, any> {
     }
 }
 
-export default connect(mapStateToProps)(SourcePanel);
+export default connect(mapStateToProps)(SourceDataPanel);
