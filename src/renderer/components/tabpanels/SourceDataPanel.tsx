@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import * as React from "react";
 import FootprintsPanel from "../panels/FootprintsPanel";
-import L1aDatasetsPanel from "../panels/L1aDatasetPanel";
+import L1aDatasetsPanel from "../panels/L1aDatasetsPanel";
 import GlobalMetadataCollapse from "../collapse/GlobalAttributesCollapse";
 
 interface ISourceDataPanelProps {
