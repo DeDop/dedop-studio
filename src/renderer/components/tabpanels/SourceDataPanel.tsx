@@ -5,16 +5,18 @@ import {State, SourceFile} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import {
     selectSourceFile,
-    selectSourceFileDirectory,
-    updateSourceFileList,
     getGlobalAttributes,
-    updateCurrentGlobalAttributes, getLatLon, updateCurrentCesiumPoints
+    updateCurrentGlobalAttributes,
+    getLatLon,
+    updateCurrentCesiumPoints,
+    addInputFiles
 } from "../../actions";
 import {remote} from "electron";
 import {GeneralAlert} from "../Alerts";
 import SourceFileListSingle from "../SourceFileListSingle";
-import {getSourceFiles} from "../../../common/sourceFileUtils";
+import {getSourceFilesFromPaths} from "../../../common/sourceFileUtils";
 import * as path from "path";
+import * as selector from "../../selectors";
 
 interface ISourceDataPanelProps {
     dispatch?: Dispatch<State>;
@@ -25,7 +27,7 @@ interface ISourceDataPanelProps {
 
 function mapStateToProps(state: State): ISourceDataPanelProps {
     return {
-        l1aInputFiles: state.control.sourceFiles,
+        l1aInputFiles: selector.getAddedSourceFiles(state),
         selectedSourceFile: [state.control.selectedSourceFileName],
         currentSourceFileDirectory: state.control.currentSourceFileDirectory
     };
@@ -70,14 +72,20 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
 
         const handleSelectDirectory = () => {
             const sourceFileDirectory = remote.dialog.showOpenDialog({
-                    properties: ['openDirectory'],
-                    defaultPath: this.props.currentSourceFileDirectory
+                    properties: ['openFile', 'multiSelections'],
+                    defaultPath: this.props.currentSourceFileDirectory,
+                    filters: [
+                        {
+                            name: "NetCDF files",
+                            extensions: ['nc']
+                        }
+                    ]
                 }
             );
-            let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory[0]);
-            if (validSourceFiles.length > 0) {
-                this.props.dispatch(selectSourceFileDirectory(sourceFileDirectory[0]));
-                this.props.dispatch(updateSourceFileList(validSourceFiles));
+            console.log("inside handle select dir", sourceFileDirectory);
+            let validSourceFiles: SourceFile[] = getSourceFilesFromPaths(sourceFileDirectory);
+            if (sourceFileDirectory.length > 0) {
+                this.props.dispatch(addInputFiles(validSourceFiles));
             } else {
                 this.setState({
                     isNoFilesAvailableAlertOpen: true

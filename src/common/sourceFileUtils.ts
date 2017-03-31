@@ -3,6 +3,26 @@ import {remote} from "electron";
 import * as path from "path";
 import * as moment from "moment";
 
+export function getSourceFilesFromPaths(sourceFilePaths: string[]): SourceFile[] {
+    const electronFs = remote.require("fs");
+    let validSourceFiles: SourceFile[] = [];
+
+    for (let filePath of sourceFilePaths) {
+        if (filePath.endsWith(".nc")) {
+            const stats = electronFs.statSync(filePath);
+            const fileName = path.parse(filePath).base;
+            validSourceFiles.push({
+                name: fileName,
+                path: filePath,
+                size: stats.size / (1024 * 1024),
+                lastUpdated: moment(stats.mtime.toISOString()).format("DD/MM/YY, hh:mm:ss"),
+                globalMetadata: []
+            });
+        }
+    }
+    return validSourceFiles;
+}
+
 export function getSourceFiles(sourceFileDirectory: string): SourceFile[] {
     const electronFs = remote.require("fs");
     let validSourceFiles: SourceFile[] = [];

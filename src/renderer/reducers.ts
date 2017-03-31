@@ -20,7 +20,7 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             const updatedWorkspace = Object.assign({}, workspace, {
                 inputs: [
                     ...workspace.inputs,
-                    ...action.payload.sourceFile
+                    ...action.payload.sourceFiles
                 ]
             });
             return Object.assign({}, state, {
@@ -58,9 +58,10 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             })
         }
         case actions.APPLY_INITIAL_STATE: {
+            const processes = action.payload.session.processes ? action.payload.session.processes : [];
             return Object.assign({}, state, {
                 appConfig: action.payload.appConfig,
-                processes: action.payload.session.processes
+                processes: processes
             });
         }
         case actions.SET_WEBAPI_STATUS: {
@@ -125,6 +126,8 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             let newWorkspace = Object.assign({}, action.payload.workspace, {
                 inputs: action.payload.sourceFiles
             });
+            console.log("inside action1", action.payload.sourceFiles);
+            console.log("inside action2", newWorkspace);
             return Object.assign({}, state, {
                 workspaces: [
                     ...state.workspaces.slice(0, workspaceIndex),

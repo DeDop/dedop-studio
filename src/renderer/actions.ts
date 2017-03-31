@@ -356,26 +356,34 @@ function inputsAPI(state: State): InputsAPI {
 
 export const ADD_SOURCE_FILE = 'ADD_SOURCE_FILE';
 
-export function addSourceFile(workspaceName: string, sourceFile: SourceFile[]) {
+function addSourceFile(workspaceName: string, newSourceFiles: SourceFile[]) {
     return {
         type: ADD_SOURCE_FILE, payload: {
             workspaceName: workspaceName,
-            sourceFile: sourceFile
+            sourceFiles: newSourceFiles
         }
     };
 }
 
-export function addInputFiles(workspaceName: string, inputFilePaths: string[], inputFiles: SourceFile[]) {
+export function addInputFiles(newInputFiles: SourceFile[]) {
     return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+        let inputFilePaths: string[] = [];
+        for (let inputFile of newInputFiles) {
+            inputFilePaths.push(inputFile.path)
+        }
         function call() {
-            return inputsAPI(getState()).addInputFiles(workspaceName, inputFilePaths);
+            return inputsAPI(getState()).addInputFiles(currentWorkspaceName, inputFilePaths);
         }
 
         function action() {
-            dispatch(addSourceFile(workspaceName, inputFiles));
+            const currentWorkspaceInputDirectory: string = constructCurrentInputDirectory(getState, currentWorkspaceName);
+            let currentSourceFiles: SourceFile[] = getSourceFiles(currentWorkspaceInputDirectory);
+            const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
+            dispatch(updateWorkspaceSourceFile(getState().data.workspaces[currentWorkspaceIndex], currentSourceFiles));
         }
 
-        callAPI(dispatch, "Add ".concat(inputFilePaths.length.toString()).concat(" input file(s) to workspace ").concat(workspaceName), call, action);
+        callAPI(dispatch, "Add ".concat(inputFilePaths.length.toString()).concat(" input file(s) to workspace ").concat(currentWorkspaceName), call, action);
     }
 }
 
@@ -907,9 +915,11 @@ export function sendPreferencesToMain(callback?: (error: any) => void) {
             return;
         }
         let finishedProcesses: ProcessingItem[] = [];
-        for (let process of getState().data.processes) {
-            if (process.status != JobStatusEnum.SUBMITTED) {
-                finishedProcesses.push(process);
+        if (getState().data.processes) {
+            for (let process of getState().data.processes) {
+                if (process.status != JobStatusEnum.SUBMITTED) {
+                    finishedProcesses.push(process);
+                }
             }
         }
         const preferences = {
@@ -927,6 +937,11 @@ export function sendPreferencesToMain(callback?: (error: any) => void) {
 
 function getCurrentWorkspaceIndex(state: State, workspaceName: string) {
     return state.data.workspaces.findIndex((x) => x.name === workspaceName);
+}
+
+function constructCurrentInputDirectory(getState, currentWorkspaceName: string) {
+    const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
+    return path.join(getState().data.workspaces[currentWorkspaceIndex].directory, "inputs");
 }
 
 function constructCurrentOutputDirectory(getState, currentWorkspaceName: string, configName: string) {

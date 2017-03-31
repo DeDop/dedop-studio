@@ -2,7 +2,7 @@ import * as React from "react";
 import {SourceFile, State} from "../state";
 import {ContextMenuTarget, Menu, MenuItem, Tooltip, Position} from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
-import {selectSourceFile, addInputFiles, removeInputFiles, getGlobalAttributes} from "../actions";
+import {selectSourceFile, removeInputFiles, getGlobalAttributes} from "../actions";
 import * as selector from "../selectors";
 import * as path from "path";
 
@@ -33,11 +33,6 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
     public renderContextMenu() {
         this.props.dispatch(selectSourceFile(this.props.sourceFile.name));
         this.props.dispatch(getGlobalAttributes(path.join(this.props.sourceFile.path)));
-        const handleAdd = () => {
-            this.props.dispatch(addInputFiles(this.props.currentWorkspace,
-                [this.props.currentSourceFileDirectory.concat("/").concat(this.props.sourceFile.name)],
-                [this.props.sourceFile]));
-        };
 
         const handleRemove = () => {
             this.props.dispatch(removeInputFiles(this.props.currentWorkspace, [this.props.sourceFile.name]));
@@ -48,7 +43,7 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
                 {this.isSourceFileAdded() ?
                     <MenuItem onClick={handleRemove} text="Remove" iconName="pt-icon-add"/>
                     :
-                    <MenuItem onClick={handleAdd} text="Add" iconName="pt-icon-add"/>}
+                    null}
             </Menu>
         );
     }
@@ -57,18 +52,13 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
         return (
             <div className="dedop-list-box-item">
                 <span className="dedop-list-box-item-file-name">{this.props.sourceFile.name}</span>
-                {this.isSourceFileAdded() ? <span
-                        className="pt-tag pt-round dedop-list-box-item-file-size"
-                        style={{paddingRight: '10px'}}>Added</span>
-                    : null
-                }
                 <Tooltip content="file size" position={Position.LEFT}>
                         <span
                             className="pt-tag pt-intent-success dedop-list-box-item-file-size">{(this.props.sourceFile.size).toFixed(2)}
                             MB</span>
                 </Tooltip>
                 <Tooltip content="last modified date" position={Position.RIGHT}>
-                        <span className="pt-tag pt-intent-primary dedop-list-box-item-last-updated">
+                        <span className="pt-tag dedop-list-box-item-last-updated">
                             {this.props.sourceFile.lastUpdated}
                             </span>
                 </Tooltip>
