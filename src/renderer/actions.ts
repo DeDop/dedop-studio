@@ -242,6 +242,7 @@ export function getCurrentWorkspace() {
                 dispatch(updateSourceFileList(validSourceFiles));
                 dispatch(getAllConfigs());
                 dispatch(getCurrentConfig());
+                dispatch(getNotebookFileNames());
             }
         }
 
@@ -264,6 +265,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(updateSourceFileList(validSourceFiles));
             dispatch(getAllConfigs());
             dispatch(getCurrentConfig());
+            dispatch(getNotebookFileNames());
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
@@ -874,7 +876,7 @@ export function updateSelectedOutputs(selectedOutputs: string[]) {
     return {type: UPDATE_SELECTED_OUTPUTS, payload: selectedOutputs};
 }
 
-export function inspectOutput(outputFilePath: string) {
+export function generateAndRunInspectOutput(outputFilePath: string) {
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
 
@@ -882,11 +884,15 @@ export function inspectOutput(outputFilePath: string) {
             return outputAPI(getState()).inspect_output(currentWorkspaceName, outputFilePath);
         }
 
-        callAPI(dispatch, "Inspecting output file '".concat(outputFilePath).concat("'"), call);
+        function action() {
+            dispatch(getNotebookFileNames());
+        }
+
+        callAPI(dispatch, "Inspecting output file '".concat(outputFilePath).concat("'"), call, action);
     }
 }
 
-export function compareOutputs(outputFile1Path: string, outputFile2Path: string) {
+export function generateAndRunCompareOutputs(outputFile1Path: string, outputFile2Path: string) {
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
 
@@ -894,7 +900,36 @@ export function compareOutputs(outputFile1Path: string, outputFile2Path: string)
             return outputAPI(getState()).compare_outputs(currentWorkspaceName, outputFile1Path, outputFile2Path);
         }
 
-        callAPI(dispatch, "Comparing output files '".concat(outputFile1Path).concat("' and '").concat(outputFile2Path).concat("'"), call);
+        function action() {
+            dispatch(getNotebookFileNames());
+        }
+
+        callAPI(dispatch, "Comparing output files '".concat(outputFile1Path).concat("' and '").concat(outputFile2Path).concat("'"), call, action);
+    }
+}
+
+export const UPDATE_NOTEBOOK_FILE_NAMES = 'UPDATE_NOTEBOOK_FILE_NAMES';
+
+export function updateNotebookFileNames(workspaceName: string,  notebookFileNames: string[]) {
+    return {type: UPDATE_NOTEBOOK_FILE_NAMES, payload: {
+        workspaceName: workspaceName,
+        notebookFileNames: notebookFileNames
+    }};
+}
+
+export function getNotebookFileNames() {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+
+        function call() {
+            return outputAPI(getState()).get_notebook_file_names(currentWorkspaceName);
+        }
+
+        function action(notebookFileNames: string[]) {
+            dispatch(updateNotebookFileNames(currentWorkspaceName, notebookFileNames));
+        }
+
+        callAPI(dispatch, "Get notebook files of workspace '".concat(currentWorkspaceName).concat("'"), call, action);
     }
 }
 

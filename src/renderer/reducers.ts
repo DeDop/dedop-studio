@@ -126,8 +126,6 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             let newWorkspace = Object.assign({}, action.payload.workspace, {
                 inputs: action.payload.sourceFiles
             });
-            console.log("inside action1", action.payload.sourceFiles);
-            console.log("inside action2", newWorkspace);
             return Object.assign({}, state, {
                 workspaces: [
                     ...state.workspaces.slice(0, workspaceIndex),
@@ -294,6 +292,19 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 workspaces: [
                     ...state.workspaces.slice(0, workspaceIndex),
                     updatedWorkspace,
+                    ...state.workspaces.slice(workspaceIndex + 1)
+                ]
+            });
+        }
+        case actions.UPDATE_NOTEBOOK_FILE_NAMES: {
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            let newWorkspace = Object.assign({}, state.workspaces[workspaceIndex], {
+                notebooks: action.payload.notebookFileNames
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, workspaceIndex),
+                    newWorkspace,
                     ...state.workspaces.slice(workspaceIndex + 1)
                 ]
             });

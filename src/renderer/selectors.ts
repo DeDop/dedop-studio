@@ -103,3 +103,13 @@ export const getOutputDirectory = createSelector(
         return "";
     }
 );
+
+export const getNotebookFileNames = createSelector(
+    getCurrentWorkspace,
+    (getCurrentWorkspace): string[] => {
+        if (getCurrentWorkspace && getCurrentWorkspace.notebooks != null) {
+            return getCurrentWorkspace.notebooks;
+        }
+        return [];
+    }
+);

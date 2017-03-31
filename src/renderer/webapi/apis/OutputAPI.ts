@@ -23,4 +23,8 @@ export class OutputAPI {
     compare_outputs(workspaceName: string, output1FilePath: string, output2FilePath: string) {
         return this.webAPIClient.call('compare_outputs', [workspaceName, output1FilePath, output2FilePath], null, null);
     }
+
+    get_notebook_file_names(workspaceName: string): JobPromise<string[]> {
+        return this.webAPIClient.call('get_notebook_file_names', [workspaceName], null, response);
+    }
 }

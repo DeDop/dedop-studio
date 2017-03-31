@@ -104,6 +104,7 @@ export interface Workspace {
     directory: string;
     inputs?: SourceFile[];
     configs?: Configuration[];
+    notebooks?: string[];
 }
 
 export interface ProcessingItem {

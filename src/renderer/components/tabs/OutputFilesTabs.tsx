@@ -7,9 +7,9 @@ import {connect, Dispatch} from "react-redux";
 import {
     getOutputFileNames,
     updateSelectedOutputs,
-    inspectOutput,
+    generateAndRunInspectOutput,
     updateOutputFilesTab,
-    compareOutputs
+    generateAndRunCompareOutputs
 } from "../../actions";
 import {shell} from "electron";
 import {GeneralAlert} from "../Alerts";
@@ -86,7 +86,7 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                 isOutputFileNotSelectedAlertOpen: true
             })
         } else {
-            this.props.dispatch(inspectOutput(path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[outputFileOrder])));
+            this.props.dispatch(generateAndRunInspectOutput(path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[outputFileOrder])));
         }
     };
 
@@ -96,7 +96,7 @@ class OutputFilesTabs extends React.Component<IOutputFilesTabsProps,any> {
                 isOutputFileNotSelectedAlertOpen: true
             })
         } else {
-            this.props.dispatch(compareOutputs(
+            this.props.dispatch(generateAndRunCompareOutputs(
                 path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[0]),
                 path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[1])
             ));

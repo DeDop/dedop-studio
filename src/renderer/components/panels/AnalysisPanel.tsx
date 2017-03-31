@@ -1,6 +1,8 @@
 import * as React from "react";
 import {State} from "../../state";
 import {connect} from "react-redux";
+import * as selector from "../../selectors";
+import {SelectComponent} from "../common/SelectComponent";
 
 interface IAnalysisPanel {
     notebookFileNames: string[];
@@ -8,20 +10,19 @@ interface IAnalysisPanel {
 
 function mapStateToProps(state: State): IAnalysisPanel {
     return {
-        notebookFileNames: []
+        notebookFileNames: selector.getNotebookFileNames(state)
     }
 }
 
-class AnalysisPanel extends React.Component<any,any> {
+class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
     render() {
         return (
             <div className="dedop-panel-content">
                 <div className="pt-select pt-fill">
-                    <select>
-                        <option selected>Select a notebook file...</option>
-                        <option value="1">compare-1.ipynb</option>
-                        <option value="2">inspect-1.ipynb</option>
-                    </select>
+                    <SelectComponent items={this.props.notebookFileNames}
+                                     fill={true}
+                                     defaultValue="Select a notebook file..."
+                    />
                 </div>
                 <textarea className="pt-input pt-fill"
                           dir="auto"
