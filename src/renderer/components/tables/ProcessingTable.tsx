@@ -104,6 +104,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
             <Table numRows={this.props.processes.length}
                    isRowHeaderShown={false}
                    maxRowHeight={30}
+                   defaultColumnWidth={110}
             >
                 <Column name="Process Name" renderCell={runCell}/>
                 <Column name="Workspace" renderCell={workspaceCell}/>
