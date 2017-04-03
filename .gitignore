@@ -6,6 +6,7 @@ node_modules
 
 app/common
 app/main
+app/python
 app/renderer
 app/dedop-core
 src/**/*.jsx
