@@ -4,6 +4,7 @@ import {State} from "../../state";
 import * as selectors from "../../selectors";
 import {connect, Dispatch} from "react-redux";
 import {setProcessName, getAllConfigs, setCurrentConfig} from "../../actions";
+import {SelectComponent} from "../common/SelectComponent";
 
 interface IRunSettingsPanelProps {
     dispatch?: Dispatch<State>;
@@ -77,13 +78,12 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps,any> {
                                 Configuration
                             </td>
                             <td>
-                                <div className="pt-select pt-fill">
-                                    <select onChange={handleOnChangeConfiguration}
-                                            value={this.props.currentConfiguration ? this.props.currentConfiguration : undefined}
-                                    >
-                                        {options}
-                                    </select>
-                                </div>
+                                <SelectComponent items={this.props.configurationFiles}
+                                                 fill={true}
+                                                 defaultValue="Select a configuration..."
+                                                 selectedItem={this.props.currentConfiguration}
+                                                 onChange={handleOnChangeConfiguration}
+                                />
                             </td>
                         </tr>
                         </tbody>

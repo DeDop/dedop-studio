@@ -6,12 +6,11 @@ interface ISelectComponent {
     selectedItem?: string;
     defaultValue?: string;
     items: string[];
-    onChange?: () => any;
+    onChange?: (event: React.FormEvent<HTMLSelectElement>) => void;
 }
 
 export class SelectComponent extends React.Component<ISelectComponent, any> {
     private defaultValue = this.props.defaultValue ? this.props.defaultValue : "Select an item";
-    private onChange = this.props.onChange ? this.props.onChange : undefined;
 
     private renderItems() {
         let items = [];
@@ -22,9 +21,9 @@ export class SelectComponent extends React.Component<ISelectComponent, any> {
         return items;
     }
 
-    private handleOnChange() {
+    private handleOnChange(event: React.FormEvent<HTMLSelectElement>) {
         if (this.props.onChange) {
-            this.props.onChange();
+            this.props.onChange(event);
         }
     }
 
@@ -34,9 +33,8 @@ export class SelectComponent extends React.Component<ISelectComponent, any> {
         return (
             <div className={style}>
                 <select
-                    value={this.props.selectedItem ? this.props.selectedItem : undefined}
-                    defaultValue={this.defaultValue}
-                    onChange={() => this.handleOnChange()}>
+                    value={this.props.selectedItem ? this.props.selectedItem : this.defaultValue}
+                    onChange={this.handleOnChange.bind(this)}>
                     {this.renderItems()}
                 </select>
             </div>

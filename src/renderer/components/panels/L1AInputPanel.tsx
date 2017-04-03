@@ -13,6 +13,7 @@ import {
 import {remote} from "electron";
 import {getSourceFiles} from "../../../common/sourceFileUtils";
 import {GeneralAlert} from "../Alerts";
+import {SelectComponent} from "../common/SelectComponent";
 
 interface IL1AInputPanelProps {
     dispatch?: Dispatch<State>;
@@ -41,10 +42,9 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
             this.props.dispatch(updateSelectedSourceType(this.props.selectedSourceType == "single" ? "directory" : "single"))
         };
 
-        let options = [];
-        options.push(<option key="informationText" disabled>Select a single L1A file...</option>);
+        let sourceFileNames = [];
         for (let i of this.props.sourceFiles) {
-            options.push(<option key={i.name}>{i.name}</option>);
+            sourceFileNames.push(i.name);
         }
 
         const handleOnChangeSourceFile = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -87,13 +87,12 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
                                        onChange={handleChange}/>
                             </td>
                             <td width='80%'>
-                                <div className="pt-select pt-fill">
-                                    <select disabled={this.props.selectedSourceType == "directory"}
-                                            value={this.props.currentSourceFile ? this.props.currentSourceFile : undefined}
-                                            onChange={handleOnChangeSourceFile}>
-                                        {options}
-                                    </select>
-                                </div>
+                                <SelectComponent items={sourceFileNames}
+                                                 fill={true}
+                                                 defaultValue="Select a single L1A file..."
+                                                 selectedItem={this.props.currentSourceFile}
+                                                 onChange={handleOnChangeSourceFile}
+                                />
                             </td>
                         </tr>
                         <tr>
