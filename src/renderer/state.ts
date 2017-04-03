@@ -38,6 +38,7 @@ export interface ControlState {
     selectedConfigurationName?: string;
     selectedSourceFileName?: string;
     selectedSourceType?: string;
+    selectedProcesses?: number[];
     selectedOutputFileNames?: string[];
     codeEditorActive?: boolean;
     processName?: string;

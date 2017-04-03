@@ -1,8 +1,8 @@
 import * as React from "react";
 import {ProcessingItem, State, TaskState} from "../../state";
-import {Cell, Column, Table} from "@blueprintjs/table";
+import {Cell, Column, Table, IRegion} from "@blueprintjs/table";
 import {connect} from "react-redux";
-import {updateMainTab} from "../../actions";
+import {updateMainTab, updateSelectedProcesses} from "../../actions";
 import {JobStatusEnum} from "../../webapi/Job";
 
 interface IProcessingTableProps {
@@ -21,24 +21,29 @@ function mapStateToProps(state: State): IProcessingTableProps {
 class ProcessingTable extends React.Component<IProcessingTableProps, null> {
 
     public render() {
-        const totalProcesses = this.props.processes.length;
+        const compareIdReverse = (a: ProcessingItem, b: ProcessingItem) => {
+            return b.id - a.id;
+        };
+
+        const processesReverse = this.props.processes.slice().sort(compareIdReverse);
+
         const runCell = (rowIndex: number) => {
-            return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].name}</Cell>
+            return <Cell>{processesReverse[rowIndex].name}</Cell>
         };
         const workspaceCell = (rowIndex: number) => {
-            return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].workspace}</Cell>
+            return <Cell>{processesReverse[rowIndex].workspace}</Cell>
         };
         const configCell = (rowIndex: number) => {
-            return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].configuration}</Cell>
+            return <Cell>{processesReverse[rowIndex].configuration}</Cell>
         };
         const startedCell = (rowIndex: number) => {
-            return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].startedTime}</Cell>
+            return <Cell>{processesReverse[rowIndex].startedTime}</Cell>
         };
         const statusCell = (rowIndex: number) => {
-            const taskId = this.props.processes[totalProcesses - 1 - rowIndex].taskId;
-            if (this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.DONE
-                || this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.FAILED) {
-                return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].status}</Cell>
+            const taskId = processesReverse[rowIndex].taskId;
+            if (processesReverse[rowIndex].status == JobStatusEnum.DONE
+                || processesReverse[rowIndex].status == JobStatusEnum.FAILED) {
+                return <Cell>{processesReverse[rowIndex].status}</Cell>
             } else {
                 if (this.props.tasks[taskId].status == JobStatusEnum.IN_PROGRESS) {
                     const percentage = ((this.props.tasks[taskId].progress.worked / this.props.tasks[taskId].progress.total) * 100).toFixed(2).toString();
@@ -54,22 +59,21 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
             }
         };
         const processingTimeCell = (rowIndex: number) => {
-            const taskId = this.props.processes[totalProcesses - 1 - rowIndex].taskId;
-            if (this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.DONE
-                || this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.FAILED) {
-                return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].processingDuration}</Cell>
+            const taskId = processesReverse[rowIndex].taskId;
+            if (processesReverse[rowIndex].status == JobStatusEnum.DONE
+                || processesReverse[rowIndex].status == JobStatusEnum.FAILED) {
+                return <Cell>{processesReverse[rowIndex].processingDuration}</Cell>
             } else {
                 return (
-                    <Cell>{this.props.tasks[taskId].status === "IN_PROGRESS" ? "-" : this.props.processes[totalProcesses - 1 - rowIndex].processingDuration}</Cell>
+                    <Cell>{this.props.tasks[taskId].status === "IN_PROGRESS" ? "-" : processesReverse[rowIndex].processingDuration}</Cell>
                 )
             }
         };
         const handleOpenResult = () => {
-            console.log("clicked");
             this.props.dispatch(updateMainTab(3));
         };
         const actionCell = (rowIndex: number) => {
-            switch (this.props.processes[totalProcesses - 1 - rowIndex].status) {
+            switch (processesReverse[rowIndex].status) {
                 case "DONE":
                     return (
                         <Cell style={{textAlign: "center"}}>
@@ -78,7 +82,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
                 case "FAILED":
                     return (
                         <Cell style={{textAlign: "center"}}
-                              tooltip={"Error: ".concat(this.props.processes[totalProcesses - 1 - rowIndex].message)}>
+                              tooltip={"Error: ".concat(processesReverse[rowIndex].message)}>
                             <span className="pt-icon-standard pt-icon-warning-sign"/>
                         </Cell>);
                 case "IN_PROGRESS":
@@ -103,11 +107,34 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
             return (<div style={{textAlign: "center"}}>Action</div>)
         };
 
+        const onSelectedRegionTransform = (region: IRegion): IRegion => {
+            if (region.rows) {
+                return {
+                    rows: region.rows
+                }
+            } else {
+                return region;
+            }
+        };
+
+        const handleOnSelection = (selectedRegions: IRegion[]) => {
+            let selectedProcesses: number[] = [];
+            if (selectedRegions.length > 0 && selectedRegions[0].rows) {
+                const selectedRange = selectedRegions[0].rows;
+                for (let i = selectedRange[0]; i <= selectedRange[1]; i++) {
+                    selectedProcesses.push(i);
+                }
+            }
+            this.props.dispatch(updateSelectedProcesses(selectedProcesses));
+        };
+
         return (
             <Table numRows={this.props.processes.length}
                    isRowHeaderShown={false}
                    maxRowHeight={30}
                    defaultColumnWidth={110}
+                   onSelection={handleOnSelection}
+                   selectedRegionTransform={onSelectedRegionTransform}
             >
                 <Column name="Process Name" renderCell={runCell}/>
                 <Column name="Workspace" renderCell={workspaceCell}/>

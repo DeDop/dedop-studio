@@ -28,6 +28,7 @@ export const UPDATE_OUTPUT_FILES_TAB = 'UPDATE_OUTPUT_FILES_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const UPDATE_SELECTED_SOURCE_TYPE = 'UPDATE_SELECTED_SOURCE_TYPE';
 export const UPDATE_CURRENT_OUTPUT_DIRECTORY = 'UPDATE_CURRENT_OUTPUT_DIRECTORY';
+export const UPDATE_SELECTED_PROCESSES = 'UPDATE_SELECTED_PROCESSES';
 export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
 export const SET_TEST_VAR = 'SET_TEST_VAR';
 export const APPLY_INITIAL_STATE = 'APPLY_INITIAL_STATE';
@@ -75,6 +76,10 @@ export function updateCurrentOutputDirectory(outputDirectory: string) {
 
 export function setProcessName(processName: string) {
     return {type: SET_PROCESS_NAME, payload: processName};
+}
+
+export function updateSelectedProcesses(processId: number[]) {
+    return {type: UPDATE_SELECTED_PROCESSES, payload: processId};
 }
 
 export function setTaskState(jobId: number, taskState: TaskState) {

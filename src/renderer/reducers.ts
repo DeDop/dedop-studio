@@ -408,6 +408,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 cesiumPoints: action.payload
             })
         }
+        case actions.UPDATE_SELECTED_PROCESSES: {
+            return Object.assign({}, state, {
+                selectedProcesses: action.payload
+            })
+        }
     }
     return state;
 };
