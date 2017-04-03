@@ -109,6 +109,7 @@ export interface Workspace {
 
 export interface ProcessingItem {
     id: number;
+    taskId: number;
     name: string;
     workspace: string;
     configuration: string;

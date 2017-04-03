@@ -35,17 +35,13 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
             return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].startedTime}</Cell>
         };
         const statusCell = (rowIndex: number) => {
-            console.log("inside status cell", rowIndex);
-            console.log("inside status cell2", this.props.processes);
-            console.log("inside status cell3", this.props.processes[totalProcesses - 1 - rowIndex]);
-            const jobId = this.props.processes[totalProcesses - 1 - rowIndex].id;
-            console.log("inside status cell4", jobId);
+            const taskId = this.props.processes[totalProcesses - 1 - rowIndex].taskId;
             if (this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.DONE
                 || this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.FAILED) {
                 return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].status}</Cell>
             } else {
-                if (this.props.tasks[jobId].status == JobStatusEnum.IN_PROGRESS) {
-                    const percentage = ((this.props.tasks[jobId].progress.worked / this.props.tasks[jobId].progress.total) * 100).toFixed(2).toString();
+                if (this.props.tasks[taskId].status == JobStatusEnum.IN_PROGRESS) {
+                    const percentage = ((this.props.tasks[taskId].progress.worked / this.props.tasks[taskId].progress.total) * 100).toFixed(2).toString();
                     return (
                         <Cell tooltip={percentage.concat("%")}>
                             <div className="pt-progress-bar" style={{marginTop: "5px"}}>
@@ -53,18 +49,18 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
                             </div>
                         </Cell>)
                 } else {
-                    return <Cell>{this.props.tasks[jobId].status.toString()}</Cell>
+                    return <Cell>{this.props.tasks[taskId].status.toString()}</Cell>
                 }
             }
         };
         const processingTimeCell = (rowIndex: number) => {
-            const jobId = this.props.processes[totalProcesses - 1 - rowIndex].id;
+            const taskId = this.props.processes[totalProcesses - 1 - rowIndex].taskId;
             if (this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.DONE
                 || this.props.processes[totalProcesses - 1 - rowIndex].status == JobStatusEnum.FAILED) {
                 return <Cell>{this.props.processes[totalProcesses - 1 - rowIndex].processingDuration}</Cell>
             } else {
                 return (
-                    <Cell>{this.props.tasks[jobId].status === "IN_PROGRESS" ? "-" : this.props.processes[totalProcesses - 1 - rowIndex].processingDuration}</Cell>
+                    <Cell>{this.props.tasks[taskId].status === "IN_PROGRESS" ? "-" : this.props.processes[totalProcesses - 1 - rowIndex].processingDuration}</Cell>
                 )
             }
         };

@@ -247,7 +247,7 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             });
         }
         case actions.MARK_PROCESS_AS_FINISHED: {
-            let processIndex = state.processes.findIndex((x) => x.id === action.payload.jobId);
+            let processIndex = state.processes.findIndex((x) => x.id === action.payload.processId);
             const process = state.processes[processIndex];
             let updatedProcess = Object.assign({}, process, {
                 status: action.payload.status,

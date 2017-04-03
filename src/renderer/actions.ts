@@ -770,10 +770,10 @@ export function addNewProcess(processingItem: ProcessingItem) {
 
 export const MARK_PROCESS_AS_FINISHED = 'MARK_PROCESS_AS_FINISHED';
 
-export function markProcessAsFinished(jobId: number, processingDuration: string, status: string, message: string) {
+export function markProcessAsFinished(processId: number, processingDuration: string, status: string, message: string) {
     return {
         type: MARK_PROCESS_AS_FINISHED, payload: {
-            jobId: jobId,
+            processId: processId,
             processingDuration: processingDuration,
             status: status,
             message: message
@@ -785,7 +785,8 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
         const currentConfigName = getState().control.selectedConfigurationName;
-        let jobId: number = 0;
+        let taskId: number = 0;
+        let processId: number = 0;
         let jobStatus: string;
         let startTime: number;
 
@@ -797,12 +798,14 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
                 outputPath,
                 l1aFilePath,
                 onProgress);
-            jobId = job.getJobId();
+            taskId = job.getJobId();
+            processId = getState().data.processes.length + 1;
             jobStatus = job.getJob().getStatus();
             startTime = moment.now();
             const startTimeFormatted = moment(startTime).format("DD/MM/YY, HH:mm:ss");
             const newProcess: ProcessingItem = {
-                id: jobId,
+                id: processId,
+                taskId: taskId,
                 name: processName,
                 workspace: currentWorkspaceName,
                 configuration: currentConfigName,
@@ -816,16 +819,16 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
 
         function action() {
             const processingDuration = moment.duration(moment().diff(startTime)).humanize();
-            dispatch(markProcessAsFinished(jobId, processingDuration.toString(),
-                getState().communication.tasks[jobId].status,
+            dispatch(markProcessAsFinished(processId, processingDuration.toString(),
+                getState().communication.tasks[taskId].status,
                 "successful"
             ))
         }
 
         function failureAction(jobFailure: JobFailure) {
             const processingDuration = moment.duration(moment().diff(startTime)).humanize();
-            dispatch(markProcessAsFinished(jobId, processingDuration.toString(),
-                getState().communication.tasks[jobId].status,
+            dispatch(markProcessAsFinished(processId, processingDuration.toString(),
+                getState().communication.tasks[taskId].status,
                 jobFailure.message))
         }
 
@@ -911,11 +914,13 @@ export function generateAndRunCompareOutputs(outputFile1Path: string, outputFile
 
 export const UPDATE_NOTEBOOK_FILE_NAMES = 'UPDATE_NOTEBOOK_FILE_NAMES';
 
-export function updateNotebookFileNames(workspaceName: string,  notebookFileNames: string[]) {
-    return {type: UPDATE_NOTEBOOK_FILE_NAMES, payload: {
-        workspaceName: workspaceName,
-        notebookFileNames: notebookFileNames
-    }};
+export function updateNotebookFileNames(workspaceName: string, notebookFileNames: string[]) {
+    return {
+        type: UPDATE_NOTEBOOK_FILE_NAMES, payload: {
+            workspaceName: workspaceName,
+            notebookFileNames: notebookFileNames
+        }
+    };
 }
 
 export function getNotebookFileNames() {
@@ -954,6 +959,7 @@ export function sendPreferencesToMain(callback?: (error: any) => void) {
         if (getState().data.processes) {
             for (let process of getState().data.processes) {
                 if (process.status != JobStatusEnum.SUBMITTED) {
+                    process.taskId = 0;
                     finishedProcesses.push(process);
                 }
             }
