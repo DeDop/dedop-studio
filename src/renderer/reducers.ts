@@ -309,6 +309,15 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.REMOVE_PROCESS: {
+            const processIndex = state.processes.findIndex((x) => x.id === action.payload);
+            return Object.assign({}, state, {
+                processes: [
+                    ...state.processes.slice(0, processIndex),
+                    ...state.processes.slice(processIndex + 1)
+                ]
+            });
+        }
     }
     return state;
 };

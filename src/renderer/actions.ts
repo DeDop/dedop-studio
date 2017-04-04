@@ -841,6 +841,14 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
     }
 }
 
+export const REMOVE_PROCESS = 'REMOVE_PROCESS';
+
+export function removeProcess(processId: number) {
+    return {
+        type: REMOVE_PROCESS, payload: processId
+    };
+}
+
 // ======================== Process related actions via WebAPI =============================================
 
 

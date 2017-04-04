@@ -9,12 +9,14 @@ interface IProcessingTableProps {
     dispatch?: (action: {type: string, payload: any}) => void;
     tasks: {[jobId: number]: TaskState;};
     processes: ProcessingItem[];
+    selectedProcesses: number[];
 }
 
 function mapStateToProps(state: State): IProcessingTableProps {
     return {
         tasks: state.communication.tasks,
-        processes: state.data.processes
+        processes: state.data.processes,
+        selectedProcesses: state.control.selectedProcesses
     }
 }
 
@@ -122,11 +124,41 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
             if (selectedRegions.length > 0 && selectedRegions[0].rows) {
                 const selectedRange = selectedRegions[0].rows;
                 for (let i = selectedRange[0]; i <= selectedRange[1]; i++) {
-                    selectedProcesses.push(i);
+                    selectedProcesses.push(processesReverse[i].id);
                 }
             }
             this.props.dispatch(updateSelectedProcesses(selectedProcesses));
         };
+
+        let selectedRegions: IRegion[] = [];
+        let rowNumber: number[] = [];
+        if (this.props.selectedProcesses) {
+            for (let i of this.props.selectedProcesses) {
+                for (let j in processesReverse) {
+                    if (i == processesReverse[j].id) {
+                        rowNumber.push(parseInt(j));
+                    }
+                }
+            }
+            if (rowNumber.length == 1) {
+                selectedRegions.push({rows: [rowNumber[0], rowNumber[0]]})
+            } else if (rowNumber.length > 1) {
+                let rowStart: number = rowNumber[0];
+                let rowEnd: number = rowStart;
+                for (let i = 1; i < rowNumber.length; i++) {
+                    if (rowNumber[i] == rowEnd + 1 && (i + 1 < rowNumber.length)) {
+                        rowEnd++;
+                    } else if (i + 1 < rowNumber.length) {
+                        selectedRegions.push({rows: [rowStart, rowEnd]});
+                        rowStart = rowNumber[i];
+                        rowEnd = rowNumber[i] + 1;
+                    } else {
+                        rowEnd++;
+                        selectedRegions.push({rows: [rowStart, rowEnd]});
+                    }
+                }
+            }
+        }
 
         return (
             <Table numRows={this.props.processes.length}
@@ -135,6 +167,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
                    defaultColumnWidth={110}
                    onSelection={handleOnSelection}
                    selectedRegionTransform={onSelectedRegionTransform}
+                   selectedRegions={selectedRegions}
             >
                 <Column name="Process Name" renderCell={runCell}/>
                 <Column name="Workspace" renderCell={workspaceCell}/>

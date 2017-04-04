@@ -1,9 +1,9 @@
 import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import ProcessingTable from "../tables/ProcessingTable";
-import {State, SourceFile} from "../../state";
+import {State, SourceFile, ProcessingItem} from "../../state";
 import {connect, Dispatch} from "react-redux";
-import {runProcess} from "../../actions";
+import {runProcess, removeProcess, updateSelectedProcesses} from "../../actions";
 import * as selector from "../../selectors";
 import {Dialog, Button} from "@blueprintjs/core";
 
@@ -13,6 +13,7 @@ interface IProcessorRunsPanelProps {
     currentConfiguration: string;
     currentOutputDirectory: string;
     processName: string;
+    processes: ProcessingItem[];
     selectedProcesses: number[];
 }
 
@@ -22,6 +23,7 @@ function mapStateToProps(state: State): IProcessorRunsPanelProps {
         currentConfiguration: state.control.currentConfigurationName,
         currentOutputDirectory: state.control.currentOutputDirectory,
         processName: state.control.processName,
+        processes: state.data.processes,
         selectedProcesses: state.control.selectedProcesses
     }
 }
@@ -86,6 +88,17 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
             })
         };
 
+        const handleDeleteProcesses = () => {
+            for (let i of this.props.selectedProcesses) {
+                for (let j of this.props.processes) {
+                    if (j.id == i) {
+                        this.props.dispatch(removeProcess(i));
+                    }
+                }
+            }
+            this.props.dispatch(updateSelectedProcesses([]));
+        };
+
         return (
             <div className="panel-flexbox-item">
                 <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
@@ -93,7 +106,9 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
                     <button type="button"
                             className="pt-button pt-icon-standard pt-icon-delete pt-intent-danger"
                             style={{margin: '10px 0'}}
-                            disabled={!(this.props.selectedProcesses && this.props.selectedProcesses.length > 0)}>
+                            onClick={handleDeleteProcesses}
+                            disabled={!(this.props.selectedProcesses && this.props.selectedProcesses.length > 0)}
+                    >
                         Delete
                     </button>
                     <button type="button" className="pt-button pt-icon-standard pt-icon-play pt-intent-primary"
