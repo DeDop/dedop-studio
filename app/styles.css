@@ -551,9 +551,10 @@ ul.dedop-list-box li.dedop-selected {
 }
 
 .dedop-list-box-item-file-name {
-    display: flex;
     align-items: center;
     width: 80%;
+    text-align: left;
+    padding-right: 5px;
 }
 
 .dedop-list-box-item-file-size {
