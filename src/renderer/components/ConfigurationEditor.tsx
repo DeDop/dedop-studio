@@ -25,7 +25,7 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
 
     public render() {
         const unitTag = (
-            <Tag className={Classes.MINIMAL}>{this.props.configuration.units}</Tag>
+            <Tag className={Classes.MINIMAL} style={{paddingRight: '5px'}}>{this.props.configuration.units}</Tag>
         );
 
         const handleOnChange = (event: any) => {
@@ -48,7 +48,9 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
                     <InputGroup className="config-textbox"
                                 name={this.props.configName}
                                 value={this.state.localValue}
-                        {...this.props.configuration.units ? {rightElement: unitTag} : {}}
+                        {...this.props.configuration.units ? {rightElement: unitTag} : {
+                                rightElement: <span style={{paddingRight: '5px'}}/>
+                            }}
                                 onChange={handleOnChange}
                                 onBlur={this.props.onBlur}
                     />
