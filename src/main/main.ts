@@ -193,9 +193,6 @@ export function init() {
     function startWebapiService(): childProcess.ChildProcess {
         const webAPIStartArgs = getWebAPIStartArgs(webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `starting DeDop WebAPI service using arguments: ${webAPIStartArgs}`);
-        console.log("========================");
-        console.log(webAPIConfig);
-        console.log("========================");
         const webAPIProcess = childProcess.spawn(webAPIConfig.command, webAPIStartArgs, webAPIConfig.processOptions);
         webAPIStarted = true;
         webAPIProcess.stdout.on('data', (data: any) => {
