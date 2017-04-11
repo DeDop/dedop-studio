@@ -6,7 +6,7 @@ import * as url from "url";
 import * as fs from "fs";
 import * as childProcess from "child_process";
 import {Configuration} from "./configuration";
-import {assignConditionally} from "../common/assign";
+import {updateConditionally} from "../common/objutil";
 import {request} from "./request";
 import {error} from "util";
 
@@ -29,6 +29,8 @@ const WEBAPI_INSTALLER_BAD_EXIT = 4;
 const WEBAPI_ERROR = 5;
 const WEBAPI_BAD_EXIT = 6;
 const WEBAPI_TIMEOUT = 7;
+
+const WEBAPI_VERSION = '0.5.4';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -108,6 +110,19 @@ function getDefaultUserPrefsFile() {
     return path.join(getAppDataDir(), 'dedop-prefs.json');
 }
 
+function loadBackendLocation(): string {
+    const locationFile = path.join(getAppDataDir(), WEBAPI_VERSION, 'dedop.location');
+    if (!fs.existsSync(locationFile)) {
+        console.error(DEDOP_STUDIO_PREFIX, `missing dedop.location file: ${locationFile}`);
+        return null;
+    }
+    const location = fs.readFileSync(locationFile, 'utf8');
+    if (location) {
+        return location.trim();
+    }
+    return null;
+}
+
 function loadAppConfig(): Configuration {
     return loadConfiguration(CONFIG_OPTIONS, path.resolve('dedop-config.js'), 'App configuration');
 }
@@ -150,8 +165,7 @@ export function init() {
     _prefs = loadUserPrefs();
 
     let webAPIConfig = _config.get('webAPIConfig', {});
-    webAPIConfig = assignConditionally(webAPIConfig, {
-        command: path.join(app.getAppPath(), process.platform === 'win32' ? 'python/Scripts/dedop-webapi.exe' : 'python/bin/dedop-webapi'),
+    webAPIConfig = updateConditionally(webAPIConfig, {
         servicePort: 2999,
         serviceAddress: '',
         serviceFile: 'dedop-webapi.json',
@@ -159,7 +173,12 @@ export function init() {
         processOptions: {},
         useMockService: false,
     });
-
+    const backendLocation = loadBackendLocation();
+    if (backendLocation) {
+        webAPIConfig = updateConditionally(webAPIConfig, {
+            command: path.join(backendLocation, process.platform === 'win32' ? 'Scripts/dedop-webapi.exe' : 'bin/dedop-webapi')
+        });
+    }
     _config.set('webAPIConfig', webAPIConfig);
 
     console.log(DEDOP_STUDIO_PREFIX, 'appConfig:', _config.data);
@@ -174,6 +193,9 @@ export function init() {
     function startWebapiService(): childProcess.ChildProcess {
         const webAPIStartArgs = getWebAPIStartArgs(webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `starting DeDop WebAPI service using arguments: ${webAPIStartArgs}`);
+        console.log("========================");
+        console.log(webAPIConfig);
+        console.log("========================");
         const webAPIProcess = childProcess.spawn(webAPIConfig.command, webAPIStartArgs, webAPIConfig.processOptions);
         webAPIStarted = true;
         webAPIProcess.stdout.on('data', (data: any) => {
