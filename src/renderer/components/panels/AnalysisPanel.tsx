@@ -47,7 +47,7 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                     <Tooltip
                         content="Select an output file to generate and initialise a Jupyter Notebook to inspect this file. Only available when one output file is selected."
                         position={Position.RIGHT_TOP}>
-                        <AnchorButton iconName="pt-icon-comparison pt-intent-primary"
+                        <AnchorButton iconName="pt-icon-search pt-intent-primary"
                                       onClick={this.handleInspectOutput}
                                       disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 1}
                         >
@@ -73,22 +73,26 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                                      defaultValue="Select a notebook file..."
                     />
                 </div>
+                <div style={{textAlign: 'right'}}>
+                    <Button className="pt-button pt-intent-primary"
+                            style={{margin: '10px 0'}}
+                            iconName='pt-icon-play'
+                    >
+                        Run
+                    </Button>
+                </div>
                 <textarea className="pt-input pt-fill"
                           dir="auto"
-                          placeholder="create your own Python script"
+                          placeholder="create your own Python script (not yet implemented)"
                           style={{overflow: "auto", margin: '10px 0'}}
+                          disabled={true}
                 />
                 <div className="pt-select pt-fill">
-                    <select>
+                    <select disabled={true}>
                         <option placeholder="">or select a Python script...</option>
                         <option value="1">compare-1.py</option>
                         <option value="2">inspect-1.py</option>
                     </select>
-                </div>
-                <div style={{textAlign: 'right'}}>
-                    <button className="pt-button pt-intent-primary" style={{margin: '10px 0'}}>
-                        Run
-                    </button>
                 </div>
             </div>
         )
