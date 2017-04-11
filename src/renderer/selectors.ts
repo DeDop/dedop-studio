@@ -89,7 +89,7 @@ export const getSelectedSourceFile = createSelector(
 export const getOutputNames = createSelector(
     getCurrentConfiguration,
     (getCurrentConfiguration): string[] => {
-        return getCurrentConfiguration ? getCurrentConfiguration.outputs : [];
+        return getCurrentConfiguration && getCurrentConfiguration.outputs ? getCurrentConfiguration.outputs : [];
     }
 );
 

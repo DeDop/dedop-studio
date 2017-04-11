@@ -632,6 +632,7 @@ export function getCurrentConfig() {
                 dispatch(getConfigurations(current_config));
                 const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, current_config);
                 dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
+                dispatch(getOutputFileNames());
             }
         }
 

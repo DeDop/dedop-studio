@@ -1,8 +1,8 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {OrdinaryPanelHeader} from "../panels/PanelHeader";
-import OutputFileTabs from "../tabs/OutputFilesTabs";
 import AnalysisPanel from "../panels/AnalysisPanel";
+import OutputFilesPanel from "../panels/OutputFilesPanel";
 
 interface IResultPanelProps {
     dispatch?: (action: {type: string, payload: string}) => void;
@@ -18,7 +18,7 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
                     <OrdinaryPanelHeader title="Output Files" icon="pt-icon-document"/>
-                    <OutputFileTabs/>
+                    <OutputFilesPanel/>
                 </div>
                 <div className="panel-flexbox-item">
                     <OrdinaryPanelHeader title="Analysis Configuration" icon="pt-icon-timeline-area-chart"/>

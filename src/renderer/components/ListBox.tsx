@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react";
 
 export enum ListBoxSelectionMode {
     SINGLE,
@@ -34,7 +34,7 @@ export class ListBox extends React.Component<IListBoxProps, any> {
                 const itemIndex = this.props.selection.findIndex(k => k === key);
                 if (itemIndex >= 0) {
                     newSelection = this.props.selection.slice();
-                    delete newSelection[itemIndex];
+                    newSelection.splice(itemIndex, 1);
                 } else {
                     if (selectionMode === ListBoxSelectionMode.SINGLE) {
                         newSelection = [key];
