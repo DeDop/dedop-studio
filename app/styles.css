@@ -696,6 +696,14 @@ ul.dedop-list-box li.dedop-selected {
 
 /* Blueprint tables styling =================================================*/
 
+/* Blueprint tooltip styling =================================================*/
+
+.pt-tooltip {
+    width: 250px;
+}
+
+/* Blueprint tooltip styling =================================================*/
+
 /* L1A Input styling===================================================*/
 
 .l1a-input-radio-group {

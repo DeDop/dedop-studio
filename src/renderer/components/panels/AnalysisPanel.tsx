@@ -3,7 +3,7 @@ import {State} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
 import {SelectComponent} from "../common/SelectComponent";
-import {Button} from "@blueprintjs/core";
+import {Button, Tooltip, Position, AnchorButton} from "@blueprintjs/core";
 import * as path from "path";
 import {generateAndRunCompareOutputs, generateAndRunInspectOutput} from "../../actions";
 
@@ -44,20 +44,28 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
         return (
             <div className="dedop-panel-content">
                 <div style={{marginBottom: '10px'}}>
-                    <Button iconName="pt-icon-comparison pt-intent-primary"
-                            onClick={this.handleInspectOutput}
-                            disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 1}
-                    >
-                        Inspect
-                    </Button>
+                    <Tooltip
+                        content="Select an output file to generate and initialise a Jupyter Notebook to inspect this file. Only available when one output file is selected."
+                        position={Position.RIGHT_TOP}>
+                        <AnchorButton iconName="pt-icon-comparison pt-intent-primary"
+                                      onClick={this.handleInspectOutput}
+                                      disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 1}
+                        >
+                            Inspect
+                        </AnchorButton>
+                    </Tooltip>
                 </div>
                 <div style={{marginBottom: '10px'}}>
-                    <Button iconName="pt-icon-comparison pt-intent-primary"
-                            onClick={this.handleCompareOutputs}
-                            disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 2}
-                    >
-                        Compare
-                    </Button>
+                    <Tooltip
+                        content="Select two output files to generate and initialise a Jupyter Notebook to compare the results between these two files. Only available when two output files are selected."
+                        position={Position.RIGHT_BOTTOM}>
+                        <AnchorButton iconName="pt-icon-comparison pt-intent-primary"
+                                      onClick={this.handleCompareOutputs}
+                                      disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 2}
+                        >
+                            Compare
+                        </AnchorButton>
+                    </Tooltip>
                 </div>
                 <div className="pt-select pt-fill">
                     <SelectComponent items={this.props.notebookFileNames}
