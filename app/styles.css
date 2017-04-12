@@ -696,13 +696,14 @@ ul.dedop-list-box li.dedop-selected {
 
 /* Blueprint tables styling =================================================*/
 
-/* Blueprint tooltip styling =================================================*/
-
-.pt-tooltip {
-    width: 250px;
+/* Blueprint tables styling =================================================*/
+.dedop-popover{
+    color: black;
+    background-color: #86a5b0;
 }
 
-/* Blueprint tooltip styling =================================================*/
+/* Blueprint tables styling =================================================*/
+
 
 /* L1A Input styling===================================================*/
 

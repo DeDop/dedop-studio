@@ -3,7 +3,7 @@ import {State} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
 import {SelectComponent} from "../common/SelectComponent";
-import {Button, Tooltip, Position, AnchorButton} from "@blueprintjs/core";
+import {Button, Tooltip, Position, AnchorButton, PopoverInteractionKind, Popover} from "@blueprintjs/core";
 import * as path from "path";
 import {
     generateAndRunCompareOutputs,
@@ -56,31 +56,63 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
     };
 
     render() {
+        let inspectPopoverContent = (
+            <div>
+                <h6>Inspect output</h6>
+                <p style={{fontSize: 12}}>
+                    Select an output file to generate and initialise a Jupyter Notebook to inspect this file.</p>
+                <p style={{fontSize: 12}}>Only available when <strong>one</strong> output file is selected.</p>
+            </div>
+        );
+
+        let comparePopoverContent = (
+            <div>
+                <h6>Compare outputs</h6>
+                <p style={{fontSize: 12}}>
+                    Select two output files to generate and initialise a Jupyter Notebook to compare the results between these two files.</p>
+                <p style={{fontSize: 12}}>Only available when <strong>two</strong> output files are selected.</p>
+            </div>
+        );
+
         return (
             <div className="dedop-panel-content">
-                <div style={{marginBottom: '10px'}}>
-                    <Tooltip
-                        content="Select an output file to generate and initialise a Jupyter Notebook to inspect this file. Only available when one output file is selected."
-                        position={Position.RIGHT_TOP}>
-                        <AnchorButton iconName="pt-icon-search pt-intent-primary"
-                                      onClick={this.handleInspectOutput}
-                                      disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 1}
-                        >
-                            Inspect
-                        </AnchorButton>
-                    </Tooltip>
+                <div style={{marginBottom: '10px', marginRight: '10px'}}>
+                    <AnchorButton iconName="pt-icon-search pt-intent-primary"
+                                  onClick={this.handleInspectOutput}
+                                  disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 1}
+                    >
+                        Inspect
+                    </AnchorButton>
+                    <Popover
+                        content={inspectPopoverContent}
+                        interactionKind={PopoverInteractionKind.CLICK}
+                        popoverClassName="pt-popover-content-sizing dedop-popover"
+                        position={Position.RIGHT}
+                        useSmartPositioning={false}
+                    >
+                        <span className="pt-icon-standard pt-icon-help"
+                              style={{marginLeft: '10px', paddingTop: '7px', color: 'rgb(134, 165, 176)'}}
+                        />
+                    </Popover>
                 </div>
                 <div style={{marginBottom: '10px'}}>
-                    <Tooltip
-                        content="Select two output files to generate and initialise a Jupyter Notebook to compare the results between these two files. Only available when two output files are selected."
-                        position={Position.RIGHT_BOTTOM}>
-                        <AnchorButton iconName="pt-icon-comparison pt-intent-primary"
-                                      onClick={this.handleCompareOutputs}
-                                      disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 2}
-                        >
-                            Compare
-                        </AnchorButton>
-                    </Tooltip>
+                    <AnchorButton iconName="pt-icon-comparison pt-intent-primary"
+                                  onClick={this.handleCompareOutputs}
+                                  disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 2}
+                    >
+                        Compare
+                    </AnchorButton>
+                    <Popover
+                        content={comparePopoverContent}
+                        interactionKind={PopoverInteractionKind.CLICK}
+                        popoverClassName="pt-popover-content-sizing dedop-popover"
+                        position={Position.RIGHT}
+                        useSmartPositioning={false}
+                    >
+                        <span className="pt-icon-standard pt-icon-help"
+                              style={{marginLeft: '10px', paddingTop: '7px', color: 'rgb(134, 165, 176)'}}
+                        />
+                    </Popover>
                 </div>
                 <div className="pt-select pt-fill">
                     <SelectComponent items={this.props.notebookFileNames}
