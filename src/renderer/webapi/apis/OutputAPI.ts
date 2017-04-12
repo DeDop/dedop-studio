@@ -27,4 +27,8 @@ export class OutputAPI {
     get_notebook_file_names(workspaceName: string): JobPromise<string[]> {
         return this.webAPIClient.call('get_notebook_file_names', [workspaceName], null, response);
     }
+
+    launch_notebook(workspaceName: string, notebookName: string){
+        return this.webAPIClient.call('launch_notebook', [workspaceName, notebookName], null, null);
+    }
 }

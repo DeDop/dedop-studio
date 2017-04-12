@@ -5,7 +5,12 @@ import * as selector from "../../selectors";
 import {SelectComponent} from "../common/SelectComponent";
 import {Button, Tooltip, Position, AnchorButton} from "@blueprintjs/core";
 import * as path from "path";
-import {generateAndRunCompareOutputs, generateAndRunInspectOutput, updateSelectedNotebook} from "../../actions";
+import {
+    generateAndRunCompareOutputs,
+    generateAndRunInspectOutput,
+    updateSelectedNotebook,
+    launchNotebook
+} from "../../actions";
 
 interface IAnalysisPanel {
     dispatch?: Dispatch<State>;
@@ -44,6 +49,10 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
 
     private handleOnChangeNotebookName = (event: React.FormEvent<HTMLSelectElement>) => {
         this.props.dispatch(updateSelectedNotebook(event.currentTarget.value));
+    };
+
+    private handleLaunchNotebook = () => {
+        this.props.dispatch(launchNotebook(this.props.selectedNotebookFileName));
     };
 
     render() {
@@ -85,6 +94,8 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                     <Button className="pt-button pt-intent-primary"
                             style={{margin: '10px 0'}}
                             iconName='pt-icon-play'
+                            onClick={this.handleLaunchNotebook}
+                            disabled={!this.props.selectedNotebookFileName}
                     >
                         Launch notebook
                     </Button>

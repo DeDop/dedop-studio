@@ -950,6 +950,18 @@ export function updateSelectedNotebook(selectedNotebookName: string) {
     };
 }
 
+export function launchNotebook(notebookName: string) {
+    return (dispatch, getState) => {
+        const currentWorkspaceName = getState().control.currentWorkspaceName;
+
+        function call() {
+            return outputAPI(getState()).launch_notebook(currentWorkspaceName, notebookName);
+        }
+
+        callAPI(dispatch, "Launch notebook file '".concat(notebookName).concat("'"), call);
+    }
+}
+
 // ======================== Output related actions via WebAPI =============================================
 
 
