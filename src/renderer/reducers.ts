@@ -14,23 +14,6 @@ function getConfigIndex(configurations: Configuration[], configName: string) {
 const dataReducer = (state: DataState = initialDataState, action) => {
 
     switch (action.type) {
-        case actions.ADD_SOURCE_FILE: {
-            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
-            const workspace = state.workspaces[workspaceIndex];
-            const updatedWorkspace = Object.assign({}, workspace, {
-                inputs: [
-                    ...workspace.inputs,
-                    ...action.payload.sourceFiles
-                ]
-            });
-            return Object.assign({}, state, {
-                workspaces: [
-                    ...state.workspaces.slice(0, workspaceIndex),
-                    updatedWorkspace,
-                    ...state.workspaces.slice(workspaceIndex + 1),
-                ]
-            })
-        }
         case actions.REMOVE_SOURCE_FILE: {
             const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
             const workspace = state.workspaces[workspaceIndex];
@@ -420,6 +403,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         case actions.UPDATE_SELECTED_PROCESSES: {
             return Object.assign({}, state, {
                 selectedProcesses: action.payload
+            })
+        }
+        case actions.UPDATE_SELECTED_NOTEBOOK: {
+            return Object.assign({}, state, {
+                selectedNotebookFileName: action.payload
             })
         }
     }

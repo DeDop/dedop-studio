@@ -39,6 +39,7 @@ export interface ControlState {
     selectedSourceFileName?: string;
     selectedSourceType?: string;
     selectedProcesses?: number[];
+    selectedNotebookFileName?: string;
     selectedOutputFileNames?: string[];
     codeEditorActive?: boolean;
     processName?: string;
@@ -66,11 +67,6 @@ export interface ConfigurationVersion {
     chd: number,
     cnf: number,
     cst: number
-}
-
-export interface  ToasterState {
-    key: string;
-    taskIndex: number;
 }
 
 export interface WebAPIConfig {

@@ -5,11 +5,12 @@ import * as selector from "../../selectors";
 import {SelectComponent} from "../common/SelectComponent";
 import {Button, Tooltip, Position, AnchorButton} from "@blueprintjs/core";
 import * as path from "path";
-import {generateAndRunCompareOutputs, generateAndRunInspectOutput} from "../../actions";
+import {generateAndRunCompareOutputs, generateAndRunInspectOutput, updateSelectedNotebook} from "../../actions";
 
 interface IAnalysisPanel {
     dispatch?: Dispatch<State>;
     notebookFileNames: string[];
+    selectedNotebookFileName: string;
     selectedOutputFileNames: string[];
     outputDirectory: string;
 }
@@ -18,7 +19,8 @@ function mapStateToProps(state: State): IAnalysisPanel {
     return {
         notebookFileNames: selector.getNotebookFileNames(state),
         selectedOutputFileNames: state.control.selectedOutputFileNames,
-        outputDirectory: selector.getOutputDirectory(state)
+        outputDirectory: selector.getOutputDirectory(state),
+        selectedNotebookFileName: state.control.selectedNotebookFileName
     }
 }
 
@@ -38,6 +40,10 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                 path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[1])
             ));
         }
+    };
+
+    private handleOnChangeNotebookName = (event: React.FormEvent<HTMLSelectElement>) => {
+        this.props.dispatch(updateSelectedNotebook(event.currentTarget.value));
     };
 
     render() {
@@ -71,6 +77,8 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                     <SelectComponent items={this.props.notebookFileNames}
                                      fill={true}
                                      defaultValue="Select a notebook file..."
+                                     selectedItem={this.props.selectedNotebookFileName}
+                                     onChange={this.handleOnChangeNotebookName}
                     />
                 </div>
                 <div style={{textAlign: 'right'}}>
@@ -78,7 +86,7 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                             style={{margin: '10px 0'}}
                             iconName='pt-icon-play'
                     >
-                        Run
+                        Launch notebook
                     </Button>
                 </div>
                 <textarea className="pt-input pt-fill"

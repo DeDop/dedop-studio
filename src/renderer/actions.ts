@@ -362,17 +362,6 @@ function inputsAPI(state: State): InputsAPI {
     return new InputsAPI(state.data.appConfig.webAPIClient)
 }
 
-export const ADD_SOURCE_FILE = 'ADD_SOURCE_FILE';
-
-function addSourceFile(workspaceName: string, newSourceFiles: SourceFile[]) {
-    return {
-        type: ADD_SOURCE_FILE, payload: {
-            workspaceName: workspaceName,
-            sourceFiles: newSourceFiles
-        }
-    };
-}
-
 export function addInputFiles(newInputFiles: SourceFile[]) {
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
@@ -951,6 +940,14 @@ export function getNotebookFileNames() {
 
         callAPI(dispatch, "Get notebook files of workspace '".concat(currentWorkspaceName).concat("'"), call, action);
     }
+}
+
+export const UPDATE_SELECTED_NOTEBOOK = 'UPDATE_SELECTED_NOTEBOOK';
+
+export function updateSelectedNotebook(selectedNotebookName: string) {
+    return {
+        type: UPDATE_SELECTED_NOTEBOOK, payload: selectedNotebookName
+    };
 }
 
 // ======================== Output related actions via WebAPI =============================================
