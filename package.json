@@ -35,8 +35,8 @@
   },
   "homepage": "http://dedop.org/",
   "devDependencies": {
-    "@blueprintjs/core": "~1.13.0",
-    "@blueprintjs/table": "~1.10.0",
+    "@blueprintjs/core": "~1.16.0",
+    "@blueprintjs/table": "~1.13.0",
     "@types/chai": "~3.4.34",
     "@types/chai-as-promised": "~0.0.29",
     "@types/chai-enzyme": "~0.5.5",
