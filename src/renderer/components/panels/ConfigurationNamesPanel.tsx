@@ -13,7 +13,6 @@ import {
 import {Configuration, State} from "../../state";
 import {connect} from "react-redux";
 import {Button, Intent, Dialog} from "@blueprintjs/core";
-import {GeneralAlert} from "../Alerts";
 import * as selector from "../../selectors";
 
 interface IConfigurationNamesPanelProps {
@@ -52,37 +51,19 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
         };
 
         const handleOpenCopyConfigDialog = () => {
-            if (this.props.selectedConfiguration[0]) {
-                this.setState({
-                    isCopyConfigDialogOpen: true
-                })
-            } else {
-                this.setState({
-                    isOutputFileNotSelectedAlertOpen: true
-                })
-            }
+            this.setState({
+                isCopyConfigDialogOpen: true
+            })
         };
 
         const handleOpenRenameConfigDialog = () => {
-            if (this.props.selectedConfiguration[0]) {
-                this.setState({
-                    isRenameConfigDialogOpen: true
-                })
-            } else {
-                this.setState({
-                    isOutputFileNotSelectedAlertOpen: true
-                })
-            }
+            this.setState({
+                isRenameConfigDialogOpen: true
+            })
         };
 
         const handleDeleteConfig = () => {
-            if (this.props.selectedConfiguration[0]) {
-                this.props.dispatch(removeConfig(this.props.selectedConfiguration[0]));
-            } else {
-                this.setState({
-                    isOutputFileNotSelectedAlertOpen: true
-                })
-            }
+            this.props.dispatch(removeConfig(this.props.selectedConfiguration[0]));
         };
 
         const renderFileList = (itemIndex: number) => {
@@ -155,12 +136,6 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
             }
         };
 
-        const handleCloseAlert = () => {
-            this.setState({
-                isOutputFileNotSelectedAlertOpen: false,
-            })
-        };
-
         const handleAddConfig = () => {
             if (this.state.newConfigName) {
                 this.props.dispatch(addNewConfig(this.state.newConfigName));
@@ -199,14 +174,17 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                         Add
                     </button>
                     <button className="pt-button configuration-file-button pt-icon-duplicate"
+                            disabled={!this.props.selectedConfiguration[0]}
                             onClick={handleOpenCopyConfigDialog}>
                         Copy
                     </button>
                     <button className="pt-button configuration-file-button"
+                            disabled={!this.props.selectedConfiguration[0]}
                             onClick={handleOpenRenameConfigDialog}>
                         Rename
                     </button>
                     <button className="pt-button configuration-file-button"
+                            disabled={!this.props.selectedConfiguration[0]}
                             onClick={handleDeleteConfig}>
                         Remove
                     </button>
@@ -217,13 +195,6 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                          selection={this.props.selectedConfiguration ? this.props.selectedConfiguration : []}
                          onSelection={handleSelectConfig}
                          onItemDoubleClick={handleCurrentConfig}
-                />
-                <GeneralAlert
-                    isAlertOpen={this.state.isOutputFileNotSelectedAlertOpen}
-                    onConfirm={handleCloseAlert}
-                    className="dedop-alert-warning"
-                    iconName="pt-icon-warning-sign"
-                    message="A configuration file must be selected"
                 />
                 <Dialog isOpen={this.state.isAddConfigDialogOpen}
                         onClose={handleCloseAddConfigDialog}
