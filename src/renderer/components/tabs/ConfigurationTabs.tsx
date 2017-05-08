@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as CodeMirror from "react-codemirror";
 import {ProcessConfigurations, State, ConfigurationVersion} from "../../state";
-import {Tabs, TabList, Tab, TabPanel} from "@blueprintjs/core";
+import {Tabs2, Tab2} from "@blueprintjs/core";
 import {ConfigurationEditor, CnfConfigurationEditor} from "../ConfigurationEditor";
 import "codemirror/mode/javascript/javascript";
 import {connect, Dispatch} from "react-redux";
@@ -160,6 +160,132 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.props.dispatch(upgradeConfigurations(this.props.activeConfiguration));
     };
 
+    private renderCharacterizationTabPanel() {
+        return (
+            <div className="panel-flexbox-configs">
+                {this.props.codeEditorActive
+                    ?
+                    <CodeMirror
+                        value={this.state.chdTemp ? JSON.stringify(this.state.chdTemp, null, 4) : "please select a configuration"}
+                        onChange={this.updateChdCode}
+                        options={this.state.options}/>
+                    :
+                    (
+                        this.state.chdVersion != CONFIGURATION_NOT_FOUND
+                            ?
+                            <div>
+                                            <span
+                                                className={"pt-tag ".concat(this.state.chdVersion < this.props.defaultConfVersion.chd ? "pt-intent-warning" : "pt-intent-success")}>
+                                                Version {this.state.chdVersion >= 0 ? this.state.chdVersion : "N/A"}
+                                            </span>
+                                {
+                                    this.state.chdVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.chdVersion < this.props.defaultConfVersion.chd
+                                        ?
+                                        <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
+                                              onClick={this.handleUpgradeConfig}
+                                        >
+                                                        upgrade
+                                                    </span>
+                                        :
+                                        null
+                                }
+                                <ConfigurationEditor configurations={this.props.chd}
+                                                     handleInputChange={this.handleChdInputChange}/>
+                            </div>
+                            :
+                            <div>
+                                Please select a configuration.
+                            </div>
+                    )
+                }
+            </div>
+        )
+    }
+
+    private renderConfigurationTabPanel() {
+        return (
+            <div className="panel-flexbox-configs">
+                {this.props.codeEditorActive
+                    ?
+                    <CodeMirror
+                        value={this.state.cnfTemp ? JSON.stringify(this.state.cnfTemp, null, 4) : "please select a configuration"}
+                        onChange={this.updateCnfCode}
+                        options={this.state.options}/>
+                    :
+                    (
+                        this.state.cnfVersion != CONFIGURATION_NOT_FOUND
+                            ?
+                            <div>
+                                            <span
+                                                className={"pt-tag ".concat(this.state.cnfVersion < this.props.defaultConfVersion.cnf ? "pt-intent-warning" : "pt-intent-success")}>
+                                                Version {this.state.cnfVersion >= 0 ? this.state.cnfVersion : "N/A"}
+                                            </span>
+                                {
+                                    this.state.cnfVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.cnfVersion < this.props.defaultConfVersion.cnf
+                                        ?
+                                        <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
+                                              onClick={this.handleUpgradeConfig}
+                                        >
+                                                        upgrade
+                                                    </span>
+                                        :
+                                        null
+                                }
+                                <CnfConfigurationEditor configurations={this.props.cnf}
+                                                        handleInputChange={this.handleCnfInputChange}/>
+                            </div>
+                            :
+                            <div>
+                                Please select a configuration.
+                            </div>
+                    )
+                }
+            </div>
+        )
+    }
+
+    private renderConstantsTabPanel() {
+        return (
+            <div className="panel-flexbox-configs">
+                {this.props.codeEditorActive
+                    ?
+                    <CodeMirror
+                        value={this.state.cstTemp ? JSON.stringify(this.state.cstTemp, null, 4) : "please select a configuration"}
+                        onChange={this.updateCstCode}
+                        options={this.state.options}/>
+                    :
+                    (
+                        this.state.cstVersion != CONFIGURATION_NOT_FOUND
+                            ?
+                            <div>
+                                            <span
+                                                className={"pt-tag ".concat(this.state.cstVersion < this.props.defaultConfVersion.cst ? "pt-intent-warning" : "pt-intent-success")}>
+                                                Version {this.state.cstVersion >= 0 ? this.state.cstVersion : "N/A"}
+                                            </span>
+                                {
+                                    this.state.cstVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.cstVersion < this.props.defaultConfVersion.cst
+                                        ?
+                                        <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
+                                              onClick={this.handleUpgradeConfig}
+                                        >
+                                                        upgrade
+                                                    </span>
+                                        :
+                                        null
+                                }
+                                <ConfigurationEditor configurations={this.props.cst}
+                                                     handleInputChange={this.handleCstInputChange}/>
+                            </div>
+                            :
+                            <div>
+                                Please select a configuration.
+                            </div>
+                    )
+                }
+            </div>
+        )
+    }
+
     public render() {
         return (
             <div>
@@ -174,133 +300,16 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                         Save Configuration
                     </button>
                 </div>
-                <Tabs key="horizontal"
-                      onChange={this.handleChangeTab}
-                      selectedTabIndex={this.props.currentTab ? this.props.currentTab : 0}
+                <Tabs2
+                    id="ConfigurationTab"
+                    key="horizontal"
+                    onChange={this.handleChangeTab}
+                    selectedTabId={this.props.currentTab ? this.props.currentTab : 0}
                 >
-                    <TabList>
-                        <Tab>Characterization</Tab>
-                        <Tab>Configuration</Tab>
-                        <Tab>Constants</Tab>
-                    </TabList>
-                    <TabPanel>
-                        <div className="panel-flexbox-configs">
-                            {this.props.codeEditorActive
-                                ?
-                                <CodeMirror
-                                    value={this.state.chdTemp ? JSON.stringify(this.state.chdTemp, null, 4) : "please select a configuration"}
-                                    onChange={this.updateChdCode}
-                                    options={this.state.options}/>
-                                :
-                                (
-                                    this.state.chdVersion != CONFIGURATION_NOT_FOUND
-                                        ?
-                                        <div>
-                                            <span
-                                                className={"pt-tag ".concat(this.state.chdVersion < this.props.defaultConfVersion.chd ? "pt-intent-warning" : "pt-intent-success")}>
-                                                Version {this.state.chdVersion >= 0 ? this.state.chdVersion : "N/A"}
-                                            </span>
-                                            {
-                                                this.state.chdVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.chdVersion < this.props.defaultConfVersion.chd
-                                                    ?
-                                                    <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
-                                                          onClick={this.handleUpgradeConfig}
-                                                    >
-                                                        upgrade
-                                                    </span>
-                                                    :
-                                                    null
-                                            }
-                                            <ConfigurationEditor configurations={this.props.chd}
-                                                                 handleInputChange={this.handleChdInputChange}/>
-                                        </div>
-                                        :
-                                        <div>
-                                            Please select a configuration.
-                                        </div>
-                                )
-                            }
-                        </div>
-                    </TabPanel>
-                    <TabPanel>
-                        <div className="panel-flexbox-configs">
-                            {this.props.codeEditorActive
-                                ?
-                                <CodeMirror
-                                    value={this.state.cnfTemp ? JSON.stringify(this.state.cnfTemp, null, 4) : "please select a configuration"}
-                                    onChange={this.updateCnfCode}
-                                    options={this.state.options}/>
-                                :
-                                (
-                                    this.state.cnfVersion != CONFIGURATION_NOT_FOUND
-                                        ?
-                                        <div>
-                                            <span
-                                                className={"pt-tag ".concat(this.state.cnfVersion < this.props.defaultConfVersion.cnf ? "pt-intent-warning" : "pt-intent-success")}>
-                                                Version {this.state.cnfVersion >= 0 ? this.state.cnfVersion : "N/A"}
-                                            </span>
-                                            {
-                                                this.state.cnfVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.cnfVersion < this.props.defaultConfVersion.cnf
-                                                    ?
-                                                    <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
-                                                          onClick={this.handleUpgradeConfig}
-                                                    >
-                                                        upgrade
-                                                    </span>
-                                                    :
-                                                    null
-                                            }
-                                            <CnfConfigurationEditor configurations={this.props.cnf}
-                                                                    handleInputChange={this.handleCnfInputChange}/>
-                                        </div>
-                                        :
-                                        <div>
-                                            Please select a configuration.
-                                        </div>
-                                )
-                            }
-                        </div>
-                    </TabPanel>
-                    <TabPanel>
-                        <div className="panel-flexbox-configs">
-                            {this.props.codeEditorActive
-                                ?
-                                <CodeMirror
-                                    value={this.state.cstTemp ? JSON.stringify(this.state.cstTemp, null, 4) : "please select a configuration"}
-                                    onChange={this.updateCstCode}
-                                    options={this.state.options}/>
-                                :
-                                (
-                                    this.state.cstVersion != CONFIGURATION_NOT_FOUND
-                                        ?
-                                        <div>
-                                            <span
-                                                className={"pt-tag ".concat(this.state.cstVersion < this.props.defaultConfVersion.cst ? "pt-intent-warning" : "pt-intent-success")}>
-                                                Version {this.state.cstVersion >= 0 ? this.state.cstVersion : "N/A"}
-                                            </span>
-                                            {
-                                                this.state.cstVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.cstVersion < this.props.defaultConfVersion.cst
-                                                    ?
-                                                    <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
-                                                          onClick={this.handleUpgradeConfig}
-                                                    >
-                                                        upgrade
-                                                    </span>
-                                                    :
-                                                    null
-                                            }
-                                            <ConfigurationEditor configurations={this.props.cst}
-                                                                 handleInputChange={this.handleCstInputChange}/>
-                                        </div>
-                                        :
-                                        <div>
-                                            Please select a configuration.
-                                        </div>
-                                )
-                            }
-                        </div>
-                    </TabPanel>
-                </Tabs>
+                    <Tab2 id={0} title="Characterization" panel={this.renderCharacterizationTabPanel()}/>
+                    <Tab2 id={1} title="Configuration" panel={this.renderConfigurationTabPanel()}/>
+                    <Tab2 id={2} title="Constants" panel={this.renderConstantsTabPanel()}/>
+                </Tabs2>
             </div>
         );
     }
