@@ -67,11 +67,11 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
             selectionIndicator: true,
             fullscreenButton: false,
             geocoder: false,
-            homeButton: false,
-            infoBox: false,
-            sceneModePicker: false,
+            homeButton: true,
+            infoBox: true,
+            sceneModePicker: true,
             timeline: false,
-            navigationHelpButton: false,
+            navigationHelpButton: true,
             creditContainer: 'creditContainer',
             imageryProvider: baseLayerImageryProvider,
             navigationInstructionsInitiallyVisible: false,
@@ -97,6 +97,7 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
             };
             viewer.entities.add(new Entity({
                 id: city.id,
+                name: "Record " + city.id,
                 show: city.visible,
                 position: new Cartesian3.fromDegrees(city.longitude, city.latitude),
                 billboard: billboard
