@@ -99,11 +99,18 @@ function jobDone(jobId: number) {
 }
 
 function jobFailed(jobId: number, failure: JobFailure) {
-    console.error(failure);
-    return setTaskState(jobId, {
-        status: failure.code === CANCELLED_CODE ? JobStatusEnum.CANCELLED : JobStatusEnum.FAILED,
-        failure
-    });
+    const status = failure.code === CANCELLED_CODE ? JobStatusEnum.CANCELLED : JobStatusEnum.FAILED;
+    if (status === JobStatusEnum.FAILED) {
+        console.error(failure);
+    }
+    showMessageBox({
+        type: "error",
+        title: "DeDop - Error",
+        message: failure.message,
+        detail: `An error (code ${failure.code}) occurred while executing a background process:\n\n${failure.data}`,
+        buttons: [],
+    }, MESSAGE_BOX_NO_REPLY);
+    return setTaskState(jobId, {status, failure});
 }
 
 export type JobPromiseFactory<T> = (jobProgressHandler: JobProgressHandler) => JobPromise<T>;
@@ -1012,4 +1019,91 @@ function constructCurrentInputDirectory(getState, currentWorkspaceName: string) 
 function constructCurrentOutputDirectory(getState, currentWorkspaceName: string, configName: string) {
     const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
     return path.join(getState().data.workspaces[currentWorkspaceIndex].directory, "configs", configName, "outputs");
+}
+
+/**
+ * See dialog.showMessageBox() in https://github.com/electron/electron/blob/master/docs/api/dialog.md
+ */
+export interface MessageBoxOptions {
+    /**
+     * Can be "none", "info", "error", "question" or "warning". On Windows, "question" displays the same icon as "info", unless you set an icon using the "icon" option.
+     */
+        type?: string;
+
+    /**
+     * Array of texts for buttons. On Windows, an empty array will result in one button labeled "OK".
+     */
+    buttons?: string[];
+
+    /**
+     * Title of the message box, some platforms will not show it.
+     */
+    title?: string;
+
+    /**
+     * Content of the message box.
+     */
+    message: string;
+
+    /**
+     * Extra information of the message.
+     */
+    detail?: string;
+
+    /**
+     *  NativeImage: https://github.com/electron/electron/blob/master/docs/api/native-image.md
+     */
+    icon?: any;
+
+    /**
+     * Index of the button in the buttons array which will be selected by default when the message box opens.
+     */
+    defaultId?: number;
+
+    /**
+     * The value will be returned when user cancels the dialog instead of clicking the buttons of the dialog.
+     * By default it is the index of the buttons that have "cancel" or "no" as label, or 0 if there is no such buttons.
+     * On macOS and Windows the index of the "Cancel" button will always be used as cancelId even if it is specified.
+     */
+    cancelId?: number;
+
+    /**
+     * On Windows Electron will try to figure out which one of the buttons are common buttons (like "Cancel" or "Yes"),
+     * and show the others as command links in the dialog. This can make the dialog appear in the style of modern
+     * Windows apps. If you don't like this behavior, you can set noLink to true.
+     */
+    noLink?: boolean;
+}
+
+export const MESSAGE_BOX_NO_REPLY = () => {
+};
+
+/**
+ * Shows a native message box.
+ *
+ * @param messageBoxOptions the message dialog options, see https://github.com/electron/electron/blob/master/docs/api/dialog.md
+ * @param callback an optional function which is called with the selected button index
+ * @returns the selected button index or null, if no button was selected or the callback function is defined
+ */
+export function showMessageBox(messageBoxOptions: MessageBoxOptions, callback?: (index: number) => void):
+number
+    | null {
+    const electron = require('electron');
+    if (!electron) {
+        console.warn('showMessageBox() cannot be executed, electron not available from renderer process');
+        return;
+    }
+    const actionName = 'show-message-box';
+    if (!messageBoxOptions.buttons) {
+        messageBoxOptions = Object.assign({}, messageBoxOptions, {buttons: ['OK']});
+    }
+    if (callback) {
+        electron.ipcRenderer.send(actionName, messageBoxOptions, false);
+        electron.ipcRenderer.once(actionName + '-reply', (event, index: number) => {
+            callback(index);
+        });
+        return null;
+    } else {
+        return electron.ipcRenderer.sendSync(actionName, messageBoxOptions, true);
+    }
 }
