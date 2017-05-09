@@ -274,6 +274,7 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(getAllConfigs());
             dispatch(getCurrentConfig());
             dispatch(getNotebookFileNames());
+            dispatch(updateSelectedOutputs([]));
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
