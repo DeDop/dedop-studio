@@ -3,6 +3,7 @@ import * as path from "path";
 import {State, ProcessConfigurations, SourceFile, Configuration, Workspace} from "./state";
 
 const getSelectedConfigurationName = (state: State) => state.control.selectedConfigurationName;
+const getCurrentConfigurationName = (state: State) => state.control.currentConfigurationName;
 const getWorkspaces = (state: State) => state.data.workspaces;
 const getCurrentWorkspaceName = (state: State) => state.control.currentWorkspaceName;
 const getSelectedSourceFileName = (state: State) => state.control.selectedSourceFileName;
@@ -25,9 +26,9 @@ export const getAllConfigurations = createSelector(
 
 export const getCurrentConfiguration = createSelector(
     getAllConfigurations,
-    getSelectedConfigurationName,
-    (getAllConfigurations, getSelectedConfigurationName): Configuration => {
-        const configIndex = getAllConfigurations.findIndex((x) => x.name == getSelectedConfigurationName);
+    getCurrentConfigurationName,
+    (getAllConfigurations, getCurrentConfigurationName): Configuration => {
+        const configIndex = getAllConfigurations.findIndex((x) => x.name == getCurrentConfigurationName);
         return configIndex >= 0 ? getAllConfigurations[configIndex] : null;
     }
 );
