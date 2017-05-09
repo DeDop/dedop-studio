@@ -820,7 +820,8 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
             dispatch(markProcessAsFinished(processId, processingDuration.toString(),
                 getState().communication.tasks[taskId].status,
                 "successful"
-            ))
+            ));
+            dispatch(getOutputFileNames(currentWorkspaceName, currentConfigName));
         }
 
         function failureAction(jobFailure: JobFailure) {
