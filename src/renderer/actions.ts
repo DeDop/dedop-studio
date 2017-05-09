@@ -491,6 +491,9 @@ export function getAllConfigs() {
 
         function action(configs: Configuration[]) {
             dispatch(updateConfigs(workspaceName, configs));
+            for (let config of configs) {
+                dispatch(getOutputFileNames(workspaceName, config.name))
+            }
         }
 
         callAPI(dispatch, "Get all configuration names", call, action);
@@ -628,7 +631,6 @@ export function getCurrentConfig() {
                 dispatch(getConfigurations(current_config));
                 const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, current_config);
                 dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
-                dispatch(getOutputFileNames());
             }
         }
 
@@ -648,7 +650,6 @@ export function setCurrentConfig(configName: string) {
             dispatch(updateCurrentConfig(configName));
             const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, configName);
             dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
-            dispatch(getOutputFileNames());
         }
 
         callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
@@ -867,11 +868,8 @@ export function updateOutputs(workspaceName: string, configName: string, outputs
     };
 }
 
-export function getOutputFileNames() {
+export function getOutputFileNames(currentWorkspaceName: string, currentConfigName: string) {
     return (dispatch, getState) => {
-        const currentWorkspaceName = getState().control.currentWorkspaceName;
-        const currentConfigName = getState().control.currentConfigurationName;
-
         function call() {
             return outputAPI(getState()).get_output_names(currentWorkspaceName, currentConfigName);
         }
@@ -1085,8 +1083,7 @@ export const MESSAGE_BOX_NO_REPLY = () => {
  * @param callback an optional function which is called with the selected button index
  * @returns the selected button index or null, if no button was selected or the callback function is defined
  */
-export function showMessageBox(messageBoxOptions: MessageBoxOptions, callback?: (index: number) => void):
-number
+export function showMessageBox(messageBoxOptions: MessageBoxOptions, callback?: (index: number) => void): number
     | null {
     const electron = require('electron');
     if (!electron) {

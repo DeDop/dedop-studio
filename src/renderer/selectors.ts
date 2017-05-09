@@ -88,9 +88,15 @@ export const getSelectedSourceFile = createSelector(
 );
 
 export const getOutputNames = createSelector(
-    getCurrentConfiguration,
-    (getCurrentConfiguration): string[] => {
-        return getCurrentConfiguration && getCurrentConfiguration.outputs ? getCurrentConfiguration.outputs : [];
+    getCurrentWorkspace,
+    (getCurrentWorkspace): string[] => {
+        let outputNames: string[] = [];
+        for (let config of getCurrentWorkspace.configs) {
+            if (config.outputs) {
+                outputNames = outputNames.concat(config.outputs);
+            }
+        }
+        return outputNames;
     }
 );
 

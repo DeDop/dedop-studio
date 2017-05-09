@@ -1,11 +1,12 @@
 import * as React from "react";
-import {connect} from "react-redux";
+import {connect, Dispatch} from "react-redux";
 import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import AnalysisPanel from "../panels/AnalysisPanel";
 import OutputFilesPanel from "../panels/OutputFilesPanel";
+import {State} from "../../state";
 
 interface IResultPanelProps {
-    dispatch?: (action: {type: string, payload: string}) => void;
+    dispatch?: Dispatch<State>;
 }
 
 function mapStateToProps(): IResultPanelProps {
