@@ -119,10 +119,9 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
         } else if (nextProps.cities.length > 0) {
             this.viewer.entities.removeAll();
             this.addNewEntities(this.viewer, nextProps.cities);
-            // TODO(hans-permana, 20170326): the flyTo() zoom is at the moment does not really look nice. Try to improve it!
             this.viewer.camera.flyTo({
                 destination: new Cartesian3.fromDegrees(nextProps.cities[0].longitude, nextProps.cities[0].latitude, 1500000.0)
-            })
+            });
         } else {
             this.viewer.entities.removeAll();
             this.viewer.camera.flyTo({
