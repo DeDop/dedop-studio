@@ -40,11 +40,13 @@ class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps,any> {
                             <td width='80%'>
                                 <div className="pt-input-group">
                                     <input type="text"
+                                           title={this.props.currentOutputDirectory}
                                            className="pt-input"
                                            style={{textAlign: 'left'}}
                                            readOnly={true}
                                            value={this.props.currentOutputDirectory}
-                                           onClick={handleSelectDirectory}/>
+                                           onClick={handleSelectDirectory}
+                                    />
                                     <button className="pt-button pt-minimal pt-icon-folder-open"
                                             onClick={handleSelectDirectory}
                                     />
