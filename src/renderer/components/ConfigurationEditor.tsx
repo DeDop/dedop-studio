@@ -1,5 +1,5 @@
 import * as React from "react";
-import {InputGroup, Tag, Classes, Tooltip, Position} from "@blueprintjs/core";
+import {InputGroup, Tag, Classes} from "@blueprintjs/core";
 import {ProcessConfigurations, ConfigurationItem} from "../state";
 
 interface IConfigProps {
@@ -38,11 +38,9 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
         return (
             <tr>
                 <td>
-                    <Tooltip content={this.props.configuration.description} position={Position.LEFT}>
-                        <label className="pt-label pt-inline">
-                            {this.props.configName}
-                        </label>
-                    </Tooltip>
+                    <label className="pt-label pt-inline" title={this.props.configuration.description}>
+                        {this.props.configName}
+                    </label>
                 </td>
                 <td>
                     <InputGroup className="config-textbox"
@@ -83,18 +81,16 @@ export class ConfigurationFlagSingleEntry extends React.Component<IConfigProps, 
         };
 
         return (
-            <Tooltip content={this.props.configuration.description} position={Position.LEFT}>
-                <label className="pt-control pt-checkbox">
-                    <input type="checkbox"
-                           name={this.props.configName}
-                           checked={this.state.checked}
-                           onChange={handleFlagChange}
-                           onBlur={this.props.onBlur}
-                    />
-                    <span className="pt-control-indicator"/>
-                    {this.props.configName}
-                </label>
-            </Tooltip>
+            <label className="pt-control pt-checkbox" title={this.props.configuration.description}>
+                <input type="checkbox"
+                       name={this.props.configName}
+                       checked={this.state.checked}
+                       onChange={handleFlagChange}
+                       onBlur={this.props.onBlur}
+                />
+                <span className="pt-control-indicator"/>
+                {this.props.configName}
+            </label>
         )
     }
 }

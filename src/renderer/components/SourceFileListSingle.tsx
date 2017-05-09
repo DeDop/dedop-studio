@@ -1,6 +1,5 @@
 import * as React from "react";
 import {SourceFile, State} from "../state";
-import {Tooltip, Position} from "@blueprintjs/core";
 import {connect, Dispatch} from "react-redux";
 import {removeInputFiles} from "../actions";
 import * as selector from "../selectors";
@@ -31,21 +30,22 @@ class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,an
         return (
             <div className="dedop-list-box-item">
                 <span className="dedop-list-box-item-file-name">{this.props.sourceFile.name}</span>
-                <Tooltip content="file size" position={Position.LEFT}>
-                        <span
-                            className="pt-tag pt-intent-success dedop-list-box-item-file-size">{(this.props.sourceFile.size).toFixed(2)}
-                            MB</span>
-                </Tooltip>
-                <Tooltip content="last modified date" position={Position.BOTTOM}>
-                        <span className="pt-tag dedop-list-box-item-last-updated">
-                            {this.props.sourceFile.lastUpdated}
-                            </span>
-                </Tooltip>
-                <Tooltip content="remove this file from workspace" position={Position.RIGHT}>
-                    <span className="pt-icon-standard pt-icon-delete dedop-list-box-item-file-delete"
-                          onClick={this.handleRemove}
-                    />
-                </Tooltip>
+                <span
+                    className="pt-tag pt-intent-success dedop-list-box-item-file-size"
+                    title="file size"
+                >
+                    {(this.props.sourceFile.size).toFixed(2)}
+                    MB
+                </span>
+                <span className="pt-tag dedop-list-box-item-last-updated"
+                      title="last modified date"
+                >
+                    {this.props.sourceFile.lastUpdated}
+                </span>
+                <span className="pt-icon-standard pt-icon-delete dedop-list-box-item-file-delete"
+                      title="remove this file from workspace"
+                      onClick={this.handleRemove}
+                />
             </div>
         )
     }

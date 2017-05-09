@@ -560,6 +560,7 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-list-box-item-file-size {
     text-align: center;
     margin-right: 10px;
+    padding-right: 15px;
 }
 
 .dedop-list-box-item-file-delete {
