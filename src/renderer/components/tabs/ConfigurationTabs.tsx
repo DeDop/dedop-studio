@@ -27,7 +27,7 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
         chd: selector.getSelectedChd(state),
         cnf: selector.getSelectedCnf(state),
         cst: selector.getSelectedCst(state),
-        defaultConfVersion: state.data.version.configuration,
+        defaultConfVersion: state.data.version ? state.data.version.configuration : null,
         codeEditorActive: state.control.codeEditorActive,
         activeConfiguration: state.control.selectedConfigurationName,
         currentTab: state.control.currentConfigurationTabPanel
@@ -47,6 +47,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         this.handleCstInputChange = this.handleCstInputChange.bind(this);
         this.handleChangeTab = this.handleChangeTab.bind(this);
         this.handleUpgradeConfig = this.handleUpgradeConfig.bind(this);
+        this.renderCharacterizationTabPanel = this.renderCharacterizationTabPanel.bind(this);
+        this.renderConfigurationTabPanel = this.renderConfigurationTabPanel.bind(this);
+        this.renderConstantsTabPanel = this.renderConstantsTabPanel.bind(this);
 
         const chdVersion = ConfigurationTabs.getConfigVersion(this.props.chd);
         const cnfVersion = ConfigurationTabs.getConfigVersion(this.props.cnf);
@@ -302,9 +305,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
                 </div>
                 <Tabs2
                     id="ConfigurationTab"
-                    key="horizontal"
                     onChange={this.handleChangeTab}
-                    selectedTabId={this.props.currentTab ? this.props.currentTab : 0}
+                    defaultSelectedTabId={0}
+                    selectedTabId={this.props.currentTab}
+                    renderActiveTabPanelOnly={true}
                 >
                     <Tab2 id={0} title="Characterization" panel={this.renderCharacterizationTabPanel()}/>
                     <Tab2 id={1} title="Configuration" panel={this.renderConfigurationTabPanel()}/>

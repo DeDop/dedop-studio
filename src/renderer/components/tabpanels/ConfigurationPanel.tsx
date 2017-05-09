@@ -7,7 +7,6 @@ import EventHandler = React.EventHandler;
 import FormEvent = React.FormEvent;
 
 interface IConfigurationPanelProps {
-    dispatch?: (action: {type: string, payload: any}) => void;
 }
 
 class ConfigurationPanel extends React.Component<IConfigurationPanelProps, any> {
