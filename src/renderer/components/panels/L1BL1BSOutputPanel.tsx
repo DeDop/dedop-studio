@@ -47,7 +47,7 @@ class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps,any> {
                                            value={this.props.currentOutputDirectory}
                                            onClick={handleSelectDirectory}
                                     />
-                                    <button className="pt-button pt-minimal pt-icon-folder-open"
+                                    <button className="pt-button pt-minimal pt-icon-folder-open pt-intent-primary"
                                             onClick={handleSelectDirectory}
                                     />
                                 </div>
