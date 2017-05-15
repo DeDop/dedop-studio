@@ -48,3 +48,7 @@ export function getSourceFiles(sourceFileDirectory: string): SourceFile[] {
     }
     return validSourceFiles;
 }
+
+export function getDirectory(sourceFilePath: string): string {
+    return sourceFilePath.match(/(.*)[\/\\]/)[1]||'';
+}

@@ -1,20 +1,21 @@
 import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {ListBox} from "../ListBox";
-import {State, SourceFile} from "../../state";
+import {SourceFile, State} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import {
-    selectSourceFile,
+    addInputFiles,
     getGlobalAttributes,
-    updateCurrentGlobalAttributes,
     getLatLon,
+    selectSourceFile,
+    selectSourceFileDirectory,
     updateCurrentCesiumPoints,
-    addInputFiles
+    updateCurrentGlobalAttributes
 } from "../../actions";
 import {remote} from "electron";
 import {GeneralAlert} from "../Alerts";
 import SourceFileListSingle from "../SourceFileListSingle";
-import {getSourceFilesFromPaths} from "../../../common/sourceFileUtils";
+import {getDirectory, getSourceFilesFromPaths} from "../../../common/sourceFileUtils";
 import * as path from "path";
 import * as selector from "../../selectors";
 import {Button} from "@blueprintjs/core";
@@ -44,8 +45,8 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
         isNoFilesAvailableAlertOpen: false,
     };
 
-    private handleSelectDirectory = () => {
-        const sourceFileDirectory = remote.dialog.showOpenDialog({
+    private handleSelectFiles = () => {
+        const selectedFiles = remote.dialog.showOpenDialog({
                 properties: ['openFile', 'multiSelections'],
                 defaultPath: this.props.currentSourceFileDirectory,
                 filters: [
@@ -56,13 +57,17 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                 ]
             }
         );
-        if (sourceFileDirectory && sourceFileDirectory.length) {
-            const validSourceFiles = getSourceFilesFromPaths(sourceFileDirectory);
-            this.props.dispatch(addInputFiles(validSourceFiles));
-        } else {
-            this.setState({
-                isNoFilesAvailableAlertOpen: true
-            })
+        if (selectedFiles && selectedFiles.length) {
+            const directoryPath = getDirectory(selectedFiles[0]);
+            this.props.dispatch(selectSourceFileDirectory(directoryPath));
+            const validSourceFiles = getSourceFilesFromPaths(selectedFiles);
+            if (validSourceFiles && validSourceFiles.length) {
+                this.props.dispatch(addInputFiles(validSourceFiles));
+            } else {
+                this.setState({
+                    isNoFilesAvailableAlertOpen: true
+                })
+            }
         }
     };
 
@@ -98,7 +103,7 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                 <div className="dedop-panel-content" style={{textAlign: 'right'}}>
                     <Button className="pt-intent-primary"
                             iconName="pt-icon-add"
-                            onClick={this.handleSelectDirectory}
+                            onClick={this.handleSelectFiles}
                     >
                         Add Files
                     </Button>
