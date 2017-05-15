@@ -487,8 +487,10 @@ export function getAllConfigs() {
 
         function action(configs: Configuration[]) {
             dispatch(updateConfigs(workspaceName, configs));
-            for (let config of configs) {
-                dispatch(getOutputFileNames(workspaceName, config.name))
+            if (configs && configs.length) {
+                for (let config of configs) {
+                    dispatch(getOutputFileNames(workspaceName, config.name))
+                }
             }
         }
 

@@ -121,7 +121,7 @@ const dataReducer = (state: DataState = initialDataState, action) => {
             const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
             const workspace = state.workspaces[workspaceIndex];
             let newConfigs: Configuration[] = [];
-            let payloadConfigs: Configuration[] = action.payload.configs ? action.payload.configs : [];
+            let payloadConfigs: Configuration[] = action.payload.configs || [];
             for (let newConfig of payloadConfigs) {
                 const configIndex = getConfigIndex(workspace.configs, newConfig.name);
                 if (configIndex < 0) {

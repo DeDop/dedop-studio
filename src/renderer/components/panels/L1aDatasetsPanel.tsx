@@ -56,8 +56,8 @@ class SourceDataPanel extends React.Component<ISourceDataPanelProps, any> {
                 ]
             }
         );
-        let validSourceFiles: SourceFile[] = getSourceFilesFromPaths(sourceFileDirectory);
-        if (sourceFileDirectory.length > 0) {
+        if (sourceFileDirectory && sourceFileDirectory.length) {
+            const validSourceFiles = getSourceFilesFromPaths(sourceFileDirectory);
             this.props.dispatch(addInputFiles(validSourceFiles));
         } else {
             this.setState({

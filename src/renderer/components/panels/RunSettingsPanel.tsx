@@ -3,7 +3,7 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {State} from "../../state";
 import * as selectors from "../../selectors";
 import {connect, Dispatch} from "react-redux";
-import {setProcessName, getAllConfigs, setCurrentConfig} from "../../actions";
+import {setProcessName, setCurrentConfig} from "../../actions";
 import {SelectComponent} from "../common/SelectComponent";
 
 interface IRunSettingsPanelProps {
