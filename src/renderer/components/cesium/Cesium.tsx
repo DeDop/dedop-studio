@@ -26,6 +26,9 @@ const {app} = require('electron').remote;
 //
 Cesium.BingMapsApi.defaultKey = 'AnCcpOxnAAgq-KyFcczSZYZ_iFvCOmWl0Mx-6QzQ_rzMtpgxZrPZZNxa8_9ZNXci';
 
+Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(4.1,52,4.6,52.5);
+Cesium.Camera.DEFAULT_VIEW_FACTOR = 1;
+
 
 export interface ICesiumComponentProps extends IPermanentComponentProps {
     id: string;
