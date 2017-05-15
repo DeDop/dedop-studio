@@ -356,6 +356,9 @@ function createMainWindow() {
         webPreferences: {},
     }, mainWindowBounds));
 
+    // disable the top toolbar menu as it is not used yet
+    _mainWindow.setMenu(null);
+
     // and load the index.html of the app.
     _mainWindow.loadURL(url.format({
         pathname: path.join(app.getAppPath(), 'index.html'),
