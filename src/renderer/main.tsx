@@ -85,10 +85,12 @@ function connectWebAPIClient(store: Store<State>) {
 
     webAPIClient.onClose = () => {
         store.dispatch(actions.setWebAPIStatus(null, 'closed'));
+        store.dispatch(actions.updateWebapiDialog(true));
     };
 
     webAPIClient.onError = () => {
         store.dispatch(actions.setWebAPIStatus(webAPIClient, 'error'));
+        store.dispatch(actions.updateWebapiDialog(true));
     };
 
     webAPIClient.onWarning = (event) => {

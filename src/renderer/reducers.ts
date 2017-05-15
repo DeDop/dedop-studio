@@ -406,6 +406,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 selectedNotebookFileName: action.payload
             })
         }
+        case actions.UPDATE_WEBAPI_DIALOG: {
+            return Object.assign({}, state, {
+                isWebapiDialogOpen: action.payload
+            })
+        }
     }
     return state;
 };

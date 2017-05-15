@@ -42,6 +42,9 @@ export interface ControlState {
     selectedOutputFileNames?: string[];
     codeEditorActive?: boolean;
     processName?: string;
+
+    // dialog control parameters
+    isWebapiDialogOpen: boolean;
 }
 
 export interface SessionState {

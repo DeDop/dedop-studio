@@ -1,17 +1,17 @@
 import {
+    CesiumPoint,
+    Configuration,
+    GlobalAttribute,
     ProcessConfigurations,
-    SourceFile,
     ProcessingItem,
+    SourceFile,
     State,
     TaskState,
-    Workspace,
-    GlobalAttribute,
-    Configuration,
-    CesiumPoint
+    Workspace
 } from "./state";
 import * as moment from "moment";
 import * as path from "path";
-import {JobStatusEnum, JobProgress, JobFailure, JobPromise, JobProgressHandler} from "./webapi/Job";
+import {JobFailure, JobProgress, JobProgressHandler, JobPromise, JobStatusEnum} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
 import {getSourceFiles} from "../common/sourceFileUtils";
@@ -76,6 +76,16 @@ export function setProcessName(processName: string) {
 export function updateSelectedProcesses(processId: number[]) {
     return {type: UPDATE_SELECTED_PROCESSES, payload: processId};
 }
+
+// ======================== Dialog related actions =============================================
+
+export const UPDATE_WEBAPI_DIALOG = "UPDATE_WEBAPI_DIALOG";
+
+export function updateWebapiDialog(openDialog: boolean) {
+    return {type: UPDATE_WEBAPI_DIALOG, payload: openDialog};
+}
+
+// ======================== Dialog related actions =============================================
 
 export function setTaskState(jobId: number, taskState: TaskState) {
     return {type: SET_TASK_STATE, payload: {jobId, taskState}};
@@ -152,7 +162,7 @@ export function applyInitialState(initialState: Object) {
     return {type: APPLY_INITIAL_STATE, payload: initialState};
 }
 
-export function setWebAPIStatus(webAPIClient, webAPIStatus: 'connecting'|'open'|'error'|'closed') {
+export function setWebAPIStatus(webAPIClient, webAPIStatus: 'connecting' | 'open' | 'error' | 'closed') {
     return {type: SET_WEBAPI_STATUS, payload: {webAPIClient, webAPIStatus}};
 }
 
@@ -730,7 +740,7 @@ export function getDefaultConfigurationVersions() {
             return configAPI(getState()).getDefaultConfigVersions();
         }
 
-        function action(versions: {chdVersion: number, cnfVersion: number, cstVersion: number}) {
+        function action(versions: { chdVersion: number, cnfVersion: number, cstVersion: number }) {
             dispatch(udpateDefaultConfigurationVersions(versions.chdVersion, versions.cnfVersion, versions.cstVersion));
         }
 
@@ -1025,7 +1035,7 @@ export interface MessageBoxOptions {
     /**
      * Can be "none", "info", "error", "question" or "warning". On Windows, "question" displays the same icon as "info", unless you set an icon using the "icon" option.
      */
-        type?: string;
+    type?: string;
 
     /**
      * Array of texts for buttons. On Windows, an empty array will result in one button labeled "OK".

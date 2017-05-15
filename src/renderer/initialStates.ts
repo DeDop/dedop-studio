@@ -12,7 +12,8 @@ export const initialControlState: ControlState = {
     codeEditorActive: false,
     currentSourceFileDirectory: "",
     selectedSourceType: "single",
-    processName: ""
+    processName: "",
+    isWebapiDialogOpen: false
 };
 
 export const initialDataState: DataState = {
