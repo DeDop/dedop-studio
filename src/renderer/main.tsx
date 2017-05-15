@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider, Store} from "react-redux";
-import {createStore, applyMiddleware} from "redux";
+import {applyMiddleware, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
 import * as loggerMiddleware from "redux-logger";
-import {HGLContainer, HGLHeader, HGLFooter, HGLCenter} from "./components/Components";
+import {HGLCenter, HGLContainer, HGLFooter, HGLHeader} from "./components/Components";
 import MainTabs from "./components/tabs/Tabs";
 import TopMenu from "./components/TopMenu";
 import {reducers} from "./reducers";
@@ -15,6 +15,7 @@ import {newWebAPIClient} from "./webapi/WebAPIClient";
 import {ipcRenderer} from "electron";
 import {WebAPIServiceMock} from "./webapi/WebAPIServiceMock";
 import {WebSocketMock} from "./webapi/WebSocketMock";
+import BottomToolbar from "./components/BottomToolbar";
 
 export function main() {
 
@@ -74,11 +75,7 @@ function connectWebAPIClient(store: Store<State>) {
                         <MainTabs/>
                     </HGLCenter>
                     <HGLFooter>
-                        <div style={{margin: '0 0 0 10px'}}>Ready.</div>
-                        {/*<div className="footer-core-status">
-                         <span className="core-status-text">dedop-core</span>
-                         <span className="pt-icon pt-icon-disable"/>
-                         </div>*/}
+                        <BottomToolbar/>
                     </HGLFooter>
                 </HGLContainer>
             </Provider>,
