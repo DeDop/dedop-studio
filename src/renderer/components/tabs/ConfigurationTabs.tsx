@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as CodeMirror from "react-codemirror";
-import {ProcessConfigurations, State, ConfigurationVersion} from "../../state";
-import {Tabs2, Tab2} from "@blueprintjs/core";
-import {ConfigurationEditor, CnfConfigurationEditor} from "../ConfigurationEditor";
+import {ConfigurationVersion, ProcessConfigurations, State} from "../../state";
+import {Tab2, Tabs2} from "@blueprintjs/core";
+import {CnfConfigurationEditor, ConfigurationEditor} from "../ConfigurationEditor";
 import "codemirror/mode/javascript/javascript";
 import {connect, Dispatch} from "react-redux";
-import {updateConfigEditorMode, saveConfiguration, updateConfigurationTab, upgradeConfigurations} from "../../actions";
+import {saveConfiguration, updateConfigEditorMode, updateConfigurationTab, upgradeConfigurations} from "../../actions";
 import * as selector from "../../selectors";
 
 const CONFIGURATION_VERSION_NOT_FOUND = -1;
@@ -34,7 +34,7 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
     }
 }
 
-class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
+class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
     constructor(props) {
         super(props);
         this.handleChangeMode = this.handleChangeMode.bind(this);
@@ -129,7 +129,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
 
     private handleChdInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
         const chdConfigurations = this.props.chd;
-        chdConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+        chdConfigurations[event.currentTarget.name].value = parseFloat(event.currentTarget.value) || event.currentTarget.value;
         this.setState({
             chdTemp: chdConfigurations
         })
@@ -140,7 +140,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
         if (event.currentTarget.type == 'checkbox') {
             cnfConfigurations[event.currentTarget.name].value = event.currentTarget.checked;
         } else {
-            cnfConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+            cnfConfigurations[event.currentTarget.name].value = parseFloat(event.currentTarget.value) || event.currentTarget.value;
         }
         this.setState({
             cnfTemp: cnfConfigurations
@@ -149,7 +149,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
 
     private handleCstInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
         const cstConfigurations = this.props.cst;
-        cstConfigurations[event.currentTarget.name].value = event.currentTarget.value;
+        cstConfigurations[event.currentTarget.name].value = parseFloat(event.currentTarget.value) || event.currentTarget.value;
         this.setState({
             cstTemp: cstConfigurations
         })
@@ -292,7 +292,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps,any> {
     public render() {
         return (
             <div>
-                <div style={{display:'flex', margin: '10px 0', flexDirection: 'row', justifyContent: 'space-between'}}>
+                <div style={{display: 'flex', margin: '10px 0', flexDirection: 'row', justifyContent: 'space-between'}}>
                     <label className="pt-control pt-switch" style={{margin: '0 0 0 10px'}}>
                         <input type="checkbox" onChange={this.handleChangeMode}
                                checked={this.props.codeEditorActive}/>
