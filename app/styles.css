@@ -527,14 +527,7 @@ ul.dedop-list-box li.dedop-selected {
 .dedop-file-name {
     display: flex;
     align-items: center;
-    width: 65%;
-}
-
-.dedop-file-current-tag {
-    text-align: center;
-    margin-right: 10px;
-    width: 15%;
-    padding: 5px 0;
+    width: 80%;
 }
 
 .dedop-file-updated-date {
