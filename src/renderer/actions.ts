@@ -45,10 +45,6 @@ export function selectSourceFileDirectory(fileDirectory: string) {
     return {type: SELECT_SOURCE_FILE_DIRECTORY, payload: fileDirectory};
 }
 
-export function updateSourceFileList(sourceFiles: SourceFile[]) {
-    return {type: UPDATE_SOURCE_FILE_LIST, payload: sourceFiles};
-}
-
 export function updateMainTab(newTabId: number) {
     return {type: UPDATE_MAIN_TAB, payload: newTabId};
 }
@@ -257,7 +253,6 @@ export function getCurrentWorkspace() {
                 let sourceFileDirectory = getState().control.currentSourceFileDirectory;
                 let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
                 dispatch(updateWorkspaceSourceFile(current_workspace, validSourceFiles));
-                dispatch(updateSourceFileList(validSourceFiles));
                 dispatch(getAllConfigs());
                 dispatch(getCurrentConfig());
                 dispatch(getNotebookFileNames());
@@ -280,7 +275,6 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory);
             dispatch(updateWorkspaceSourceFile(new_workspace, validSourceFiles));
             dispatch(selectSourceFile(null));
-            dispatch(updateSourceFileList(validSourceFiles));
             dispatch(getAllConfigs());
             dispatch(getCurrentConfig());
             dispatch(getNotebookFileNames());
@@ -418,8 +412,6 @@ export function removeInputFiles(workspaceName: string, sourceFileNames: string[
             for (let sourceFileName of sourceFileNames) {
                 dispatch(removeSourceFile(workspaceName, sourceFileName));
             }
-            const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), workspaceName);
-            dispatch(updateSourceFileList(getState().data.workspaces[currentWorkspaceIndex].inputs));
         }
 
         callAPI(dispatch, "Remove ".concat(sourceFileNames.length.toString()).concat(" input file(s) from workspace ").concat(workspaceName), call, action);
@@ -462,7 +454,7 @@ export function getLatLon(inputFilePath: string) {
             dispatch(updateCurrentCesiumPoints(cesiumPoints))
         }
 
-        callAPI(dispatch, "Get global attributes of ".concat(inputFilePath), call, action);
+        callAPI(dispatch, "Get lat lon of ".concat(inputFilePath), call, action);
     }
 }
 

@@ -6,7 +6,6 @@ import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
 import {
     selectSourceFile,
-    updateSourceFileList,
     selectSourceFileDirectory,
     updateSelectedSourceType
 } from "../../actions";
@@ -66,7 +65,6 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
             let validSourceFiles: SourceFile[] = getSourceFiles(sourceFileDirectory[0]);
             if (validSourceFiles.length > 0) {
                 this.props.dispatch(selectSourceFileDirectory(sourceFileDirectory[0]));
-                this.props.dispatch(updateSourceFileList(validSourceFiles));
             } else {
                 this.setState({
                     isNoFilesAvailableAlertOpen: true

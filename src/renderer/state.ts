@@ -24,7 +24,6 @@ export interface CommunicationState {
 }
 
 export interface ControlState {
-    sourceFiles: SourceFile[];
     globalAttributes: GlobalAttribute[];
     cesiumPoints: CesiumPoint[];
     mainPanelTitle?: string;
