@@ -2,8 +2,8 @@ import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 import {OrdinaryPanelHeader} from "../panels/PanelHeader";
 import AnalysisPanel from "../panels/AnalysisPanel";
-import OutputFilesPanel from "../panels/OutputFilesPanel";
 import {State} from "../../state";
+import OutputFilesTreeMenu from "../OutputFilesTreeMenu";
 
 interface IResultPanelProps {
     dispatch?: Dispatch<State>;
@@ -19,7 +19,7 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
             <div className="panel-flexbox">
                 <div className="panel-flexbox-item-configurations">
                     <OrdinaryPanelHeader title="Output Files" icon="pt-icon-document"/>
-                    <OutputFilesPanel/>
+                    <OutputFilesTreeMenu/>
                 </div>
                 <div className="panel-flexbox-item">
                     <OrdinaryPanelHeader title="Analysis Configuration" icon="pt-icon-timeline-area-chart"/>
