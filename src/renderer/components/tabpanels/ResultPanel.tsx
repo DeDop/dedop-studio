@@ -17,11 +17,11 @@ export class ResultPanel extends React.Component<IResultPanelProps, any> {
     public render() {
         return (
             <div className="panel-flexbox">
-                <div className="panel-flexbox-item-configurations">
+                <div className="panel-flexbox-item-static-50">
                     <OrdinaryPanelHeader title="Output Files" icon="pt-icon-document"/>
                     <OutputFilesTreeMenu/>
                 </div>
-                <div className="panel-flexbox-item">
+                <div className="panel-flexbox-item-static-40">
                     <OrdinaryPanelHeader title="Analysis Configuration" icon="pt-icon-timeline-area-chart"/>
                     <AnalysisPanel/>
                 </div>
