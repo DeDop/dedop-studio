@@ -1,48 +1,57 @@
 import * as React from "react";
-import {State} from "../../state";
+import {OutputFile, State} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
 import {SelectComponent} from "../common/SelectComponent";
-import {Button, Tooltip, Position, AnchorButton, PopoverInteractionKind, Popover} from "@blueprintjs/core";
+import {AnchorButton, Button, Popover, PopoverInteractionKind, Position} from "@blueprintjs/core";
 import * as path from "path";
 import {
     generateAndRunCompareOutputs,
     generateAndRunInspectOutput,
-    updateSelectedNotebook,
-    launchNotebook
+    launchNotebook,
+    updateSelectedNotebook
 } from "../../actions";
 
 interface IAnalysisPanel {
     dispatch?: Dispatch<State>;
     notebookFileNames: string[];
     selectedNotebookFileName: string;
-    selectedOutputFileNames: string[];
+    selectedOutputFiles: OutputFile[];
     outputDirectory: string;
+    currentWorkspaceDirectory: string;
 }
 
 function mapStateToProps(state: State): IAnalysisPanel {
     return {
         notebookFileNames: selector.getNotebookFileNames(state),
-        selectedOutputFileNames: state.control.selectedOutputFileNames,
+        selectedOutputFiles: state.control.selectedOutputFiles,
         outputDirectory: selector.getOutputDirectory(state),
-        selectedNotebookFileName: state.control.selectedNotebookFileName
+        selectedNotebookFileName: state.control.selectedNotebookFileName,
+        currentWorkspaceDirectory: selector.getWorkspaceDirectory(state)
     }
 }
 
-class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
+class AnalysisPanel extends React.Component<IAnalysisPanel, any> {
+    private constructOutputFilePath(outputFile: OutputFile) {
+        return path.join(this.props.currentWorkspaceDirectory,
+            'configs', outputFile.config,
+            'outputs', outputFile.name);
+    }
+
     private handleInspectOutput = () => {
-        this.props.dispatch(generateAndRunInspectOutput(path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[0])));
+        const outputFilePath = this.constructOutputFilePath(this.props.selectedOutputFiles[0]);
+        this.props.dispatch(generateAndRunInspectOutput(outputFilePath));
     };
 
     private handleCompareOutputs = () => {
-        if (!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length < 2) {
+        if (!this.props.selectedOutputFiles || this.props.selectedOutputFiles.length < 2) {
             this.setState({
                 isOutputFileNotSelectedAlertOpen: true
             })
         } else {
             this.props.dispatch(generateAndRunCompareOutputs(
-                path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[0]),
-                path.join(this.props.outputDirectory, this.props.selectedOutputFileNames[1])
+                this.constructOutputFilePath(this.props.selectedOutputFiles[0]),
+                this.constructOutputFilePath(this.props.selectedOutputFiles[1])
             ));
         }
     };
@@ -69,7 +78,8 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
             <div>
                 <h6>Compare outputs</h6>
                 <p style={{fontSize: 12}}>
-                    Select two output files to generate and initialise a Jupyter Notebook to compare the results between these two files.</p>
+                    Select two output files to generate and initialise a Jupyter Notebook to compare the results between
+                    these two files.</p>
                 <p style={{fontSize: 12}}>Only available when <strong>two</strong> output files are selected.</p>
             </div>
         );
@@ -79,7 +89,7 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                 <div style={{marginBottom: '10px', marginRight: '10px'}}>
                     <AnchorButton iconName="pt-icon-search pt-intent-primary"
                                   onClick={this.handleInspectOutput}
-                                  disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 1}
+                                  disabled={!this.props.selectedOutputFiles || this.props.selectedOutputFiles.length != 1}
                     >
                         Inspect
                     </AnchorButton>
@@ -98,7 +108,7 @@ class AnalysisPanel extends React.Component<IAnalysisPanel,any> {
                 <div style={{marginBottom: '10px'}}>
                     <AnchorButton iconName="pt-icon-comparison pt-intent-primary"
                                   onClick={this.handleCompareOutputs}
-                                  disabled={!this.props.selectedOutputFileNames || this.props.selectedOutputFileNames.length != 2}
+                                  disabled={!this.props.selectedOutputFiles || this.props.selectedOutputFiles.length != 2}
                     >
                         Compare
                     </AnchorButton>

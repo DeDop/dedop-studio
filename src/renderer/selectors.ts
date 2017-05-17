@@ -100,6 +100,16 @@ export const getOutputNames = createSelector(
     }
 );
 
+export const getWorkspaceDirectory = createSelector(
+    getCurrentWorkspace,
+    (getCurrentWorkspace): string => {
+        if (getCurrentWorkspace) {
+            return path.join(getCurrentWorkspace.directory);
+        }
+        return "";
+    }
+);
+
 export const getOutputDirectory = createSelector(
     getCurrentWorkspace,
     getCurrentConfiguration,
