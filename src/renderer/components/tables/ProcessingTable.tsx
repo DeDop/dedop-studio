@@ -78,8 +78,8 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
             switch (processesReverse[rowIndex].status) {
                 case "DONE":
                     return (
-                        <Cell style={{textAlign: "center"}}>
-                            <span className="pt-icon-standard pt-icon-folder-open" onClick={handleOpenResult}/>
+                        <Cell style={{textAlign: "center"}} tooltip="go to Result & Analysis">
+                            <span className="pt-icon-standard pt-icon-timeline-bar-chart" onClick={handleOpenResult}/>
                         </Cell>);
                 case "FAILED":
                     return (
