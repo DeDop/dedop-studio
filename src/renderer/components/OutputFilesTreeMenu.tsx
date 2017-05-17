@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import {Classes, ITreeNode, Tree} from "@blueprintjs/core";
-import {Configuration, State} from "../state";
+import {Configuration, OutputFile, State} from "../state";
 import {connect} from "react-redux";
 import * as selector from "../selectors";
 import {Dispatch} from "redux";
@@ -11,14 +11,16 @@ export interface IOutputFilesTreeMenuProps {
     dispatch?: Dispatch<State>;
     configurations: Configuration[];
     selectedConfigurationName: string;
-    selectedOutputFileNames: string[];
+    selectedOutputFiles: OutputFile[];
+    currentWorkspaceName: string;
 }
 
 function mapStateToProps(state: State): IOutputFilesTreeMenuProps {
     return {
         configurations: selector.getAllConfigurations(state),
         selectedConfigurationName: state.control.selectedConfigurationName,
-        selectedOutputFileNames: state.control.selectedOutputFileNames
+        selectedOutputFiles: state.control.selectedOutputFiles,
+        currentWorkspaceName: state.control.currentWorkspaceName
     }
 }
 
@@ -29,11 +31,16 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         for (let config of props.configurations) {
             const outputFilesNode: ITreeNode[] = [];
             for (let outputFileName of config.outputs) {
+                let outputFileIndex = -1;
+                if (props.selectedOutputFiles) {
+                    outputFileIndex = props.selectedOutputFiles.findIndex((x) => x.name == outputFileName);
+                }
+                const isSelected = outputFileIndex > -1 && props.selectedOutputFiles[outputFileIndex].config == config.name;
                 outputFilesNode.push({
                     id: outputFileName,
                     label: outputFileName,
                     iconName: 'pt-icon-document',
-                    isSelected: !!this.props.selectedOutputFileNames && this.props.selectedOutputFileNames.indexOf(outputFileName) > -1
+                    isSelected: isSelected
                 });
             }
             const style = config.name == props.selectedConfigurationName ? 'dedop-output-files-bold' : '';
@@ -58,11 +65,16 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
             const nodeIndex = this.state.nodes.findIndex((x) => x.id == config.name);
             const outputFilesNode: ITreeNode[] = [];
             for (let outputFileName of config.outputs) {
+                let outputFileIndex = -1;
+                if (nextProps.selectedOutputFiles) {
+                    outputFileIndex = nextProps.selectedOutputFiles.findIndex((x) => x.name == outputFileName);
+                }
+                const isSelected = outputFileIndex > -1 && nextProps.selectedOutputFiles[outputFileIndex].config == config.name;
                 outputFilesNode.push({
                     id: outputFileName,
                     label: outputFileName,
                     iconName: 'pt-icon-document',
-                    isSelected: !!this.props.selectedOutputFileNames && this.props.selectedOutputFileNames.indexOf(outputFileName) > -1
+                    isSelected: isSelected
                 });
             }
             const style = config.name == nextProps.selectedConfigurationName ? 'dedop-output-files-bold' : '';
@@ -100,12 +112,16 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         }
     };
 
-    private getSelectedOutputFiles(): Set<string> {
-        let selectedOutputFiles: Set<string> = new Set();
+    private getSelectedOutputFiles(): Set<OutputFile> {
+        let selectedOutputFiles: Set<OutputFile> = new Set();
         for (let configNode of this.state.nodes) {
             for (let outputFileNameNode of configNode.childNodes) {
                 if (outputFileNameNode.isSelected) {
-                    selectedOutputFiles.add(outputFileNameNode.id);
+                    selectedOutputFiles.add({
+                        name: outputFileNameNode.id,
+                        config: configNode.id,
+                        workspace: this.props.currentWorkspaceName
+                    });
                 }
             }
         }

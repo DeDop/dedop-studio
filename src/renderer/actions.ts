@@ -1,7 +1,7 @@
 import {
     CesiumPoint,
     Configuration,
-    GlobalAttribute,
+    GlobalAttribute, OutputFile,
     ProcessConfigurations,
     ProcessingItem,
     SourceFile,
@@ -885,7 +885,7 @@ export function getOutputFileNames(currentWorkspaceName: string, currentConfigNa
 
 export const UPDATE_SELECTED_OUTPUTS = 'UPDATE_SELECTED_OUTPUTS';
 
-export function updateSelectedOutputs(selectedOutputs: string[]) {
+export function updateSelectedOutputs(selectedOutputs: OutputFile[]) {
     return {type: UPDATE_SELECTED_OUTPUTS, payload: selectedOutputs};
 }
 

@@ -388,7 +388,7 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         }
         case actions.UPDATE_SELECTED_OUTPUTS: {
             return Object.assign({}, state, {
-                selectedOutputFileNames: action.payload
+                selectedOutputFiles: action.payload
             })
         }
         case actions.UPDATE_CURRENT_CESIUM_POINTS: {
