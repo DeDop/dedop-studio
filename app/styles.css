@@ -666,6 +666,14 @@ ul.dedop-list-box li.dedop-selected {
 
 /* Dialog styling =========================================================*/
 
+/* Dialog styling =========================================================*/
+
+.dedop-output-files-bold {
+    font-weight: bold;
+}
+
+/* Dialog styling =========================================================*/
+
 /* Context menu styling =========================================================*/
 
 .dedop-context-menu {
@@ -691,13 +699,12 @@ ul.dedop-list-box li.dedop-selected {
 /* Blueprint tables styling =================================================*/
 
 /* Blueprint tables styling =================================================*/
-.dedop-popover{
+.dedop-popover {
     color: black;
     background-color: #86a5b0;
 }
 
 /* Blueprint tables styling =================================================*/
-
 
 /* L1A Input styling===================================================*/
 

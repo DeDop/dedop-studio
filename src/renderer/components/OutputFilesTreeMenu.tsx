@@ -5,25 +5,112 @@ import {Configuration, State} from "../state";
 import {connect} from "react-redux";
 import * as selector from "../selectors";
 import {Dispatch} from "redux";
-import {updateConfigSelection} from "../actions";
+import {updateConfigSelection, updateSelectedOutputs} from "../actions";
 
 export interface IOutputFilesTreeMenuProps {
     dispatch?: Dispatch<State>;
     configurations: Configuration[];
     selectedConfigurationName: string;
+    selectedOutputFileNames: string[];
 }
 
 function mapStateToProps(state: State): IOutputFilesTreeMenuProps {
     return {
         configurations: selector.getAllConfigurations(state),
-        selectedConfigurationName: state.control.selectedConfigurationName
+        selectedConfigurationName: state.control.selectedConfigurationName,
+        selectedOutputFileNames: state.control.selectedOutputFileNames
     }
 }
 
 class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any> {
-    private handleNodeClick = (nodeData: ITreeNode, _nodePath: number[], event: React.MouseEvent<HTMLElement>) => {
-        this.props.dispatch(updateConfigSelection('' + nodeData.id));
+    public constructor(props) {
+        super(props);
+        let nodes: ITreeNode[] = [];
+        for (let config of props.configurations) {
+            const outputFilesNode: ITreeNode[] = [];
+            for (let outputFileName of config.outputs) {
+                outputFilesNode.push({
+                    id: outputFileName,
+                    label: outputFileName,
+                    iconName: 'pt-icon-document',
+                    isSelected: !!this.props.selectedOutputFileNames && this.props.selectedOutputFileNames.indexOf(outputFileName) > -1
+                });
+            }
+            const style = config.name == props.selectedConfigurationName ? 'dedop-output-files-bold' : '';
+            const configNode: ITreeNode = {
+                id: config.name,
+                label: config.name,
+                hasCaret: true,
+                isExpanded: config.name == props.selectedConfigurationName,
+                childNodes: outputFilesNode,
+                className: style
+            };
+            nodes.push(configNode)
+        }
+        this.state = {
+            nodes: nodes
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        let nodes: ITreeNode[] = [];
+        for (let config of nextProps.configurations) {
+            const nodeIndex = this.state.nodes.findIndex((x) => x.id == config.name);
+            const outputFilesNode: ITreeNode[] = [];
+            for (let outputFileName of config.outputs) {
+                outputFilesNode.push({
+                    id: outputFileName,
+                    label: outputFileName,
+                    iconName: 'pt-icon-document',
+                    isSelected: !!this.props.selectedOutputFileNames && this.props.selectedOutputFileNames.indexOf(outputFileName) > -1
+                });
+            }
+            const style = config.name == nextProps.selectedConfigurationName ? 'dedop-output-files-bold' : '';
+            const configNode: ITreeNode = {
+                id: config.name,
+                label: config.name,
+                hasCaret: true,
+                isExpanded: this.state.nodes[nodeIndex].isExpanded || config.name == nextProps.selectedConfigurationName,
+                childNodes: outputFilesNode,
+                className: style
+            };
+            nodes.push(configNode)
+        }
+        this.state = {
+            nodes: nodes
+        }
+    }
+
+    private handleNodeClick = (nodeData: ITreeNode) => {
+        let isConfigName = false;
+        for (let config of this.props.configurations) {
+            if (config.name == nodeData.id) {
+                isConfigName = true;
+                break
+            }
+        }
+
+        if (isConfigName) {
+            this.props.dispatch(updateConfigSelection('' + nodeData.id));
+        } else {
+            nodeData.isSelected = !nodeData.isSelected;
+            this.setState(this.state);
+            let selectedOutputFiles = this.getSelectedOutputFiles();
+            this.props.dispatch(updateSelectedOutputs(Array.from(selectedOutputFiles)));
+        }
     };
+
+    private getSelectedOutputFiles(): Set<string> {
+        let selectedOutputFiles: Set<string> = new Set();
+        for (let configNode of this.state.nodes) {
+            for (let outputFileNameNode of configNode.childNodes) {
+                if (outputFileNameNode.isSelected) {
+                    selectedOutputFiles.add(outputFileNameNode.id);
+                }
+            }
+        }
+        return selectedOutputFiles;
+    }
 
     private handleNodeCollapse = (nodeData: ITreeNode) => {
         nodeData.isExpanded = false;
@@ -35,43 +122,11 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         this.setState(this.state);
     };
 
-    private forEachNode(nodes: ITreeNode[], callback: (node: ITreeNode) => void) {
-        if (nodes == null) {
-            return;
-        }
-
-        for (const node of nodes) {
-            callback(node);
-            this.forEachNode(node.childNodes, callback);
-        }
-    }
-
     public render() {
-        let nodes: ITreeNode[] = [];
-        for (let config of this.props.configurations) {
-            const outputFilesNode: ITreeNode[] = [];
-            for (let outputFileName of config.outputs) {
-                outputFilesNode.push({
-                    id: outputFileName,
-                    label: outputFileName,
-                    iconName: 'pt-icon-document'
-                });
-            }
-            const configNode: ITreeNode = {
-                id: config.name,
-                label: config.name,
-                hasCaret: true,
-                isExpanded: config.name == this.props.selectedConfigurationName,
-                isSelected: config.name == this.props.selectedConfigurationName,
-                childNodes: outputFilesNode
-            };
-            nodes.push(configNode)
-        }
-
         return (
             <div>
                 <Tree
-                    contents={nodes}
+                    contents={this.state.nodes}
                     onNodeClick={this.handleNodeClick}
                     onNodeCollapse={this.handleNodeCollapse}
                     onNodeExpand={this.handleNodeExpand}
