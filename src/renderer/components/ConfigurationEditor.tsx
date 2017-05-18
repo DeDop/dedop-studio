@@ -8,6 +8,7 @@ interface IConfigProps {
     dispatch: Dispatch<State>;
     configName: string;
     configuration: ConfigurationItem;
+    disabled: boolean;
     onBlur: (event: any) => void;
 }
 
@@ -58,6 +59,7 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps, any>
                                 }}
                                 onChange={handleOnChange}
                                 onBlur={this.props.onBlur}
+                                disabled={this.props.disabled}
                     />
                 </td>
             </tr>
@@ -92,6 +94,7 @@ export class ConfigurationFlagSingleEntry extends React.Component<IConfigProps, 
                 <input type="checkbox"
                        name={this.props.configName}
                        checked={this.state.checked}
+                       disabled={this.props.disabled}
                        onChange={handleFlagChange}
                        onBlur={this.props.onBlur}
                 />
@@ -105,6 +108,7 @@ export class ConfigurationFlagSingleEntry extends React.Component<IConfigProps, 
 interface IConfigEditorProps {
     dispatch: Dispatch<State>;
     configurations: ProcessConfigurations;
+    disabled: boolean;
     handleInputChange: (event: React.FormEvent<HTMLSelectElement>) => void;
 }
 
@@ -119,6 +123,7 @@ export class ConfigurationEditor extends React.Component<IConfigEditorProps, any
             configurationElements.push(<ConfigurationSingleEntry key={i}
                                                                  configName={i}
                                                                  configuration={configurations[i]}
+                                                                 disabled={this.props.disabled}
                                                                  onBlur={this.props.handleInputChange}
                                                                  dispatch={this.props.dispatch}
             />)
@@ -147,6 +152,7 @@ export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, 
                 propertiesElements.push(<ConfigurationSingleEntry key={i}
                                                                   configName={i}
                                                                   configuration={configurations[i]}
+                                                                  disabled={this.props.disabled}
                                                                   onBlur={this.props.handleInputChange}
                                                                   dispatch={this.props.dispatch}
                 />);
@@ -154,6 +160,7 @@ export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, 
                 flagElements.push(<ConfigurationFlagSingleEntry key={i}
                                                                 configName={i}
                                                                 configuration={configurations[i]}
+                                                                disabled={this.props.disabled}
                                                                 onBlur={this.props.handleInputChange}
                                                                 dispatch={this.props.dispatch}
                 />);
@@ -162,13 +169,11 @@ export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, 
 
         return (
             <div>
-                <h4>Properties</h4>
                 <table>
                     <tbody>
                     {propertiesElements}
                     </tbody>
                 </table>
-                <h4>Flags</h4>
                 <div className="config-flag-panel">
                     {flagElements}
                 </div>

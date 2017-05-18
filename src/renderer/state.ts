@@ -46,6 +46,11 @@ export interface ControlState {
 
     // dialog control parameters
     isWebapiDialogOpen: boolean;
+
+    // editable configuration flag
+    isCnfEditable: boolean;
+    isChdEditable: boolean;
+    isCstEditable: boolean;
 }
 
 export interface SessionState {

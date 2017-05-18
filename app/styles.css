@@ -460,6 +460,7 @@ h1, h2, h3, h4, h5 {
 .config-flag-panel {
     display: inline-flex;
     flex-direction: column;
+    margin-top: 10px;
 }
 
 label.pt-label.pt-inline {

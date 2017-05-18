@@ -13,7 +13,11 @@ export const initialControlState: ControlState = {
     selectedSourceType: "single",
     processName: "",
     unsavedConfigChanges: false,
-    isWebapiDialogOpen: false
+    isWebapiDialogOpen: false,
+    isCnfEditable: true,
+    isChdEditable: false,
+    isCstEditable: false
+
 };
 
 export const initialDataState: DataState = {

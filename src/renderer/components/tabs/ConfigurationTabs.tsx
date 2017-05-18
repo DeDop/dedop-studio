@@ -27,6 +27,9 @@ interface IConfigurationTabsProps {
     selectedConfigurationName: string;
     currentTab: number;
     unsavedConfigChanges: boolean;
+    isCnfEditable: boolean;
+    isChdEditable: boolean;
+    isCstEditable: boolean;
 }
 
 function mapStateToProps(state: State): IConfigurationTabsProps {
@@ -38,7 +41,10 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
         codeEditorActive: state.control.codeEditorActive,
         selectedConfigurationName: state.control.selectedConfigurationName,
         currentTab: state.control.currentConfigurationTabPanel,
-        unsavedConfigChanges: state.control.unsavedConfigChanges
+        unsavedConfigChanges: state.control.unsavedConfigChanges,
+        isCnfEditable: state.control.isCnfEditable,
+        isChdEditable: state.control.isChdEditable,
+        isCstEditable: state.control.isCstEditable,
     }
 }
 
@@ -181,6 +187,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
     };
 
     private renderCharacterizationTabPanel() {
+        const codeMirrorOptions = Object.assign({}, this.state.options, {readOnly: !this.props.isChdEditable});
         return (
             <div className="panel-flexbox-configs">
                 {this.props.codeEditorActive
@@ -188,7 +195,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                     <CodeMirror
                         value={this.state.chdTemp ? JSON.stringify(this.state.chdTemp, null, 4) : "please select a configuration"}
                         onChange={this.updateChdCode}
-                        options={this.state.options}/>
+                        options={codeMirrorOptions}/>
                     :
                     (
                         this.state.chdVersion != CONFIGURATION_NOT_FOUND
@@ -204,14 +211,15 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                                         <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
                                               onClick={this.handleUpgradeConfig}
                                         >
-                                                        upgrade
-                                                    </span>
+                                            upgrade
+                                        </span>
                                         :
                                         null
                                 }
                                 <ConfigurationEditor configurations={this.props.chd}
                                                      handleInputChange={this.handleChdInputChange}
                                                      dispatch={this.props.dispatch}
+                                                     disabled={!this.props.isChdEditable}
                                 />
                             </div>
                             :
@@ -225,6 +233,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
     }
 
     private renderConfigurationTabPanel() {
+        const codeMirrorOptions = Object.assign({}, this.state.options, {readOnly: !this.props.isCnfEditable});
         return (
             <div className="panel-flexbox-configs">
                 {this.props.codeEditorActive
@@ -232,7 +241,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                     <CodeMirror
                         value={this.state.cnfTemp ? JSON.stringify(this.state.cnfTemp, null, 4) : "please select a configuration"}
                         onChange={this.updateCnfCode}
-                        options={this.state.options}/>
+                        options={codeMirrorOptions}/>
                     :
                     (
                         this.state.cnfVersion != CONFIGURATION_NOT_FOUND
@@ -248,14 +257,15 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                                         <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
                                               onClick={this.handleUpgradeConfig}
                                         >
-                                                        upgrade
-                                                    </span>
+                                            upgrade
+                                        </span>
                                         :
                                         null
                                 }
                                 <CnfConfigurationEditor configurations={this.props.cnf}
                                                         handleInputChange={this.handleCnfInputChange}
                                                         dispatch={this.props.dispatch}
+                                                        disabled={!this.props.isCnfEditable}
                                 />
                             </div>
                             :
@@ -269,6 +279,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
     }
 
     private renderConstantsTabPanel() {
+        const codeMirrorOptions = Object.assign({}, this.state.options, {readOnly: !this.props.isCstEditable});
         return (
             <div className="panel-flexbox-configs">
                 {this.props.codeEditorActive
@@ -276,7 +287,8 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                     <CodeMirror
                         value={this.state.cstTemp ? JSON.stringify(this.state.cstTemp, null, 4) : "please select a configuration"}
                         onChange={this.updateCstCode}
-                        options={this.state.options}/>
+                        options={codeMirrorOptions}
+                    />
                     :
                     (
                         this.state.cstVersion != CONFIGURATION_NOT_FOUND
@@ -292,14 +304,15 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                                         <span className="pt-tag pt-icon-double-chevron-up pt-intent-primary"
                                               onClick={this.handleUpgradeConfig}
                                         >
-                                                        upgrade
-                                                    </span>
+                                            upgrade
+                                        </span>
                                         :
                                         null
                                 }
                                 <ConfigurationEditor configurations={this.props.cst}
                                                      handleInputChange={this.handleCstInputChange}
                                                      dispatch={this.props.dispatch}
+                                                     disabled={!this.props.isCstEditable}
                                 />
                             </div>
                             :
@@ -336,8 +349,8 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                     selectedTabId={this.props.currentTab}
                     renderActiveTabPanelOnly={true}
                 >
-                    <Tab2 id={0} title="Characterization" panel={this.renderCharacterizationTabPanel()}/>
-                    <Tab2 id={1} title="Configuration" panel={this.renderConfigurationTabPanel()}/>
+                    <Tab2 id={0} title="Configuration" panel={this.renderConfigurationTabPanel()}/>
+                    <Tab2 id={1} title="Characterization" panel={this.renderCharacterizationTabPanel()}/>
                     <Tab2 id={2} title="Constants" panel={this.renderConstantsTabPanel()}/>
                 </Tabs2>
             </div>
