@@ -20,7 +20,7 @@ export class TopMenu extends React.Component<ITopMenuProps, any> {
         return (
             <nav className="pt-navbar dedop-top-menu-height">
                 <div className="pt-navbar-group pt-align-left dedop-top-menu dedop-top-menu-height">
-                    <img src="resources/linux/32x32.png"/>
+                    <img src="resources/linux/48x48.png"/>
                     <div className="pt-navbar-heading dedop-menu-title">DeDop Studio{panelTitle}</div>
                     <WorkspaceInfo/>
                 </div>
