@@ -1,7 +1,8 @@
 import {
     CesiumPoint,
     Configuration,
-    GlobalAttribute, OutputFile,
+    GlobalAttribute,
+    OutputFile,
     ProcessConfigurations,
     ProcessingItem,
     SourceFile,
@@ -28,6 +29,7 @@ export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const UPDATE_SELECTED_SOURCE_TYPE = 'UPDATE_SELECTED_SOURCE_TYPE';
 export const UPDATE_CURRENT_OUTPUT_DIRECTORY = 'UPDATE_CURRENT_OUTPUT_DIRECTORY';
 export const UPDATE_SELECTED_PROCESSES = 'UPDATE_SELECTED_PROCESSES';
+export const UPDATE_UNSAVED_CONFIG_STATUS = 'UPDATE_UNSAVED_CONFIG_STATUS';
 export const SET_PROCESS_NAME = 'SET_PROCESS_NAME';
 export const SET_TEST_VAR = 'SET_TEST_VAR';
 export const APPLY_INITIAL_STATE = 'APPLY_INITIAL_STATE';
@@ -71,6 +73,10 @@ export function setProcessName(processName: string) {
 
 export function updateSelectedProcesses(processId: number[]) {
     return {type: UPDATE_SELECTED_PROCESSES, payload: processId};
+}
+
+export function updateUnsavedConfigStatus(status: boolean) {
+    return {type: UPDATE_UNSAVED_CONFIG_STATUS, payload: status};
 }
 
 // ======================== Dialog related actions =============================================
@@ -648,6 +654,7 @@ export function setCurrentConfig(configName: string) {
 
         function action() {
             dispatch(updateCurrentConfig(configName));
+            dispatch(updateUnsavedConfigStatus(false));
             const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, configName);
             dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
         }

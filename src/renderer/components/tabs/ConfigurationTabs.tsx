@@ -5,7 +5,13 @@ import {Tab2, Tabs2} from "@blueprintjs/core";
 import {CnfConfigurationEditor, ConfigurationEditor} from "../ConfigurationEditor";
 import "codemirror/mode/javascript/javascript";
 import {connect, Dispatch} from "react-redux";
-import {saveConfiguration, updateConfigEditorMode, updateConfigurationTab, upgradeConfigurations} from "../../actions";
+import {
+    saveConfiguration,
+    updateConfigEditorMode,
+    updateConfigurationTab,
+    updateUnsavedConfigStatus,
+    upgradeConfigurations
+} from "../../actions";
 import * as selector from "../../selectors";
 
 const CONFIGURATION_VERSION_NOT_FOUND = -1;
@@ -18,8 +24,9 @@ interface IConfigurationTabsProps {
     cst: ProcessConfigurations;
     defaultConfVersion: ConfigurationVersion;
     codeEditorActive: boolean;
-    activeConfiguration: string;
+    selectedConfigurationName: string;
     currentTab: number;
+    unsavedConfigChanges: boolean;
 }
 
 function mapStateToProps(state: State): IConfigurationTabsProps {
@@ -29,8 +36,9 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
         cst: selector.getSelectedCst(state),
         defaultConfVersion: state.data.version ? state.data.version.configuration : null,
         codeEditorActive: state.control.codeEditorActive,
-        activeConfiguration: state.control.selectedConfigurationName,
-        currentTab: state.control.currentConfigurationTabPanel
+        selectedConfigurationName: state.control.selectedConfigurationName,
+        currentTab: state.control.currentConfigurationTabPanel,
+        unsavedConfigChanges: state.control.unsavedConfigChanges
     }
 }
 
@@ -42,7 +50,6 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
         this.updateCnfCode = this.updateCnfCode.bind(this);
         this.updateCstCode = this.updateCstCode.bind(this);
         this.handleSaveConfig = this.handleSaveConfig.bind(this);
-        this.handleChdInputChange = this.handleChdInputChange.bind(this);
         this.handleCnfInputChange = this.handleCnfInputChange.bind(this);
         this.handleCstInputChange = this.handleCstInputChange.bind(this);
         this.handleChangeTab = this.handleChangeTab.bind(this);
@@ -103,18 +110,27 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
     }
 
     private updateChdCode = (newCode: string) => {
+        if (!(this.state.chdTemp == JSON.parse(newCode))) {
+            this.props.dispatch(updateUnsavedConfigStatus(true));
+        }
         this.setState({
             chdTemp: JSON.parse(newCode),
         });
     };
 
     private updateCnfCode = (newCode: string) => {
+        if (!(this.state.cnfTemp == JSON.parse(newCode))) {
+            this.props.dispatch(updateUnsavedConfigStatus(true));
+        }
         this.setState({
             cnfTemp: JSON.parse(newCode),
         });
     };
 
     private updateCstCode = (newCode: string) => {
+        if (!(this.state.cstTemp == JSON.parse(newCode))) {
+            this.props.dispatch(updateUnsavedConfigStatus(true));
+        }
         this.setState({
             cstTemp: JSON.parse(newCode),
         });
@@ -124,7 +140,8 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
         const chd = this.state.chdTemp;
         const cnf = this.state.cnfTemp;
         const cst = this.state.cstTemp;
-        this.props.dispatch(saveConfiguration(this.props.activeConfiguration, chd, cnf, cst));
+        this.props.dispatch(saveConfiguration(this.props.selectedConfigurationName, chd, cnf, cst));
+        this.props.dispatch(updateUnsavedConfigStatus(false));
     };
 
     private handleChdInputChange = (event: React.FormEvent<HTMLSelectElement>) => {
@@ -160,7 +177,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
     };
 
     private handleUpgradeConfig = () => {
-        this.props.dispatch(upgradeConfigurations(this.props.activeConfiguration));
+        this.props.dispatch(upgradeConfigurations(this.props.selectedConfigurationName));
     };
 
     private renderCharacterizationTabPanel() {
@@ -193,7 +210,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                                         null
                                 }
                                 <ConfigurationEditor configurations={this.props.chd}
-                                                     handleInputChange={this.handleChdInputChange}/>
+                                                     handleInputChange={this.handleChdInputChange}
+                                                     dispatch={this.props.dispatch}
+                                />
                             </div>
                             :
                             <div>
@@ -235,7 +254,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                                         null
                                 }
                                 <CnfConfigurationEditor configurations={this.props.cnf}
-                                                        handleInputChange={this.handleCnfInputChange}/>
+                                                        handleInputChange={this.handleCnfInputChange}
+                                                        dispatch={this.props.dispatch}
+                                />
                             </div>
                             :
                             <div>
@@ -277,7 +298,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                                         null
                                 }
                                 <ConfigurationEditor configurations={this.props.cst}
-                                                     handleInputChange={this.handleCstInputChange}/>
+                                                     handleInputChange={this.handleCstInputChange}
+                                                     dispatch={this.props.dispatch}
+                                />
                             </div>
                             :
                             <div>
@@ -299,7 +322,10 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                         <span className="pt-control-indicator"/>
                         Code editor
                     </label>
-                    <button className="pt-button pt-intent-primary" onClick={this.handleSaveConfig}>
+                    <button className="pt-button pt-intent-primary"
+                            onClick={this.handleSaveConfig}
+                            disabled={!this.props.selectedConfigurationName || !this.props.unsavedConfigChanges}
+                    >
                         Save Configuration
                     </button>
                 </div>

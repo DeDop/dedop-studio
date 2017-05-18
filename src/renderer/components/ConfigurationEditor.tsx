@@ -1,14 +1,17 @@
 import * as React from "react";
-import {InputGroup, Tag, Classes} from "@blueprintjs/core";
-import {ProcessConfigurations, ConfigurationItem} from "../state";
+import {Classes, InputGroup, Tag} from "@blueprintjs/core";
+import {ConfigurationItem, ProcessConfigurations, State} from "../state";
+import {Dispatch} from "redux";
+import {updateUnsavedConfigStatus} from "../actions";
 
 interface IConfigProps {
+    dispatch: Dispatch<State>;
     configName: string;
     configuration: ConfigurationItem;
     onBlur: (event: any) => void;
 }
 
-export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> {
+export class ConfigurationSingleEntry extends React.Component<IConfigProps, any> {
     constructor(props: IConfigProps) {
         super(props);
         this.state = {
@@ -33,6 +36,10 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
             this.setState({
                 localValue: value
             });
+            if (value != this.props.configuration.value) {
+                this.props.dispatch(updateUnsavedConfigStatus(true));
+                this.props.onBlur(event);
+            }
         };
 
         return (
@@ -46,9 +53,9 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps,any> 
                     <InputGroup className="config-textbox"
                                 name={this.props.configName}
                                 value={this.state.localValue}
-                        {...this.props.configuration.units ? {rightElement: unitTag} : {
-                                rightElement: <span style={{paddingRight: '5px'}}/>
-                            }}
+                                {...this.props.configuration.units ? {rightElement: unitTag} : {
+                                    rightElement: <span style={{paddingRight: '5px'}}/>
+                                }}
                                 onChange={handleOnChange}
                                 onBlur={this.props.onBlur}
                     />
@@ -96,6 +103,7 @@ export class ConfigurationFlagSingleEntry extends React.Component<IConfigProps, 
 }
 
 interface IConfigEditorProps {
+    dispatch: Dispatch<State>;
     configurations: ProcessConfigurations;
     handleInputChange: (event: React.FormEvent<HTMLSelectElement>) => void;
 }
@@ -112,6 +120,7 @@ export class ConfigurationEditor extends React.Component<IConfigEditorProps, any
                                                                  configName={i}
                                                                  configuration={configurations[i]}
                                                                  onBlur={this.props.handleInputChange}
+                                                                 dispatch={this.props.dispatch}
             />)
         }
 
@@ -139,12 +148,14 @@ export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, 
                                                                   configName={i}
                                                                   configuration={configurations[i]}
                                                                   onBlur={this.props.handleInputChange}
+                                                                  dispatch={this.props.dispatch}
                 />);
             } else {
                 flagElements.push(<ConfigurationFlagSingleEntry key={i}
                                                                 configName={i}
                                                                 configuration={configurations[i]}
                                                                 onBlur={this.props.handleInputChange}
+                                                                dispatch={this.props.dispatch}
                 />);
             }
         }

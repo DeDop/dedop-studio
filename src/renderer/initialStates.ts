@@ -12,6 +12,7 @@ export const initialControlState: ControlState = {
     currentSourceFileDirectory: "",
     selectedSourceType: "single",
     processName: "",
+    unsavedConfigChanges: false,
     isWebapiDialogOpen: false
 };
 

@@ -1,5 +1,5 @@
 import {WebAPIClient} from "./webapi/WebAPIClient";
-import {JobProgress, JobStatus, JobFailure} from "./webapi/Job";
+import {JobFailure, JobProgress, JobStatus} from "./webapi/Job";
 
 export interface State {
     data: DataState;
@@ -42,6 +42,7 @@ export interface ControlState {
     selectedOutputFiles?: OutputFile[];
     codeEditorActive?: boolean;
     processName?: string;
+    unsavedConfigChanges: boolean;
 
     // dialog control parameters
     isWebapiDialogOpen: boolean;

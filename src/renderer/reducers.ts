@@ -309,7 +309,8 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
     switch (action.type) {
         case actions.UPDATE_CONFIG_SELECTION:
             return Object.assign({}, state, {
-                selectedConfigurationName: action.payload
+                selectedConfigurationName: action.payload,
+                unsavedConfigChanges: false
             });
         case actions.SELECT_SOURCE_FILE:
             return Object.assign({}, state, {
@@ -409,6 +410,11 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         case actions.UPDATE_WEBAPI_DIALOG: {
             return Object.assign({}, state, {
                 isWebapiDialogOpen: action.payload
+            })
+        }
+        case actions.UPDATE_UNSAVED_CONFIG_STATUS: {
+            return Object.assign({}, state, {
+                unsavedConfigChanges: action.payload
             })
         }
     }
