@@ -1,4 +1,4 @@
-import {ControlState, State, DataState, Configuration, CommunicationState, Workspace} from "./state";
+import {CommunicationState, Configuration, ControlState, DataState, State, Workspace} from "./state";
 import * as actions from "./actions";
 import {combineReducers} from "redux";
 import {initialControlState, initialDataState} from "./initialStates";
@@ -416,6 +416,13 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
             return Object.assign({}, state, {
                 unsavedConfigChanges: action.payload
             })
+        }
+        case actions.APPLY_INITIAL_STATE: {
+            return Object.assign({}, state, {
+                isCnfEditable: action.payload.session.isCnfEditable,
+                isChdEditable: action.payload.session.isChdEditable,
+                isCstEditable: action.payload.session.isCstEditable,
+            });
         }
     }
     return state;

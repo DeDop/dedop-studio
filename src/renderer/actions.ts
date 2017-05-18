@@ -1001,7 +1001,10 @@ export function sendPreferencesToMain(callback?: (error: any) => void) {
             }
         }
         const preferences = {
-            processes: finishedProcesses
+            processes: finishedProcesses,
+            isCnfEditable: getState().control.isCnfEditable,
+            isChdEditable: getState().control.isChdEditable,
+            isCstEditable: getState().control.isCstEditable,
         };
         const actionName = 'set-preferences';
         electron.ipcRenderer.send(actionName, preferences);
