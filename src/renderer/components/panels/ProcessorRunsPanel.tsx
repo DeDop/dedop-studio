@@ -1,11 +1,11 @@
 import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import ProcessingTable from "../tables/ProcessingTable";
-import {State, SourceFile, ProcessingItem} from "../../state";
+import {ProcessingItem, SourceFile, State} from "../../state";
 import {connect, Dispatch} from "react-redux";
-import {runProcess, removeProcess, updateSelectedProcesses} from "../../actions";
+import {removeProcess, runProcess, updateSelectedProcesses} from "../../actions";
 import * as selector from "../../selectors";
-import {Dialog, Button} from "@blueprintjs/core";
+import {Button, Dialog} from "@blueprintjs/core";
 
 interface IProcessorRunsPanelProps {
     dispatch?: Dispatch<State>;
@@ -15,6 +15,7 @@ interface IProcessorRunsPanelProps {
     processName: string;
     processes: ProcessingItem[];
     selectedProcesses: number[];
+    outputNames: string[];
 }
 
 function mapStateToProps(state: State): IProcessorRunsPanelProps {
@@ -24,13 +25,15 @@ function mapStateToProps(state: State): IProcessorRunsPanelProps {
         currentOutputDirectory: state.control.currentOutputDirectory,
         processName: state.control.processName,
         processes: state.data.processes,
-        selectedProcesses: state.control.selectedProcesses
+        selectedProcesses: state.control.selectedProcesses,
+        outputNames: selector.getOutputNames(state)
     }
 }
 
-class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
+class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> {
     public state = {
-        isIncompleteDataDialogOpen: false
+        isIncompleteDataDialogOpen: false,
+        isOutputFileExistDialogOpen: false
     };
 
     successfulTag = <span className="pt-tag pt-intent-success">OK</span>;
@@ -41,12 +44,6 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
             <div>
                 <table className="dedop-table-missing-parameters">
                     <tbody>
-                    <tr>
-                        <td>Process name</td>
-                        <td> :</td>
-                        <td>{this.props.processName ? this.props.processName : ""}</td>
-                        <td>{this.props.processName ? this.successfulTag : this.missingTag}</td>
-                    </tr>
                     <tr>
                         <td>Input file</td>
                         <td> :</td>
@@ -70,35 +67,73 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
             </div>)
     };
 
-    render() {
-        const handleRunProcess = () => {
-            // TODO (hans-permana, 20170214): add checking to input dataset as well as output directory
-            if (!this.props.processName || !this.props.selectedSourceFile || !this.props.currentConfiguration || !this.props.currentOutputDirectory) {
-                this.setState({
-                    isIncompleteDataDialogOpen: true
-                })
-            } else {
-                this.props.dispatch(runProcess(this.props.processName, this.props.currentOutputDirectory, this.props.selectedSourceFile.path));
-            }
-        };
+    private static getFileBaseName(fileName: string) {
+        let baseName = String(fileName).substring(fileName.lastIndexOf('/') + 1);
+        if (baseName.lastIndexOf(".") != -1)
+            baseName = baseName.substring(0, baseName.lastIndexOf("."));
+        return baseName;
+    };
 
-        const handleCloseIncompleteParameterDialogAlert = () => {
+    private doRunProcess() {
+        this.props.dispatch(runProcess(this.props.currentConfiguration, this.props.currentOutputDirectory, this.props.selectedSourceFile.path));
+    };
+
+    private handleRunProcess = () => {
+        if (!this.props.selectedSourceFile || !this.props.currentConfiguration || !this.props.currentOutputDirectory) {
             this.setState({
-                isIncompleteDataDialogOpen: false
+                isIncompleteDataDialogOpen: true
             })
-        };
-
-        const handleDeleteProcesses = () => {
-            for (let i of this.props.selectedProcesses) {
-                for (let j of this.props.processes) {
-                    if (j.id == i) {
-                        this.props.dispatch(removeProcess(i));
-                    }
+        } else {
+            const sourceFileBaseName = ProcessorRunsPanel.getFileBaseName(this.props.selectedSourceFile.name);
+            const newOutputName = "L1B_" + sourceFileBaseName + "_" + this.props.currentConfiguration + ".nc";
+            let isOutputFileExist = false;
+            for (let outputName of this.props.outputNames) {
+                if (newOutputName == outputName) {
+                    isOutputFileExist = true;
+                    break;
                 }
             }
-            this.props.dispatch(updateSelectedProcesses([]));
-        };
+            if (isOutputFileExist) {
+                this.setState({
+                    isOutputFileExistDialogOpen: true
+                })
+            } else {
+                this.doRunProcess();
+            }
+        }
+    };
 
+    private handleDeleteProcesses = () => {
+        for (let i of this.props.selectedProcesses) {
+            for (let j of this.props.processes) {
+                if (j.id == i) {
+                    this.props.dispatch(removeProcess(i));
+                }
+            }
+        }
+        this.props.dispatch(updateSelectedProcesses([]));
+    };
+
+    private handleCloseIncompleteParameterDialogAlert = () => {
+        this.setState({
+            isIncompleteDataDialogOpen: false
+        })
+    };
+
+    private handleOverwriteFile = () => {
+        this.doRunProcess();
+        this.setState({
+            isOutputFileExistDialogOpen: false
+        })
+    };
+
+    private handleCloseOutputFileExistAlert = () => {
+        this.setState({
+            isOutputFileExistDialogOpen: false
+        })
+    };
+
+    render() {
         return (
             <div className="panel-flexbox-item">
                 <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
@@ -106,19 +141,19 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
                     <button type="button"
                             className="pt-button pt-icon-standard pt-icon-delete pt-intent-danger"
                             style={{margin: '10px 0'}}
-                            onClick={handleDeleteProcesses}
+                            onClick={this.handleDeleteProcesses}
                             disabled={!(this.props.selectedProcesses && this.props.selectedProcesses.length > 0)}
                     >
                         Delete
                     </button>
                     <button type="button" className="pt-button pt-icon-standard pt-icon-play pt-intent-primary"
-                            style={{margin: '10px 0 10px 5px'}} onClick={handleRunProcess}>
+                            style={{margin: '10px 0 10px 5px'}} onClick={this.handleRunProcess}>
                         Run
                     </button>
                 </div>
                 <ProcessingTable/>
                 <Dialog isOpen={this.state.isIncompleteDataDialogOpen}
-                        onClose={handleCloseIncompleteParameterDialogAlert}
+                        onClose={this.handleCloseIncompleteParameterDialogAlert}
                         title="Incomplete parameters"
                         className="dedop-dialog-missing-parameters"
                 >
@@ -127,8 +162,27 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps,any> {
                     </div>
                     <div className="pt-dialog-footer">
                         <div className="pt-dialog-footer-actions">
-                            <Button onClick={handleCloseIncompleteParameterDialogAlert}
+                            <Button onClick={this.handleCloseIncompleteParameterDialogAlert}
                                     text="Close"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
+                <Dialog isOpen={this.state.isOutputFileExistDialogOpen}
+                        onClose={this.handleCloseOutputFileExistAlert}
+                        title="Incomplete parameters"
+                        className="dedop-dialog-missing-parameters"
+                >
+                    <div className="pt-dialog-body">
+                        Output file with the same configuration exists. Do you want to overwrite it?
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button onClick={this.handleOverwriteFile}
+                                    text="Yes"
+                            />
+                            <Button onClick={this.handleCloseOutputFileExistAlert}
+                                    text="No"
                             />
                         </div>
                     </div>
