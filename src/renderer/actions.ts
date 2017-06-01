@@ -657,6 +657,7 @@ export function setCurrentConfig(configName: string) {
             dispatch(updateUnsavedConfigStatus(false));
             const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, configName);
             dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
+            dispatch(updateSelectedOutputs([]));
         }
 
         callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
