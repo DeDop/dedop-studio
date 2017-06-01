@@ -43,15 +43,8 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
                     isSelected: isSelected
                 });
             }
-            const style = config.name == props.selectedConfigurationName ? 'dedop-output-files-bold' : '';
-            const configNode: ITreeNode = {
-                id: config.name,
-                label: config.name,
-                hasCaret: true,
-                isExpanded: config.name == props.selectedConfigurationName,
-                childNodes: outputFilesNode,
-                className: style
-            };
+            const isExpanded = config.name == props.selectedConfigurationName;
+            const configNode = OutputFilesTreeMenu.constructConfigNode(config, props, outputFilesNode, isExpanded);
             nodes.push(configNode)
         }
         this.state = {
@@ -77,20 +70,28 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
                     isSelected: isSelected
                 });
             }
-            const style = config.name == nextProps.selectedConfigurationName ? 'dedop-output-files-bold' : '';
-            const configNode: ITreeNode = {
-                id: config.name,
-                label: config.name,
-                hasCaret: true,
-                isExpanded: this.state.nodes[nodeIndex].isExpanded || config.name == nextProps.selectedConfigurationName,
-                childNodes: outputFilesNode,
-                className: style
-            };
+            const isExpanded = this.state.nodes[nodeIndex].isExpanded || config.name == nextProps.selectedConfigurationName;
+            const configNode = OutputFilesTreeMenu.constructConfigNode(config, nextProps, outputFilesNode, isExpanded);
             nodes.push(configNode)
         }
         this.state = {
             nodes: nodes
         }
+    }
+
+    private static constructConfigNode(config: Configuration,
+                                       props: IOutputFilesTreeMenuProps,
+                                       outputFilesNode: ITreeNode[],
+                                       isExpanded: boolean) {
+        const style = config.name == props.selectedConfigurationName ? 'dedop-output-files-bold' : '';
+        return {
+            id: config.name,
+            label: config.name,
+            hasCaret: true,
+            isExpanded: isExpanded,
+            childNodes: outputFilesNode,
+            className: style
+        };
     }
 
     private handleNodeClick = (nodeData: ITreeNode) => {
