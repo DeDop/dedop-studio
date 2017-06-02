@@ -3,7 +3,7 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import ProcessingTable from "../tables/ProcessingTable";
 import {ProcessingItem, SourceFile, State} from "../../state";
 import {connect, Dispatch} from "react-redux";
-import {removeProcess, runProcess, updateSelectedProcesses} from "../../actions";
+import {removeOutputFiles, removeProcess, runProcess, updateSelectedProcesses} from "../../actions";
 import * as selector from "../../selectors";
 import {Button, Dialog} from "@blueprintjs/core";
 import {JobStatusEnum} from "../../webapi/Job";
@@ -34,7 +34,8 @@ function mapStateToProps(state: State): IProcessorRunsPanelProps {
 class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> {
     public state = {
         isIncompleteDataDialogOpen: false,
-        isOutputFileExistDialogOpen: false
+        isOutputFileExistDialogOpen: false,
+        isOutputFileDeleteDialogOpen: false
     };
 
     successfulTag = <span className="pt-tag pt-intent-success">OK</span>;
@@ -104,17 +105,6 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
         }
     };
 
-    private handleDeleteProcesses = () => {
-        for (let i of this.props.selectedProcesses) {
-            for (let j of this.props.processes) {
-                if (j.id == i) {
-                    this.props.dispatch(removeProcess(i));
-                }
-            }
-        }
-        this.props.dispatch(updateSelectedProcesses([]));
-    };
-
     private handleCloseIncompleteParameterDialogAlert = () => {
         this.setState({
             isIncompleteDataDialogOpen: false
@@ -134,6 +124,65 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
         })
     };
 
+    private handleCloseOutputFileDeleteAlert = () => {
+        this.setState({
+            isOutputFileDeleteDialogOpen: false
+        })
+    };
+
+    private handleProcessDeletion = () => {
+        let shouldDeleteOutputDialogBoxOpen = false;
+        for (let i of this.props.selectedProcesses) {
+            for (let j of this.props.processes) {
+                if (j.id == i && j.status == JobStatusEnum.DONE) {
+                    shouldDeleteOutputDialogBoxOpen = true;
+                    break;
+                }
+            }
+        }
+        if (shouldDeleteOutputDialogBoxOpen) {
+            this.setState({
+                isOutputFileDeleteDialogOpen: true
+            });
+        } else {
+            this.deleteProcesses();
+            this.props.dispatch(updateSelectedProcesses([]));
+        }
+    };
+
+    private handleDeleteProcessAndOutputFile = () => {
+        for (let selectedProcess of this.props.selectedProcesses) {
+            for (let process of this.props.processes) {
+                if (process.id == selectedProcess) {
+                    this.props.dispatch(removeOutputFiles(process.workspace, process.configuration));
+                    this.props.dispatch(removeProcess(selectedProcess));
+                }
+            }
+        }
+        this.props.dispatch(updateSelectedProcesses([]));
+        this.setState({
+            isOutputFileDeleteDialogOpen: false
+        });
+    };
+
+    private handleDeleteProcesses = () => {
+        this.deleteProcesses();
+        this.props.dispatch(updateSelectedProcesses([]));
+        this.setState({
+            isOutputFileDeleteDialogOpen: false
+        });
+    };
+
+    private deleteProcesses() {
+        for (let i of this.props.selectedProcesses) {
+            for (let j of this.props.processes) {
+                if (j.id == i) {
+                    this.props.dispatch(removeProcess(i));
+                }
+            }
+        }
+    }
+
     render() {
         let isProcessRunningOrSubmitted = false;
         for (let process of this.props.processes) {
@@ -149,7 +198,7 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
                     <button type="button"
                             className="pt-button pt-icon-standard pt-icon-delete pt-intent-danger"
                             style={{margin: '10px 0'}}
-                            onClick={this.handleDeleteProcesses}
+                            onClick={this.handleProcessDeletion}
                             disabled={!(this.props.selectedProcesses && this.props.selectedProcesses.length > 0)}
                     >
                         Delete
@@ -182,7 +231,7 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
                 </Dialog>
                 <Dialog isOpen={this.state.isOutputFileExistDialogOpen}
                         onClose={this.handleCloseOutputFileExistAlert}
-                        title="Incomplete parameters"
+                        title="Output file exists"
                         className="dedop-dialog-missing-parameters"
                 >
                     <div className="pt-dialog-body">
@@ -195,6 +244,28 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
                             />
                             <Button onClick={this.handleCloseOutputFileExistAlert}
                                     text="No"
+                            />
+                        </div>
+                    </div>
+                </Dialog>
+                <Dialog isOpen={this.state.isOutputFileDeleteDialogOpen}
+                        onClose={this.handleCloseOutputFileDeleteAlert}
+                        title="Also delete the existing output file?"
+                        className="dedop-dialog-missing-parameters"
+                >
+                    <div className="pt-dialog-body">
+                        Output file associated with the process exists. Do you also want to delete it?
+                    </div>
+                    <div className="pt-dialog-footer">
+                        <div className="pt-dialog-footer-actions">
+                            <Button onClick={this.handleDeleteProcessAndOutputFile}
+                                    text="Yes"
+                            />
+                            <Button onClick={this.handleDeleteProcesses}
+                                    text="No"
+                            />
+                            <Button onClick={this.handleCloseOutputFileDeleteAlert}
+                                    text="Cancel"
                             />
                         </div>
                     </div>

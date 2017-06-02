@@ -879,7 +879,8 @@ export const UPDATE_OUTPUTS = 'UPDATE_OUTPUTS';
 
 export function updateOutputs(workspaceName: string, configName: string, outputs: string[]) {
     return {
-        type: UPDATE_OUTPUTS, payload: {
+        type: UPDATE_OUTPUTS,
+        payload: {
             workspaceName: workspaceName,
             configName: configName,
             outputs: outputs
@@ -898,6 +899,32 @@ export function getOutputFileNames(currentWorkspaceName: string, currentConfigNa
         }
 
         callAPI(dispatch, "Get output file names for configuration '".concat(currentConfigName).concat("'"), call, action);
+    }
+}
+
+export const DELETE_ALL_OUTPUT_FILES = 'DELETE_ALL_OUTPUT_FILES';
+
+export function deleteAllOutputFiles(workspaceName: string, configName: string) {
+    return {
+        type: DELETE_ALL_OUTPUT_FILES,
+        payload: {
+            workspaceName: workspaceName,
+            configName: configName
+        }
+    }
+}
+
+export function removeOutputFiles(workspaceName: string, configName: string) {
+    return (dispatch, getState) => {
+        function call() {
+            return outputAPI(getState()).remove_output_files(workspaceName, configName);
+        }
+
+        function action() {
+            dispatch(deleteAllOutputFiles(workspaceName, configName));
+        }
+
+        callAPI(dispatch, "Remove output files of workspace '".concat(workspaceName).concat("' and configuration '").concat(configName).concat("'."), call, action);
     }
 }
 

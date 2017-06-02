@@ -279,6 +279,28 @@ const dataReducer = (state: DataState = initialDataState, action) => {
                 ]
             });
         }
+        case actions.DELETE_ALL_OUTPUT_FILES: {
+            const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
+            const workspace = state.workspaces[workspaceIndex];
+            const configIndex = getConfigIndex(workspace.configs, action.payload.configName);
+            const updatedConfig = Object.assign({}, workspace.configs[configIndex], {
+                outputs: []
+            });
+            const updatedWorkspace = Object.assign({}, workspace, {
+                configs: [
+                    ...workspace.configs.slice(0, configIndex),
+                    updatedConfig,
+                    ...workspace.configs.slice(configIndex + 1)
+                ]
+            });
+            return Object.assign({}, state, {
+                workspaces: [
+                    ...state.workspaces.slice(0, workspaceIndex),
+                    updatedWorkspace,
+                    ...state.workspaces.slice(workspaceIndex + 1)
+                ]
+            });
+        }
         case actions.UPDATE_NOTEBOOK_FILE_NAMES: {
             const workspaceIndex = getWorkspaceIndex(state.workspaces, action.payload.workspaceName);
             let newWorkspace = Object.assign({}, state.workspaces[workspaceIndex], {

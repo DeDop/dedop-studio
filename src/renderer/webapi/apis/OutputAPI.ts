@@ -16,6 +16,10 @@ export class OutputAPI {
         return this.webAPIClient.call('get_output_names', [workspaceName, configName], null, response);
     }
 
+    remove_output_files(workspaceName: string, configName: string) {
+        return this.webAPIClient.call('remove_output_files', [workspaceName, configName], null, null);
+    }
+
     inspect_output(workspaceName: string, outputFilePath: string) {
         return this.webAPIClient.call('inspect_output', [workspaceName, outputFilePath], null, null);
     }
