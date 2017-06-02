@@ -1,13 +1,14 @@
 import * as React from "react";
 import {ProcessingItem, State, TaskState} from "../../state";
-import {Cell, Column, Table, IRegion} from "@blueprintjs/table";
+import {Cell, Column, IRegion, Table} from "@blueprintjs/table";
 import {connect} from "react-redux";
 import {updateMainTab, updateSelectedProcesses} from "../../actions";
 import {JobStatusEnum} from "../../webapi/Job";
+import * as selector from "../../selectors";
 
 interface IProcessingTableProps {
-    dispatch?: (action: {type: string, payload: any}) => void;
-    tasks: {[jobId: number]: TaskState;};
+    dispatch?: (action: { type: string, payload: any }) => void;
+    tasks: { [jobId: number]: TaskState; };
     processes: ProcessingItem[];
     selectedProcesses: number[];
 }
@@ -15,7 +16,7 @@ interface IProcessingTableProps {
 function mapStateToProps(state: State): IProcessingTableProps {
     return {
         tasks: state.communication.tasks,
-        processes: state.data.processes,
+        processes: selector.getCurrentWorkspaceProcesses(state),
         selectedProcesses: state.control.selectedProcesses
     }
 }

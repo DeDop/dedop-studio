@@ -1,10 +1,11 @@
 import {createSelector} from "reselect";
 import * as path from "path";
-import {State, ProcessConfigurations, SourceFile, Configuration, Workspace} from "./state";
+import {Configuration, ProcessConfigurations, ProcessingItem, SourceFile, State, Workspace} from "./state";
 
 const getSelectedConfigurationName = (state: State) => state.control.selectedConfigurationName;
 const getCurrentConfigurationName = (state: State) => state.control.currentConfigurationName;
 const getWorkspaces = (state: State) => state.data.workspaces;
+const getProcesses = (state: State) => state.data.processes;
 const getCurrentWorkspaceName = (state: State) => state.control.currentWorkspaceName;
 const getSelectedSourceFileName = (state: State) => state.control.selectedSourceFileName;
 
@@ -21,6 +22,20 @@ export const getAllConfigurations = createSelector(
     getCurrentWorkspace,
     (getCurrentWorkspace): Configuration[] => {
         return getCurrentWorkspace ? getCurrentWorkspace.configs : [];
+    }
+);
+
+export const getCurrentWorkspaceProcesses = createSelector(
+    getCurrentWorkspace,
+    getProcesses,
+    (getCurrentWorkspace, getProcesses): ProcessingItem[] => {
+        let processes: ProcessingItem[] = [];
+        for (let process of getProcesses) {
+            if (process.workspace == getCurrentWorkspace.name) {
+                processes.push(process);
+            }
+        }
+        return processes ? processes : [];
     }
 );
 
