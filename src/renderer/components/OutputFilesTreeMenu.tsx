@@ -55,18 +55,20 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
 
     private static constructOutputFilesNode(config: Configuration, selectedOutputFiles: OutputFile[]) {
         const outputFilesNode: ITreeNode[] = [];
-        for (let outputFileName of config.outputs) {
-            let outputFileIndex = -1;
-            if (selectedOutputFiles) {
-                outputFileIndex = selectedOutputFiles.findIndex((x) => x.name == outputFileName);
+        if (config.outputs) {
+            for (let outputFileName of config.outputs) {
+                let outputFileIndex = -1;
+                if (selectedOutputFiles) {
+                    outputFileIndex = selectedOutputFiles.findIndex((x) => x.name == outputFileName);
+                }
+                const isSelected = outputFileIndex > -1 && selectedOutputFiles[outputFileIndex].config == config.name;
+                outputFilesNode.push({
+                    id: outputFileName,
+                    label: outputFileName,
+                    iconName: 'pt-icon-document',
+                    isSelected: isSelected
+                });
             }
-            const isSelected = outputFileIndex > -1 && selectedOutputFiles[outputFileIndex].config == config.name;
-            outputFilesNode.push({
-                id: outputFileName,
-                label: outputFileName,
-                iconName: 'pt-icon-document',
-                isSelected: isSelected
-            });
         }
         return outputFilesNode;
     }
