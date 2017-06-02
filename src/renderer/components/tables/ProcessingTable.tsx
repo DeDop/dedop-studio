@@ -52,7 +52,7 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
                     return (
                         <Cell tooltip={percentage.concat("%")}>
                             <div className="pt-progress-bar" style={{marginTop: "5px"}}>
-                                <div className="pt-progress-meter" style={{width: percentage.concat("%")}}></div>
+                                <div className="pt-progress-meter" style={{width: percentage.concat("%")}}/>
                             </div>
                         </Cell>)
                 } else {

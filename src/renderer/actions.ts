@@ -810,7 +810,7 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
                 l1aFilePath,
                 onProgress);
             taskId = job.getJobId();
-            processId = getState().data.processes.length + 1;
+            processId = getNewProcessId(getState().data.processes);
             jobStatus = job.getJob().getStatus();
             startTime = moment.now();
             const startTimeFormatted = moment(startTime).format("DD/MM/YY, HH:mm:ss");
@@ -846,6 +846,16 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
 
         callAPI(dispatch, "Create a new process '".concat(processName).concat("'"), call, action, failureAction);
     }
+}
+
+function getNewProcessId(processes: ProcessingItem[]): number {
+    let lastProcessId = 0;
+    for (let process of processes) {
+        if (process.id > lastProcessId) {
+            lastProcessId = process.id;
+        }
+    }
+    return ++lastProcessId;
 }
 
 export const REMOVE_PROCESS = 'REMOVE_PROCESS';

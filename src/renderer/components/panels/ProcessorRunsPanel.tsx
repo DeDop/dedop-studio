@@ -6,6 +6,7 @@ import {connect, Dispatch} from "react-redux";
 import {removeProcess, runProcess, updateSelectedProcesses} from "../../actions";
 import * as selector from "../../selectors";
 import {Button, Dialog} from "@blueprintjs/core";
+import {JobStatusEnum} from "../../webapi/Job";
 
 interface IProcessorRunsPanelProps {
     dispatch?: Dispatch<State>;
@@ -134,6 +135,13 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
     };
 
     render() {
+        let isProcessRunningOrSubmitted = false;
+        for (let process of this.props.processes) {
+            if (process.status == JobStatusEnum.IN_PROGRESS || process.status == JobStatusEnum.SUBMITTED) {
+                isProcessRunningOrSubmitted = true;
+            }
+        }
+
         return (
             <div className="panel-flexbox-item">
                 <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
@@ -146,10 +154,14 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
                     >
                         Delete
                     </button>
-                    <button type="button" className="pt-button pt-icon-standard pt-icon-play pt-intent-primary"
-                            style={{margin: '10px 0 10px 5px'}} onClick={this.handleRunProcess}>
+                    <Button type="button"
+                            className="pt-button pt-icon-standard pt-icon-play pt-intent-primary"
+                            style={{margin: '10px 0 10px 5px'}}
+                            onClick={this.handleRunProcess}
+                            loading={isProcessRunningOrSubmitted}
+                    >
                         Run
-                    </button>
+                    </Button>
                 </div>
                 <ProcessingTable/>
                 <Dialog isOpen={this.state.isIncompleteDataDialogOpen}
