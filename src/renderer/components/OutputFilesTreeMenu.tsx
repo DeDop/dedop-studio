@@ -29,20 +29,7 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         super(props);
         let nodes: ITreeNode[] = [];
         for (let config of props.configurations) {
-            const outputFilesNode: ITreeNode[] = [];
-            for (let outputFileName of config.outputs) {
-                let outputFileIndex = -1;
-                if (props.selectedOutputFiles) {
-                    outputFileIndex = props.selectedOutputFiles.findIndex((x) => x.name == outputFileName);
-                }
-                const isSelected = outputFileIndex > -1 && props.selectedOutputFiles[outputFileIndex].config == config.name;
-                outputFilesNode.push({
-                    id: outputFileName,
-                    label: outputFileName,
-                    iconName: 'pt-icon-document',
-                    isSelected: isSelected
-                });
-            }
+            const outputFilesNode = OutputFilesTreeMenu.constructOutputFilesNode(config, props.selectedOutputFiles);
             const isExpanded = config.name == props.selectedConfigurationName;
             const configNode = OutputFilesTreeMenu.constructConfigNode(config, props, outputFilesNode, isExpanded);
             nodes.push(configNode)
@@ -56,20 +43,7 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         let nodes: ITreeNode[] = [];
         for (let config of nextProps.configurations) {
             const nodeIndex = this.state.nodes.findIndex((x) => x.id == config.name);
-            const outputFilesNode: ITreeNode[] = [];
-            for (let outputFileName of config.outputs) {
-                let outputFileIndex = -1;
-                if (nextProps.selectedOutputFiles) {
-                    outputFileIndex = nextProps.selectedOutputFiles.findIndex((x) => x.name == outputFileName);
-                }
-                const isSelected = outputFileIndex > -1 && nextProps.selectedOutputFiles[outputFileIndex].config == config.name;
-                outputFilesNode.push({
-                    id: outputFileName,
-                    label: outputFileName,
-                    iconName: 'pt-icon-document',
-                    isSelected: isSelected
-                });
-            }
+            const outputFilesNode = OutputFilesTreeMenu.constructOutputFilesNode(config, nextProps.selectedOutputFiles);
             const isExpanded = this.state.nodes[nodeIndex].isExpanded || config.name == nextProps.selectedConfigurationName;
             const configNode = OutputFilesTreeMenu.constructConfigNode(config, nextProps, outputFilesNode, isExpanded);
             nodes.push(configNode)
@@ -77,6 +51,24 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         this.state = {
             nodes: nodes
         }
+    }
+
+    private static constructOutputFilesNode(config: Configuration, selectedOutputFiles: OutputFile[]) {
+        const outputFilesNode: ITreeNode[] = [];
+        for (let outputFileName of config.outputs) {
+            let outputFileIndex = -1;
+            if (selectedOutputFiles) {
+                outputFileIndex = selectedOutputFiles.findIndex((x) => x.name == outputFileName);
+            }
+            const isSelected = outputFileIndex > -1 && selectedOutputFiles[outputFileIndex].config == config.name;
+            outputFilesNode.push({
+                id: outputFileName,
+                label: outputFileName,
+                iconName: 'pt-icon-document',
+                isSelected: isSelected
+            });
+        }
+        return outputFilesNode;
     }
 
     private static constructConfigNode(config: Configuration,
