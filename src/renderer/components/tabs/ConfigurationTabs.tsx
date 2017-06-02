@@ -202,7 +202,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                             ?
                             <div>
                                             <span
-                                                className={"pt-tag ".concat(this.state.chdVersion < this.props.defaultConfVersion.chd ? "pt-intent-warning" : "pt-intent-success")}>
+                                                className={"pt-tag ".concat(this.state.chdVersion < this.props.defaultConfVersion.chd ? "pt-intent-warning" : "pt-intent-success")}
+                                                style={{opacity: 0.5}}
+                                            >
                                                 Version {this.state.chdVersion >= 0 ? this.state.chdVersion : "N/A"}
                                             </span>
                                 {
@@ -248,7 +250,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                             ?
                             <div>
                                             <span
-                                                className={"pt-tag ".concat(this.state.cnfVersion < this.props.defaultConfVersion.cnf ? "pt-intent-warning" : "pt-intent-success")}>
+                                                className={"pt-tag ".concat(this.state.cnfVersion < this.props.defaultConfVersion.cnf ? "pt-intent-warning" : "pt-intent-success")}
+                                                style={{opacity: 0.5}}
+                                            >
                                                 Version {this.state.cnfVersion >= 0 ? this.state.cnfVersion : "N/A"}
                                             </span>
                                 {
@@ -295,7 +299,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                             ?
                             <div>
                                             <span
-                                                className={"pt-tag ".concat(this.state.cstVersion < this.props.defaultConfVersion.cst ? "pt-intent-warning" : "pt-intent-success")}>
+                                                className={"pt-tag ".concat(this.state.cstVersion < this.props.defaultConfVersion.cst ? "pt-intent-warning" : "pt-intent-success")}
+                                                style={{opacity: 0.5}}
+                                            >
                                                 Version {this.state.cstVersion >= 0 ? this.state.cstVersion : "N/A"}
                                             </span>
                                 {
