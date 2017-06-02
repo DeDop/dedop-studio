@@ -1,7 +1,7 @@
 import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
 import {remote} from "electron";
-import {Dispatch, connect} from "react-redux";
+import {connect, Dispatch} from "react-redux";
 import {State} from "../../state";
 import {updateCurrentOutputDirectory} from "../../actions";
 
@@ -16,7 +16,7 @@ function mapStateToProps(state: State): IL1BL1BSOutputPanelProps {
     }
 }
 
-class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps,any> {
+class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps, any> {
     render() {
         const handleSelectDirectory = () => {
             const outputFileDirectory = remote.dialog.showOpenDialog({
@@ -24,7 +24,9 @@ class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps,any> {
                     defaultPath: this.props.currentOutputDirectory
                 }
             );
-            this.props.dispatch(updateCurrentOutputDirectory(outputFileDirectory[0]))
+            if (outputFileDirectory && outputFileDirectory.length) {
+                this.props.dispatch(updateCurrentOutputDirectory(outputFileDirectory[0]))
+            }
         };
 
         return (
