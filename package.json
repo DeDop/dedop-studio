@@ -47,7 +47,6 @@
     "@types/electron-devtools-installer": "~2.0.2",
     "@types/enzyme": "~2.5.38",
     "@types/mocha": "~2.2.32",
-    "@types/moment": "~2.13.0",
     "@types/react": "~0.14.46",
     "@types/react-codemirror": "~0.2.5",
     "@types/react-dom": "~0.14.18",
