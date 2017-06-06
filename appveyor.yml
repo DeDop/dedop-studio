@@ -13,7 +13,7 @@ cache:
 install:
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
-  - npm install npm
+  - npm install -g npm
   - .\node_modules\.bin\npm install
 
 test_script:
