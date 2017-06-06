@@ -5,7 +5,7 @@ import {mainTabs} from "../initialStates";
 import WorkspaceInfo from "./WorkspaceInfo";
 
 interface ITopMenuProps {
-    currentMainTabPanel: number;
+    currentMainTabPanel?: number;
 }
 
 function mapStateToProps(state: State): ITopMenuProps {

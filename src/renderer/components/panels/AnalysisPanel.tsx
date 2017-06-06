@@ -14,11 +14,11 @@ import {
 
 interface IAnalysisPanel {
     dispatch?: Dispatch<State>;
-    notebookFileNames: string[];
-    selectedNotebookFileName: string;
-    selectedOutputFiles: OutputFile[];
-    outputDirectory: string;
-    currentWorkspaceDirectory: string;
+    notebookFileNames?: string[];
+    selectedNotebookFileName?: string;
+    selectedOutputFiles?: OutputFile[];
+    outputDirectory?: string;
+    currentWorkspaceDirectory?: string;
 }
 
 function mapStateToProps(state: State): IAnalysisPanel {

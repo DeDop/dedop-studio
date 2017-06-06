@@ -19,17 +19,17 @@ const CONFIGURATION_NOT_FOUND = -2;
 
 interface IConfigurationTabsProps {
     dispatch?: Dispatch<State>;
-    chd: ProcessConfigurations;
-    cnf: ProcessConfigurations;
-    cst: ProcessConfigurations;
-    defaultConfVersion: ConfigurationVersion;
-    codeEditorActive: boolean;
-    selectedConfigurationName: string;
-    currentTab: number;
-    unsavedConfigChanges: boolean;
-    isCnfEditable: boolean;
-    isChdEditable: boolean;
-    isCstEditable: boolean;
+    chd?: ProcessConfigurations;
+    cnf?: ProcessConfigurations;
+    cst?: ProcessConfigurations;
+    defaultConfVersion?: ConfigurationVersion;
+    codeEditorActive?: boolean;
+    selectedConfigurationName?: string;
+    currentTab?: number;
+    unsavedConfigChanges?: boolean;
+    isCnfEditable?: boolean;
+    isChdEditable?: boolean;
+    isCstEditable?: boolean;
 }
 
 function mapStateToProps(state: State): IConfigurationTabsProps {

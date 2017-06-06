@@ -6,8 +6,8 @@ import {updateMainTab} from "../actions";
 
 interface IWorkflowBreadcrumbProps {
     dispatch?: (action: {type: string, payload: number}) => void;
-    currentMainTabPanel: number;
-    tabNames: string[];
+    currentMainTabPanel?: number;
+    tabNames?: string[];
 }
 
 function mapStateToProps(state: State) {

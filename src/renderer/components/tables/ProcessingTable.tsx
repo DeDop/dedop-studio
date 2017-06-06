@@ -8,9 +8,9 @@ import * as selector from "../../selectors";
 
 interface IProcessingTableProps {
     dispatch?: (action: { type: string, payload: any }) => void;
-    tasks: { [jobId: number]: TaskState; };
-    processes: ProcessingItem[];
-    selectedProcesses: number[];
+    tasks?: { [jobId: number]: TaskState; };
+    processes?: ProcessingItem[];
+    selectedProcesses?: number[];
 }
 
 function mapStateToProps(state: State): IProcessingTableProps {

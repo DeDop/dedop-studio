@@ -7,7 +7,7 @@ import {updateCurrentOutputDirectory} from "../../actions";
 
 interface IL1BL1BSOutputPanelProps {
     dispatch?: Dispatch<State>;
-    currentOutputDirectory: string;
+    currentOutputDirectory?: string;
 }
 
 function mapStateToProps(state: State): IL1BL1BSOutputPanelProps {

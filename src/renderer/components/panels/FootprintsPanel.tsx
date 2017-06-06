@@ -5,7 +5,7 @@ import {CesiumPoint, State} from "../../state";
 import {connect} from "react-redux";
 
 interface IFootprintsPanel {
-    cesiumPoints: CesiumPoint[];
+    cesiumPoints?: CesiumPoint[];
 }
 
 function mapStateToProps(state: State): IFootprintsPanel {

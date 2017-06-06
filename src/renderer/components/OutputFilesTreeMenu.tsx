@@ -9,10 +9,10 @@ import {updateConfigSelection, updateSelectedOutputs} from "../actions";
 
 export interface IOutputFilesTreeMenuProps {
     dispatch?: Dispatch<State>;
-    configurations: Configuration[];
-    selectedConfigurationName: string;
-    selectedOutputFiles: OutputFile[];
-    currentWorkspaceName: string;
+    configurations?: Configuration[];
+    selectedConfigurationName?: string;
+    selectedOutputFiles?: OutputFile[];
+    currentWorkspaceName?: string;
 }
 
 function mapStateToProps(state: State): IOutputFilesTreeMenuProps {

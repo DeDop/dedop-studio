@@ -6,8 +6,8 @@ import {Dispatch} from "redux";
 import {updateWebapiDialog} from "../actions";
 
 interface IBottomToolbarProps {
-    webAPIStatus: string;
-    isWebapiDialogOpen: boolean;
+    webAPIStatus?: string;
+    isWebapiDialogOpen?: boolean;
     dispatch?: Dispatch<State>;
 }
 

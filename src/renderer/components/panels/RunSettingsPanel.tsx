@@ -3,14 +3,14 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {State} from "../../state";
 import * as selectors from "../../selectors";
 import {connect, Dispatch} from "react-redux";
-import {setCurrentConfig, setProcessName} from "../../actions";
+import {setCurrentConfig} from "../../actions";
 import {SelectComponent} from "../common/SelectComponent";
 
 interface IRunSettingsPanelProps {
     dispatch?: Dispatch<State>;
-    configurationFiles: string[];
-    currentConfigurationName: string;
-    processName: string;
+    configurationFiles?: string[];
+    currentConfigurationName?: string;
+    processName?: string;
 }
 
 function mapStateToProps(state: State): IRunSettingsPanelProps {

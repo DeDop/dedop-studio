@@ -6,10 +6,10 @@ import * as selector from "../selectors";
 
 interface ISourceFileListSingleProps {
     dispatch?: Dispatch<State>;
-    addedSourceFiles: SourceFile[];
-    sourceFile: SourceFile;
-    currentWorkspace: string;
-    currentSourceFileDirectory: string;
+    addedSourceFiles?: SourceFile[];
+    sourceFile?: SourceFile;
+    currentWorkspace?: string;
+    currentSourceFileDirectory?: string;
 }
 
 function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile}): ISourceFileListSingleProps {

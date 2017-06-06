@@ -19,9 +19,9 @@ import * as selector from "../selectors";
 
 interface IWorkspaceInfoProps {
     dispatch?: Dispatch<State>;
-    workspaceName: string;
-    currentWorkspace: Workspace;
-    workspaces: Workspace[];
+    workspaceName?: string;
+    currentWorkspace?: Workspace;
+    workspaces?: Workspace[];
 }
 
 function mapStateToProps(state: State): IWorkspaceInfoProps {

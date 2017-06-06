@@ -11,7 +11,7 @@ import {updateMainTab} from "../../actions";
 
 interface IMainTabsProps {
     dispatch?: (action: {type: string, payload: any}) => void;
-    currentMainTabPanel: number;
+    currentMainTabPanel?: number;
 }
 
 function mapStateToProps(state: State) {

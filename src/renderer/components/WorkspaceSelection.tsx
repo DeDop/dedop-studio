@@ -3,8 +3,8 @@ import {State, Workspace} from "../state";
 import {connect} from "react-redux";
 
 export interface IWorkspaceSelectionProps {
-    workspaces: Workspace[];
-    onChangeSelection: (event: any) => void;
+    workspaces?: Workspace[];
+    onChangeSelection?: (event: any) => void;
 }
 
 function mapStateToProps(state: State, ownProps): IWorkspaceSelectionProps {

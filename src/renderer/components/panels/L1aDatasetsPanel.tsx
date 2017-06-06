@@ -22,9 +22,9 @@ import {Button} from "@blueprintjs/core";
 
 interface ISourceDataPanelProps {
     dispatch?: Dispatch<State>;
-    l1aInputFiles: SourceFile[];
-    selectedSourceFile: string[];
-    currentSourceFileDirectory: string;
+    l1aInputFiles?: SourceFile[];
+    selectedSourceFile?: string[];
+    currentSourceFileDirectory?: string;
 }
 
 function mapStateToProps(state: State): ISourceDataPanelProps {

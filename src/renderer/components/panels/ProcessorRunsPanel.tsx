@@ -10,13 +10,13 @@ import {JobStatusEnum} from "../../webapi/Job";
 
 interface IProcessorRunsPanelProps {
     dispatch?: Dispatch<State>;
-    selectedSourceFile: SourceFile;
-    currentConfiguration: string;
-    currentOutputDirectory: string;
-    processName: string;
-    processes: ProcessingItem[];
-    selectedProcesses: number[];
-    outputNames: string[];
+    selectedSourceFile?: SourceFile;
+    currentConfiguration?: string;
+    currentOutputDirectory?: string;
+    processName?: string;
+    processes?: ProcessingItem[];
+    selectedProcesses?: number[];
+    outputNames?: string[];
 }
 
 function mapStateToProps(state: State): IProcessorRunsPanelProps {

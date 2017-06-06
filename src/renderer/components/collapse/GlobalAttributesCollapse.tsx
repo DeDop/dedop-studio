@@ -6,8 +6,8 @@ import {GlobalAttributesTable} from "../tables/GlobalAttributesTable";
 
 interface IGlobalAttributesCollapseProps {
     dispatch?: (action: {type: string, payload: any}) => void;
-    globalAttributes: GlobalAttribute[];
-    openCollapse: boolean;
+    globalAttributes?: GlobalAttribute[];
+    openCollapse?: boolean;
 }
 
 function mapStateToProps(state: State): IGlobalAttributesCollapseProps {

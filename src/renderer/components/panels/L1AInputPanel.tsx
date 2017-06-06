@@ -16,10 +16,10 @@ import {SelectComponent} from "../common/SelectComponent";
 
 interface IL1AInputPanelProps {
     dispatch?: Dispatch<State>;
-    sourceFiles: SourceFile[];
-    currentSourceFile: string;
-    currentSourceFileDirectory: string;
-    selectedSourceType: string;
+    sourceFiles?: SourceFile[];
+    currentSourceFile?: string;
+    currentSourceFileDirectory?: string;
+    selectedSourceType?: string;
 }
 
 function mapStateToProps(state: State): IL1AInputPanelProps {
