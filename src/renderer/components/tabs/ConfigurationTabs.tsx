@@ -167,7 +167,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
         }
         this.setState({
             cnfTemp: cnfConfigurations
-        })
+        });
     };
 
     private handleCstInputChange = (event: React.FormEvent<HTMLSelectElement>) => {

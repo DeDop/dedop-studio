@@ -83,10 +83,15 @@ export class ConfigurationFlagSingleEntry extends React.Component<IConfigProps, 
     }
 
     public render() {
-        const handleFlagChange = () => {
+        const handleFlagChange = (event: any) => {
+            const checked = event.currentTarget.checked;
             this.setState({
                 checked: !this.state.checked
-            })
+            });
+            if (checked != this.state.checked) {
+                this.props.dispatch(updateUnsavedConfigStatus(true));
+                this.props.onBlur(event);
+            }
         };
 
         return (
