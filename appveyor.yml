@@ -14,9 +14,9 @@ install:
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
   - npm install -g npm
-  - .\node_modules\.bin\npm install
+  - npm install
 
 test_script:
   - node --version
-  - .\node_modules\.bin\npm --version
-  - .\node_modules\.bin\npm test
+  - npm --version
+  - npm test
