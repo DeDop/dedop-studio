@@ -8,17 +8,17 @@ environment:
   apiUrl : "https://ci.appveyor.com/api"
 
 install:
-  - ps: pwd
-  - ps: ls
-  - ps: ls node_modules
-  - ps: ls node_modules\.bin
-  - ps: ls app
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
   - .\node_modules\.bin\npm --version
   - .\node_modules\.bin\npm test
   - npm install npm
   - .\node_modules\.bin\npm install
+  - ps: pwd
+  - ps: ls
+  - ps: ls node_modules
+  - ps: ls node_modules\.bin
+  - ps: ls app
 
 test_script:
   - node --version
