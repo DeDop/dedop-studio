@@ -11,9 +11,6 @@ install:
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
   - npm -g install npm
-  - ps: pwd
-  - ps: ls
-  - ps: ls app
   - npm install
 
 test_script:
