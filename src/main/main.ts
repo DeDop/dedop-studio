@@ -209,7 +209,6 @@ export function init() {
         processOptions: {},
     });
     const backendLocation = loadBackendLocation();
-    console.log("backendLocation", backendLocation);
     if (backendLocation) {
         webAPIConfig = updateConditionally(webAPIConfig, {
             command: backendLocation
@@ -464,7 +463,6 @@ function createMainWindow() {
 
     ipcMain.on('show-open-dialog', (event, openDialogOptions, synchronous?: boolean) => {
         dialog.showOpenDialog(_mainWindow, openDialogOptions, (filePaths: Array<string>) => {
-            // console.log('show-open-dialog: filePaths =', filePaths);
             if (synchronous) {
                 event.returnValue = filePaths && filePaths.length ? filePaths : null;
             } else {
@@ -475,7 +473,6 @@ function createMainWindow() {
 
     ipcMain.on('show-save-dialog', (event, saveDialogOptions, synchronous?: boolean) => {
         dialog.showSaveDialog(_mainWindow, saveDialogOptions, (filePath: string) => {
-            // console.log('show-save-dialog: filePath =', filePath);
             if (synchronous) {
                 event.returnValue = filePath ? filePath : null;
             } else {
@@ -486,7 +483,6 @@ function createMainWindow() {
 
     ipcMain.on('show-message-box', (event, messageBoxOptions, synchronous?: boolean) => {
         dialog.showMessageBox(_mainWindow, messageBoxOptions, (index: number) => {
-            // console.log('show-message-box: index =', index);
             if (synchronous) {
                 event.returnValue = index;
             } else {
@@ -508,14 +504,12 @@ function createMainWindow() {
 
 function checkWebapiServiceExecutable(callback: (installerPath?: string) => void): boolean {
     const webAPIConfig = _config.data.webAPIConfig;
-    console.log("inside checkWebapiServiceExecutable", webAPIConfig);
     if (fs.existsSync(webAPIConfig.command)) {
         callback();
         return true;
     }
 
     const fileNames = fs.readdirSync(app.getAppPath());
-    // console.log('fileNames =', fileNames);
     const isWin = process.platform === 'win32';
     const finder = n => n.startsWith('DeDop-') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
     const installerExeName = fileNames.find(finder);
