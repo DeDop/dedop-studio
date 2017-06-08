@@ -7,9 +7,6 @@ environment:
   nodejs_version: "6.9.1"
   apiUrl : "https://ci.appveyor.com/api"
 
-cache:
-  #- node_modules -> package.json
-
 install:
   - ps: pwd
   - ps: ls
@@ -18,6 +15,8 @@ install:
   - ps: ls app
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
+  - .\node_modules\.bin\npm --version
+  - .\node_modules\.bin\npm test
   - npm install npm
   - .\node_modules\.bin\npm install
 
