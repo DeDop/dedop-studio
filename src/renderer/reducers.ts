@@ -441,9 +441,9 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
         }
         case actions.APPLY_INITIAL_STATE: {
             return Object.assign({}, state, {
-                isCnfEditable: action.payload.session.isCnfEditable,
-                isChdEditable: action.payload.session.isChdEditable,
-                isCstEditable: action.payload.session.isCstEditable,
+                isCnfEditable: action.payload.session.isCnfEditable == null ? state.isCnfEditable : action.payload.session.isCnfEditable,
+                isChdEditable: action.payload.session.isChdEditable == null ? state.isChdEditable : action.payload.session.isChdEditable,
+                isCstEditable: action.payload.session.isCstEditable == null ? state.isCstEditable : action.payload.session.isCstEditable,
             });
         }
     }
