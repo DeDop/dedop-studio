@@ -60,7 +60,6 @@
     "chai": "~3.5.0",
     "chai-as-promised": "~6.0.0",
     "codemirror": "~5.21.0",
-    "debug": "~2.6.8",
     "deep-equal": "~1.0.1",
     "electron": "~1.4.12",
     "electron-builder": "~14.5",
