@@ -13,6 +13,9 @@ cache:
 install:
   - ps: pwd
   - ps: ls
+  - ps: ls node_modules
+  - ps: ls node_modules\.bin
+  - ps: ls app
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
   - npm install npm
