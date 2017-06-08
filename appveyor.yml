@@ -11,6 +11,8 @@ cache:
   #- node_modules -> package.json
 
 install:
+  - ps: pwd
+  - ps: ls
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
   - npm install npm
