@@ -9,6 +9,8 @@ import {Configuration} from "./configuration";
 import {updateConditionally} from "../common/objutil";
 import {request} from "./request";
 import {error} from "util";
+import * as semver from "semver";
+import {pep440ToSemver} from "../common/version";
 
 // Module to control application life.
 const app = electron.app;
@@ -17,6 +19,13 @@ const BrowserWindow = electron.BrowserWindow;
 
 const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
+
+/**
+ * Identifies the required version of the Dedop WebAPI.
+ * The value is a node-semver (https://github.com/npm/node-semver) compatible version range string.
+ * @type {string}
+ */
+export const WEBAPI_VERSION_RANGE = ">=0.5.4 <0.6";
 
 const PREFS_OPTIONS = ['--prefs', '-p'];
 const CONFIG_OPTIONS = ['--config', '-c'];
@@ -29,8 +38,6 @@ const WEBAPI_INSTALLER_BAD_EXIT = 4;
 const WEBAPI_ERROR = 5;
 const WEBAPI_BAD_EXIT = 6;
 const WEBAPI_TIMEOUT = 7;
-
-const WEBAPI_VERSION = '0.5.4';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -66,24 +73,6 @@ function getOptionArg(options: string[]) {
     return null;
 }
 
-function storeConfiguration(config: Configuration, options: string[], defaultConfigFile: string, configType: string) {
-    let configFile = getOptionArg(options);
-    if (!configFile) {
-        configFile = defaultConfigFile;
-        let dir = path.dirname(configFile);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-    }
-    config.store(configFile, (err) => {
-        if (err) {
-            console.error(DEDOP_STUDIO_PREFIX, `${configType} could not be stored in "${configFile}"`, err);
-        } else {
-            console.log(DEDOP_STUDIO_PREFIX, `${configType} successfully stored in "${configFile}"`);
-        }
-    });
-}
-
 function loadConfiguration(options: string[], defaultConfigFile: string, configType: string): Configuration {
     let config = new Configuration();
     let configFile = getOptionArg(options);
@@ -110,16 +99,63 @@ function getDefaultUserPrefsFile() {
     return path.join(getAppDataDir(), 'dedop-prefs.json');
 }
 
-function loadBackendLocation(): string {
-    const locationFile = path.join(getAppDataDir(), WEBAPI_VERSION, 'dedop.location');
-    if (!fs.existsSync(locationFile)) {
-        console.error(DEDOP_STUDIO_PREFIX, `missing dedop.location file: ${locationFile}`);
+function storeConfiguration(config: Configuration, options: string[], defaultConfigFile: string, configType: string) {
+    let configFile = getOptionArg(options);
+    if (!configFile) {
+        configFile = defaultConfigFile;
+        let dir = path.dirname(configFile);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+    }
+    config.store(configFile, (err) => {
+        if (err) {
+            console.error(DEDOP_STUDIO_PREFIX, `${configType} could not be stored in "${configFile}"`, err);
+        } else {
+            console.log(DEDOP_STUDIO_PREFIX, `${configType} successfully stored in "${configFile}"`);
+        }
+    });
+}
+
+function loadBackendLocation() {
+    const dataDir = getAppDataDir();
+    if (!fs.existsSync(dataDir)) {
+        // Return immediately if there is no dataDir (yet).
         return null;
     }
-    const location = fs.readFileSync(locationFile, 'utf8');
-    if (location) {
-        return location.trim();
+
+    const fileNames = fs.readdirSync(dataDir);
+    const backendLocations = {};
+    for (let fileName of fileNames) {
+        const locationFile = path.join(dataDir, fileName, 'dedop.location');
+        if (fs.existsSync(locationFile)) {
+            let location = fs.readFileSync(locationFile, 'utf8');
+            if (location) {
+                location = location.trim();
+                const webApiExe = path.join(location, process.platform === 'win32' ? 'Scripts\\dedop-webapi.exe' : 'bin/dedop-webapi');
+                if (fs.existsSync(webApiExe)) {
+                    const version = pep440ToSemver(fileName);
+                    if (semver.valid(version, true)) {
+                        // Return immediately if the versions are equal.
+                        if (semver.eq(version, app.getVersion(), true)) {
+                            return webApiExe;
+                        }
+                        backendLocations[version] = webApiExe;
+                    }
+                }
+            }
+        }
     }
+
+    let descendingVersions = Object.getOwnPropertyNames(backendLocations);
+    descendingVersions.sort((v1: string, v2: string) => semver.compare(v2, v1, true));
+
+    for (let version of descendingVersions) {
+        if (semver.satisfies(version, WEBAPI_VERSION_RANGE, true)) {
+            return backendLocations[version];
+        }
+    }
+
     return null;
 }
 
@@ -171,12 +207,12 @@ export function init() {
         serviceFile: 'dedop-webapi.json',
         // Refer to https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
         processOptions: {},
-        useMockService: false,
     });
     const backendLocation = loadBackendLocation();
+    console.log("backendLocation", backendLocation);
     if (backendLocation) {
         webAPIConfig = updateConditionally(webAPIConfig, {
-            command: path.join(backendLocation, process.platform === 'win32' ? 'Scripts/dedop-webapi.exe' : 'bin/dedop-webapi')
+            command: backendLocation
         });
     }
     _config.set('webAPIConfig', webAPIConfig);
@@ -192,7 +228,7 @@ export function init() {
 
     function startWebapiService(): childProcess.ChildProcess {
         const webAPIStartArgs = getWebAPIStartArgs(webAPIConfig);
-        console.log(DEDOP_STUDIO_PREFIX, `starting DeDop WebAPI service using arguments: ${webAPIStartArgs}`);
+        console.log(DEDOP_STUDIO_PREFIX, `Starting DeDop WebAPI service using arguments: ${webAPIStartArgs}`);
         const webAPIProcess = childProcess.spawn(webAPIConfig.command, webAPIStartArgs, webAPIConfig.processOptions);
         webAPIStarted = true;
         webAPIProcess.stdout.on('data', (data: any) => {
@@ -202,10 +238,10 @@ export function init() {
             console.error(DEDOP_STUDIO_PREFIX, `${data}`);
         });
         webAPIProcess.on('error', (err: Error) => {
-            let message = 'Failed to start DeDop WebAPI service.';
-            console.log(DEDOP_STUDIO_PREFIX, message, err);
+            console.error(DEDOP_STUDIO_PREFIX, err);
             if (!webAPIError) {
-                electron.dialog.showErrorBox('Internal Error', message);
+                electron.dialog.showErrorBox(`${app.getName()} - Internal Error`,
+                    'Failed to start Dedop WebAPI service.');
             }
             webAPIError = err;
             app.exit(WEBAPI_ERROR); // exit immediately
@@ -215,13 +251,23 @@ export function init() {
             console.log(DEDOP_STUDIO_PREFIX, message);
             if (code != 0) {
                 if (!webAPIError) {
-                    electron.dialog.showErrorBox('Internal Error', message);
+                    electron.dialog.showErrorBox(`${app.getName()} - Internal Error`, message);
                 }
                 webAPIError = new Error(message);
                 app.exit(WEBAPI_BAD_EXIT); // exit immediately
             }
         });
         return webAPIProcess;
+    }
+
+    function stopWebapiService(webAPIProcess) {
+        if (!webAPIProcess) {
+            return;
+        }
+        // Note we are async here, because sync can take a lot of time...
+        const webAPIStopArgs = getWebAPIStopArgs(webAPIConfig);
+        console.log(DEDOP_STUDIO_PREFIX, `Stopping Dedop WebAPI service using arguments: ${webAPIStopArgs}`);
+        childProcess.spawn(webAPIConfig.command, webAPIStopArgs, webAPIConfig.processOptions);
     }
 
     function startUpWithWebapiService() {
@@ -231,24 +277,22 @@ export function init() {
         let msSpend = 0; // ms
         let webAPIRestUrl = getWebAPIRestUrl(_config.data.webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `Waiting for response from ${webAPIRestUrl}`);
-        showSplashMessage('Starting back-end...');
+        showSplashMessage('Waiting for Dedop backend response...');
         request(webAPIRestUrl, msServiceAccessTimeout)
             .then((response: string) => {
                 console.log(DEDOP_STUDIO_PREFIX, `Response: ${response}`);
                 createMainWindow();
             })
             .catch((err) => {
-                console.log(DEDOP_STUDIO_PREFIX, `No response within ${msServiceAccessTimeout} ms. Error: `, err);
+                console.log(DEDOP_STUDIO_PREFIX, `Waiting for Dedop WebAPI service to respond after ${msSpend} ms`);
                 if (!webAPIStarted) {
                     webAPIProcess = startWebapiService();
                 }
                 if (msSpend > msServiceStartTimeout) {
-                    let message = `Failed to start DeDop WebAPI service within ${msSpend} ms.`;
-                    console.error(DEDOP_STUDIO_PREFIX, message, err);
+                    console.error(DEDOP_STUDIO_PREFIX, `Failed to start DeDop WebAPI service within ${msSpend} ms.`);
                     if (!webAPIError) {
-                        electron.dialog.showErrorBox("Internal Error", message);
+                        electron.dialog.showErrorBox(`${app.getName()} - Internal Error`, `Failed to start Dedop backend within ${msSpend} ms.`);
                     }
-                    webAPIError = new Error(message);
                     app.exit(WEBAPI_TIMEOUT);
                 } else {
                     setTimeout(startUpWithWebapiService, msDelay);
@@ -257,36 +301,26 @@ export function init() {
             });
     }
 
-    function stopWebapiService(webAPIProcess) {
-        if (!webAPIProcess) {
-            return;
-        }
-        // Note we are async here, because sync can take a lot of time...
-        const webAPIStopArgs = getWebAPIStopArgs(webAPIConfig);
-        childProcess.spawn(webAPIConfig.command, webAPIStopArgs, webAPIConfig.processOptions);
-    }
-
-    // This method will be called when Electron has finished
-    // initialization and is ready to create browser windows.
-    // Some APIs can only be used after this event occurs.
+    // Emitted when Electron has finished initializing.
     app.on('ready', (): void => {
         checkWebapiServiceExecutable((installerPath: string) => {
             createSplashWindow(() => {
-                installWebapiServiceExecutable(installerPath, () => {
+                installBackend(installerPath, () => {
                     console.log(DEDOP_STUDIO_PREFIX, 'Ready.');
-                    if (!webAPIConfig.useMockService) {
-                        console.log(DEDOP_STUDIO_PREFIX, 'Using DeDop WebAPI service...');
-                        startUpWithWebapiService();
-                    } else {
-                        createMainWindow();
-                    }
-                })
-            })
-        })
+                    startUpWithWebapiService();
+                });
+            });
+        });
     });
 
-    // Quit when all windows are closed.
-    app.on('window-all-closed', function () {
+    // Emitted when all windows have been closed and the application will quit.
+    app.on('quit', () => {
+        console.log(DEDOP_STUDIO_PREFIX, 'Quit.');
+        stopWebapiService(webAPIProcess);
+    });
+
+    // Emitted when all windows have been closed.
+    app.on('window-all-closed', () => {
         // On OS X it is common for applications and their menu bar
         // to stay active until the user quits explicitly with Cmd + Q
         if (process.platform !== 'darwin') {
@@ -294,18 +328,15 @@ export function init() {
         }
     });
 
-    // Emitted when all windows have been closed and the application will quit.
-    app.on('quit', () => {
-        console.log(DEDOP_STUDIO_PREFIX, 'Quit.');
-        if (!webAPIConfig.useMockService) {
-            stopWebapiService(webAPIProcess);
-        }
-    });
-
-    app.on('activate', function () {
+    // OS X: Emitted when the application is activated, which usually happens when the user clicks
+    // on the application's dock icon.
+    app.on('activate', () => {
         // On OS X it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
         if (_mainWindow === null) {
+            // TODO (forman): must find out what Mac OS expects an app to do, once it becomes deactivated
+            //   - is it a complete restart or should it remain in its previous state?
+            //   - must we stop the webapi on "deactivate" and start on "activate"?
             createMainWindow();
         }
     });
@@ -335,6 +366,15 @@ function createSplashWindow(callback: () => void) {
     _splashWindow.webContents.on('did-finish-load', callback);
 }
 
+function showSplashMessage(message: string) {
+    console.log(DEDOP_STUDIO_PREFIX, message);
+    if (_splashWindow && _splashWindow.isVisible()) {
+        _splashWindow.webContents.send('update-splash-message', message);
+    } else {
+        console.warn(DEDOP_STUDIO_PREFIX, 'showSplashMessage: splash not visible', message);
+    }
+}
+
 function createMainWindow() {
 
     if (_config.data.devToolsExtensions) {
@@ -348,35 +388,30 @@ function createMainWindow() {
         }
     }
 
+    showSplashMessage('Loading user interface...');
+
     const mainWindowBounds = _prefs.data.mainWindowBounds || {width: 1366, height: 768};
 
-    // Create the browser window.
     _mainWindow = new BrowserWindow(Object.assign({
         icon: getAppIconPath(),
+        title: `${app.getName()} ${app.getVersion()}`,
         webPreferences: {},
     }, mainWindowBounds));
 
     // disable the top toolbar menu as it is not used yet
     _mainWindow.setMenu(null);
 
-    // and load the index.html of the app.
     _mainWindow.loadURL(url.format({
         pathname: path.join(app.getAppPath(), 'index.html'),
         protocol: 'file:',
         slashes: true
     }));
 
-    if (_config.data.devToolsOpened) {
-        // Open the DevTools.
-        _mainWindow.webContents.openDevTools();
-    }
-
     _mainWindow.webContents.on('did-finish-load', () => {
-            if (_splashWindow) {
-                _splashWindow.close();
-            }
-            console.log(DEDOP_STUDIO_PREFIX, 'Main window UI loaded.');
-
+        showSplashMessage('Done.');
+        console.log(DEDOP_STUDIO_PREFIX, 'Main window UI loaded.');
+        if (_splashWindow) {
+            _splashWindow.close();
             const webAPIConfig = _config.data.webAPIConfig;
             _mainWindow.webContents.send('apply-initial-state', {
                 session: _prefs.data,
@@ -389,7 +424,17 @@ function createMainWindow() {
                 })
             });
         }
-    );
+    });
+
+    if (_config.data.devToolsOpened) {
+        // Open the DevTools.
+        _mainWindow.webContents.openDevTools();
+    }
+
+    // Emitted when the web page has been rendered and window can be displayed without a visual flash.
+    _mainWindow.on('ready-to-show', () => {
+        console.log(DEDOP_STUDIO_PREFIX, 'Main window is ready to show.');
+    });
 
     // Emitted when the window is going to be closed.
     _mainWindow.on('close', (event) => {
@@ -406,7 +451,8 @@ function createMainWindow() {
     });
 
     // Emitted when the window is closed.
-    _mainWindow.on('closed', function () {
+    _mainWindow.on('closed', () => {
+        console.log(DEDOP_STUDIO_PREFIX, 'Main window closed.');
         storeUserPrefs(_prefs);
         _prefs = null;
         _config = null;
@@ -460,23 +506,15 @@ function createMainWindow() {
     });
 }
 
-function showSplashMessage(message: string) {
-    console.log(DEDOP_STUDIO_PREFIX, message);
-    if (_splashWindow && _splashWindow.isVisible()) {
-        _splashWindow.webContents.send('update-splash-message', message);
-    } else {
-        console.warn(DEDOP_STUDIO_PREFIX, 'showSplashMessage: splash not visible', message);
-    }
-}
-
 function checkWebapiServiceExecutable(callback: (installerPath?: string) => void): boolean {
     const webAPIConfig = _config.data.webAPIConfig;
+    console.log("inside checkWebapiServiceExecutable", webAPIConfig);
     if (fs.existsSync(webAPIConfig.command)) {
         callback();
         return true;
     }
 
-    const fileNames = fs.readdirSync(path.join(app.getAppPath()));
+    const fileNames = fs.readdirSync(app.getAppPath());
     // console.log('fileNames =', fileNames);
     const isWin = process.platform === 'win32';
     const finder = n => n.startsWith('DeDop-') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
@@ -485,7 +523,7 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
         const installerPath = path.join(app.getAppPath(), installerExeName);
         const response = electron.dialog.showMessageBox({
             type: 'info',
-            title: 'Dedop - Information',
+            title: `${app.getName()} - Information`,
             buttons: ['Cancel', 'OK'],
             cancelId: 0,
             message: 'About to install missing Dedop back-end.',
@@ -504,7 +542,7 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
     } else {
         electron.dialog.showMessageBox({
             type: 'error',
-            title: 'Dedop - Fatal Error',
+            title: `${app.getName()} - Fatal Error`,
             buttons: ['Close'],
             message: 'Can find neither the required Dedop backend service\n"' +
             webAPIConfig.command + '"\n' +
@@ -515,7 +553,7 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
     }
 }
 
-function installWebapiServiceExecutable(installerCommand: string, callback: () => void) {
+function installBackend(installerCommand: string, callback: () => void) {
 
     if (!installerCommand) {
         callback();
@@ -529,7 +567,7 @@ function installWebapiServiceExecutable(installerCommand: string, callback: () =
         : ['-b', '-f', '-p', installDir];
 
     console.log(DEDOP_STUDIO_PREFIX, `running WebAPI service installer "${installerCommand}" with arguments ${installerArgs}`);
-    showSplashMessage('Running back-end installer, please wait...');
+    showSplashMessage('Running backend installer, please wait...');
     const installerProcess = childProcess.spawn(installerCommand, installerArgs);
 
     installerProcess.stdout.on('data', (data: any) => {
@@ -542,8 +580,8 @@ function installWebapiServiceExecutable(installerCommand: string, callback: () =
         console.log(DEDOP_STUDIO_PREFIX, 'Dedop WebAPI service installation failed', err);
         electron.dialog.showMessageBox({
             type: 'error',
-            title: 'Dedop - Fatal Error',
-            message: 'Dedop back-end installation failed.',
+            title: `${app.getName()} - Fatal Error`,
+            message: 'Dedop backend installation failed.',
             detail: `${err}`
         });
         app.exit(WEBAPI_INSTALLER_ERROR); // exit immediately
@@ -556,8 +594,8 @@ function installWebapiServiceExecutable(installerCommand: string, callback: () =
         }
         electron.dialog.showMessageBox({
             type: 'error',
-            title: 'Dedop - Fatal Error',
-            message: `Dedop back-end installation failed with exit code ${code}.`,
+            title: `${app.getName()} - Fatal Error`,
+            message: `Dedop backend installation failed with exit code ${code}.`,
         });
         app.exit(WEBAPI_INSTALLER_BAD_EXIT); // exit immediately
     });
