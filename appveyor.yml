@@ -13,12 +13,10 @@ install:
   - npm -g install npm
   - ps: pwd
   - ps: ls
-  - ps: ls node_modules
-  - ps: ls node_modules\.bin
   - ps: ls app
   - npm install
 
 test_script:
   - node --version
-  - .\node_modules\.bin\npm --version
-  - .\node_modules\.bin\npm test
+  - npm --version
+  - npm test
