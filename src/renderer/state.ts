@@ -51,6 +51,11 @@ export interface ControlState {
     isCnfEditable: boolean;
     isChdEditable: boolean;
     isCstEditable: boolean;
+
+    // configuration descriptor
+    cnfDescriptor: ConfigurationDescriptor;
+    chdDescriptor: ConfigurationDescriptor;
+    cstDescriptor: ConfigurationDescriptor;
 }
 
 export interface SessionState {
@@ -152,6 +157,37 @@ export interface Configuration {
     cnf?: ProcessConfigurations;
     cst?: ProcessConfigurations;
     outputs?: string[];
+}
+
+export interface ConfigurationDescriptor {
+    metaInf: MetaInfDescriptor;
+    parameters: ParameterDescriptor[];
+}
+
+export interface MetaInfDescriptor {
+    version: number;
+    changelog: ChangelogDescriptor[];
+}
+
+export interface ChangelogDescriptor {
+    version: number;
+    parameters: string[];
+    comment: string;
+}
+
+export interface ParameterDescriptor {
+    dataType: string;
+    description?: string;
+    unit?: string;
+    valueSet?: string[];
+    valueRange?: string[];
+    dependencies: DependencyDescriptor[];
+}
+
+export interface DependencyDescriptor {
+    name: string;
+    relation: string;
+    value: string | number | boolean;
 }
 
 export interface SourceFile {
