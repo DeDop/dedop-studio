@@ -10,8 +10,6 @@ environment:
 install:
   - ps: $apiUrl
   - ps: Install-Product node $env:nodejs_version
-  - .\node_modules\.bin\npm --version
-  - .\node_modules\.bin\npm test
   - npm install npm
   - .\node_modules\.bin\npm install
   - ps: pwd
