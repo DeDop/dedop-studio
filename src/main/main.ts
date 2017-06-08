@@ -276,7 +276,7 @@ export function init() {
         let msSpend = 0; // ms
         let webAPIRestUrl = getWebAPIRestUrl(_config.data.webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `Waiting for response from ${webAPIRestUrl}`);
-        showSplashMessage('Waiting for Dedop backend response...');
+        showSplashMessage('Waiting for Dedop backend...');
         request(webAPIRestUrl, msServiceAccessTimeout)
             .then((response: string) => {
                 console.log(DEDOP_STUDIO_PREFIX, `Response: ${response}`);
