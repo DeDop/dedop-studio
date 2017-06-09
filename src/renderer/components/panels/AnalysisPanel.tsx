@@ -86,74 +86,57 @@ class AnalysisPanel extends React.Component<IAnalysisPanel, any> {
 
         return (
             <div className="dedop-panel-content">
+                <h5>Inspect output</h5>
+                <p style={{fontSize: 14}}>
+                    Select an output file to generate and initialise a Jupyter Notebook to inspect this file.</p>
+                <p style={{fontSize: 14}}>Only available when <strong>one</strong> output file is selected.</p>
                 <div style={{marginBottom: '10px', marginRight: '10px'}}>
-                    <AnchorButton iconName="pt-icon-search pt-intent-primary"
-                                  onClick={this.handleInspectOutput}
-                                  disabled={!this.props.selectedOutputFiles || this.props.selectedOutputFiles.length != 1}
+                    <Button iconName="pt-icon-search pt-intent-primary"
+                            onClick={this.handleInspectOutput}
+                            disabled={!this.props.selectedOutputFiles || this.props.selectedOutputFiles.length != 1}
                     >
                         Inspect
-                    </AnchorButton>
-                    <Popover
-                        content={inspectPopoverContent}
-                        interactionKind={PopoverInteractionKind.CLICK}
-                        popoverClassName="pt-popover-content-sizing dedop-popover"
-                        position={Position.RIGHT}
-                        useSmartPositioning={false}
-                    >
-                        <span className="pt-icon-standard pt-icon-help"
-                              style={{marginLeft: '10px', paddingTop: '7px', color: 'rgb(134, 165, 176)'}}
-                        />
-                    </Popover>
-                </div>
-                <div style={{marginBottom: '10px'}}>
-                    <AnchorButton iconName="pt-icon-comparison pt-intent-primary"
-                                  onClick={this.handleCompareOutputs}
-                                  disabled={!this.props.selectedOutputFiles || this.props.selectedOutputFiles.length != 2}
-                    >
-                        Compare
-                    </AnchorButton>
-                    <Popover
-                        content={comparePopoverContent}
-                        interactionKind={PopoverInteractionKind.CLICK}
-                        popoverClassName="pt-popover-content-sizing dedop-popover"
-                        position={Position.RIGHT}
-                        useSmartPositioning={false}
-                    >
-                        <span className="pt-icon-standard pt-icon-help"
-                              style={{marginLeft: '10px', paddingTop: '7px', color: 'rgb(134, 165, 176)'}}
-                        />
-                    </Popover>
-                </div>
-                <div className="pt-select pt-fill">
-                    <SelectComponent items={this.props.notebookFileNames}
-                                     fill={true}
-                                     defaultValue="Select a notebook file..."
-                                     selectedItem={this.props.selectedNotebookFileName}
-                                     onChange={this.handleOnChangeNotebookName}
-                    />
-                </div>
-                <div style={{textAlign: 'right'}}>
-                    <Button className="pt-button pt-intent-primary"
-                            style={{margin: '10px 0'}}
-                            iconName='pt-icon-play'
-                            onClick={this.handleLaunchNotebook}
-                            disabled={!this.props.selectedNotebookFileName}
-                    >
-                        Launch notebook
                     </Button>
                 </div>
-                <textarea className="pt-input pt-fill"
-                          dir="auto"
-                          placeholder="create your own Python script (not yet implemented)"
-                          style={{overflow: "auto", margin: '10px 0'}}
-                          disabled={true}
-                />
-                <div className="pt-select pt-fill">
-                    <select disabled={true}>
-                        <option placeholder="">or select a Python script...</option>
-                        <option value="1">compare-1.py</option>
-                        <option value="2">inspect-1.py</option>
-                    </select>
+                <div style={{marginBottom: '10px'}}>
+                    <h5>Compare outputs</h5>
+                    <p style={{fontSize: 14}}>
+                        Select two output files to generate and initialise a Jupyter Notebook to compare the results
+                        between
+                        these two files.</p>
+                    <p style={{fontSize: 14}}>Only available when <strong>two</strong> output files are selected.</p>
+                    <Button iconName="pt-icon-comparison pt-intent-primary"
+                            onClick={this.handleCompareOutputs}
+                            disabled={!this.props.selectedOutputFiles || this.props.selectedOutputFiles.length != 2}
+                    >
+                        Compare
+                    </Button>
+                </div>
+                <div>
+                    <h5>Launch notebook</h5>
+                    <p style={{fontSize: 14}}>
+                        Select a generated notebook file from the dropdown list below and then click the Launch notebook button.
+                        A Jupyter Notebook server will be started with the selected notebook file.
+                        If no notebook files are available, create one by running <strong>Inspect output</strong> or <strong>Compare outputs</strong> above.
+                    </p>
+                    <div className="pt-select pt-fill">
+                        <SelectComponent items={this.props.notebookFileNames}
+                                         fill={true}
+                                         defaultValue="Select a notebook file..."
+                                         selectedItem={this.props.selectedNotebookFileName}
+                                         onChange={this.handleOnChangeNotebookName}
+                        />
+                    </div>
+                    <div style={{textAlign: 'right'}}>
+                        <Button className="pt-button pt-intent-primary"
+                                style={{margin: '10px 0'}}
+                                iconName='pt-icon-play'
+                                onClick={this.handleLaunchNotebook}
+                                disabled={!this.props.selectedNotebookFileName}
+                        >
+                            Launch notebook
+                        </Button>
+                    </div>
                 </div>
             </div>
         )
