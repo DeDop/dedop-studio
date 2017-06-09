@@ -511,7 +511,7 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
 
     const fileNames = fs.readdirSync(app.getAppPath());
     const isWin = process.platform === 'win32';
-    const finder = n => n.startsWith('DeDop-') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
+    const finder = n => n.startsWith('DeDop-backend') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
     const installerExeName = fileNames.find(finder);
     if (installerExeName) {
         const installerPath = path.join(app.getAppPath(), installerExeName);
