@@ -1,6 +1,6 @@
 import {WebAPIClient} from "../WebAPIClient";
 import {JobPromise} from "../Job";
-import {Configuration, ProcessConfigurations} from "../../state";
+import {Configuration, ConfigurationDescriptor, ProcessConfigurations} from "../../state";
 import * as moment from "moment";
 
 function configNamesToConfigurations(configsNameResponse: any): Configuration[] {
@@ -44,11 +44,42 @@ function responseToConfigurations(configurationsResponse): Configuration {
     });
 }
 
-function responseToConfigurationVersions(versions: any): {chdVersion: number, cnfVersion: number, cstVersion: number} {
+function responseToConfigurationVersions(versions: any): { chdVersion: number, cnfVersion: number, cstVersion: number } {
     return {
         chdVersion: versions.chd_version,
         cnfVersion: versions.cnf_version,
         cstVersion: versions.cst_version
+    }
+}
+
+function responseToConfigurationDescriptors(descriptors): { chdDescriptor: ConfigurationDescriptor, cnfDescriptor: ConfigurationDescriptor, cstDescriptor: ConfigurationDescriptor } {
+    let chdDescriptor = null;
+    console.log("inside responseToConfigurationDescriptors1", descriptors);
+    for (let paramName of Object.keys(descriptors.chd_descriptor)) {
+        if (paramName == "__metainf__") {
+            chdDescriptor = Object.assign({}, chdDescriptor, {
+                metainf: descriptors[paramName]
+            });
+            continue;
+        }
+        let newParameters=[];
+        if (chdDescriptor && chdDescriptor.parameters) {
+            newParameters = Object.assign({}, chdDescriptor.parameters);
+            newParameters[paramName] = descriptors[paramName];
+        } else {
+            let newParameter = [];
+            newParameters[paramName]
+        }
+        newParameters[paramName] = descriptors[paramName];
+        chdDescriptor = Object.assign({}, chdDescriptor, {
+            parameters: newParameters
+        });
+        console.log("inside responseToConfigurationDescriptors2", chdDescriptor);
+    }
+    return {
+        chdDescriptor: chdDescriptor,
+        cnfDescriptor: chdDescriptor,
+        cstDescriptor: chdDescriptor,
     }
 }
 
@@ -91,11 +122,15 @@ export class ConfigAPI {
         return this.webAPIClient.call('get_configs', [workspaceName, configName], null, responseToConfigurations);
     }
 
-    saveConfigs(workspaceName: string, configName: string, configurations: {chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations}) {
+    saveConfigs(workspaceName: string, configName: string, configurations: { chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations }) {
         return this.webAPIClient.call('save_configs', [workspaceName, configName, configurations], null, null);
     }
 
-    getDefaultConfigVersions(): JobPromise<{chdVersion: number, cnfVersion: number, cstVersion: number}> {
+    getConfigDescriptors(): JobPromise<{ chdDescriptor: ConfigurationDescriptor, cnfDescriptor: ConfigurationDescriptor, cstDescriptor: ConfigurationDescriptor }> {
+        return this.webAPIClient.call('get_config_descriptors', [], null, responseToConfigurationDescriptors);
+    }
+
+    getDefaultConfigVersions(): JobPromise<{ chdVersion: number, cnfVersion: number, cstVersion: number }> {
         return this.webAPIClient.call('get_default_config_versions', [], null, responseToConfigurationVersions);
     }
 

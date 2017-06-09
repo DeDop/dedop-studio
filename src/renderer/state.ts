@@ -53,9 +53,9 @@ export interface ControlState {
     isCstEditable: boolean;
 
     // configuration descriptor
-    cnfDescriptor: ConfigurationDescriptor;
-    chdDescriptor: ConfigurationDescriptor;
-    cstDescriptor: ConfigurationDescriptor;
+    cnfDescriptor?: ConfigurationDescriptor;
+    chdDescriptor?: ConfigurationDescriptor;
+    cstDescriptor?: ConfigurationDescriptor;
 }
 
 export interface SessionState {

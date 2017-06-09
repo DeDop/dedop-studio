@@ -446,6 +446,13 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 isCstEditable: action.payload.session.isCstEditable == null ? state.isCstEditable : action.payload.session.isCstEditable,
             });
         }
+        case actions.UPDATE_CONFIG_DESCRIPTORS: {
+            return Object.assign({}, state, {
+                chdDescriptor: action.payload.chdDescriptor,
+                cnfDescriptor: action.payload.cnfDescriptor,
+                cstDescriptor: action.payload.cstDescriptor
+            })
+        }
     }
     return state;
 };

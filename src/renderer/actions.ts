@@ -1,6 +1,7 @@
 import {
     CesiumPoint,
     Configuration,
+    ConfigurationDescriptor,
     GlobalAttribute,
     OutputFile,
     ProcessConfigurations,
@@ -719,6 +720,32 @@ export function saveConfiguration(currentConfiguration: string,
         }
 
         callAPI(dispatch, "Save configuration values.", call, action);
+    }
+}
+
+export const UPDATE_CONFIG_DESCRIPTORS = 'UPDATE_CONFIG_DESCRIPTORS';
+
+export function udpateConfigurationDescriptors(chdDescriptor: ConfigurationDescriptor, cnfDescriptor: ConfigurationDescriptor, cstDescriptor: ConfigurationDescriptor) {
+    return {
+        type: UPDATE_CONFIG_DESCRIPTORS, payload: {
+            chdDescriptor: chdDescriptor,
+            cnfDescriptor: cnfDescriptor,
+            cstDescriptor: cstDescriptor
+        }
+    };
+}
+
+export function getConfigurationDescriptors() {
+    return (dispatch, getState) => {
+        function call() {
+            return configAPI(getState()).getConfigDescriptors();
+        }
+
+        function action(descriptors: { chdDescriptor: ConfigurationDescriptor, cnfDescriptor: ConfigurationDescriptor, cstDescriptor: ConfigurationDescriptor }) {
+            dispatch(udpateConfigurationDescriptors(descriptors.chdDescriptor, descriptors.cnfDescriptor, descriptors.cstDescriptor));
+        }
+
+        callAPI(dispatch, "Get configuration descriptors.", call, action);
     }
 }
 
