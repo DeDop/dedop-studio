@@ -17,9 +17,9 @@ function mapStateToProps(state: State): IFootprintsPanel {
 class FootprintsPanel extends React.Component<IFootprintsPanel, any> {
     render() {
         return (
-            <div className="dedop-collapse">
+            <div className="dedop-collapse" style={{height: 'calc(100% - 10px)'}}>
                 <OrdinaryPanelHeader title="Footprints" icon="pt-icon-globe"/>
-                <div className="dedop-panel-content">
+                <div className="dedop-panel-content" style={{height: 'calc(100% - 20px)'}}>
                     <CesiumView id="cesium-viewer"
                                 cities={this.props.cesiumPoints}/>
                 </div>
