@@ -119,33 +119,6 @@ interface IConfigEditorProps {
 
 export class ConfigurationEditor extends React.Component<IConfigEditorProps, any> {
     public render() {
-        let configurationElements = [];
-        const configurations = this.props.configurations;
-        for (let i in configurations) {
-            if (i == "__metainf__") {
-                continue;
-            }
-            configurationElements.push(<ConfigurationSingleEntry key={i}
-                                                                 configName={i}
-                                                                 configuration={configurations[i]}
-                                                                 disabled={this.props.disabled}
-                                                                 onBlur={this.props.handleInputChange}
-                                                                 dispatch={this.props.dispatch}
-            />)
-        }
-
-        return (
-            <table>
-                <tbody>
-                {configurationElements}
-                </tbody>
-            </table>
-        )
-    }
-}
-
-export class CnfConfigurationEditor extends React.Component<IConfigEditorProps, any> {
-    public render() {
         let propertiesElements = [];
         let flagElements = [];
         const configurations = this.props.configurations;
