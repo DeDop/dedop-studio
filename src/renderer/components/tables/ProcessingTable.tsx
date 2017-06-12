@@ -30,12 +30,6 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
 
         const processesReverse = this.props.processes.slice().sort(compareIdReverse);
 
-        const runCell = (rowIndex: number) => {
-            return <Cell>{processesReverse[rowIndex].name}</Cell>
-        };
-        const workspaceCell = (rowIndex: number) => {
-            return <Cell>{processesReverse[rowIndex].workspace}</Cell>
-        };
         const configCell = (rowIndex: number) => {
             return <Cell>{processesReverse[rowIndex].configuration}</Cell>
         };
@@ -170,8 +164,6 @@ class ProcessingTable extends React.Component<IProcessingTableProps, null> {
                    selectedRegionTransform={onSelectedRegionTransform}
                    selectedRegions={selectedRegions}
             >
-                <Column name="Process Name" renderCell={runCell}/>
-                <Column name="Workspace" renderCell={workspaceCell}/>
                 <Column name="Configuration" renderCell={configCell}/>
                 <Column name="Started" renderCell={startedCell}/>
                 <Column name="Status" renderCell={statusCell}/>
