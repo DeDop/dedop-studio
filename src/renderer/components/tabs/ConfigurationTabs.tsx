@@ -195,7 +195,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                     <CodeMirror
                         value={this.state.chdTemp ? JSON.stringify(this.state.chdTemp, null, 4) : "please select a configuration"}
                         onChange={this.updateChdCode}
-                        options={codeMirrorOptions}/>
+                        options={codeMirrorOptions}
+                        className="dedop-codemirror"
+                    />
                     :
                     (
                         this.state.chdVersion != CONFIGURATION_NOT_FOUND
@@ -243,7 +245,9 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                     <CodeMirror
                         value={this.state.cnfTemp ? JSON.stringify(this.state.cnfTemp, null, 4) : "please select a configuration"}
                         onChange={this.updateCnfCode}
-                        options={codeMirrorOptions}/>
+                        options={codeMirrorOptions}
+                        className="dedop-codemirror"
+                    />
                     :
                     (
                         this.state.cnfVersion != CONFIGURATION_NOT_FOUND
@@ -292,6 +296,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                         value={this.state.cstTemp ? JSON.stringify(this.state.cstTemp, null, 4) : "please select a configuration"}
                         onChange={this.updateCstCode}
                         options={codeMirrorOptions}
+                        className="dedop-codemirror"
                     />
                     :
                     (
@@ -333,7 +338,7 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
 
     public render() {
         return (
-            <div>
+            <div style={{height: 'calc(100% - 50px)'}}>
                 <div style={{display: 'flex', margin: '10px 0', flexDirection: 'row', justifyContent: 'space-between'}}>
                     <label className="pt-control pt-switch" style={{margin: '0 0 0 10px'}}>
                         <input type="checkbox" onChange={this.handleChangeMode}
@@ -354,10 +359,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
                     defaultSelectedTabId={0}
                     selectedTabId={this.props.currentTab}
                     renderActiveTabPanelOnly={true}
+                    className="dedop-configuration-tab"
                 >
-                    <Tab2 id={0} title="Configuration" panel={this.renderConfigurationTabPanel()}/>
-                    <Tab2 id={1} title="Characterization" panel={this.renderCharacterizationTabPanel()}/>
-                    <Tab2 id={2} title="Constants" panel={this.renderConstantsTabPanel()}/>
+                    <Tab2 id={0} title="Configuration" panel={this.renderConfigurationTabPanel()} className="dedop-config-tab-panel"/>
+                    <Tab2 id={1} title="Characterization" panel={this.renderCharacterizationTabPanel()} className="dedop-config-tab-panel"/>
+                    <Tab2 id={2} title="Constants" panel={this.renderConstantsTabPanel()} className="dedop-config-tab-panel"/>
                 </Tabs2>
             </div>
         );

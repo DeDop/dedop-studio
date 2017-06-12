@@ -492,7 +492,27 @@ textarea.pt-input {
     margin: 0 0 0 10px;
 }
 
+.dedop-configuration-tab {
+    height: calc(100% - 50px);
+}
+
+.dedop-config-tab-panel {
+    height: calc(100% - 20px);
+}
+
 /* Configurations styling===================================================*/
+
+/* CodeMirror styling===================================================*/
+
+.dedop-codemirror {
+    height: 100%;
+}
+
+.CodeMirror {
+    height: 100%; /*overwrite original code mirror style*/
+}
+
+/* CodeMirror styling===================================================*/
 
 /* Output files styling===================================================*/
 
