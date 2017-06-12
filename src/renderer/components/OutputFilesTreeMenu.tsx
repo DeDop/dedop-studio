@@ -6,6 +6,8 @@ import {connect} from "react-redux";
 import * as selector from "../selectors";
 import {Dispatch} from "redux";
 import {updateConfigSelection, updateSelectedOutputs} from "../actions";
+import {shell} from "electron";
+import * as path from "path";
 
 export interface IOutputFilesTreeMenuProps {
     dispatch?: Dispatch<State>;
@@ -13,6 +15,7 @@ export interface IOutputFilesTreeMenuProps {
     selectedConfigurationName?: string;
     selectedOutputFiles?: OutputFile[];
     currentWorkspaceName?: string;
+    currentWorkspaceDirectory?: string;
 }
 
 function mapStateToProps(state: State): IOutputFilesTreeMenuProps {
@@ -20,7 +23,8 @@ function mapStateToProps(state: State): IOutputFilesTreeMenuProps {
         configurations: selector.getAllConfigurations(state),
         selectedConfigurationName: state.control.selectedConfigurationName,
         selectedOutputFiles: state.control.selectedOutputFiles,
-        currentWorkspaceName: state.control.currentWorkspaceName
+        currentWorkspaceName: state.control.currentWorkspaceName,
+        currentWorkspaceDirectory: selector.getWorkspaceDirectory(state)
     }
 }
 
@@ -29,7 +33,7 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         super(props);
         let nodes: ITreeNode[] = [];
         for (let config of props.configurations) {
-            const outputFilesNode = OutputFilesTreeMenu.constructOutputFilesNode(config, props.selectedOutputFiles);
+            const outputFilesNode = OutputFilesTreeMenu.constructOutputFilesNode(config, props.selectedOutputFiles, props.currentWorkspaceDirectory);
             const isExpanded = config.name == props.selectedConfigurationName;
             const configNode = OutputFilesTreeMenu.constructConfigNode(config, props, outputFilesNode, isExpanded);
             nodes.push(configNode)
@@ -43,7 +47,7 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         let nodes: ITreeNode[] = [];
         for (let config of nextProps.configurations) {
             const nodeIndex = this.state.nodes.findIndex((x) => x.id == config.name);
-            const outputFilesNode = OutputFilesTreeMenu.constructOutputFilesNode(config, nextProps.selectedOutputFiles);
+            const outputFilesNode = OutputFilesTreeMenu.constructOutputFilesNode(config, nextProps.selectedOutputFiles, nextProps.currentWorkspaceDirectory);
             const isExpanded = this.state.nodes[nodeIndex].isExpanded || config.name == nextProps.selectedConfigurationName;
             const configNode = OutputFilesTreeMenu.constructConfigNode(config, nextProps, outputFilesNode, isExpanded);
             nodes.push(configNode)
@@ -53,7 +57,7 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
         }
     }
 
-    private static constructOutputFilesNode(config: Configuration, selectedOutputFiles: OutputFile[]) {
+    private static constructOutputFilesNode(config: Configuration, selectedOutputFiles: OutputFile[], currentWorkspaceDirectory: string) {
         const outputFilesNode: ITreeNode[] = [];
         if (config.outputs) {
             for (let outputFileName of config.outputs) {
@@ -62,11 +66,19 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
                     outputFileIndex = selectedOutputFiles.findIndex((x) => x.name == outputFileName);
                 }
                 const isSelected = outputFileIndex > -1 && selectedOutputFiles[outputFileIndex].config == config.name;
+                const handleOpenExplorer = () => {
+                    shell.showItemInFolder(path.join(currentWorkspaceDirectory, "configs", config.name, "outputs", outputFileName));
+                };
+                const openExplorerIcon = <span className="pt-icon-standard pt-icon-folder-open"
+                                               title="show in explorer"
+                                               onClick={handleOpenExplorer}
+                />;
                 outputFilesNode.push({
                     id: outputFileName,
                     label: outputFileName,
                     iconName: 'pt-icon-document',
-                    isSelected: isSelected
+                    isSelected: isSelected,
+                    secondaryLabel: openExplorerIcon
                 });
             }
         }
