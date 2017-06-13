@@ -28,6 +28,7 @@ const dialog = electron.dialog;
 export const WEBAPI_VERSION_RANGE = ">=0.5.4 <0.6";
 
 const DEDOP_LOG_FILE_NAME = "dedop-studio.log";
+const DEDOP_WEBAPI_INFO_FILE_NAME = "dedop-webapi.json";
 
 const PREFS_OPTIONS = ['--prefs', '-p'];
 const CONFIG_OPTIONS = ['--config', '-c'];
@@ -209,10 +210,11 @@ export function init() {
     _prefs = loadUserPrefs();
 
     let webAPIConfig = _config.get('webAPIConfig', {});
+    const webApiInfoPath = path.join(getAppDataDir(), DEDOP_WEBAPI_INFO_FILE_NAME);
     webAPIConfig = updateConditionally(webAPIConfig, {
         servicePort: 2999,
         serviceAddress: '',
-        serviceFile: 'dedop-webapi.json',
+        serviceFile: webApiInfoPath,
         // Refer to https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
         processOptions: {},
     });
