@@ -21,10 +21,7 @@ DeDop Desktop Application
     webAPIConfig: {
         command: "C:\\Miniconda3\\envs\\pycharm-dedop\\Scripts\\dedop-webapi.exe",
         servicePort: 2999,
-        serviceAddress: '',
-        serviceFile: 'dedop-webapi-info.json',
-        processOptions: {},
-        useMockService: true,
+        processOptions: {}
     },
   };
   ```
