@@ -27,8 +27,8 @@ const dialog = electron.dialog;
  */
 export const WEBAPI_VERSION_RANGE = ">=0.5.4 <0.6";
 
-const DEDOP_LOG_FILE_NAME = "dedop-studio.log";
-const DEDOP_WEBAPI_INFO_FILE_NAME = "dedop-webapi.json";
+const DEDOP_LOG_FILE_NAME = "dedop.log";
+const DEDOP_WEBAPI_INFO_FILE_NAME = "webapi-info.json";
 
 const PREFS_OPTIONS = ['--prefs', '-p'];
 const CONFIG_OPTIONS = ['--config', '-c'];
