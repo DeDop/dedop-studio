@@ -27,6 +27,8 @@ const dialog = electron.dialog;
  */
 export const WEBAPI_VERSION_RANGE = ">=0.5.4 <0.6";
 
+const DEDOP_LOG_FILE_NAME = "dedop-studio.log";
+
 const PREFS_OPTIONS = ['--prefs', '-p'];
 const CONFIG_OPTIONS = ['--config', '-c'];
 const DEDOP_STUDIO_PREFIX = 'dedop-studio';
@@ -196,7 +198,13 @@ function getWebAPIWebSocketsUrl(webAPIConfig) {
     return `ws://${webAPIConfig.serviceAddress || '127.0.0.1'}:${webAPIConfig.servicePort}/app`;
 }
 
+function writeToLogFile(message) {
+    const timeZoneOffset = (new Date()).getTimezoneOffset() * 60000;
+    fs.appendFileSync(path.join(getAppDataDir(), DEDOP_LOG_FILE_NAME), new Date(Date.now() - timeZoneOffset).toISOString() + ": " + message + "\n");
+}
+
 export function init() {
+    writeToLogFile("============ DeDo Studio starts ============");
     _config = loadAppConfig();
     _prefs = loadUserPrefs();
 
@@ -208,8 +216,11 @@ export function init() {
         // Refer to https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
         processOptions: {},
     });
+    writeToLogFile("Setting up webAPI with default configuration: " + JSON.stringify(webAPIConfig));
+
     const backendLocation = loadBackendLocation();
     if (backendLocation) {
+        writeToLogFile("Backend location found: " + backendLocation);
         webAPIConfig = updateConditionally(webAPIConfig, {
             command: backendLocation
         });
@@ -217,7 +228,9 @@ export function init() {
     _config.set('webAPIConfig', webAPIConfig);
 
     console.log(DEDOP_STUDIO_PREFIX, 'appConfig:', _config.data);
+    writeToLogFile('appConfig:' + JSON.stringify(_config.data));
     console.log(DEDOP_STUDIO_PREFIX, 'userPrefs:', _prefs.data);
+    writeToLogFile('userPrefs:' + JSON.stringify(_prefs.data));
 
     let webAPIStarted = false;
     // Remember error occurred so
@@ -228,17 +241,22 @@ export function init() {
     function startWebapiService(): childProcess.ChildProcess {
         const webAPIStartArgs = getWebAPIStartArgs(webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `Starting DeDop WebAPI service using arguments: ${webAPIStartArgs}`);
+        writeToLogFile(`Starting DeDop WebAPI service using arguments: ${webAPIStartArgs}`);
+        writeToLogFile('webAPIConfig:' + JSON.stringify(webAPIConfig));
         const webAPIProcess = childProcess.spawn(webAPIConfig.command, webAPIStartArgs, webAPIConfig.processOptions);
         webAPIStarted = true;
         webAPIProcess.stdout.on('data', (data: any) => {
             console.log(DEDOP_STUDIO_PREFIX, `${data}`);
+            writeToLogFile(`${data}`);
         });
         webAPIProcess.stderr.on('data', (data: any) => {
             console.error(DEDOP_STUDIO_PREFIX, `${data}`);
+            writeToLogFile(`${data}`);
         });
         webAPIProcess.on('error', (err: Error) => {
             console.error(DEDOP_STUDIO_PREFIX, err);
             if (!webAPIError) {
+                writeToLogFile(`Internal Error - Failed to start Dedop WebAPI service.`);
                 electron.dialog.showErrorBox(`${app.getName()} - Internal Error`,
                     'Failed to start Dedop WebAPI service.');
             }
@@ -248,11 +266,13 @@ export function init() {
         webAPIProcess.on('close', (code: number) => {
             let message = `DeDop WebAPI service process exited with code ${code}.`;
             console.log(DEDOP_STUDIO_PREFIX, message);
+            writeToLogFile(message);
             if (code != 0) {
                 if (!webAPIError) {
                     electron.dialog.showErrorBox(`${app.getName()} - Internal Error`, message);
                 }
                 webAPIError = new Error(message);
+                writeToLogFile("Internal Error - " + message);
                 app.exit(WEBAPI_BAD_EXIT); // exit immediately
             }
         });
@@ -266,6 +286,7 @@ export function init() {
         // Note we are async here, because sync can take a lot of time...
         const webAPIStopArgs = getWebAPIStopArgs(webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `Stopping Dedop WebAPI service using arguments: ${webAPIStopArgs}`);
+        writeToLogFile(`Stopping Dedop WebAPI service using arguments: ${webAPIStopArgs}`);
         childProcess.spawn(webAPIConfig.command, webAPIStopArgs, webAPIConfig.processOptions);
     }
 
@@ -276,19 +297,23 @@ export function init() {
         let msSpend = 0; // ms
         let webAPIRestUrl = getWebAPIRestUrl(_config.data.webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `Waiting for response from ${webAPIRestUrl}`);
+        writeToLogFile(`Waiting for response from ${webAPIRestUrl}`);
         showSplashMessage('Waiting for Dedop backend...');
         request(webAPIRestUrl, msServiceAccessTimeout)
             .then((response: string) => {
                 console.log(DEDOP_STUDIO_PREFIX, `Response: ${response}`);
+                writeToLogFile(`Response: ${response}`);
                 createMainWindow();
             })
             .catch((err) => {
                 console.log(DEDOP_STUDIO_PREFIX, `Waiting for Dedop WebAPI service to respond after ${msSpend} ms`);
+                writeToLogFile(`Waiting for Dedop WebAPI service to respond after ${msSpend} ms`);
                 if (!webAPIStarted) {
                     webAPIProcess = startWebapiService();
                 }
                 if (msSpend > msServiceStartTimeout) {
                     console.error(DEDOP_STUDIO_PREFIX, `Failed to start DeDop WebAPI service within ${msSpend} ms.`);
+                    console.log(DEDOP_STUDIO_PREFIX, `Failed to start DeDop WebAPI service within ${msSpend} ms.`);
                     if (!webAPIError) {
                         electron.dialog.showErrorBox(`${app.getName()} - Internal Error`, `Failed to start Dedop backend within ${msSpend} ms.`);
                     }
@@ -316,6 +341,7 @@ export function init() {
     app.on('quit', () => {
         console.log(DEDOP_STUDIO_PREFIX, 'Quit.');
         stopWebapiService(webAPIProcess);
+        writeToLogFile("============ DeDo Studio exits ============");
     });
 
     // Emitted when all windows have been closed.
@@ -323,6 +349,7 @@ export function init() {
         // On OS X it is common for applications and their menu bar
         // to stay active until the user quits explicitly with Cmd + Q
         if (process.platform !== 'darwin') {
+            writeToLogFile("Close app in OSX");
             app.quit();
         }
     });
@@ -409,6 +436,7 @@ function createMainWindow() {
     _mainWindow.webContents.on('did-finish-load', () => {
         showSplashMessage('Done.');
         console.log(DEDOP_STUDIO_PREFIX, 'Main window UI loaded.');
+        writeToLogFile("Main window UI loaded.");
         if (_splashWindow) {
             _splashWindow.close();
             const webAPIConfig = _config.data.webAPIConfig;
@@ -433,6 +461,7 @@ function createMainWindow() {
     // Emitted when the web page has been rendered and window can be displayed without a visual flash.
     _mainWindow.on('ready-to-show', () => {
         console.log(DEDOP_STUDIO_PREFIX, 'Main window is ready to show.');
+        writeToLogFile("Main window is ready to show.");
     });
 
     // Emitted when the window is going to be closed.
@@ -441,6 +470,7 @@ function createMainWindow() {
             _prefsUpdateRequestedOnClose = true;
             event.preventDefault();
             console.log(DEDOP_STUDIO_PREFIX, 'Main window is going to be closed, fetching user preferences...');
+            writeToLogFile("Main window is going to be closed, fetching user preferences...");
             _prefs.set('mainWindowBounds', _mainWindow.getBounds());
             _prefs.set('devToolsOpened', _mainWindow.webContents.isDevToolsOpened());
             event.sender.send('get-preferences');
@@ -452,6 +482,7 @@ function createMainWindow() {
     // Emitted when the window is closed.
     _mainWindow.on('closed', () => {
         console.log(DEDOP_STUDIO_PREFIX, 'Main window closed.');
+        writeToLogFile("Main window closed.");
         storeUserPrefs(_prefs);
         _prefs = null;
         _config = null;
@@ -561,17 +592,21 @@ function installBackend(installerCommand: string, callback: () => void) {
         : ['-b', '-f', '-p', installDir];
 
     console.log(DEDOP_STUDIO_PREFIX, `running WebAPI service installer "${installerCommand}" with arguments ${installerArgs}`);
+    writeToLogFile(`running WebAPI service installer "${installerCommand}" with arguments ${installerArgs}`);
     showSplashMessage('Running backend installer, please wait...');
     const installerProcess = childProcess.spawn(installerCommand, installerArgs);
 
     installerProcess.stdout.on('data', (data: any) => {
         console.log(DEDOP_STUDIO_PREFIX, `${data}`);
+        writeToLogFile(`${data}`);
     });
     installerProcess.stderr.on('data', (data: any) => {
         console.error(DEDOP_STUDIO_PREFIX, `${data}`);
+        writeToLogFile(`${data}`);
     });
     installerProcess.on('error', (err: Error) => {
         console.log(DEDOP_STUDIO_PREFIX, 'Dedop WebAPI service installation failed', err);
+        writeToLogFile('Dedop WebAPI service installation failed: ' + err);
         electron.dialog.showMessageBox({
             type: 'error',
             title: `${app.getName()} - Fatal Error`,
@@ -582,6 +617,7 @@ function installBackend(installerCommand: string, callback: () => void) {
     });
     installerProcess.on('close', (code: number) => {
         console.log(DEDOP_STUDIO_PREFIX, `Dedop WebAPI service installation closed with exit code ${code}`);
+        writeToLogFile(`Dedop WebAPI service installation closed with exit code ${code}`);
         if (code == 0) {
             callback();
             return;
