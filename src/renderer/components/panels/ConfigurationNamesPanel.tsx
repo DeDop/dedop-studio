@@ -16,7 +16,7 @@ import {Button, Intent, Dialog} from "@blueprintjs/core";
 import * as selector from "../../selectors";
 
 interface IConfigurationNamesPanelProps {
-    dispatch?: (action: {type: string, payload: any}) => void;
+    dispatch?: (action: { type: string, payload: any }) => void;
     selectedConfiguration: string[];
     currentConfiguration: string;
     configurations: Configuration[];
@@ -70,7 +70,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
             const configFile = this.props.configurations[itemIndex];
             const isCurrent = configFile.name == this.props.currentConfiguration;
             return (
-                <div className="dedop-list-box-item" style={isCurrent? {fontWeight: "bold"} : {}}>
+                <div className="dedop-list-box-item" style={isCurrent ? {fontWeight: "bold"} : {}}>
                     <span className="dedop-file-name">{configFile.name}</span>
                     <span className="dedop-file-updated-date">{configFile.lastUpdated}</span>
                 </div>
@@ -187,13 +187,15 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                         Remove
                     </button>
                 </div>
-                <ListBox numItems={this.props.configurations.length}
-                         getItemKey={index => this.props.configurations[index].name}
-                         renderItem={renderFileList}
-                         selection={this.props.selectedConfiguration ? this.props.selectedConfiguration : []}
-                         onSelection={handleSelectConfig}
-                         onItemDoubleClick={handleCurrentConfig}
-                />
+                <div style={{height: 'calc(100% - 100px)', overflow: 'auto'}}>
+                    <ListBox numItems={this.props.configurations.length}
+                             getItemKey={index => this.props.configurations[index].name}
+                             renderItem={renderFileList}
+                             selection={this.props.selectedConfiguration ? this.props.selectedConfiguration : []}
+                             onSelection={handleSelectConfig}
+                             onItemDoubleClick={handleCurrentConfig}
+                    />
+                </div>
                 <Dialog isOpen={this.state.isAddConfigDialogOpen}
                         onClose={handleCloseAddConfigDialog}
                         title="Add a new configuration file"
@@ -204,7 +206,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                             <label className="pt-label pt-inline">
                                 <span className="dedop-dialog-parameter-label">Name</span>
                                 <input
-                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid? "" : "pt-intent-danger")}
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid ? "" : "pt-intent-danger")}
                                     type="text"
                                     placeholder="configuration name"
                                     dir="auto"
@@ -236,7 +238,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                             <label className="pt-label pt-inline">
                                 <span className="dedop-dialog-parameter-label">Copy as</span>
                                 <input
-                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid? "" : "pt-intent-danger")}
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid ? "" : "pt-intent-danger")}
                                     type="text"
                                     placeholder="configuration name"
                                     dir="auto"
@@ -269,7 +271,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                             <label className="pt-label pt-inline">
                                 <span className="dedop-dialog-parameter-label">New name</span>
                                 <input
-                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid? "" : "pt-intent-danger")}
+                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid ? "" : "pt-intent-danger")}
                                     type="text"
                                     placeholder="configuration name"
                                     dir="auto"
