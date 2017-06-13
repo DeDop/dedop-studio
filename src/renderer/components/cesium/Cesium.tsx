@@ -26,7 +26,7 @@ const {app} = require('electron').remote;
 //
 Cesium.BingMapsApi.defaultKey = 'AnCcpOxnAAgq-KyFcczSZYZ_iFvCOmWl0Mx-6QzQ_rzMtpgxZrPZZNxa8_9ZNXci';
 
-Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(4.1,52,4.6,52.5);
+Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(4.1, 52, 4.6, 52.5);
 Cesium.Camera.DEFAULT_VIEW_FACTOR = 1;
 
 
@@ -51,8 +51,9 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
 
         let baseLayerImageryProvider;
         if (this.props.offlineMode) {
+            const baseUrl = Cesium.buildModuleUrl('');
             baseLayerImageryProvider = new Cesium.UrlTemplateImageryProvider({
-                url: Cesium.buildModuleUrl('node_modules/cesium/Build/Cesium/Assets/Textures/NaturalEarthII/{z}/{x}/{y}.jpg'),
+                url: baseUrl + 'Assets/Textures/NaturalEarthII/{z}/{x}/{reverseY}.jpg',
                 tilingScheme: new Cesium.GeographicTilingScheme(),
                 minimumLevel: 0,
                 maximumLevel: 2,

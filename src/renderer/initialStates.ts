@@ -16,7 +16,8 @@ export const initialControlState: ControlState = {
     isWebapiDialogOpen: false,
     isCnfEditable: true,
     isChdEditable: false,
-    isCstEditable: false
+    isCstEditable: false,
+    isOfflineMode: false
 
 };
 

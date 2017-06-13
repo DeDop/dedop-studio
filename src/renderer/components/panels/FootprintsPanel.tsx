@@ -6,11 +6,13 @@ import {connect} from "react-redux";
 
 interface IFootprintsPanel {
     cesiumPoints?: CesiumPoint[];
+    isOfflineMode?: boolean;
 }
 
 function mapStateToProps(state: State): IFootprintsPanel {
     return {
-        cesiumPoints: state.control.cesiumPoints
+        cesiumPoints: state.control.cesiumPoints,
+        isOfflineMode: state.control.isOfflineMode
     }
 }
 
@@ -21,7 +23,9 @@ class FootprintsPanel extends React.Component<IFootprintsPanel, any> {
                 <OrdinaryPanelHeader title="Footprints" icon="pt-icon-globe"/>
                 <div className="dedop-panel-content" style={{height: 'calc(100% - 20px)'}}>
                     <CesiumView id="cesium-viewer"
-                                cities={this.props.cesiumPoints}/>
+                                cities={this.props.cesiumPoints}
+                                offlineMode={this.props.isOfflineMode}
+                    />
                 </div>
             </div>
         )

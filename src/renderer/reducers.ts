@@ -444,6 +444,7 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 isCnfEditable: action.payload.session.isCnfEditable == null ? state.isCnfEditable : action.payload.session.isCnfEditable,
                 isChdEditable: action.payload.session.isChdEditable == null ? state.isChdEditable : action.payload.session.isChdEditable,
                 isCstEditable: action.payload.session.isCstEditable == null ? state.isCstEditable : action.payload.session.isCstEditable,
+                isOfflineMode: action.payload.session.isOfflineMode == null ? state.isOfflineMode : action.payload.session.isOfflineMode
             });
         }
     }

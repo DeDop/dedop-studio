@@ -8,6 +8,7 @@ const {app} = require('electron').remote;
 interface ICesiumViewProps {
     id: string;
     cities: CesiumPoint[];
+    offlineMode: boolean;
 }
 
 export class CesiumView extends React.Component<ICesiumViewProps, any> {
@@ -35,11 +36,11 @@ export class CesiumView extends React.Component<ICesiumViewProps, any> {
 
     render() {
         return (
-            <div style={{width:"100%", height:"100%"}}>
-                <CesiumComponent id={this.props.id} debug={true} style={{width:"100%", height:"100%"}}
-                                 cities={this.props.cities}/>
+            <div style={{width: "100%", height: "100%"}}>
+                <CesiumComponent id={this.props.id} debug={true} style={{width: "100%", height: "100%"}}
+                                 cities={this.props.cities} offlineMode={this.props.offlineMode}/>
                 {/*<CesiumCityList cities={this.state.cities} onChange={this.handleCheckboxChange.bind(this)}/>*/}
-                <div id="creditContainer" style={{display:"none"}}></div>
+                <div id="creditContainer" style={{display: "none"}}></div>
             </div>
         );
     }

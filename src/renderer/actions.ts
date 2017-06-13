@@ -1043,6 +1043,7 @@ export function sendPreferencesToMain(callback?: (error: any) => void) {
             isCnfEditable: getState().control.isCnfEditable,
             isChdEditable: getState().control.isChdEditable,
             isCstEditable: getState().control.isCstEditable,
+            isOfflineMode: getState().control.isOfflineMode
         };
         const actionName = 'set-preferences';
         electron.ipcRenderer.send(actionName, preferences);

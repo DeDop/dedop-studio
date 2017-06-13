@@ -43,6 +43,7 @@ export interface ControlState {
     codeEditorActive?: boolean;
     processName?: string;
     unsavedConfigChanges: boolean;
+    isOfflineMode: boolean;
 
     // dialog control parameters
     isWebapiDialogOpen: boolean;
