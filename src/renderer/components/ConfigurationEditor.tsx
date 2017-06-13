@@ -126,21 +126,24 @@ export class ConfigurationEditor extends React.Component<IConfigEditorProps, any
             if (i == "__metainf__") {
                 continue;
             }
-            if (configurations[i].units !== 'flag') {
-                propertiesElements.push(<ConfigurationSingleEntry key={i}
-                                                                  configName={i}
-                                                                  configuration={configurations[i]}
-                                                                  disabled={this.props.disabled}
-                                                                  onBlur={this.props.handleInputChange}
-                                                                  dispatch={this.props.dispatch}
-                />);
-            } else {
+            if (configurations[i].description && configurations[i].description.toLowerCase() == "not yet implemented") {
+                continue;
+            }
+            if (configurations[i].units === 'flag' && typeof(configurations[i].value) === "boolean") {
                 flagElements.push(<ConfigurationFlagSingleEntry key={i}
                                                                 configName={i}
                                                                 configuration={configurations[i]}
                                                                 disabled={this.props.disabled}
                                                                 onBlur={this.props.handleInputChange}
                                                                 dispatch={this.props.dispatch}
+                />);
+            } else {
+                propertiesElements.push(<ConfigurationSingleEntry key={i}
+                                                                  configName={i}
+                                                                  configuration={configurations[i]}
+                                                                  disabled={this.props.disabled}
+                                                                  onBlur={this.props.handleInputChange}
+                                                                  dispatch={this.props.dispatch}
                 />);
             }
         }
