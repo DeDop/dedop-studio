@@ -147,7 +147,7 @@ class OutputFilesTreeMenu extends React.Component<IOutputFilesTreeMenuProps, any
 
     public render() {
         return (
-            <div>
+            <div style={{height: 'calc(100% - 40px)', overflow: 'auto'}}>
                 <Tree
                     contents={this.state.nodes}
                     onNodeClick={this.handleNodeClick}
