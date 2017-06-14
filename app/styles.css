@@ -751,6 +751,7 @@ ul.dedop-list-box li.dedop-selected {
 
 .l1a-input-radio-group {
     margin: 10px 0 0 10px;
+    display: flex;
 }
 
 .l1a-input-file-upload {

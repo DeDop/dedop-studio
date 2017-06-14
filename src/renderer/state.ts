@@ -57,6 +57,8 @@ export interface ControlState {
     cnfDescriptor?: ConfigurationDescriptor;
     chdDescriptor?: ConfigurationDescriptor;
     cstDescriptor?: ConfigurationDescriptor;
+
+    testState?: number;
 }
 
 export interface SessionState {
@@ -127,7 +129,6 @@ export interface Workspace {
 export interface ProcessingItem {
     id: number;
     taskId: number;
-    name: string;
     workspace: string;
     configuration: string;
     startedTime: string;

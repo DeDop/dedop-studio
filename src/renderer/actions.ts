@@ -792,7 +792,21 @@ export function markProcessAsFinished(processId: number, processingDuration: str
     };
 }
 
-export function runProcess(processName: string, outputPath: string, l1aFilePath: string) {
+// export const RUN_PROCESS_QUEUE = 'RUN_PROCESS_QUEUE';
+//
+// export function addProcessToQueue(outputPath: string, l1aFilePath: string) {
+//     return {
+//         queue: RUN_PROCESS_QUEUE,
+//         callback: (next, dispatch, getState) => {
+//             console.log("before running process");
+//             runProcess(outputPath, l1aFilePath);
+//             console.log("after running process");
+//             next();
+//         }
+//     }
+// }
+
+export function runProcess(outputPath: string, l1aFilePath: string) {
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
         const currentConfigName = getState().control.selectedConfigurationName;
@@ -803,7 +817,7 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
 
         function call(onProgress) {
             const job = processAPI(getState()).process(
-                processName,
+                currentConfigName,
                 currentWorkspaceName,
                 currentConfigName,
                 outputPath,
@@ -817,7 +831,6 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
             const newProcess: ProcessingItem = {
                 id: processId,
                 taskId: taskId,
-                name: processName,
                 workspace: currentWorkspaceName,
                 configuration: currentConfigName,
                 startedTime: startTimeFormatted,
@@ -844,7 +857,7 @@ export function runProcess(processName: string, outputPath: string, l1aFilePath:
                 jobFailure.message))
         }
 
-        callAPI(dispatch, "Create a new process '".concat(processName).concat("'"), call, action, failureAction);
+        callAPI(dispatch, "Create a new process '".concat(currentConfigName).concat("'"), call, action, failureAction);
     }
 }
 

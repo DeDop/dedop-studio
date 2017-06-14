@@ -4,11 +4,7 @@ import {OrdinaryPanelHeader} from "./PanelHeader";
 import {SourceFile, State} from "../../state";
 import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
-import {
-    selectSourceFile,
-    selectSourceFileDirectory,
-    updateSelectedSourceType
-} from "../../actions";
+import {selectSourceFile, selectSourceFileDirectory, updateSelectedSourceType} from "../../actions";
 import {remote} from "electron";
 import {getSourceFiles} from "../../../common/sourceFileUtils";
 import {GeneralAlert} from "../Alerts";
@@ -31,14 +27,22 @@ function mapStateToProps(state: State): IL1AInputPanelProps {
     }
 }
 
-class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
+class L1AInputPanel extends React.Component<IL1AInputPanelProps, any> {
     public state = {
         isNoFilesAvailableAlertOpen: false,
     };
 
     render() {
-        const handleChange = () => {
-            this.props.dispatch(updateSelectedSourceType(this.props.selectedSourceType == "single" ? "directory" : "single"))
+        const handleSelectSingleFile = () => {
+            if (this.props.selectedSourceType != "single") {
+                this.props.dispatch(updateSelectedSourceType("single"))
+            }
+        };
+
+        const handleSelectAllFile = () => {
+            if (this.props.selectedSourceType != "all") {
+                this.props.dispatch(updateSelectedSourceType("all"))
+            }
         };
 
         let sourceFileNames = [];
@@ -76,48 +80,23 @@ class L1AInputPanel extends React.Component<IL1AInputPanelProps,any> {
             <div className="dedop-collapse vertical-third">
                 <OrdinaryPanelHeader title="L1A Input" icon="pt-icon-database"/>
                 <div className="dedop-panel-content l1a-input-radio-group">
-                    <table width='100%'>
-                        <tbody>
-                        <tr>
-                            <td width='20%'>
-                                <Radio label="Single file" value="single"
-                                       checked={this.props.selectedSourceType == "single"}
-                                       onChange={handleChange}/>
-                            </td>
-                            <td width='80%'>
-                                <SelectComponent items={sourceFileNames}
-                                                 fill={true}
-                                                 defaultValue="Select a single L1A file..."
-                                                 selectedItem={this.props.currentSourceFile}
-                                                 onChange={handleOnChangeSourceFile}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <Radio label="Directory" value="directory"
-                                       checked={this.props.selectedSourceType == "directory"}
-                                       onChange={handleChange}/>
-                            </td>
-                            <td>
-                                <div className="pt-input-group">
-                                    <input type="text"
-                                           className="pt-input"
-                                           style={{textAlign: 'left'}}
-                                           disabled={this.props.selectedSourceType == "single"}
-                                           readOnly={true}
-                                           value={this.props.currentSourceFileDirectory}
-                                           onClick={handleSelectDirectory}/>
-                                    <button className="pt-button pt-minimal pt-icon-folder-open"
-                                            onClick={handleSelectDirectory}
-                                            disabled={this.props.selectedSourceType == "single"}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <Radio label="All" value="all"
+                           checked={this.props.selectedSourceType == "all"}
+                           onChange={handleSelectAllFile}
+                           style={{marginRight: '15px'}}
+                           disabled={true}
+                    />
+                    <Radio label="Single file" value="single"
+                           checked={this.props.selectedSourceType == "single"}
+                           onChange={handleSelectSingleFile}/>
                 </div>
+                <SelectComponent items={sourceFileNames}
+                                 fill={true}
+                                 defaultValue="Select a single L1A file..."
+                                 selectedItem={this.props.currentSourceFile}
+                                 onChange={handleOnChangeSourceFile}
+                                 disabled={this.props.selectedSourceType == "all"}
+                />
                 <GeneralAlert isAlertOpen={this.state.isNoFilesAvailableAlertOpen}
                               onConfirm={handleCloseAlert}
                               message="There are no NetCDF file(s) available in this directory. Please select another directory."

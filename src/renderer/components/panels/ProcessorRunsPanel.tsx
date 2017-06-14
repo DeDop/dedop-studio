@@ -17,6 +17,7 @@ interface IProcessorRunsPanelProps {
     processes?: ProcessingItem[];
     selectedProcesses?: number[];
     outputNames?: string[];
+    selectedSourceType?: string;
 }
 
 function mapStateToProps(state: State): IProcessorRunsPanelProps {
@@ -27,7 +28,8 @@ function mapStateToProps(state: State): IProcessorRunsPanelProps {
         processName: state.control.processName,
         processes: state.data.processes,
         selectedProcesses: state.control.selectedProcesses,
-        outputNames: selector.getOutputNames(state)
+        outputNames: selector.getOutputNames(state),
+        selectedSourceType: state.control.selectedSourceType
     }
 }
 
@@ -77,7 +79,7 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
     };
 
     private doRunProcess() {
-        this.props.dispatch(runProcess(this.props.currentConfiguration, this.props.currentOutputDirectory, this.props.selectedSourceFile.path));
+        this.props.dispatch(runProcess(this.props.currentOutputDirectory, this.props.selectedSourceFile.path));
     };
 
     private handleRunProcess = () => {

@@ -7,6 +7,7 @@ interface ISelectComponent {
     defaultValue?: string;
     items: string[];
     onChange?: (event: React.FormEvent<HTMLSelectElement>) => void;
+    disabled?: boolean;
 }
 
 export class SelectComponent extends React.Component<ISelectComponent, any> {
@@ -34,7 +35,9 @@ export class SelectComponent extends React.Component<ISelectComponent, any> {
             <div className={style}>
                 <select
                     value={this.props.selectedItem ? this.props.selectedItem : this.defaultValue}
-                    onChange={this.handleOnChange.bind(this)}>
+                    onChange={this.handleOnChange.bind(this)}
+                    disabled={this.props.disabled}
+                >
                     {this.renderItems()}
                 </select>
             </div>
