@@ -285,6 +285,8 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(getCurrentConfig());
             dispatch(getNotebookFileNames());
             dispatch(updateSelectedOutputs([]));
+            const currentOutputDirectory = constructCurrentOutputDirectory(getState, newWorkspaceName, getState().control.currentConfigurationName);
+            dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
