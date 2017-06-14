@@ -36,6 +36,7 @@ export interface ControlState {
     selectedConfigurationName?: string;
     selectedSourceFileName?: string;
     selectedSourceType?: string;
+    selectedOutputDirectoryType?: string;
     selectedProcesses?: number[];
     selectedNotebookFileName?: string;
     selectedOutputFileNames?: string[];
@@ -57,8 +58,6 @@ export interface ControlState {
     cnfDescriptor?: ConfigurationDescriptor;
     chdDescriptor?: ConfigurationDescriptor;
     cstDescriptor?: ConfigurationDescriptor;
-
-    testState?: number;
 }
 
 export interface SessionState {

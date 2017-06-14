@@ -249,11 +249,9 @@ export function init() {
         webAPIStarted = true;
         webAPIProcess.stdout.on('data', (data: any) => {
             console.log(DEDOP_STUDIO_PREFIX, `${data}`);
-            writeToLogFile(`${data}`);
         });
         webAPIProcess.stderr.on('data', (data: any) => {
             console.error(DEDOP_STUDIO_PREFIX, `${data}`);
-            writeToLogFile(`${data}`);
         });
         webAPIProcess.on('error', (err: Error) => {
             console.error(DEDOP_STUDIO_PREFIX, err);
@@ -600,11 +598,9 @@ function installBackend(installerCommand: string, callback: () => void) {
 
     installerProcess.stdout.on('data', (data: any) => {
         console.log(DEDOP_STUDIO_PREFIX, `${data}`);
-        writeToLogFile(`${data}`);
     });
     installerProcess.stderr.on('data', (data: any) => {
         console.error(DEDOP_STUDIO_PREFIX, `${data}`);
-        writeToLogFile(`${data}`);
     });
     installerProcess.on('error', (err: Error) => {
         console.log(DEDOP_STUDIO_PREFIX, 'Dedop WebAPI service installation failed', err);

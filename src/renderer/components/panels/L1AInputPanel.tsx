@@ -6,7 +6,7 @@ import {connect, Dispatch} from "react-redux";
 import * as selector from "../../selectors";
 import {selectSourceFile, selectSourceFileDirectory, updateSelectedSourceType} from "../../actions";
 import {remote} from "electron";
-import {getSourceFiles} from "../../../common/sourceFileUtils";
+import {getSourceFiles} from "../../../common/fileUtils";
 import {GeneralAlert} from "../Alerts";
 import {SelectComponent} from "../common/SelectComponent";
 

@@ -15,7 +15,7 @@ import * as path from "path";
 import {JobFailure, JobProgress, JobProgressHandler, JobPromise, JobStatusEnum} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
-import {getSourceFiles} from "../common/sourceFileUtils";
+import {getSourceFiles} from "../common/fileUtils";
 import {ConfigAPI} from "./webapi/apis/ConfigAPI";
 import {ProcessAPI} from "./webapi/apis/ProcessAPI";
 import {OutputAPI} from "./webapi/apis/OutputAPI";
@@ -27,6 +27,7 @@ export const UPDATE_MAIN_TAB = 'UPDATE_MAIN_TAB';
 export const UPDATE_CONFIGURATION_TAB = 'UPDATE_CONFIGURATION_TAB';
 export const UPDATE_CONFIG_EDITOR_MODE = 'UPDATE_CONFIG_EDITOR_MODE';
 export const UPDATE_SELECTED_SOURCE_TYPE = 'UPDATE_SELECTED_SOURCE_TYPE';
+export const UPDATE_SELECTED_OUTPUT_DIR_TYPE = 'UPDATE_SELECTED_OUTPUT_DIR_TYPE';
 export const UPDATE_CURRENT_OUTPUT_DIRECTORY = 'UPDATE_CURRENT_OUTPUT_DIRECTORY';
 export const UPDATE_SELECTED_PROCESSES = 'UPDATE_SELECTED_PROCESSES';
 export const UPDATE_UNSAVED_CONFIG_STATUS = 'UPDATE_UNSAVED_CONFIG_STATUS';
@@ -63,12 +64,12 @@ export function updateSelectedSourceType(sourceType: string) {
     return {type: UPDATE_SELECTED_SOURCE_TYPE, payload: sourceType};
 }
 
-export function updateCurrentOutputDirectory(outputDirectory: string) {
-    return {type: UPDATE_CURRENT_OUTPUT_DIRECTORY, payload: outputDirectory};
+export function updateSelectedOutputDirectoryType(outputDirType: string) {
+    return {type: UPDATE_SELECTED_OUTPUT_DIR_TYPE, payload: outputDirType};
 }
 
-export function setProcessName(processName: string) {
-    return {type: SET_PROCESS_NAME, payload: processName};
+export function updateCurrentOutputDirectory(outputDirectory: string) {
+    return {type: UPDATE_CURRENT_OUTPUT_DIRECTORY, payload: outputDirectory};
 }
 
 export function updateSelectedProcesses(processId: number[]) {

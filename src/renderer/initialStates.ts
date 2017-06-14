@@ -11,6 +11,7 @@ export const initialControlState: ControlState = {
     codeEditorActive: false,
     currentSourceFileDirectory: "",
     selectedSourceType: "single",
+    selectedOutputDirectoryType: "default",
     processName: "",
     unsavedConfigChanges: false,
     isWebapiDialogOpen: false,

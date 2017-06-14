@@ -15,7 +15,7 @@ import {
 import {remote} from "electron";
 import {GeneralAlert} from "../Alerts";
 import SourceFileListSingle from "../SourceFileListSingle";
-import {getDirectory, getSourceFilesFromPaths} from "../../../common/sourceFileUtils";
+import {getDirectory, getSourceFilesFromPaths} from "../../../common/fileUtils";
 import * as path from "path";
 import * as selector from "../../selectors";
 import {Button} from "@blueprintjs/core";
