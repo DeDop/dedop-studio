@@ -92,21 +92,23 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
     }
 
     private addNewEntities(viewer: any, cities: CesiumPoint[]) {
-        cities.forEach((city) => {
-            //noinspection JSFileReferences
-            let billboard = {
-                image: app.getAppPath() + '/resources/images/dot-red.png',
-                width: 10,
-                height: 10
-            };
-            viewer.entities.add(new Entity({
-                id: city.id,
-                name: "Record " + city.id,
-                show: city.visible,
-                position: new Cartesian3.fromDegrees(city.longitude, city.latitude),
-                billboard: billboard
-            }));
-        });
+        viewer.entities.suspendEvents();
+        for (let i in cities) {
+            const indexNumber = Number(i);
+            if (indexNumber < cities.length - 1) {
+                viewer.entities.add(new Entity({
+                    id: cities[i].id,
+                    name: "Record " + cities[i].id,
+                    show: cities[i].visible,
+                    position: new Cartesian3.fromDegrees(cities[i].longitude, cities[i].latitude),
+                    polyline: {
+                        positions: [Cesium.Cartesian3.fromDegrees(cities[indexNumber].longitude, cities[indexNumber].latitude),
+                            Cesium.Cartesian3.fromDegrees(cities[indexNumber + 1].longitude, cities[indexNumber + 1].latitude)]
+                    }
+                }));
+            }
+        }
+        viewer.entities.resumeEvents();
     }
 
     componentWillReceiveProps(nextProps: ICesiumComponentProps) {
