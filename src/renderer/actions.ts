@@ -15,7 +15,7 @@ import * as path from "path";
 import {JobFailure, JobProgress, JobProgressHandler, JobPromise, JobStatusEnum} from "./webapi/Job";
 import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
 import {InputsAPI} from "./webapi/apis/InputsAPI";
-import {getSourceFiles} from "../common/fileUtils";
+import {constructInputDirectory, constructOutputDirectory, getSourceFiles} from "../common/fileUtils";
 import {ConfigAPI} from "./webapi/apis/ConfigAPI";
 import {ProcessAPI} from "./webapi/apis/ProcessAPI";
 import {OutputAPI} from "./webapi/apis/OutputAPI";
@@ -286,8 +286,8 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(getCurrentConfig());
             dispatch(getNotebookFileNames());
             dispatch(updateSelectedOutputs([]));
-            const currentOutputDirectory = constructCurrentOutputDirectory(getState, newWorkspaceName, getState().control.currentConfigurationName);
-            dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
+            const outputDirectory = determineCurrentOutputDirectory(getState, newWorkspaceName, getState().control.currentConfigurationName);
+            dispatch(updateCurrentOutputDirectory(outputDirectory));
         }
 
         callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
@@ -638,8 +638,8 @@ export function getCurrentConfig() {
             dispatch(updateCurrentConfig(current_config));
             if (current_config) {
                 dispatch(getConfigurations(current_config));
-                const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, current_config);
-                dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
+                const outputDirectory = determineCurrentOutputDirectory(getState, currentWorkspaceName, current_config);
+                dispatch(updateCurrentOutputDirectory(outputDirectory));
             }
         }
 
@@ -658,8 +658,8 @@ export function setCurrentConfig(configName: string) {
         function action() {
             dispatch(updateCurrentConfig(configName));
             dispatch(updateUnsavedConfigStatus(false));
-            const currentOutputDirectory = constructCurrentOutputDirectory(getState, currentWorkspaceName, configName);
-            dispatch(updateCurrentOutputDirectory(currentOutputDirectory));
+            const outputDirectory = determineCurrentOutputDirectory(getState, currentWorkspaceName, configName);
+            dispatch(updateCurrentOutputDirectory(outputDirectory));
             dispatch(updateSelectedOutputs([]));
         }
 
@@ -1077,12 +1077,16 @@ function getCurrentWorkspaceIndex(state: State, workspaceName: string) {
 
 function constructCurrentInputDirectory(getState, currentWorkspaceName: string) {
     const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
-    return path.join(getState().data.workspaces[currentWorkspaceIndex].directory, "inputs");
+    return constructInputDirectory(getState().data.workspaces[currentWorkspaceIndex].directory);
 }
 
-function constructCurrentOutputDirectory(getState, currentWorkspaceName: string, configName: string) {
+function determineCurrentOutputDirectory(getState, currentWorkspaceName: string, configName: string) {
     const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
-    return path.join(getState().data.workspaces[currentWorkspaceIndex].directory, "configs", configName, "outputs");
+    if (getState().control.selectedOutputDirectoryType == "default") {
+        return constructOutputDirectory(getState().data.workspaces[currentWorkspaceIndex].directory, configName);
+    } else {
+        return getState().control.currentOutputDirectory;
+    }
 }
 
 /**

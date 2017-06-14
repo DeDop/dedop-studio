@@ -53,6 +53,10 @@ export function getDirectory(sourceFilePath: string): string {
     return sourceFilePath.match(/(.*)[\/\\]/)[1] || '';
 }
 
+export function constructInputDirectory(workspaceDir: string) {
+    return path.join(workspaceDir, "inputs");
+}
+
 export function constructOutputDirectory(workspaceDir: string, configName: string) {
     return path.join(workspaceDir, "configs", configName, "outputs");
 }

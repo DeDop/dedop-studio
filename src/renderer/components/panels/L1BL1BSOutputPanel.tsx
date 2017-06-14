@@ -1,21 +1,27 @@
 import * as React from "react";
 import {OrdinaryPanelHeader} from "./PanelHeader";
-import {remote} from "electron";
+import {remote, shell} from "electron";
 import {connect, Dispatch} from "react-redux";
-import {State} from "../../state";
+import {State, Workspace} from "../../state";
 import {updateCurrentOutputDirectory, updateSelectedOutputDirectoryType} from "../../actions";
 import {Radio} from "@blueprintjs/core";
+import {constructOutputDirectory} from "../../../common/fileUtils";
+import * as selector from "../../selectors";
 
 interface IL1BL1BSOutputPanelProps {
     dispatch?: Dispatch<State>;
     currentOutputDirectory?: string;
     selectedOutputDirectoryType?: string;
+    currentWorkspaceDirectory?: string;
+    currentConfigurationName?: string;
 }
 
 function mapStateToProps(state: State): IL1BL1BSOutputPanelProps {
     return {
         currentOutputDirectory: state.control.currentOutputDirectory,
-        selectedOutputDirectoryType: state.control.selectedOutputDirectoryType
+        selectedOutputDirectoryType: state.control.selectedOutputDirectoryType,
+        currentWorkspaceDirectory: selector.getWorkspaceDirectory(state),
+        currentConfigurationName: state.control.currentConfigurationName
     }
 }
 
@@ -29,6 +35,7 @@ class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps, any> 
     private handleSelectDefaultOutputDirectoryType() {
         if (this.props.selectedOutputDirectoryType != "default") {
             this.props.dispatch(updateSelectedOutputDirectoryType("default"));
+            this.props.dispatch(updateCurrentOutputDirectory(constructOutputDirectory(this.props.currentWorkspaceDirectory, this.props.currentConfigurationName)));
         }
     }
 
@@ -40,14 +47,19 @@ class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps, any> 
 
     render() {
         const handleSelectDirectory = () => {
-            const outputFileDirectory = remote.dialog.showOpenDialog({
-                    properties: ['openDirectory'],
-                    defaultPath: this.props.currentOutputDirectory
+            if (this.props.selectedOutputDirectoryType == "other") {
+                const outputFileDirectory = remote.dialog.showOpenDialog({
+                        properties: ['openDirectory'],
+                        defaultPath: this.props.currentOutputDirectory
+                    }
+                );
+                if (outputFileDirectory && outputFileDirectory.length) {
+                    this.props.dispatch(updateCurrentOutputDirectory(outputFileDirectory[0]))
                 }
-            );
-            if (outputFileDirectory && outputFileDirectory.length) {
-                this.props.dispatch(updateCurrentOutputDirectory(outputFileDirectory[0]))
+            } else {
+                shell.showItemInFolder(this.props.currentOutputDirectory);
             }
+
         };
 
         return (
