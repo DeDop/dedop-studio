@@ -47,7 +47,7 @@ class CesiumView extends React.Component<ICesiumViewProps & ICesiumViewOwnProps,
         return (
             <div style={{width: "100%", height: "100%"}}>
                 <CesiumComponent id={this.props.id} debug={true} style={{width: "100%", height: "100%"}}
-                                 cities={this.props.cesiumPoints} offlineMode={this.props.isOfflineMode}/>
+                                 cesiumPoints={this.props.cesiumPoints} offlineMode={this.props.isOfflineMode}/>
                 {/*<CesiumCityList cities={this.state.cities} onChange={this.handleCheckboxChange.bind(this)}/>*/}
                 <div id="creditContainer" style={{display: "none"}}/>
             </div>

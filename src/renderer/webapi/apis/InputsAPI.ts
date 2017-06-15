@@ -58,4 +58,8 @@ export class InputsAPI {
     getLatLon(inputFilePath: string): JobPromise<CesiumPoint[]> {
         return this.webAPIClient.call('get_lat_lon', [inputFilePath], null, responseToCesiumPoints);
     }
+
+    getMaxMinCoordinates(inputFilePath: string): JobPromise<CesiumPoint[]> {
+        return this.webAPIClient.call('get_max_min_coordinates', [inputFilePath], null, responseToCesiumPoints);
+    }
 }

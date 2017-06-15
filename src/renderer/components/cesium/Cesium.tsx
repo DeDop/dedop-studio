@@ -33,7 +33,7 @@ Cesium.Camera.DEFAULT_VIEW_FACTOR = 1;
 export interface ICesiumComponentProps extends IPermanentComponentProps {
     id: string;
     offlineMode?: boolean;
-    cities?: Array<any>;
+    cesiumPoints?: Array<any>;
 }
 
 export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumComponentProps, any> {
@@ -86,34 +86,44 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
         let viewer = new CesiumViewer(container, cesiumViewerOptions);
 
         // Add the initial points
-        this.addNewEntities(viewer, this.props.cities);
+        this.addNewEntities(viewer, this.props.cesiumPoints);
 
         return viewer;
     }
 
-    private addNewEntities(viewer: any, cities: CesiumPoint[]) {
-        viewer.entities.suspendEvents();
-        for (let i in cities) {
-            const indexNumber = Number(i);
-            if (indexNumber < cities.length - 1) {
-                viewer.entities.add(new Entity({
-                    id: cities[i].id,
-                    name: "Record " + cities[i].id,
-                    show: cities[i].visible,
-                    position: new Cartesian3.fromDegrees(cities[i].longitude, cities[i].latitude),
-                    polyline: {
-                        positions: [Cesium.Cartesian3.fromDegrees(cities[indexNumber].longitude, cities[indexNumber].latitude),
-                            Cesium.Cartesian3.fromDegrees(cities[indexNumber + 1].longitude, cities[indexNumber + 1].latitude)]
-                    }
-                }));
-            }
+    private addNewEntities(viewer: any, cesiumPoints: CesiumPoint[]) {
+        if (cesiumPoints.length > 0) {
+            viewer.entities.suspendEvents();
+            const lastIndex = cesiumPoints.length - 1;
+            const material = new Cesium.PolylineOutlineMaterialProperty({
+                color: Cesium.Color.ORANGE,
+            });
+            viewer.entities.add(new Entity({
+                id: 0,
+                name: "Data footprint",
+                show: true,
+                position: new Cartesian3.fromDegrees(cesiumPoints[0].longitude, cesiumPoints[0].latitude),
+                polyline: {
+                    positions: [Cesium.Cartesian3.fromDegrees(cesiumPoints[0].longitude, cesiumPoints[0].latitude),
+                        Cesium.Cartesian3.fromDegrees(cesiumPoints[lastIndex].longitude, cesiumPoints[lastIndex].latitude)],
+                    material: material,
+                    width: 3.0
+                }
+            }));
+            viewer.entities.resumeEvents();
         }
-        viewer.entities.resumeEvents();
     }
 
     componentWillReceiveProps(nextProps: ICesiumComponentProps) {
         console.log("CesiumComponent.componentWillReceiveProps()");
-        if (this.props.cities.length == nextProps.cities.length) {
+        const currCesiumPoints = this.props.cesiumPoints;
+        const nextCesiumPoints = nextProps.cesiumPoints;
+        if (currCesiumPoints.length == nextCesiumPoints.length
+            && currCesiumPoints[0].latitude == nextCesiumPoints[0].latitude
+            && currCesiumPoints[0].longitude == nextCesiumPoints[0].longitude
+            && currCesiumPoints[1].latitude == nextCesiumPoints[1].latitude
+            && currCesiumPoints[1].longitude == nextCesiumPoints[1].longitude
+        ) {
             const patches = CesiumComponent.calculatePatches(this.props, nextProps);
             // Map patch operations to Cesium's Entity API
             patches.forEach((patch) => {
@@ -122,11 +132,11 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
                 }
                 // else if (patch.attribute === 'name') { .. and so on .. }
             });
-        } else if (nextProps.cities.length > 0) {
+        } else if (nextCesiumPoints.length > 0) {
             this.viewer.entities.removeAll();
-            this.addNewEntities(this.viewer, nextProps.cities);
+            this.addNewEntities(this.viewer, nextCesiumPoints);
             this.viewer.camera.flyTo({
-                destination: new Cartesian3.fromDegrees(nextProps.cities[0].longitude, nextProps.cities[0].latitude, 1500000.0)
+                destination: new Cartesian3.fromDegrees(nextCesiumPoints[0].longitude, nextCesiumPoints[0].latitude, 1500000.0)
             });
         } else {
             this.viewer.entities.removeAll();
@@ -139,17 +149,17 @@ export class CesiumComponent extends PermanentComponent<CesiumViewer, ICesiumCom
     private static calculatePatches(currentProps: ICesiumComponentProps, nextProps: ICesiumComponentProps) {
         const patches = [];
 
-        currentProps.cities.forEach((currCity, index) => {
-            let nextCity = nextProps.cities[index];
+        currentProps.cesiumPoints.forEach((currPoint, index) => {
+            let nextPoint = nextProps.cesiumPoints[index];
 
-            if (currCity.visible !== nextCity.visible) {
+            if (currPoint.visible !== nextPoint.visible) {
                 patches.push({
-                    id: currCity.id,
+                    id: currPoint.id,
                     attribute: 'visible',
-                    nextValue: nextCity.visible
+                    nextValue: nextPoint.visible
                 });
             }
-            // else if (currCity.name !== nextCity.name) { .. and so on .. }
+            // else if (currPoint.name !== nextPoint.name) { .. and so on .. }
         });
 
         return patches;
