@@ -456,7 +456,7 @@ export function updateCurrentCesiumPoints(cesiumPoints: CesiumPoint[]) {
 export function getLatLon(inputFilePath: string) {
     return (dispatch, getState) => {
         function call() {
-            return inputsAPI(getState()).getLatLon(inputFilePath);
+            return inputsAPI(getState()).getMaxMinCoordinates(inputFilePath);
         }
 
         function action(cesiumPoints: CesiumPoint[]) {
@@ -629,6 +629,8 @@ export function updateCurrentConfig(currentConfigName: string) {
 export function getCurrentConfig() {
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
+        const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
+        const currentWorkspace = getState().data.workspaces[currentWorkspaceIndex];
 
         function call() {
             return configAPI(getState()).getCurrentConfig(currentWorkspaceName);
@@ -640,6 +642,9 @@ export function getCurrentConfig() {
                 dispatch(getConfigurations(current_config));
                 const outputDirectory = determineCurrentOutputDirectory(getState, currentWorkspaceName, current_config);
                 dispatch(updateCurrentOutputDirectory(outputDirectory));
+            } else if (!current_config && currentWorkspace.configs.length == 0) {
+                dispatch(addNewConfig("default"));
+                dispatch(setCurrentConfig("default"));
             }
         }
 

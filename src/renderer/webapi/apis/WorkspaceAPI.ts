@@ -1,5 +1,5 @@
 import {WebAPIClient} from "../WebAPIClient";
-import {JobPromise, JobProgress} from "../Job";
+import {JobProgress, JobPromise} from "../Job";
 import {Workspace} from "../../state";
 
 function responseToWorkspace(workspaceResponse: any): Workspace {
@@ -19,13 +19,15 @@ function responseToWorkspaces(workspaceResponse: any): Workspace[] {
         return null;
     }
     let workspaces: Workspace[] = [];
-    for (let i of workspaceResponse.workspaces) {
-        workspaces.push({
-            name: i,
-            directory: i.workspace_dir,
-            inputs: [],
-            configs: []
-        })
+    for (let workspace of workspaceResponse.workspaces) {
+        if (workspace.name != ".current") {
+            workspaces.push({
+                name: workspace.name,
+                directory: workspace.workspace_dir,
+                inputs: [],
+                configs: []
+            })
+        }
     }
     return workspaces;
 }
