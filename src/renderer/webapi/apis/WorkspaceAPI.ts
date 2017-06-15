@@ -20,14 +20,12 @@ function responseToWorkspaces(workspaceResponse: any): Workspace[] {
     }
     let workspaces: Workspace[] = [];
     for (let workspace of workspaceResponse.workspaces) {
-        if (workspace.name != ".current") {
-            workspaces.push({
-                name: workspace.name,
-                directory: workspace.workspace_dir,
-                inputs: [],
-                configs: []
-            })
-        }
+        workspaces.push({
+            name: workspace.name,
+            directory: workspace.workspace_dir,
+            inputs: [],
+            configs: []
+        })
     }
     return workspaces;
 }
