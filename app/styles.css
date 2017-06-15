@@ -591,14 +591,19 @@ ul.dedop-list-box li.dedop-selected {
 }
 
 .dedop-list-box-item-file-size {
+    display: flex;
     text-align: center;
     margin-right: 10px;
-    padding-right: 15px;
+    padding: 0 15px;
+    align-items: center;
+    justify-content: center;
 }
 
 .dedop-list-box-item-file-delete {
     margin-left: 5px;
     color: #B23232;
+    align-items: center;
+    display: flex;
 }
 
 .dedop-list-box-item-last-updated {
