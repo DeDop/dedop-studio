@@ -11,12 +11,14 @@ interface ICesiumViewOwnProps {
 interface ICesiumViewProps {
     cesiumPoints?: CesiumPoint[];
     isOfflineMode?: boolean;
+    id: string;
 }
 
-function mapStateToProps(state: State) {
+function mapStateToProps(state: State, ownProps: ICesiumViewOwnProps): ICesiumViewProps {
     return {
         cesiumPoints: selector.getCesiumPoints(state),
-        isOfflineMode: state.control.isOfflineMode
+        isOfflineMode: state.control.isOfflineMode,
+        id: ownProps.id
     }
 }
 

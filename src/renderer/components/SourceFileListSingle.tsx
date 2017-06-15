@@ -12,16 +12,20 @@ interface ISourceFileListSingleProps {
     currentSourceFileDirectory?: string;
 }
 
-function mapStateToProps(state: State, ownProps: {sourceFile: SourceFile}): ISourceFileListSingleProps {
+interface ISourceFileListSingleOwnProps {
+    sourceFile: SourceFile;
+}
+
+function mapStateToProps(state: State, ownProps: ISourceFileListSingleOwnProps): ISourceFileListSingleProps {
     return {
         addedSourceFiles: selector.getAddedSourceFiles(state),
-        sourceFile: ownProps.sourceFile,
         currentWorkspace: state.control.currentWorkspaceName,
-        currentSourceFileDirectory: state.control.currentSourceFileDirectory
+        currentSourceFileDirectory: state.control.currentSourceFileDirectory,
+        sourceFile: ownProps.sourceFile
     };
 }
 
-class SourceFileListSingle extends React.Component<ISourceFileListSingleProps,any> {
+class SourceFileListSingle extends React.Component<ISourceFileListSingleProps & ISourceFileListSingleOwnProps, any> {
     private handleRemove = () => {
         this.props.dispatch(removeInputFiles(this.props.currentWorkspace, [this.props.sourceFile.name]));
     };

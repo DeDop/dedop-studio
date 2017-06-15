@@ -1,26 +1,26 @@
 import * as React from "react";
 
 import {Tab, TabList, TabPanel, Tabs} from "@blueprintjs/core";
-import SourcePanel from '../tabpanels/SourceDataPanel';
-import ConfigurationPanel from '../tabpanels/ConfigurationPanel';
-import ProcessingPanel from '../tabpanels/ProcessingPanel';
-import ResultPanel from '../tabpanels/ResultPanel';
+import SourcePanel from "../tabpanels/SourceDataPanel";
+import ConfigurationPanel from "../tabpanels/ConfigurationPanel";
+import ProcessingPanel from "../tabpanels/ProcessingPanel";
+import ResultPanel from "../tabpanels/ResultPanel";
 import {connect} from "react-redux";
 import {State} from "../../state";
 import {updateMainTab} from "../../actions";
 
 interface IMainTabsProps {
-    dispatch?: (action: {type: string, payload: any}) => void;
+    dispatch?: (action: { type: string, payload: any }) => void;
     currentMainTabPanel?: number;
 }
 
-function mapStateToProps(state: State) {
+function mapStateToProps(state: State): IMainTabsProps {
     return {
         currentMainTabPanel: state.control.currentMainTabPanel
     }
 }
 
-class MainTabs extends React.Component<IMainTabsProps,any> {
+class MainTabs extends React.Component<IMainTabsProps, any> {
     public render() {
         const handleChangeTab = (selectedTabIndex: number) => {
             this.props.dispatch(updateMainTab(selectedTabIndex));

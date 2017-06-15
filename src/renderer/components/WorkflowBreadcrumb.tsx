@@ -10,7 +10,7 @@ interface IWorkflowBreadcrumbProps {
     tabNames?: string[];
 }
 
-function mapStateToProps(state: State) {
+function mapStateToProps(state: State): IWorkflowBreadcrumbProps {
     return {
         currentMainTabPanel: state.control.currentMainTabPanel,
         tabNames: mainTabs

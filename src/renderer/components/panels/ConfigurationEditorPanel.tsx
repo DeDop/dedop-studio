@@ -13,6 +13,9 @@ interface IConfigurationEditorPanelProps {
     cst?: ProcessConfigurations;
     defaultConfVersion?: ConfigurationVersion;
     selectedConfigurationName?: string;
+    codeEditorActive: boolean;
+    isConfigEditable: boolean;
+    configType: string;
 }
 
 interface  ConfigurationEditorPanelOwnProps {
@@ -21,13 +24,16 @@ interface  ConfigurationEditorPanelOwnProps {
     configType: string;
 }
 
-function mapStateToProps(state: State) {
+function mapStateToProps(state: State, ownProps: ConfigurationEditorPanelOwnProps): IConfigurationEditorPanelProps {
     return {
         chd: selector.getSelectedChd(state),
         cnf: selector.getSelectedCnf(state),
         cst: selector.getSelectedCst(state),
         defaultConfVersion: state.data.version ? state.data.version.configuration : null,
         selectedConfigurationName: state.control.selectedConfigurationName,
+        codeEditorActive: ownProps.codeEditorActive,
+        isConfigEditable: ownProps.isConfigEditable,
+        configType: ownProps.configType
     }
 }
 
@@ -132,9 +138,9 @@ class ConfigurationEditorPanel extends React.Component<IConfigurationEditorPanel
                                         null
                                 }
                                 <ConfigurationEditor configurations={this.props[this.props.configType]}
-                                                        handleInputChange={this.handleConfigInputChange}
-                                                        dispatch={this.props.dispatch}
-                                                        disabled={!this.props.isConfigEditable}
+                                                     handleInputChange={this.handleConfigInputChange}
+                                                     dispatch={this.props.dispatch}
+                                                     disabled={!this.props.isConfigEditable}
                                 />
                             </div>
                             :
