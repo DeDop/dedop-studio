@@ -3,7 +3,6 @@ import * as ReactDOM from "react-dom";
 import {Provider, Store} from "react-redux";
 import {applyMiddleware, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
-import reduxAsyncQueue from 'redux-async-queue';
 import * as loggerMiddleware from "redux-logger";
 import {HGLCenter, HGLContainer, HGLFooter, HGLHeader} from "./components/Components";
 import MainTabs from "./components/tabs/Tabs";
@@ -22,7 +21,6 @@ export function main() {
 
     const middleware = applyMiddleware(
         thunkMiddleware,
-        reduxAsyncQueue,
         loggerMiddleware({level: 'info', collapsed: true, diff: true})
     );
 
