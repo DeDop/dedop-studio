@@ -1,8 +1,7 @@
-import {Configuration, ControlState, DataState} from "./state";
+import {CesiumState, Configuration, ControlState, DataState} from "./state";
 
 export const initialControlState: ControlState = {
     globalAttributes: [],
-    cesiumPoints: [],
     mainPanelTitle: null,
     selectedConfigurationName: "default",
     currentConfigurationTabPanel: 0,
@@ -34,6 +33,10 @@ export const initialDataState: DataState = {
         }
     },
     workspaces: []
+};
+
+export const initialCesiumState: CesiumState = {
+    cesiumPoints: [],
 };
 
 export const mainTabs: string[] = [

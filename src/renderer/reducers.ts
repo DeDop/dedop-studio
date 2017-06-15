@@ -1,7 +1,7 @@
-import {CommunicationState, Configuration, ControlState, DataState, State, Workspace} from "./state";
+import {CesiumState, CommunicationState, Configuration, ControlState, DataState, State, Workspace} from "./state";
 import * as actions from "./actions";
 import {combineReducers} from "redux";
-import {initialControlState, initialDataState} from "./initialStates";
+import {initialCesiumState, initialControlState, initialDataState} from "./initialStates";
 
 function getWorkspaceIndex(workspaces: Workspace[], workspaceName: string) {
     return workspaces.findIndex((x) => x.name === workspaceName);
@@ -419,11 +419,6 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 selectedOutputFiles: action.payload
             })
         }
-        case actions.UPDATE_CURRENT_CESIUM_POINTS: {
-            return Object.assign({}, state, {
-                cesiumPoints: action.payload
-            })
-        }
         case actions.UPDATE_SELECTED_PROCESSES: {
             return Object.assign({}, state, {
                 selectedProcesses: action.payload
@@ -451,6 +446,17 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 isCstEditable: action.payload.session.isCstEditable == null ? state.isCstEditable : action.payload.session.isCstEditable,
                 isOfflineMode: action.payload.session.isOfflineMode == null ? state.isOfflineMode : action.payload.session.isOfflineMode
             });
+        }
+    }
+    return state;
+};
+
+const cesiumReducer = (state: CesiumState = initialCesiumState, action) => {
+    switch (action.type) {
+        case actions.UPDATE_CURRENT_CESIUM_POINTS: {
+            return Object.assign({}, state, {
+                cesiumPoints: action.payload
+            })
         }
     }
     return state;
@@ -487,6 +493,7 @@ const locationReducer = (state: Object = {}, action) => {
 export const reducers = combineReducers<State>({
     data: dataReducer,
     control: controlReducer,
+    cesium: cesiumReducer,
     session: sessionReducer,
     communication: communicationReducer,
     location: locationReducer,

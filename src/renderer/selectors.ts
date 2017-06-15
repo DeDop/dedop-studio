@@ -8,6 +8,7 @@ const getWorkspaces = (state: State) => state.data.workspaces;
 const getProcesses = (state: State) => state.data.processes;
 const getCurrentWorkspaceName = (state: State) => state.control.currentWorkspaceName;
 const getSelectedSourceFileName = (state: State) => state.control.selectedSourceFileName;
+export const getCesiumPoints = (state: State) => state.cesium.cesiumPoints;
 
 export const getCurrentWorkspace = createSelector(
     getWorkspaces,

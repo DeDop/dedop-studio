@@ -5,6 +5,7 @@ export interface State {
     data: DataState;
     communication: CommunicationState;
     control: ControlState;
+    cesium: CesiumState;
     session: SessionState;
     location: LocationState; // not used
 }
@@ -25,7 +26,6 @@ export interface CommunicationState {
 
 export interface ControlState {
     globalAttributes: GlobalAttribute[];
-    cesiumPoints: CesiumPoint[];
     mainPanelTitle?: string;
     currentMainTabPanel?: number;
     currentConfigurationTabPanel?: number;
@@ -64,6 +64,10 @@ export interface SessionState {
 }
 
 export interface LocationState {
+}
+
+export interface CesiumState {
+    cesiumPoints: CesiumPoint[];
 }
 
 export interface OutputFile {
