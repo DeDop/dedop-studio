@@ -16,14 +16,13 @@ export class ConfigurationSingleEntry extends React.Component<IConfigProps, any>
     constructor(props: IConfigProps) {
         super(props);
         this.state = {
-            localValue: this.props.configuration.value ? this.props.configuration.value.toString() : ""
+            localValue: this.props.configuration.value === null ? "" : this.props.configuration.value
         };
     }
 
     componentWillReceiveProps(nextProps: IConfigProps) {
-        const value = nextProps.configuration.value ? nextProps.configuration.value.toString() : "";
         this.setState({
-            localValue: value
+            localValue: nextProps.configuration.value === null ? "" : nextProps.configuration.value
         })
     }
 
@@ -95,17 +94,24 @@ export class ConfigurationFlagSingleEntry extends React.Component<IConfigProps, 
         };
 
         return (
-            <label className="pt-control pt-checkbox" title={this.props.configuration.description}>
-                <input type="checkbox"
-                       name={this.props.configName}
-                       checked={this.state.checked}
-                       disabled={this.props.disabled}
-                       onChange={handleFlagChange}
-                       onBlur={this.props.onBlur}
-                />
-                <span className="pt-control-indicator"/>
-                {this.props.configName}
-            </label>
+            <tr>
+                <td>
+                    <label className="pt-control pt-checkbox"
+                           title={this.props.configuration.description}
+                           style={{marginTop: '5px'}}
+                    >
+                        <input type="checkbox"
+                               name={this.props.configName}
+                               checked={this.state.checked}
+                               disabled={this.props.disabled}
+                               onChange={handleFlagChange}
+                               onBlur={this.props.onBlur}
+                        />
+                        <span className="pt-control-indicator"/>
+                        {this.props.configName}
+                    </label>
+                </td>
+            </tr>
         )
     }
 }
@@ -120,7 +126,6 @@ interface IConfigEditorProps {
 export class ConfigurationEditor extends React.Component<IConfigEditorProps, any> {
     public render() {
         let propertiesElements = [];
-        let flagElements = [];
         const configurations = this.props.configurations;
         for (let i in configurations) {
             if (i == "__metainf__") {
@@ -130,12 +135,12 @@ export class ConfigurationEditor extends React.Component<IConfigEditorProps, any
                 continue;
             }
             if (configurations[i].units === 'flag' && typeof(configurations[i].value) === "boolean") {
-                flagElements.push(<ConfigurationFlagSingleEntry key={i}
-                                                                configName={i}
-                                                                configuration={configurations[i]}
-                                                                disabled={this.props.disabled}
-                                                                onBlur={this.props.handleInputChange}
-                                                                dispatch={this.props.dispatch}
+                propertiesElements.push(<ConfigurationFlagSingleEntry key={i}
+                                                                      configName={i}
+                                                                      configuration={configurations[i]}
+                                                                      disabled={this.props.disabled}
+                                                                      onBlur={this.props.handleInputChange}
+                                                                      dispatch={this.props.dispatch}
                 />);
             } else {
                 propertiesElements.push(<ConfigurationSingleEntry key={i}
@@ -149,15 +154,12 @@ export class ConfigurationEditor extends React.Component<IConfigEditorProps, any
         }
 
         return (
-            <div>
+            <div style={{marginTop: '10px'}}>
                 <table>
                     <tbody>
                     {propertiesElements}
                     </tbody>
                 </table>
-                <div className="config-flag-panel">
-                    {flagElements}
-                </div>
             </div>
         )
     }

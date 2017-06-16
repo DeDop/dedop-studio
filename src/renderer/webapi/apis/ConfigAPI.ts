@@ -26,17 +26,17 @@ function responseToConfigName(configNameResponse: any): string {
 }
 
 function responseToConfigurations(configurationsResponse): Configuration {
-    function sort(configuration: ProcessConfigurations) {
-        let sortedConfiguration: ProcessConfigurations = {};
-        Object.keys(configuration).sort().forEach((key) => {
-            sortedConfiguration[key] = configuration[key];
-        });
-        return sortedConfiguration;
+    function restoreOrder(configuration: ProcessConfigurations, order: string[]) {
+        let reorderedConfiguration: ProcessConfigurations = {};
+        for(let key of order){
+            reorderedConfiguration[key] = configuration[key]
+        }
+        return reorderedConfiguration;
     }
 
-    const sortedChd: ProcessConfigurations = configurationsResponse.chd ? sort(configurationsResponse.chd) : {};
-    const sortedCnf: ProcessConfigurations = configurationsResponse.cnf ? sort(configurationsResponse.cnf) : {};
-    const sortedCst: ProcessConfigurations = configurationsResponse.cst ? sort(configurationsResponse.cst) : {};
+    const sortedChd: ProcessConfigurations = configurationsResponse.chd ? restoreOrder(configurationsResponse.chd, configurationsResponse.chd_order) : {};
+    const sortedCnf: ProcessConfigurations = configurationsResponse.cnf ? restoreOrder(configurationsResponse.cnf, configurationsResponse.cnf_order) : {};
+    const sortedCst: ProcessConfigurations = configurationsResponse.cst ? restoreOrder(configurationsResponse.cst, configurationsResponse.cst_order) : {};
     return Object.assign({}, configurationsResponse, {
         chd: sortedChd,
         cnf: sortedCnf,
@@ -44,7 +44,7 @@ function responseToConfigurations(configurationsResponse): Configuration {
     });
 }
 
-function responseToConfigurationVersions(versions: any): {chdVersion: number, cnfVersion: number, cstVersion: number} {
+function responseToConfigurationVersions(versions: any): { chdVersion: number, cnfVersion: number, cstVersion: number } {
     return {
         chdVersion: versions.chd_version,
         cnfVersion: versions.cnf_version,
@@ -91,11 +91,11 @@ export class ConfigAPI {
         return this.webAPIClient.call('get_configs', [workspaceName, configName], null, responseToConfigurations);
     }
 
-    saveConfigs(workspaceName: string, configName: string, configurations: {chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations}) {
+    saveConfigs(workspaceName: string, configName: string, configurations: { chd: ProcessConfigurations, cnf: ProcessConfigurations, cst: ProcessConfigurations }) {
         return this.webAPIClient.call('save_configs', [workspaceName, configName, configurations], null, null);
     }
 
-    getDefaultConfigVersions(): JobPromise<{chdVersion: number, cnfVersion: number, cstVersion: number}> {
+    getDefaultConfigVersions(): JobPromise<{ chdVersion: number, cnfVersion: number, cstVersion: number }> {
         return this.webAPIClient.call('get_default_config_versions', [], null, responseToConfigurationVersions);
     }
 
