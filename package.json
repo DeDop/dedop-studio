@@ -1,7 +1,7 @@
 {
-  "name": "dedop-studio",
-  "productName": "dedop-studio",
-  "version": "0.0.1",
+  "name": "DeDop-studio",
+  "productName": "DeDop-studio",
+  "version": "1.0.0",
   "description": "DeDop Studio",
   "private": true,
   "scripts": {
@@ -97,7 +97,12 @@
       "installerHeaderIcon": "app/resources/win32/dedop.ico"
     },
     "linux": {
-      "icon": "app/resources/linux"
+      "icon": "app/resources/linux",
+      "target": [
+        "AppImage",
+        "tar.gz",
+        "zip"
+      ]
     },
     "mac": {
       "icon": "app/resources/darwin/dedop.icns"
