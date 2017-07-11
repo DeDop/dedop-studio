@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-type ContainerType = HTMLElement|any;
+type ContainerType = HTMLElement | any;
 
 export interface IPermanentObjectType {
     container: ContainerType;
@@ -52,10 +52,10 @@ export interface IPermanentComponentProps {
 export abstract class PermanentComponent<T extends IPermanentObjectType, P extends IPermanentComponentProps, S> extends React.Component<P, S> {
     private static readonly defaultPermanentObjectStore: Object = {};
 
-    private _parentContainer: HTMLElement|null;
-    private _permanentObject: T|null;
+    private _parentContainer: HTMLElement | null;
+    private _permanentObject: T | null;
 
-    constructor(props: IPermanentComponentProps) {
+    constructor(props: P) {
         super(props);
         if (!props.id) {
             throw new Error("cannot construct PermanentComponent without id");
@@ -64,27 +64,27 @@ export abstract class PermanentComponent<T extends IPermanentObjectType, P exten
         this._permanentObject = null;
     }
 
-    get parentContainer(): HTMLElement|any {
+    get parentContainer(): HTMLElement | any {
         return this._parentContainer;
     }
 
-    get permanentObject(): T|null {
+    get permanentObject(): T | null {
         return this._permanentObject;
     }
 
-    get permanentObjectStore(): Object {
+    get permanentObjectStore(): P | any {
         return this.props.cache || PermanentComponent.defaultPermanentObjectStore;
     }
 
-    abstract createPermanentObject(parentContainer?: HTMLElement|any): T;
+    abstract createPermanentObject(parentContainer?: HTMLElement | any): T;
 
     disposePermanentObject(permanentObject: T): void {
     }
 
-    permanentObjectMounted(permanentObject: T, parentContainer?: HTMLElement|any): void {
+    permanentObjectMounted(permanentObject: T, parentContainer?: HTMLElement | any): void {
     }
 
-    permanentObjectUnmounted(permanentObject: T, parentContainer?: HTMLElement|any): void {
+    permanentObjectUnmounted(permanentObject: T, parentContainer?: HTMLElement | any): void {
     }
 
     dispose() {
@@ -100,7 +100,7 @@ export abstract class PermanentComponent<T extends IPermanentObjectType, P exten
         }
     }
 
-    handleRef(parentContainer: HTMLElement|any) {
+    handleRef(parentContainer: HTMLElement | any) {
         if (parentContainer) {
             if (this.props.id in this.permanentObjectStore) {
                 this.mountOldPermanentObject(parentContainer);
