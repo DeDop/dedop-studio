@@ -10,7 +10,7 @@ DeDop Desktop Application
 * git
 * dedop-core 
 
-## How-to-start
+## How-to-start (using the source)
 * `git clone https://github.com/DeDop/dedop-studio.git`
 * `cd dedop-studio`
 * `npm install`
@@ -28,3 +28,6 @@ DeDop Desktop Application
   Information about each field can be found in `dedop-config.template.js`.
 * `npm run compile`
 * `npm start`
+
+## How-to-start (using the installer)
+Installation steps using the installer is available [here](https://github.com/DeDop/dedop-installer).
