@@ -46,7 +46,7 @@ class RunSettingsPanel extends React.Component<IRunSettingsPanelProps, any> {
             <div className="dedop-collapse vertical-third">
                 <OrdinaryPanelHeader title="Run Settings" icon="pt-icon-properties"/>
                 <div className="dedop-panel-content">
-                    <table width='100%'>
+                    <table style={{width: '100%'}}>
                         <tbody>
                         <tr>
                             <td>
