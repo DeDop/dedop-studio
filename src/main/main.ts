@@ -21,7 +21,7 @@ const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
 
 /**
- * Identifies the required version of the Dedop WebAPI.
+ * Identifies the required version of the DeDop WebAPI.
  * The value is a node-semver (https://github.com/npm/node-semver) compatible version range string.
  * @type {string}
  */
@@ -256,9 +256,9 @@ export function init() {
         webAPIProcess.on('error', (err: Error) => {
             console.error(DEDOP_STUDIO_PREFIX, err);
             if (!webAPIError) {
-                writeToLogFile(`Internal Error - Failed to start Dedop WebAPI service.`);
+                writeToLogFile(`Internal Error - Failed to start DeDop WebAPI service.`);
                 electron.dialog.showErrorBox(`${app.getName()} - Internal Error`,
-                    'Failed to start Dedop WebAPI service.');
+                    'Failed to start DeDop WebAPI service.');
             }
             webAPIError = err;
             app.exit(WEBAPI_ERROR); // exit immediately
@@ -285,8 +285,8 @@ export function init() {
         }
         // Note we are async here, because sync can take a lot of time...
         const webAPIStopArgs = getWebAPIStopArgs(webAPIConfig);
-        console.log(DEDOP_STUDIO_PREFIX, `Stopping Dedop WebAPI service using arguments: ${webAPIStopArgs}`);
-        writeToLogFile(`Stopping Dedop WebAPI service using arguments: ${webAPIStopArgs}`);
+        console.log(DEDOP_STUDIO_PREFIX, `Stopping DeDop WebAPI service using arguments: ${webAPIStopArgs}`);
+        writeToLogFile(`Stopping DeDop WebAPI service using arguments: ${webAPIStopArgs}`);
         childProcess.spawn(webAPIConfig.command, webAPIStopArgs, webAPIConfig.processOptions);
     }
 
@@ -298,7 +298,7 @@ export function init() {
         let webAPIRestUrl = getWebAPIRestUrl(_config.data.webAPIConfig);
         console.log(DEDOP_STUDIO_PREFIX, `Waiting for response from ${webAPIRestUrl}`);
         writeToLogFile(`Waiting for response from ${webAPIRestUrl}`);
-        showSplashMessage('Waiting for Dedop backend...');
+        showSplashMessage('Waiting for DeDop backend service...');
         request(webAPIRestUrl, msServiceAccessTimeout)
             .then((response: string) => {
                 console.log(DEDOP_STUDIO_PREFIX, `Response: ${response}`);
@@ -306,8 +306,8 @@ export function init() {
                 createMainWindow();
             })
             .catch((err) => {
-                console.log(DEDOP_STUDIO_PREFIX, `Waiting for Dedop WebAPI service to respond after ${msSpend} ms`);
-                writeToLogFile(`Waiting for Dedop WebAPI service to respond after ${msSpend} ms`);
+                console.log(DEDOP_STUDIO_PREFIX, `Waiting for DeDop WebAPI service to respond after ${msSpend} ms`);
+                writeToLogFile(`Waiting for DeDop WebAPI service to respond after ${msSpend} ms`);
                 if (!webAPIStarted) {
                     webAPIProcess = startWebapiService();
                 }
@@ -315,7 +315,7 @@ export function init() {
                     console.error(DEDOP_STUDIO_PREFIX, `Failed to start DeDop WebAPI service within ${msSpend} ms.`);
                     console.log(DEDOP_STUDIO_PREFIX, `Failed to start DeDop WebAPI service within ${msSpend} ms.`);
                     if (!webAPIError) {
-                        electron.dialog.showErrorBox(`${app.getName()} - Internal Error`, `Failed to start Dedop backend within ${msSpend} ms.`);
+                        electron.dialog.showErrorBox(`${app.getName()} - Internal Error`, `Failed to start DeDop backend service within ${msSpend} ms.`);
                     }
                     app.exit(WEBAPI_TIMEOUT);
                 } else {
@@ -542,7 +542,7 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
 
     const fileNames = fs.readdirSync(app.getAppPath());
     const isWin = process.platform === 'win32';
-    const finder = n => n.startsWith('DeDop-backend') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
+    const finder = n => n.startsWith('DeDop-core') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
     const installerExeName = fileNames.find(finder);
     if (installerExeName) {
         const installerPath = path.join(app.getAppPath(), installerExeName);
@@ -551,11 +551,11 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
             title: `${app.getName()} - Information`,
             buttons: ['Cancel', 'OK'],
             cancelId: 0,
-            message: 'About to install missing Dedop back-end.',
-            detail: 'It seems that Dedop is run for the first time from this installation.\n' +
-            'Dedop will now install a local (Python) back-end which may take\n' +
+            message: 'About to install missing DeDop backend.',
+            detail: 'It seems that DeDop is run for the first time from this installation.\n' +
+            'DeDop will now install a local (Python) backend which may take\n' +
             'some minutes. This is a one-time job and only applies to this\n' +
-            'Dedop installation, no other computer settings will be changed.',
+            'DeDop installation, no other computer settings will be changed.',
         });
         if (response == 0) {
             electron.app.exit(WEBAPI_INSTALLER_CANCELLED);
@@ -569,9 +569,9 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
             type: 'error',
             title: `${app.getName()} - Fatal Error`,
             buttons: ['Close'],
-            message: 'Can find neither the required Dedop backend service\n"' +
+            message: 'Can find neither the required DeDop backend service\n"' +
             webAPIConfig.command + '"\n' +
-            'nor a bundled Dedop Python installer. Application will exit now.',
+            'nor a bundled DeDop Python installer. Application will exit now.',
         });
         electron.app.exit(WEBAPI_INSTALLER_MISSING);
         return false;
@@ -603,19 +603,19 @@ function installBackend(installerCommand: string, callback: () => void) {
         console.error(DEDOP_STUDIO_PREFIX, `${data}`);
     });
     installerProcess.on('error', (err: Error) => {
-        console.log(DEDOP_STUDIO_PREFIX, 'Dedop WebAPI service installation failed', err);
-        writeToLogFile('Dedop WebAPI service installation failed: ' + err);
+        console.log(DEDOP_STUDIO_PREFIX, 'DeDop WebAPI service installation failed', err);
+        writeToLogFile('DeDop WebAPI service installation failed: ' + err);
         electron.dialog.showMessageBox({
             type: 'error',
             title: `${app.getName()} - Fatal Error`,
-            message: 'Dedop backend installation failed.',
+            message: 'DeDop WebAPI service installation failed.',
             detail: `${err}`
         });
         app.exit(WEBAPI_INSTALLER_ERROR); // exit immediately
     });
     installerProcess.on('close', (code: number) => {
-        console.log(DEDOP_STUDIO_PREFIX, `Dedop WebAPI service installation closed with exit code ${code}`);
-        writeToLogFile(`Dedop WebAPI service installation closed with exit code ${code}`);
+        console.log(DEDOP_STUDIO_PREFIX, `DeDop WebAPI service installation closed with exit code ${code}`);
+        writeToLogFile(`DeDop WebAPI service installation closed with exit code ${code}`);
         if (code == 0) {
             callback();
             return;
@@ -623,7 +623,7 @@ function installBackend(installerCommand: string, callback: () => void) {
         electron.dialog.showMessageBox({
             type: 'error',
             title: `${app.getName()} - Fatal Error`,
-            message: `Dedop backend installation failed with exit code ${code}.`,
+            message: `DeDop WebAPI service installation failed with exit code ${code}.`,
         });
         app.exit(WEBAPI_INSTALLER_BAD_EXIT); // exit immediately
     });
