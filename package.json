@@ -1,7 +1,7 @@
 {
   "name": "DeDop-studio",
   "productName": "DeDop-studio",
-  "version": "1.0.0",
+  "version": "1.0.1.dev",
   "description": "DeDop Studio",
   "private": true,
   "scripts": {
@@ -56,12 +56,12 @@
     "@types/redux-thunk": "~2.1.32",
     "@types/reselect": "~2.0.27",
     "@types/tether": "~1.1.27",
-    "cesium": "~1.27.0",
+    "cesium": "~1.36.0",
     "chai": "~3.5.0",
     "chai-as-promised": "~6.0.0",
     "codemirror": "~5.21.0",
     "deep-equal": "~1.0.1",
-    "electron": "~1.4.12",
+    "electron": "~1.7.5",
     "electron-builder": "~14.5",
     "electron-devtools-installer": "~2.1.0",
     "enzyme": "~2.6.0",
