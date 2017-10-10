@@ -5,7 +5,7 @@
 DeDop Desktop Application
 
 ## How-to-start (using the installer)
-Instructions on how to get the installer and how to do the installationis available [here](https://github.com/DeDop/dedop-installer#install-dedop-studio).
+Instructions on how to get the installer and how to do the installations available [here](https://github.com/DeDop/dedop-installer#install-dedop-studio).
 
 ## How-to-start (using the source)
 
