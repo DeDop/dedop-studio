@@ -4,13 +4,18 @@
 # dedop-studio
 DeDop Desktop Application
 
-## Pre-requisites
+## How-to-start (using the installer)
+Installation steps using the installer is available [here](https://github.com/DeDop/dedop-installer).
+
+## How-to-start (using the source)
+
+### Pre-requisites
 * nodejs v6.9.1
 * npm v3.10.8
 * git
 * dedop-core 
 
-## How-to-start (using the source)
+### How-to-install
 * `git clone https://github.com/DeDop/dedop-studio.git`
 * `cd dedop-studio`
 * `npm install`
@@ -28,6 +33,3 @@ DeDop Desktop Application
   Information about each field can be found in `dedop-config.template.js`.
 * `npm run compile`
 * `npm start`
-
-## How-to-start (using the installer)
-Installation steps using the installer is available [here](https://github.com/DeDop/dedop-installer).
