@@ -1,14 +1,14 @@
-import {WebAPIClient} from "../WebAPIClient";
-import {JobPromise} from "../Job";
-import {Configuration, ProcessConfigurations} from "../../state";
-import * as moment from "moment";
+import {WebAPIClient} from '../WebAPIClient';
+import {JobPromise} from '../Job';
+import {Configuration, ProcessConfigurations} from '../../state';
+import * as moment from 'moment';
 
 function configNamesToConfigurations(configsNameResponse: any): Configuration[] {
     if (!configsNameResponse) {
         return null;
     }
     let configurations: Configuration[] = [];
-    const currentTime = moment().format("DD/MM/YY, hh:mm:ss");
+    const currentTime = moment().format('DD/MM/YY, hh:mm:ss');
     for (let configuration of configsNameResponse) {
         configurations.push({
             name: configuration,
@@ -19,7 +19,7 @@ function configNamesToConfigurations(configsNameResponse: any): Configuration[] 
 }
 
 function responseToConfigName(configNameResponse: any): string {
-    if (configNameResponse.name == "") {
+    if (configNameResponse.name == '') {
         return null;
     }
     return configNameResponse.name;
@@ -28,7 +28,7 @@ function responseToConfigName(configNameResponse: any): string {
 function responseToConfigurations(configurationsResponse): Configuration {
     function restoreOrder(configuration: ProcessConfigurations, order: string[]) {
         let reorderedConfiguration: ProcessConfigurations = {};
-        for(let key of order){
+        for (let key of order) {
             reorderedConfiguration[key] = configuration[key]
         }
         return reorderedConfiguration;
@@ -63,8 +63,8 @@ export class ConfigAPI {
         return this.webAPIClient.call('get_config_names', [workspaceName], null, configNamesToConfigurations);
     }
 
-    addNewConfig(workspaceName: string, configName: string) {
-        return this.webAPIClient.call('add_new_config', [workspaceName, configName], null, null);
+    addNewConfig(workspaceName: string, configName: string, configType: string) {
+        return this.webAPIClient.call('add_new_config', [workspaceName, configName, configType === 'cryosat2'], null, null);
     }
 
     deleteConfig(workspaceName: string, configName: string) {

@@ -9,16 +9,16 @@ import {
     State,
     TaskState,
     Workspace
-} from "./state";
-import * as moment from "moment";
-import * as path from "path";
-import {JobFailure, JobProgress, JobProgressHandler, JobPromise, JobStatusEnum} from "./webapi/Job";
-import {WorkspaceAPI} from "./webapi/apis/WorkspaceAPI";
-import {InputsAPI} from "./webapi/apis/InputsAPI";
-import {constructInputDirectory, constructOutputDirectory, getSourceFiles} from "../common/fileUtils";
-import {ConfigAPI} from "./webapi/apis/ConfigAPI";
-import {ProcessAPI} from "./webapi/apis/ProcessAPI";
-import {OutputAPI} from "./webapi/apis/OutputAPI";
+} from './state';
+import * as moment from 'moment';
+import * as path from 'path';
+import {JobFailure, JobProgress, JobProgressHandler, JobPromise, JobStatusEnum} from './webapi/Job';
+import {WorkspaceAPI} from './webapi/apis/WorkspaceAPI';
+import {InputsAPI} from './webapi/apis/InputsAPI';
+import {constructInputDirectory, constructOutputDirectory, getSourceFiles} from '../common/fileUtils';
+import {ConfigAPI} from './webapi/apis/ConfigAPI';
+import {ProcessAPI} from './webapi/apis/ProcessAPI';
+import {OutputAPI} from './webapi/apis/OutputAPI';
 
 export const SELECT_SOURCE_FILE = 'SELECT_SOURCE_FILE';
 export const SELECT_SOURCE_FILE_DIRECTORY = 'SELECT_SOURCE_FILE_DIRECTORY';
@@ -39,6 +39,9 @@ export const SET_TASK_STATE = 'SET_TASK_STATE';
 export const APPLY_INITIAL_SOURCE_FILE_DIRECTORY = 'APPLY_INITIAL_SOURCE_FILE_DIRECTORY';
 
 const CANCELLED_CODE = 999;
+const DEFAULT_WORKSPACE_NAME = 'default';
+const DEFAULT_CONFIG_NAME = 'default';
+const DEFAULT_CONFIG_TYPE = 'sentinel3';
 
 export function selectSourceFile(fileName: string) {
     return {type: SELECT_SOURCE_FILE, payload: fileName};
@@ -82,7 +85,7 @@ export function updateUnsavedConfigStatus(status: boolean) {
 
 // ======================== Dialog related actions =============================================
 
-export const UPDATE_WEBAPI_DIALOG = "UPDATE_WEBAPI_DIALOG";
+export const UPDATE_WEBAPI_DIALOG = 'UPDATE_WEBAPI_DIALOG';
 
 export function updateWebapiDialog(openDialog: boolean) {
     return {type: UPDATE_WEBAPI_DIALOG, payload: openDialog};
@@ -112,8 +115,8 @@ function jobFailed(jobId: number, failure: JobFailure) {
         console.error(failure);
     }
     showMessageBox({
-        type: "error",
-        title: "DeDop - Error",
+        type: 'error',
+        title: 'DeDop - Error',
         message: failure.message,
         detail: `An error (code ${failure.code}) occurred while executing a background process:\n\n${failure.data}`,
         buttons: [],
@@ -171,7 +174,7 @@ export function setWebAPIStatus(webAPIClient, webAPIStatus: 'connecting' | 'open
 
 // ======================== Workspace related actions via WebAPI =============================================
 
-export const ADD_WORKSPACE = "ADD_WORKSPACE";
+export const ADD_WORKSPACE = 'ADD_WORKSPACE';
 
 function workspaceAPI(state: State): WorkspaceAPI {
     return new WorkspaceAPI(state.data.appConfig.webAPIClient)
@@ -191,11 +194,11 @@ export function addNewWorkspace(newWorkspaceName: string) {
             dispatch(addWorkSpace(workspace));
         }
 
-        callAPI(dispatch, "Add new workspace ".concat(newWorkspaceName), call, action);
+        callAPI(dispatch, 'Add new workspace '.concat(newWorkspaceName), call, action);
     }
 }
 
-export const UPDATE_WORKSPACES = "UPDATE_WORKSPACES";
+export const UPDATE_WORKSPACES = 'UPDATE_WORKSPACES';
 
 function updateWorkSpaces(workspaces: Workspace[]) {
     return {type: UPDATE_WORKSPACES, payload: workspaces};
@@ -211,14 +214,14 @@ export function getAllWorkspaces() {
             dispatch(updateWorkSpaces(workspaces));
         }
 
-        callAPI(dispatch, "Get all workspace names", call, action);
+        callAPI(dispatch, 'Get all workspace names', call, action);
     }
 }
 
-export const UPDATE_CURRENT_WORKSPACE = "UPDATE_CURRENT_WORKSPACE";
+export const UPDATE_CURRENT_WORKSPACE = 'UPDATE_CURRENT_WORKSPACE';
 
 function updateCurrentWorkspace(current_workspace: Workspace) {
-    const newSourceFileDirectory = path.join(current_workspace.directory, "inputs");
+    const newSourceFileDirectory = path.join(current_workspace.directory, 'inputs');
     return {
         type: UPDATE_CURRENT_WORKSPACE, payload: {
             name: current_workspace.name,
@@ -227,7 +230,7 @@ function updateCurrentWorkspace(current_workspace: Workspace) {
     };
 }
 
-export const UPDATE_WORKSPACE_SOURCE_FILES = "UPDATE_WORKSPACE_SOURCE_FILES";
+export const UPDATE_WORKSPACE_SOURCE_FILES = 'UPDATE_WORKSPACE_SOURCE_FILES';
 
 function updateWorkspaceSourceFile(workspace: Workspace, source_files: SourceFile[]) {
     return {
@@ -246,15 +249,15 @@ export function getCurrentWorkspace() {
 
         function action(current_workspace: Workspace) {
             if (current_workspace.name == null) {
-                dispatch(addNewWorkspace("default"));
+                dispatch(addNewWorkspace(DEFAULT_WORKSPACE_NAME));
                 let newWorkspace: Workspace = Object.assign({}, current_workspace, {
-                    name: "default"
+                    name: DEFAULT_WORKSPACE_NAME
                 });
 
                 dispatch(updateCurrentWorkspace(newWorkspace));
-                dispatch(addNewConfig("default"));
-                dispatch(setCurrentWorkspace("default"));
-                dispatch(setCurrentConfig("default"));
+                dispatch(addNewConfig(DEFAULT_CONFIG_NAME, DEFAULT_CONFIG_TYPE));
+                dispatch(setCurrentWorkspace(DEFAULT_WORKSPACE_NAME));
+                dispatch(setCurrentConfig(DEFAULT_CONFIG_NAME));
             } else {
                 dispatch(updateCurrentWorkspace(current_workspace));
                 let sourceFileDirectory = getState().control.currentSourceFileDirectory;
@@ -266,7 +269,7 @@ export function getCurrentWorkspace() {
             }
         }
 
-        callAPI(dispatch, "Get current workspace name", call, action);
+        callAPI(dispatch, 'Get current workspace name', call, action);
     }
 }
 
@@ -290,11 +293,11 @@ export function setCurrentWorkspace(newWorkspaceName: string) {
             dispatch(updateCurrentOutputDirectory(outputDirectory));
         }
 
-        callAPI(dispatch, "Set current workspace to ".concat(newWorkspaceName), call, action);
+        callAPI(dispatch, 'Set current workspace to '.concat(newWorkspaceName), call, action);
     }
 }
 
-export const RENAME_WORKSPACE = "RENAME_WORKSPACE";
+export const RENAME_WORKSPACE = 'RENAME_WORKSPACE';
 
 function updateWorkspaceNameList(oldWorkspaceName: string, newWorkspaceName: string) {
     return {
@@ -318,7 +321,7 @@ export function renameWorkspace(oldWorkspaceName: string, newWorkspaceName: stri
             }
         }
 
-        callAPI(dispatch, "Rename workspace ".concat(oldWorkspaceName).concat(" to ").concat(newWorkspaceName), call, action);
+        callAPI(dispatch, 'Rename workspace '.concat(oldWorkspaceName).concat(' to ').concat(newWorkspaceName), call, action);
     }
 }
 
@@ -332,11 +335,11 @@ export function copyWorkspace(oldWorkspaceName: string, newWorkspaceName: string
             dispatch(addWorkSpace(new_workspace));
         }
 
-        callAPI(dispatch, "Copy workspace ".concat(oldWorkspaceName).concat(" to ").concat(newWorkspaceName), call, action);
+        callAPI(dispatch, 'Copy workspace '.concat(oldWorkspaceName).concat(' to ').concat(newWorkspaceName), call, action);
     }
 }
 
-export const REMOVE_WORKSPACE = "REMOVE_WORKSPACE";
+export const REMOVE_WORKSPACE = 'REMOVE_WORKSPACE';
 
 function removeWorkspace(workspaceName: string) {
     return {
@@ -358,14 +361,14 @@ export function deleteWorkspace(workspaceName: string) {
                 } else {
                     //TODO (hans-permana, 20170302): handle deletion of last workspace properly
                     dispatch(updateCurrentWorkspace({
-                        name: "default",
-                        directory: "no-dir"
+                        name: DEFAULT_WORKSPACE_NAME,
+                        directory: 'no-dir'
                     }))
                 }
             }
         }
 
-        callAPI(dispatch, "Delete workspace ".concat(workspaceName), call, action);
+        callAPI(dispatch, 'Delete workspace '.concat(workspaceName), call, action);
     }
 }
 
@@ -385,6 +388,7 @@ export function addInputFiles(newInputFiles: SourceFile[]) {
         for (let inputFile of newInputFiles) {
             inputFilePaths.push(inputFile.path)
         }
+
         function call() {
             return inputsAPI(getState()).addInputFiles(currentWorkspaceName, inputFilePaths);
         }
@@ -396,7 +400,7 @@ export function addInputFiles(newInputFiles: SourceFile[]) {
             dispatch(updateWorkspaceSourceFile(getState().data.workspaces[currentWorkspaceIndex], currentSourceFiles));
         }
 
-        callAPI(dispatch, "Add ".concat(inputFilePaths.length.toString()).concat(" input file(s) to workspace ").concat(currentWorkspaceName), call, action);
+        callAPI(dispatch, 'Add '.concat(inputFilePaths.length.toString()).concat(' input file(s) to workspace ').concat(currentWorkspaceName), call, action);
     }
 }
 
@@ -423,7 +427,7 @@ export function removeInputFiles(workspaceName: string, sourceFileNames: string[
             }
         }
 
-        callAPI(dispatch, "Remove ".concat(sourceFileNames.length.toString()).concat(" input file(s) from workspace ").concat(workspaceName), call, action);
+        callAPI(dispatch, 'Remove '.concat(sourceFileNames.length.toString()).concat(' input file(s) from workspace ').concat(workspaceName), call, action);
     }
 }
 
@@ -443,7 +447,7 @@ export function getGlobalAttributes(inputFilePath: string) {
             dispatch(updateCurrentGlobalAttributes(globalAttributes))
         }
 
-        callAPI(dispatch, "Get global attributes of ".concat(inputFilePath), call, action);
+        callAPI(dispatch, 'Get global attributes of '.concat(inputFilePath), call, action);
     }
 }
 
@@ -463,7 +467,7 @@ export function getLatLon(inputFilePath: string) {
             dispatch(updateCurrentCesiumPoints(cesiumPoints))
         }
 
-        callAPI(dispatch, "Get lat lon of ".concat(inputFilePath), call, action);
+        callAPI(dispatch, 'Get lat lon of '.concat(inputFilePath), call, action);
     }
 }
 
@@ -477,7 +481,7 @@ function configAPI(state: State): ConfigAPI {
     return new ConfigAPI(state.data.appConfig.webAPIClient)
 }
 
-export const UPDATE_CONFIG_NAMES = "UPDATE_CONFIG_NAMES";
+export const UPDATE_CONFIG_NAMES = 'UPDATE_CONFIG_NAMES';
 
 function updateConfigs(workspaceName: string, configs: Configuration[]) {
     return {
@@ -505,14 +509,14 @@ export function getAllConfigs() {
             }
         }
 
-        callAPI(dispatch, "Get all configuration names", call, action);
+        callAPI(dispatch, 'Get all configuration names', call, action);
     }
 }
 
 export const ADD_CONFIG_NAME = 'ADD_CONFIG_NAME';
 
 export function addConfigName(workspaceName: string, newConfigurationName: string) {
-    const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
+    const currentTime = moment().format('DD/MM/YY, HH:mm:ss');
     return {
         type: ADD_CONFIG_NAME, payload: {
             workspaceName: workspaceName,
@@ -522,12 +526,12 @@ export function addConfigName(workspaceName: string, newConfigurationName: strin
     };
 }
 
-export function addNewConfig(configName: string) {
+export function addNewConfig(configName: string, configType: string) {
     return (dispatch, getState) => {
         const currentWorkspaceName = getState().control.currentWorkspaceName;
 
         function call() {
-            return configAPI(getState()).addNewConfig(currentWorkspaceName, configName);
+            return configAPI(getState()).addNewConfig(currentWorkspaceName, configName, configType);
         }
 
         function action() {
@@ -535,7 +539,7 @@ export function addNewConfig(configName: string) {
             dispatch(getConfigurations(configName));
         }
 
-        callAPI(dispatch, "Add new configuration ".concat(configName).concat(" to workspace ").concat(currentWorkspaceName), call, action);
+        callAPI(dispatch, 'Add new configuration '.concat(configName).concat(' to workspace ').concat(currentWorkspaceName), call, action);
     }
 }
 
@@ -562,7 +566,7 @@ export function removeConfig(configName: string) {
             dispatch(deleteConfigName(currentWorkspaceName, configName));
         }
 
-        callAPI(dispatch, "Remove configuration ".concat(configName).concat(" from workspace ").concat(currentWorkspaceName), call, action);
+        callAPI(dispatch, 'Remove configuration '.concat(configName).concat(' from workspace ').concat(currentWorkspaceName), call, action);
     }
 }
 
@@ -579,14 +583,14 @@ export function copyConfig(configName: string, newConfigName: string) {
             dispatch(getConfigurations(newConfigName));
         }
 
-        callAPI(dispatch, "Copy configuration '".concat(configName).concat("' to '").concat(newConfigName).concat("'"), call, action);
+        callAPI(dispatch, 'Copy configuration \''.concat(configName).concat('\' to \'').concat(newConfigName).concat('\''), call, action);
     }
 }
 
 export const UPDATE_CONFIG_NAME = 'UPDATE_CONFIG_NAME';
 
 export function updateConfigName(workspaceName: string, configName: string, newConfigName: string) {
-    const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
+    const currentTime = moment().format('DD/MM/YY, HH:mm:ss');
     return {
         type: UPDATE_CONFIG_NAME, payload: {
             workspaceName: workspaceName,
@@ -616,7 +620,7 @@ export function renameConfig(configName: string, newConfigName: string) {
             dispatch(updateConfigSelection(newConfigName));
         }
 
-        callAPI(dispatch, "Copy configuration '".concat(configName).concat("' to '").concat(newConfigName).concat("'"), call, action);
+        callAPI(dispatch, 'Copy configuration \''.concat(configName).concat('\' to \'').concat(newConfigName).concat('\''), call, action);
     }
 }
 
@@ -643,12 +647,12 @@ export function getCurrentConfig() {
                 const outputDirectory = determineCurrentOutputDirectory(getState, currentWorkspaceName, current_config);
                 dispatch(updateCurrentOutputDirectory(outputDirectory));
             } else if (!current_config && currentWorkspace.configs.length == 0) {
-                dispatch(addNewConfig("default"));
-                dispatch(setCurrentConfig("default"));
+                dispatch(addNewConfig(DEFAULT_CONFIG_NAME, DEFAULT_CONFIG_TYPE));
+                dispatch(setCurrentConfig(DEFAULT_CONFIG_NAME));
             }
         }
 
-        callAPI(dispatch, "Get current configuration name", call, action);
+        callAPI(dispatch, 'Get current configuration name', call, action);
     }
 }
 
@@ -668,14 +672,14 @@ export function setCurrentConfig(configName: string) {
             dispatch(updateSelectedOutputs([]));
         }
 
-        callAPI(dispatch, "Set current configuration name to ".concat(configName), call, action);
+        callAPI(dispatch, 'Set current configuration name to '.concat(configName), call, action);
     }
 }
 
 export const UPDATE_CONFIG = 'UPDATE_CONFIG';
 
 export function updateConfiguration(workspaceName: string, configuration: Configuration) {
-    const currentTime = moment().format("DD/MM/YY, HH:mm:ss");
+    const currentTime = moment().format('DD/MM/YY, HH:mm:ss');
     return {
         type: UPDATE_CONFIG, payload: {
             workspaceName: workspaceName,
@@ -697,7 +701,7 @@ export function getConfigurations(configName: string) {
             dispatch(updateConfiguration(currentWorkspaceName, configuration));
         }
 
-        callAPI(dispatch, "Set configuration values of '".concat(configName).concat("'"), call, action);
+        callAPI(dispatch, 'Set configuration values of \''.concat(configName).concat('\''), call, action);
     }
 }
 
@@ -726,7 +730,7 @@ export function saveConfiguration(currentConfiguration: string,
             dispatch(updateConfiguration(currentWorkspaceName, updatedConfiguration));
         }
 
-        callAPI(dispatch, "Save configuration values.", call, action);
+        callAPI(dispatch, 'Save configuration values.', call, action);
     }
 }
 
@@ -752,7 +756,7 @@ export function getDefaultConfigurationVersions() {
             dispatch(udpateDefaultConfigurationVersions(versions.chdVersion, versions.cnfVersion, versions.cstVersion));
         }
 
-        callAPI(dispatch, "Get default configuration versions.", call, action);
+        callAPI(dispatch, 'Get default configuration versions.', call, action);
     }
 }
 
@@ -768,7 +772,7 @@ export function upgradeConfigurations(configName: string) {
             dispatch(updateConfiguration(currentWorkspaceName, configuration));
         }
 
-        callAPI(dispatch, "Upgrade configurations of '".concat(configName).concat("'"), call, action);
+        callAPI(dispatch, 'Upgrade configurations of \''.concat(configName).concat('\''), call, action);
     }
 }
 
@@ -835,7 +839,7 @@ export function runProcess(outputPath: string, l1aFilePath: string) {
             processId = getNewProcessId(getState().data.processes);
             jobStatus = job.getJob().getStatus();
             startTime = moment.now();
-            const startTimeFormatted = moment(startTime).format("DD/MM/YY, HH:mm:ss");
+            const startTimeFormatted = moment(startTime).format('DD/MM/YY, HH:mm:ss');
             const newProcess: ProcessingItem = {
                 id: processId,
                 taskId: taskId,
@@ -843,7 +847,7 @@ export function runProcess(outputPath: string, l1aFilePath: string) {
                 configuration: currentConfigName,
                 startedTime: startTimeFormatted,
                 status: jobStatus,
-                processingDuration: ""
+                processingDuration: ''
             };
             dispatch(addNewProcess(newProcess));
             return job;
@@ -853,7 +857,7 @@ export function runProcess(outputPath: string, l1aFilePath: string) {
             const processingDuration = moment.duration(moment().diff(startTime)).humanize();
             dispatch(markProcessAsFinished(processId, processingDuration.toString(),
                 getState().communication.tasks[taskId].status,
-                "successful"
+                'successful'
             ));
             dispatch(getOutputFileNames(currentWorkspaceName, currentConfigName));
         }
@@ -865,7 +869,7 @@ export function runProcess(outputPath: string, l1aFilePath: string) {
                 jobFailure.message))
         }
 
-        callAPI(dispatch, "Create a new process '".concat(currentConfigName).concat("'"), call, action, failureAction);
+        callAPI(dispatch, 'Create a new process \''.concat(currentConfigName).concat('\''), call, action, failureAction);
     }
 }
 
@@ -919,7 +923,7 @@ export function getOutputFileNames(currentWorkspaceName: string, currentConfigNa
             dispatch(updateOutputs(currentWorkspaceName, currentConfigName, outputNames));
         }
 
-        callAPI(dispatch, "Get output file names for configuration '".concat(currentConfigName).concat("'"), call, action);
+        callAPI(dispatch, 'Get output file names for configuration \''.concat(currentConfigName).concat('\''), call, action);
     }
 }
 
@@ -945,7 +949,7 @@ export function removeOutputFiles(workspaceName: string, configName: string) {
             dispatch(deleteAllOutputFiles(workspaceName, configName));
         }
 
-        callAPI(dispatch, "Remove output files of workspace '".concat(workspaceName).concat("' and configuration '").concat(configName).concat("'."), call, action);
+        callAPI(dispatch, 'Remove output files of workspace \''.concat(workspaceName).concat('\' and configuration \'').concat(configName).concat('\'.'), call, action);
     }
 }
 
@@ -967,7 +971,7 @@ export function generateAndRunInspectOutput(outputFilePath: string) {
             dispatch(getNotebookFileNames());
         }
 
-        callAPI(dispatch, "Inspecting output file '".concat(outputFilePath).concat("'"), call, action);
+        callAPI(dispatch, 'Inspecting output file \''.concat(outputFilePath).concat('\''), call, action);
     }
 }
 
@@ -983,7 +987,7 @@ export function generateAndRunCompareOutputs(outputFile1Path: string, outputFile
             dispatch(getNotebookFileNames());
         }
 
-        callAPI(dispatch, "Comparing output files '".concat(outputFile1Path).concat("' and '").concat(outputFile2Path).concat("'"), call, action);
+        callAPI(dispatch, 'Comparing output files \''.concat(outputFile1Path).concat('\' and \'').concat(outputFile2Path).concat('\''), call, action);
     }
 }
 
@@ -1010,7 +1014,7 @@ export function getNotebookFileNames() {
             dispatch(updateNotebookFileNames(currentWorkspaceName, notebookFileNames));
         }
 
-        callAPI(dispatch, "Get notebook files of workspace '".concat(currentWorkspaceName).concat("'"), call, action);
+        callAPI(dispatch, 'Get notebook files of workspace \''.concat(currentWorkspaceName).concat('\''), call, action);
     }
 }
 
@@ -1030,7 +1034,7 @@ export function launchNotebook(notebookName: string) {
             return outputAPI(getState()).launch_notebook(currentWorkspaceName, notebookName);
         }
 
-        callAPI(dispatch, "Launch notebook file '".concat(notebookName).concat("'"), call);
+        callAPI(dispatch, 'Launch notebook file \''.concat(notebookName).concat('\''), call);
     }
 }
 
@@ -1087,7 +1091,7 @@ function constructCurrentInputDirectory(getState, currentWorkspaceName: string) 
 
 function determineCurrentOutputDirectory(getState, currentWorkspaceName: string, configName: string) {
     const currentWorkspaceIndex = getCurrentWorkspaceIndex(getState(), currentWorkspaceName);
-    if (getState().control.selectedOutputDirectoryType == "default") {
+    if (getState().control.selectedOutputDirectoryType == 'default') {
         return constructOutputDirectory(getState().data.workspaces[currentWorkspaceIndex].directory, configName);
     } else {
         return getState().control.currentOutputDirectory;

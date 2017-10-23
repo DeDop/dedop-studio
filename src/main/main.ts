@@ -1,16 +1,16 @@
-import * as electron from "electron";
-import installDevToolsExtension from "electron-devtools-installer";
-import * as devTools from "electron-devtools-installer";
-import * as path from "path";
-import * as url from "url";
-import * as fs from "fs";
-import * as childProcess from "child_process";
-import {Configuration} from "./configuration";
-import {updateConditionally} from "../common/objutil";
-import {request} from "./request";
-import {error} from "util";
-import * as semver from "semver";
-import {pep440ToSemver} from "../common/version";
+import * as electron from 'electron';
+import installDevToolsExtension from 'electron-devtools-installer';
+import * as devTools from 'electron-devtools-installer';
+import * as path from 'path';
+import * as url from 'url';
+import * as fs from 'fs';
+import * as childProcess from 'child_process';
+import {Configuration} from './configuration';
+import {updateConditionally} from '../common/objutil';
+import {request} from './request';
+import {error} from 'util';
+import * as semver from 'semver';
+import {pep440ToSemver} from '../common/version';
 
 // Module to control application life.
 const app = electron.app;
@@ -25,10 +25,10 @@ const dialog = electron.dialog;
  * The value is a node-semver (https://github.com/npm/node-semver) compatible version range string.
  * @type {string}
  */
-export const WEBAPI_VERSION_RANGE = ">=1.0.0 <1.2";
+export const WEBAPI_VERSION_RANGE = '>=1.2.0 <1.3';
 
-const DEDOP_LOG_FILE_NAME = "dedop.log";
-const DEDOP_WEBAPI_INFO_FILE_NAME = "webapi-info.json";
+const DEDOP_LOG_FILE_NAME = 'dedop.log';
+const DEDOP_WEBAPI_INFO_FILE_NAME = 'webapi-info.json';
 
 const PREFS_OPTIONS = ['--prefs', '-p'];
 const CONFIG_OPTIONS = ['--config', '-c'];
@@ -52,11 +52,11 @@ let _prefsUpdateRequestedOnClose = false;
 let _prefsUpdatedOnClose = false;
 
 function getAppIconPath() {
-    let icon_file = "linux/16x16.png";
-    if (process.platform === "darwin") {
-        icon_file = "darwin/dedop.icns";
-    } else if (process.platform === "win32") {
-        icon_file = "win32/dedop.ico";
+    let icon_file = 'linux/16x16.png';
+    if (process.platform === 'darwin') {
+        icon_file = 'darwin/dedop.icns';
+    } else if (process.platform === 'win32') {
+        icon_file = 'win32/dedop.ico';
     }
     return path.join(app.getAppPath(), 'resources', icon_file);
 }
@@ -201,11 +201,11 @@ function getWebAPIWebSocketsUrl(webAPIConfig) {
 
 function writeToLogFile(message) {
     const timeZoneOffset = (new Date()).getTimezoneOffset() * 60000;
-    fs.appendFileSync(path.join(getAppDataDir(), DEDOP_LOG_FILE_NAME), new Date(Date.now() - timeZoneOffset).toISOString() + ": " + message + "\n");
+    fs.appendFileSync(path.join(getAppDataDir(), DEDOP_LOG_FILE_NAME), new Date(Date.now() - timeZoneOffset).toISOString() + ': ' + message + '\n');
 }
 
 export function init() {
-    writeToLogFile("============ DeDo Studio starts ============");
+    writeToLogFile('============ DeDo Studio starts ============');
     _config = loadAppConfig();
     _prefs = loadUserPrefs();
 
@@ -218,11 +218,11 @@ export function init() {
         // Refer to https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
         processOptions: {},
     });
-    writeToLogFile("Setting up webAPI with default configuration: " + JSON.stringify(webAPIConfig));
+    writeToLogFile('Setting up webAPI with default configuration: ' + JSON.stringify(webAPIConfig));
 
     const backendLocation = loadBackendLocation();
     if (backendLocation) {
-        writeToLogFile("Backend location found: " + backendLocation);
+        writeToLogFile('Backend location found: ' + backendLocation);
         webAPIConfig = updateConditionally(webAPIConfig, {
             command: backendLocation
         });
@@ -272,7 +272,7 @@ export function init() {
                     electron.dialog.showErrorBox(`${app.getName()} - Internal Error`, message);
                 }
                 webAPIError = new Error(message);
-                writeToLogFile("Internal Error - " + message);
+                writeToLogFile('Internal Error - ' + message);
                 app.exit(WEBAPI_BAD_EXIT); // exit immediately
             }
         });
@@ -341,7 +341,7 @@ export function init() {
     app.on('quit', () => {
         console.log(DEDOP_STUDIO_PREFIX, 'Quit.');
         stopWebapiService(webAPIProcess);
-        writeToLogFile("============ DeDo Studio exits ============");
+        writeToLogFile('============ DeDo Studio exits ============');
     });
 
     // Emitted when all windows have been closed.
@@ -349,7 +349,7 @@ export function init() {
         // On OS X it is common for applications and their menu bar
         // to stay active until the user quits explicitly with Cmd + Q
         if (process.platform !== 'darwin') {
-            writeToLogFile("Close app in OSX");
+            writeToLogFile('Close app in OSX');
             app.quit();
         }
     });
@@ -436,7 +436,7 @@ function createMainWindow() {
     _mainWindow.webContents.on('did-finish-load', () => {
         showSplashMessage('Done.');
         console.log(DEDOP_STUDIO_PREFIX, 'Main window UI loaded.');
-        writeToLogFile("Main window UI loaded.");
+        writeToLogFile('Main window UI loaded.');
         if (_splashWindow) {
             _splashWindow.close();
             const webAPIConfig = _config.data.webAPIConfig;
@@ -461,7 +461,7 @@ function createMainWindow() {
     // Emitted when the web page has been rendered and window can be displayed without a visual flash.
     _mainWindow.on('ready-to-show', () => {
         console.log(DEDOP_STUDIO_PREFIX, 'Main window is ready to show.');
-        writeToLogFile("Main window is ready to show.");
+        writeToLogFile('Main window is ready to show.');
     });
 
     // Emitted when the window is going to be closed.
@@ -470,7 +470,7 @@ function createMainWindow() {
             _prefsUpdateRequestedOnClose = true;
             event.preventDefault();
             console.log(DEDOP_STUDIO_PREFIX, 'Main window is going to be closed, fetching user preferences...');
-            writeToLogFile("Main window is going to be closed, fetching user preferences...");
+            writeToLogFile('Main window is going to be closed, fetching user preferences...');
             _prefs.set('mainWindowBounds', _mainWindow.getBounds());
             _prefs.set('devToolsOpened', _mainWindow.webContents.isDevToolsOpened());
             event.sender.send('get-preferences');
@@ -482,7 +482,7 @@ function createMainWindow() {
     // Emitted when the window is closed.
     _mainWindow.on('closed', () => {
         console.log(DEDOP_STUDIO_PREFIX, 'Main window closed.');
-        writeToLogFile("Main window closed.");
+        writeToLogFile('Main window closed.');
         storeUserPrefs(_prefs);
         _prefs = null;
         _config = null;

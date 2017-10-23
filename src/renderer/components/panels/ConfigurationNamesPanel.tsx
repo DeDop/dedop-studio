@@ -1,19 +1,19 @@
-import * as React from "react";
-import {OrdinaryPanelHeader} from "./PanelHeader";
-import {ListBox} from "../ListBox";
+import * as React from 'react';
+import {OrdinaryPanelHeader} from './PanelHeader';
+import {ListBox} from '../ListBox';
 import {
-    updateConfigSelection,
     addNewConfig,
-    removeConfig,
     copyConfig,
+    getConfigurations,
+    removeConfig,
     renameConfig,
     setCurrentConfig,
-    getConfigurations
-} from "../../actions";
-import {Configuration, State} from "../../state";
-import {connect} from "react-redux";
-import {Button, Intent, Dialog} from "@blueprintjs/core";
-import * as selector from "../../selectors";
+    updateConfigSelection
+} from '../../actions';
+import {Configuration, State} from '../../state';
+import {connect} from 'react-redux';
+import {Button, Dialog, Intent} from '@blueprintjs/core';
+import * as selector from '../../selectors';
 
 interface IConfigurationNamesPanelProps {
     dispatch?: (action: { type: string, payload: any }) => void;
@@ -38,9 +38,10 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
         isAddConfigDialogOpen: false,
         isCopyConfigDialogOpen: false,
         isRenameConfigDialogOpen: false,
-        newConfigName: "",
-        baseConfigName: "default",
-        configNameValid: true
+        newConfigName: '',
+        baseConfigName: 'default',
+        configNameValid: true,
+        defaultConfigTemplate: 'sentinel3'
     };
 
     render() {
@@ -70,7 +71,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
             const configFile = this.props.configurations[itemIndex];
             const isCurrent = configFile.name == this.props.currentConfiguration;
             return (
-                <div className="dedop-list-box-item" style={isCurrent ? {fontWeight: "bold"} : {}}>
+                <div className="dedop-list-box-item" style={isCurrent ? {fontWeight: 'bold'} : {}}>
                     <span className="dedop-file-name">{configFile.name}</span>
                     <span className="dedop-file-updated-date">{configFile.lastUpdated}</span>
                 </div>
@@ -111,7 +112,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 this.props.dispatch(copyConfig(this.props.selectedConfiguration[0], this.state.newConfigName));
                 handleCloseCopyConfigDialog();
                 this.setState({
-                    newConfigName: ""
+                    newConfigName: ''
                 })
             } else {
                 this.setState({
@@ -125,7 +126,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 this.props.dispatch(renameConfig(this.props.selectedConfiguration[0], this.state.newConfigName));
                 handleCloseRenameConfigDialog();
                 this.setState({
-                    newConfigName: ""
+                    newConfigName: ''
                 })
             } else {
                 this.setState({
@@ -136,10 +137,10 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleAddConfig = () => {
             if (this.state.newConfigName) {
-                this.props.dispatch(addNewConfig(this.state.newConfigName));
+                this.props.dispatch(addNewConfig(this.state.newConfigName, this.state.defaultConfigTemplate));
                 handleCloseAddConfigDialog();
                 this.setState({
-                    newConfigName: ""
+                    newConfigName: ''
                 })
             } else {
                 this.setState({
@@ -159,6 +160,13 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
             this.setState({
                 configNameValid: true
             })
+        };
+
+        const onChangeConfigTypeSelection = (event: React.FormEvent<HTMLSelectElement>) => {
+            const value = event.currentTarget.value;
+            this.setState({
+                defaultConfigTemplate: value
+            });
         };
 
         return (
@@ -206,7 +214,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                             <label className="pt-label pt-inline">
                                 <span className="dedop-dialog-parameter-label">Name</span>
                                 <input
-                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid ? "" : "pt-intent-danger")}
+                                    className={'pt-input pt-inline dedop-dialog-parameter-input '.concat(this.state.configNameValid ? '' : 'pt-intent-danger')}
                                     type="text"
                                     placeholder="configuration name"
                                     dir="auto"
@@ -215,6 +223,20 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                                     onFocus={resetConfigInvalidStatus}
                                 />
                             </label>
+                        </div>
+                        <div className="pt-select dedop-dialog-parameter-item">
+                            <span className="dedop-dialog-parameter-label">
+                                Configuration type
+                            </span>
+                            <select className="dedop-dialog-parameter-input"
+                                    onChange={onChangeConfigTypeSelection}>
+                                <option key={1} value="sentinel3">
+                                    Sentinel-3
+                                </option>
+                                <option key={2} value="cryosat2">
+                                    Adapted Cryosat-2 FBR
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div className="pt-dialog-footer">
@@ -238,7 +260,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                             <label className="pt-label pt-inline">
                                 <span className="dedop-dialog-parameter-label">Copy as</span>
                                 <input
-                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid ? "" : "pt-intent-danger")}
+                                    className={'pt-input pt-inline dedop-dialog-parameter-input '.concat(this.state.configNameValid ? '' : 'pt-intent-danger')}
                                     type="text"
                                     placeholder="configuration name"
                                     dir="auto"
@@ -271,7 +293,7 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                             <label className="pt-label pt-inline">
                                 <span className="dedop-dialog-parameter-label">New name</span>
                                 <input
-                                    className={"pt-input pt-inline dedop-dialog-parameter-input ".concat(this.state.configNameValid ? "" : "pt-intent-danger")}
+                                    className={'pt-input pt-inline dedop-dialog-parameter-input '.concat(this.state.configNameValid ? '' : 'pt-intent-danger')}
                                     type="text"
                                     placeholder="configuration name"
                                     dir="auto"

@@ -1,5 +1,5 @@
-import {WebAPIClient} from "./webapi/WebAPIClient";
-import {JobFailure, JobProgress, JobStatus} from "./webapi/Job";
+import {WebAPIClient} from './webapi/WebAPIClient';
+import {JobFailure, JobProgress, JobStatus} from './webapi/Job';
 
 export interface State {
     data: DataState;
