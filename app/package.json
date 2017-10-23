@@ -1,7 +1,7 @@
 {
   "name": "DeDop-studio",
   "productName": "DeDop-studio",
-  "version": "1.1.0",
+  "version": "1.2.0.dev1",
   "description": "DeDop Studio",
   "main": "main.js",
   "author": "Brockmann Consult GmbH",
