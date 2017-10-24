@@ -103,10 +103,12 @@
         "AppImage",
         "tar.gz",
         "zip"
-      ]
+      ],
+      "category": "Science"
     },
     "mac": {
-      "icon": "app/resources/darwin/dedop.icns"
+      "icon": "app/resources/darwin/dedop.icns",
+      "category": "Science"
     },
     "dmg": {
       "title": "${name}-${version}",
