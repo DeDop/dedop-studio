@@ -1,10 +1,20 @@
-import * as React from "react";
-import * as CodeMirror from "react-codemirror";
-import {ConfigurationEditor} from "../ConfigurationEditor";
-import {connect, Dispatch} from "react-redux";
-import {ConfigurationVersion, ProcessConfigurations, State} from "../../state";
-import {updateUnsavedConfigStatus, upgradeConfigurations} from "../../actions";
-import * as selector from "../../selectors";
+import * as React from 'react';
+import {ConfigurationEditor} from '../ConfigurationEditor';
+import {connect, Dispatch} from 'react-redux';
+import {ConfigurationVersion, ProcessConfigurations, State} from '../../state';
+import {
+    updateChdTemp,
+    updateCnfTemp,
+    updateCstTemp,
+    updateUnsavedConfigStatus,
+    upgradeConfigurations
+} from '../../actions';
+import * as selector from '../../selectors';
+import AceEditor from 'react-ace';
+import 'brace/mode/json';
+import 'brace/snippets/json';
+import 'brace/theme/monokai';
+import 'brace/ext/language_tools';
 
 interface IConfigurationEditorPanelProps {
     dispatch?: Dispatch<State>;
@@ -18,7 +28,7 @@ interface IConfigurationEditorPanelProps {
     configType: string;
 }
 
-interface  ConfigurationEditorPanelOwnProps {
+interface ConfigurationEditorPanelOwnProps {
     codeEditorActive: boolean;
     isConfigEditable: boolean;
     configType: string;
@@ -46,15 +56,8 @@ class ConfigurationEditorPanel extends React.Component<IConfigurationEditorPanel
         const configVersion = ConfigurationEditorPanel.getConfigVersion(props[props.configType]);
         this.state = {
             configTemp: props[props.configType],
-            configVersion: configVersion,
-            options: {
-                lineNumbers: true,
-                mode: {
-                    name: "javascript",
-                    json: true
-                },
-                lineWrapping: true
-            }
+            configTempValid: false,
+            configVersion: configVersion
         };
     };
 
@@ -66,19 +69,34 @@ class ConfigurationEditorPanel extends React.Component<IConfigurationEditorPanel
         });
     }
 
-    private updateConfigCode = (newCode: string) => {
-        if (!(this.state.configTemp == JSON.parse(newCode))) {
-            this.props.dispatch(updateUnsavedConfigStatus(true));
+    private updateLocalConfigCode = (newCode: string) => {
+        try {
+            if (!(this.state.configTemp == JSON.parse(newCode))) {
+                this.props.dispatch(updateUnsavedConfigStatus(true));
+            }
+            this.setState({
+                configTemp: JSON.parse(newCode),
+                configTempValid: true
+            })
+        } catch (err) {
+            console.warn('error when parsing json', err);
         }
-        this.setState({
-            configTemp: JSON.parse(newCode),
-        });
+    };
+
+    private updateConfigCode = () => {
+        if (this.props.configType === 'chd') {
+            this.props.dispatch(updateChdTemp(this.state.configTemp));
+        } else if (this.props.configType === 'cnf') {
+            this.props.dispatch(updateCnfTemp(this.state.configTemp));
+        } else if (this.props.configType === 'cst') {
+            this.props.dispatch(updateCstTemp(this.state.configTemp));
+        }
     };
 
     private static getConfigVersion(config: ProcessConfigurations): number {
         if (config) {
-            if ("__metainf__" in config) {
-                return config["__metainf__"]["version"];
+            if ('__metainf__' in config) {
+                return config['__metainf__']['version'];
             } else {
                 return CONFIGURATION_VERSION_NOT_FOUND;
             }
@@ -104,16 +122,28 @@ class ConfigurationEditorPanel extends React.Component<IConfigurationEditorPanel
     };
 
     render() {
-        const codeMirrorOptions = Object.assign({}, this.state.options, {readOnly: !this.props.isConfigEditable});
         return (
             <div className="panel-flexbox-configs">
                 {this.props.codeEditorActive
                     ?
-                    <CodeMirror
-                        value={this.state.configTemp ? JSON.stringify(this.state.configTemp, null, 4) : "please select a configuration"}
-                        onChange={this.updateConfigCode}
-                        options={codeMirrorOptions}
-                        className="dedop-codemirror"
+                    <AceEditor
+                        mode="json"
+                        theme="monokai"
+                        name="Configuration Editor"
+                        editorProps={{$blockScrolling: true}}
+                        showGutter={false}
+                        setOptions={{
+                            enableBasicAutocompletion: true,
+                            tabSize: 2,
+                            useWorker: false
+                        }}
+                        value={this.state.configTemp ? JSON.stringify(this.state.configTemp, null, 4) : 'please select a configuration'}
+                        width='100%'
+                        height='100%'
+                        showPrintMargin={false}
+                        readOnly={!this.props.isConfigEditable}
+                        onChange={this.updateLocalConfigCode}
+                        onBlur={this.updateConfigCode}
                     />
                     :
                     (
@@ -121,10 +151,10 @@ class ConfigurationEditorPanel extends React.Component<IConfigurationEditorPanel
                             ?
                             <div>
                                 <span
-                                    className={"pt-tag ".concat(this.state.configVersion < this.props.defaultConfVersion[this.props.configType] ? "pt-intent-warning" : "pt-intent-success")}
+                                    className={'pt-tag '.concat(this.state.configVersion < this.props.defaultConfVersion[this.props.configType] ? 'pt-intent-warning' : 'pt-intent-success')}
                                     style={{opacity: 0.5}}
                                 >
-                                    Version {this.state.configVersion >= 0 ? this.state.configVersion : "N/A"}
+                                    Version {this.state.configVersion >= 0 ? this.state.configVersion : 'N/A'}
                                 </span>
                                 {
                                     this.state.configVersion == CONFIGURATION_VERSION_NOT_FOUND || this.state.configVersion < this.props.defaultConfVersion[this.props.configType]

@@ -37,6 +37,9 @@ export const APPLY_INITIAL_STATE = 'APPLY_INITIAL_STATE';
 export const SET_WEBAPI_STATUS = 'SET_WEBAPI_STATUS';
 export const SET_TASK_STATE = 'SET_TASK_STATE';
 export const APPLY_INITIAL_SOURCE_FILE_DIRECTORY = 'APPLY_INITIAL_SOURCE_FILE_DIRECTORY';
+export const UPDATE_CHD_TEMP = 'UPDATE_CHD_TEMP';
+export const UPDATE_CNF_TEMP = 'UPDATE_CNF_TEMP';
+export const UPDATE_CST_TEMP = 'UPDATE_CST_TEMP';
 
 const CANCELLED_CODE = 999;
 const DEFAULT_WORKSPACE_NAME = 'default';
@@ -77,6 +80,18 @@ export function updateCurrentOutputDirectory(outputDirectory: string) {
 
 export function updateSelectedProcesses(processId: number[]) {
     return {type: UPDATE_SELECTED_PROCESSES, payload: processId};
+}
+
+export function updateChdTemp(newChdTemp: ProcessConfigurations){
+    return {type: UPDATE_CHD_TEMP, payload: newChdTemp};
+}
+
+export function updateCnfTemp(newCnfTemp: ProcessConfigurations){
+    return {type: UPDATE_CNF_TEMP, payload: newCnfTemp};
+}
+
+export function updateCstTemp(newCstTemp: ProcessConfigurations){
+    return {type: UPDATE_CST_TEMP, payload: newCstTemp};
 }
 
 export function updateUnsavedConfigStatus(status: boolean) {

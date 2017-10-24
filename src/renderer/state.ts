@@ -58,6 +58,11 @@ export interface ControlState {
     cnfDescriptor?: ConfigurationDescriptor;
     chdDescriptor?: ConfigurationDescriptor;
     cstDescriptor?: ConfigurationDescriptor;
+
+    // temporary (unsaved) configurations
+    cnfTemp?: ProcessConfigurations;
+    chdTemp?: ProcessConfigurations;
+    cstTemp?: ProcessConfigurations;
 }
 
 export interface SessionState {

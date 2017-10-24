@@ -18,7 +18,6 @@ export const initialControlState: ControlState = {
     isChdEditable: false,
     isCstEditable: false,
     isOfflineMode: false
-
 };
 
 export const initialDataState: DataState = {

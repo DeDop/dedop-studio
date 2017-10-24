@@ -1,22 +1,18 @@
-import * as React from "react";
-import {ProcessConfigurations, State} from "../../state";
-import {Tab2, Tabs2} from "@blueprintjs/core";
-import "codemirror/mode/javascript/javascript";
-import {connect, Dispatch} from "react-redux";
+import * as React from 'react';
+import {ProcessConfigurations, State} from '../../state';
+import {Tab2, Tabs2} from '@blueprintjs/core';
+import {connect, Dispatch} from 'react-redux';
+import * as selector from '../../selectors';
 import {
     saveConfiguration,
     updateConfigEditorMode,
     updateConfigurationTab,
     updateUnsavedConfigStatus
-} from "../../actions";
-import * as selector from "../../selectors";
-import ConfigurationEditorPanel from "../panels/ConfigurationEditorPanel";
+} from '../../actions';
+import ConfigurationEditorPanel from '../panels/ConfigurationEditorPanel';
 
 interface IConfigurationTabsProps {
     dispatch?: Dispatch<State>;
-    chd?: ProcessConfigurations;
-    cnf?: ProcessConfigurations;
-    cst?: ProcessConfigurations;
     codeEditorActive?: boolean;
     selectedConfigurationName?: string;
     currentTab?: number;
@@ -24,6 +20,12 @@ interface IConfigurationTabsProps {
     isCnfEditable?: boolean;
     isChdEditable?: boolean;
     isCstEditable?: boolean;
+    chd?: ProcessConfigurations;
+    cnf?: ProcessConfigurations;
+    cst?: ProcessConfigurations;
+    chdTemp: ProcessConfigurations;
+    cnfTemp: ProcessConfigurations;
+    cstTemp: ProcessConfigurations;
 }
 
 function mapStateToProps(state: State): IConfigurationTabsProps {
@@ -38,6 +40,9 @@ function mapStateToProps(state: State): IConfigurationTabsProps {
         isCnfEditable: state.control.isCnfEditable,
         isChdEditable: state.control.isChdEditable,
         isCstEditable: state.control.isCstEditable,
+        chdTemp: state.control.chdTemp,
+        cnfTemp: state.control.cnfTemp,
+        cstTemp: state.control.cstTemp
     }
 }
 
@@ -47,20 +52,6 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
         this.handleChangeMode = this.handleChangeMode.bind(this);
         this.handleSaveConfig = this.handleSaveConfig.bind(this);
         this.handleChangeTab = this.handleChangeTab.bind(this);
-
-        this.state = {
-            chdTemp: this.props.chd,
-            cnfTemp: this.props.cnf,
-            cstTemp: this.props.cst
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            chdTemp: nextProps.chd,
-            cnfTemp: nextProps.cnf,
-            cstTemp: nextProps.cst
-        });
     }
 
     private handleChangeMode() {
@@ -68,10 +59,11 @@ class ConfigurationTabs extends React.Component<IConfigurationTabsProps, any> {
     }
 
     private handleSaveConfig = () => {
-        const chd = this.state.chdTemp;
-        const cnf = this.state.cnfTemp;
-        const cst = this.state.cstTemp;
-        this.props.dispatch(saveConfiguration(this.props.selectedConfigurationName, chd, cnf, cst));
+        this.props.dispatch(saveConfiguration(
+            this.props.selectedConfigurationName,
+            this.props.chdTemp ? this.props.chdTemp : this.props.chd,
+            this.props.cnfTemp ? this.props.cnfTemp : this.props.cnf,
+            this.props.cstTemp ? this.props.cstTemp : this.props.cst));
         this.props.dispatch(updateUnsavedConfigStatus(false));
     };
 

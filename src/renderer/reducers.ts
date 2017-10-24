@@ -334,6 +334,18 @@ const controlReducer = (state: ControlState = initialControlState, action) => {
                 selectedConfigurationName: action.payload,
                 unsavedConfigChanges: false
             });
+        case actions.UPDATE_CHD_TEMP:
+            return Object.assign({}, state, {
+                chdTemp: action.payload
+            });
+        case actions.UPDATE_CNF_TEMP:
+            return Object.assign({}, state, {
+                cnfTemp: action.payload
+            });
+        case actions.UPDATE_CST_TEMP:
+            return Object.assign({}, state, {
+                cstTemp: action.payload
+            });
         case actions.SELECT_SOURCE_FILE:
             return Object.assign({}, state, {
                 selectedSourceFileName: action.payload
