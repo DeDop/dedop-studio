@@ -25,7 +25,7 @@ const dialog = electron.dialog;
  * The value is a node-semver (https://github.com/npm/node-semver) compatible version range string.
  * @type {string}
  */
-export const WEBAPI_VERSION_RANGE = '>=1.2.0 <1.3';
+export const WEBAPI_VERSION_RANGE = '>=1.3.0 <1.4';
 
 const DEDOP_LOG_FILE_NAME = 'dedop.log';
 const DEDOP_WEBAPI_INFO_FILE_NAME = 'webapi-info.json';
