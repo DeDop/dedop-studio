@@ -546,9 +546,6 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
     const isWin = process.platform === 'win32';
     const finder = n => n.startsWith('DeDop-core') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
     const installerExeName = fileNames.find(finder);
-    writeToLogFile("==========");
-    writeToLogFile(fileNames);
-    writeToLogFile("==========");
     if (installerExeName) {
         const installerPath = path.join(app.getAppPath(), installerExeName);
         const response = electron.dialog.showMessageBox({
@@ -570,14 +567,12 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
             return true;
         }
     } else {
-        electron.dialog.showMessageBox({
-            type: 'error',
-            title: `${app.getName()} - Fatal Error`,
-            buttons: ['Close'],
-            message: 'Can find neither the required DeDop backend service\n"' +
-            webAPIConfig.command + '"\n' +
-            'nor a bundled DeDop Python installer. Application will exit now.',
-        });
+        electron.dialog.showErrorBox(`${app.getName()} - Configuration Error`,
+            `${app.getName()} requires DeDop Core ${WEBAPI_VERSION_RANGE}.\n` +
+            'A compatible version could not be found.\n' +
+            'Please install a compatible DeDop Core first.\n\n' +
+            `${app.getName()} will exit now.`
+        );
         electron.app.exit(WEBAPI_INSTALLER_MISSING);
         return false;
     }
