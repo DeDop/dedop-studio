@@ -25,7 +25,7 @@ const dialog = electron.dialog;
  * The value is a node-semver (https://github.com/npm/node-semver) compatible version range string.
  * @type {string}
  */
-export const WEBAPI_VERSION_RANGE = '>=1.4.0 <1.5';
+export const WEBAPI_VERSION_RANGE = '>=1.4.0-dev.1 <1.5';
 
 const DEDOP_LOG_FILE_NAME = 'dedop.log';
 const DEDOP_WEBAPI_INFO_FILE_NAME = 'webapi-info.json';
@@ -154,7 +154,9 @@ function loadBackendLocation() {
     descendingVersions.sort((v1: string, v2: string) => semver.compare(v2, v1, true));
 
     for (let version of descendingVersions) {
+        console.log(version);
         if (semver.satisfies(version, WEBAPI_VERSION_RANGE, true)) {
+            console.log("satisfied!");
             return backendLocations[version];
         }
     }
@@ -544,6 +546,9 @@ function checkWebapiServiceExecutable(callback: (installerPath?: string) => void
     const isWin = process.platform === 'win32';
     const finder = n => n.startsWith('DeDop-core') && (isWin ? (n.endsWith('.exe') || n.endsWith('.bat')) : n.endsWith('.sh'));
     const installerExeName = fileNames.find(finder);
+    writeToLogFile("==========");
+    writeToLogFile(fileNames);
+    writeToLogFile("==========");
     if (installerExeName) {
         const installerPath = path.join(app.getAppPath(), installerExeName);
         const response = electron.dialog.showMessageBox({
