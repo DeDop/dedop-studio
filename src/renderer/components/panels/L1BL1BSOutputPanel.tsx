@@ -26,8 +26,8 @@ function mapStateToProps(state: State): IL1BL1BSOutputPanelProps {
 }
 
 class L1BL1BSOutputPanel extends React.Component<IL1BL1BSOutputPanelProps, any> {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.handleSelectDefaultOutputDirectoryType = this.handleSelectDefaultOutputDirectoryType.bind(this);
         this.handleSelectOtherOutputDirectoryType = this.handleSelectOtherOutputDirectoryType.bind(this);
     }

@@ -11,12 +11,12 @@ import {
     updateConfigSelection
 } from '../../actions';
 import {Configuration, State} from '../../state';
-import {connect} from 'react-redux';
+import {connect, Dispatch} from 'react-redux';
 import {Button, Dialog, Intent} from '@blueprintjs/core';
 import * as selector from '../../selectors';
 
 interface IConfigurationNamesPanelProps {
-    dispatch?: (action: { type: string, payload: any }) => void;
+    dispatch?: Dispatch<State>;
     selectedConfiguration: string[];
     currentConfiguration: string;
     configurations: Configuration[];
@@ -32,7 +32,7 @@ function mapStateToProps(state: State): IConfigurationNamesPanelProps {
     }
 }
 
-class ConfigurationNamesPanel extends React.Component<any, any> {
+class ConfigurationNamesPanel extends React.Component<IConfigurationNamesPanelProps, any> {
     public state = {
         isOutputFileNotSelectedAlertOpen: false,
         isAddConfigDialogOpen: false,
@@ -46,21 +46,15 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
     render() {
         const handleOpenAddConfigDialog = () => {
-            this.setState({
-                isAddConfigDialogOpen: true
-            })
+            this.setState({isAddConfigDialogOpen: true})
         };
 
         const handleOpenCopyConfigDialog = () => {
-            this.setState({
-                isCopyConfigDialogOpen: true
-            })
+            this.setState({isCopyConfigDialogOpen: true})
         };
 
         const handleOpenRenameConfigDialog = () => {
-            this.setState({
-                isRenameConfigDialogOpen: true
-            })
+            this.setState({isRenameConfigDialogOpen: true})
         };
 
         const handleDeleteConfig = () => {
@@ -91,20 +85,20 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
 
         const handleCloseAddConfigDialog = () => {
             this.setState({
-                isAddConfigDialogOpen: false
-            })
+                              isAddConfigDialogOpen: false
+                          })
         };
 
         const handleCloseCopyConfigDialog = () => {
             this.setState({
-                isCopyConfigDialogOpen: false
-            })
+                              isCopyConfigDialogOpen: false
+                          })
         };
 
         const handleCloseRenameConfigDialog = () => {
             this.setState({
-                isRenameConfigDialogOpen: false
-            })
+                              isRenameConfigDialogOpen: false
+                          })
         };
 
         const handleCopyConfig = () => {
@@ -112,12 +106,12 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 this.props.dispatch(copyConfig(this.props.selectedConfiguration[0], this.state.newConfigName));
                 handleCloseCopyConfigDialog();
                 this.setState({
-                    newConfigName: ''
-                })
+                                  newConfigName: ''
+                              })
             } else {
                 this.setState({
-                    configNameValid: false
-                })
+                                  configNameValid: false
+                              })
             }
         };
 
@@ -126,12 +120,12 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 this.props.dispatch(renameConfig(this.props.selectedConfiguration[0], this.state.newConfigName));
                 handleCloseRenameConfigDialog();
                 this.setState({
-                    newConfigName: ''
-                })
+                                  newConfigName: ''
+                              })
             } else {
                 this.setState({
-                    configNameValid: false
-                })
+                                  configNameValid: false
+                              })
             }
         };
 
@@ -140,33 +134,33 @@ class ConfigurationNamesPanel extends React.Component<any, any> {
                 this.props.dispatch(addNewConfig(this.state.newConfigName, this.state.defaultConfigTemplate));
                 handleCloseAddConfigDialog();
                 this.setState({
-                    newConfigName: ''
-                })
+                                  newConfigName: ''
+                              })
             } else {
                 this.setState({
-                    configNameValid: false
-                })
+                                  configNameValid: false
+                              })
             }
         };
 
         const handleConfigNameEdit = (event: any) => {
             const value = event.currentTarget.value;
             this.setState({
-                newConfigName: value
-            })
+                              newConfigName: value
+                          })
         };
 
         const resetConfigInvalidStatus = () => {
             this.setState({
-                configNameValid: true
-            })
+                              configNameValid: true
+                          })
         };
 
         const onChangeConfigTypeSelection = (event: React.FormEvent<HTMLSelectElement>) => {
             const value = event.currentTarget.value;
             this.setState({
-                defaultConfigTemplate: value
-            });
+                              defaultConfigTemplate: value
+                          });
         };
 
         return (

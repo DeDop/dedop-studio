@@ -1,18 +1,18 @@
 import * as React from 'react';
-import {Alert} from "@blueprintjs/core";
+import {Alert, IconName} from '@blueprintjs/core';
 
 interface IAlertProps {
     onConfirm: () => any;
     isAlertOpen: boolean;
     message: string;
-    iconName?: string;
+    iconName?: IconName;
     className?: string;
 }
 
 export class GeneralAlert extends React.Component<IAlertProps,any> {
     render() {
         const defaultStyle = 'dedop-alert-not-implemented';
-        const defaultIcon = 'pt-icon-build';
+        const defaultIcon: IconName = 'pt-icon-build';
 
         return (
             <Alert
