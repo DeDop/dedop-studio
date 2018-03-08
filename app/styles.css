@@ -502,18 +502,6 @@ textarea.pt-input {
 
 /* Configurations styling===================================================*/
 
-/* CodeMirror styling===================================================*/
-
-.dedop-codemirror {
-    height: 100%;
-}
-
-.CodeMirror {
-    height: 100%; /*overwrite original code mirror style*/
-}
-
-/* CodeMirror styling===================================================*/
-
 /* Output files styling===================================================*/
 
 .panel-flexbox-output-select {
