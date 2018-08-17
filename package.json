@@ -62,7 +62,7 @@
     "chai": "~3.5.0",
     "chai-as-promised": "~6.0.0",
     "deep-equal": "~1.0.1",
-    "electron": "1.8.2",
+    "electron": "1.8.3",
     "electron-builder": "19.56.0",
     "electron-devtools-installer": "~2.2.1",
     "enzyme": "~3.3.0",
