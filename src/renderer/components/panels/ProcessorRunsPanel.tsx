@@ -198,7 +198,7 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
                 <OrdinaryPanelHeader title="Processor Runs" icon="pt-icon-cog"/>
                 <div style={{textAlign: 'right'}}>
                     <button type="button"
-                            className="pt-button pt-icon-standard pt-icon-delete pt-intent-danger"
+                            className="pt-button pt-icon-delete pt-intent-danger"
                             style={{margin: '10px 0'}}
                             onClick={this.handleProcessDeletion}
                             disabled={!(this.props.selectedProcesses && this.props.selectedProcesses.length > 0)}
@@ -206,7 +206,7 @@ class ProcessorRunsPanel extends React.Component<IProcessorRunsPanelProps, any> 
                         Delete
                     </button>
                     <Button type="button"
-                            className="pt-button pt-icon-standard pt-icon-play pt-intent-primary"
+                            className="pt-button pt-icon-play pt-intent-primary"
                             style={{margin: '10px 0 10px 5px'}}
                             onClick={this.handleRunProcess}
                             loading={isProcessRunningOrSubmitted}

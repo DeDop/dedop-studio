@@ -168,7 +168,7 @@ class ConfigurationNamesPanel extends React.Component<IConfigurationNamesPanelPr
                 <OrdinaryPanelHeader title="Configuration Names" icon="pt-icon-properties"/>
                 <div className="configuration-file-buttons">
                     <button
-                        className="pt-button pt-intent-primary pt-icon-standard pt-icon-add configuration-file-button"
+                        className="pt-button pt-intent-primary pt-icon-add configuration-file-button"
                         onClick={handleOpenAddConfigDialog}
                     >
                         Add
